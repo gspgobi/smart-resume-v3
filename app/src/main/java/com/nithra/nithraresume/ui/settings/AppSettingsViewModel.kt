@@ -22,4 +22,3 @@ class AppSettingsViewModel @Inject constructor(
         viewModelScope.launch { prefsManager.setNotificationsEnabled(enabled) }
     }
 }
-// update 162

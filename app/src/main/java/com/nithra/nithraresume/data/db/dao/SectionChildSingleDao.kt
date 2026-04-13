@@ -86,4 +86,3 @@ interface SectionChildSingleDao {
     @Query("DELETE FROM section_child_8 WHERE section_head_added_id = :headId")
     suspend fun deleteChild8ByHeadId(headId: Int)
 }
-// update 66

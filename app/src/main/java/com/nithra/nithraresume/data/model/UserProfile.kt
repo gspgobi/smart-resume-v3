@@ -40,4 +40,3 @@ fun UserProfile.toEntity() = UserProfileEntity(
     upBackgroundColor = backgroundColor,
     upResumeFileName = resumeFileName
 )
-// update 101

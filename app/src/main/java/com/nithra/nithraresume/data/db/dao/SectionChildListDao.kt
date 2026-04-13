@@ -135,4 +135,3 @@ interface SectionChildListDao {
     @Query("UPDATE section_child_7 SET sc7_index_position = :position WHERE section_child_7_id = :id")
     suspend fun updateChild7Position(id: Int, position: Int)
 }
-// update 65

@@ -168,4 +168,3 @@ object ApiEndpoint {
     const val APP_FEEDBACK = "apps/appfeedback.php"
     const val REFERRER     = "apps/referrer.php"
 }
-// update 170

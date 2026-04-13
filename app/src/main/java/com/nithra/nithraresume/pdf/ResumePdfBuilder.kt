@@ -733,4 +733,3 @@ class ResumePdfBuilder(private val context: Context) {
         return fontFile
     }
 }
-// update 110

@@ -38,4 +38,3 @@ data class UserProfileEntity(
     @ColumnInfo(name = "up_resume_file_name")
     val upResumeFileName: String?
 )
-// update 86

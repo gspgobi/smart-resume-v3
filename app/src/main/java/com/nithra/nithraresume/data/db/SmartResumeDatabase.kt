@@ -123,4 +123,3 @@ abstract class SmartResumeDatabase : RoomDatabase() {
         }
     }
 }
-// update 62

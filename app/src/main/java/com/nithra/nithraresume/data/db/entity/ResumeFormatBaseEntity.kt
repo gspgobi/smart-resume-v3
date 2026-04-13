@@ -29,4 +29,3 @@ data class ResumeFormatBaseEntity(
     @ColumnInfo(name = "up_backgroud_color")
     val upBackgroundColor: String?
 )
-// update 73

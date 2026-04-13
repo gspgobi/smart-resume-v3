@@ -16,4 +16,3 @@ interface SectionHeadBaseDao {
     @Query("SELECT * FROM section_head_base WHERE section_head_base_id = :id")
     suspend fun getById(id: Int): SectionHeadBaseEntity?
 }
-// update 68

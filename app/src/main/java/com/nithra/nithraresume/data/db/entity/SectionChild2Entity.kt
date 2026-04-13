@@ -35,4 +35,3 @@ data class SectionChild2Entity(
     @ColumnInfo(name = "sc2_accomplishments_bullet_type")
     val sc2AccomplishmentsBulletType: String?
 )
-// update 75

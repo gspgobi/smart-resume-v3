@@ -165,4 +165,3 @@ class SectionChild1ViewModel @Inject constructor(
         return File(dir, "${SrImagePrefix.USER_IMAGE}$sc1Id${SrImageSuffix.JPG}")
     }
 }
-// update 134

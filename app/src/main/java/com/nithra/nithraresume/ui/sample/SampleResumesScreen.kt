@@ -266,4 +266,3 @@ private fun openPdfFile(context: android.content.Context, file: File) {
         context.startActivity(Intent.createChooser(intent, "Open PDF"))
     }
 }
-// update 131

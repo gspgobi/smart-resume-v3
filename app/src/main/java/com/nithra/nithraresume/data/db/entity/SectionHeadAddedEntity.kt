@@ -31,4 +31,3 @@ data class SectionHeadAddedEntity(
     @ColumnInfo(name = "sha_index_position")
     val shaIndexPosition: Int
 )
-// update 82

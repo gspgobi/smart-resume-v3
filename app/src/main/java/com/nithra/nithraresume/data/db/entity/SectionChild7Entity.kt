@@ -29,4 +29,3 @@ data class SectionChild7Entity(
     @ColumnInfo(name = "sc7_content_detail_bullet_type")
     val sc7ContentDetailBulletType: String?
 )
-// update 80

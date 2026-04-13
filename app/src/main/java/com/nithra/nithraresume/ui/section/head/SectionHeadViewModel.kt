@@ -204,4 +204,3 @@ class SectionHeadViewModel @Inject constructor(
         sectionChildRepository.deleteChild8(sectionHeadAddedId)
     }
 }
-// update 160

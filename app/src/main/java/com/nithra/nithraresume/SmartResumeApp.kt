@@ -40,4 +40,3 @@ class SmartResumeApp : Application() {
         }
     }
 }
-// update 59

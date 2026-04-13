@@ -25,4 +25,3 @@ fun SectionHeadBase.toEntity() = SectionHeadBaseEntity(
     shbHasChild = hasChild,
     scTableName = childTableName
 )
-// update 98

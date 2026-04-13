@@ -47,4 +47,3 @@ class UserProfileRepository @Inject constructor(
         backgroundColor: String
     ) = dao.updateFormatSettings(id, formatId, fontStyle, fontSize, backgroundColor)
 }
-// update 106

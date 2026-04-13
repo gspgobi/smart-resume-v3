@@ -38,4 +38,3 @@ fun SectionChild4.toEntity() = SectionChild4Entity(
     sc4SignatureImagePath = signatureImagePath,
     sc4IsSignatureImageEnable = if (isSignatureImageEnable) 1 else 0
 )
-// update 92

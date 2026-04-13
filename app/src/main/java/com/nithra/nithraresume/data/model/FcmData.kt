@@ -34,4 +34,3 @@ fun FcmData.toEntity() = FcmDataEntity(
     fcmTimestamp = timestamp,
     fcmIsRead = if (isRead) 1 else 0
 )
-// update 87

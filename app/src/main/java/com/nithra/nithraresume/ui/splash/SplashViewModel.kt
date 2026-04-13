@@ -82,4 +82,3 @@ class SplashViewModel @Inject constructor(
         }
     }
 }
-// update 164

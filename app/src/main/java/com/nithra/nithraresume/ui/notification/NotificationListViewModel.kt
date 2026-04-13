@@ -27,4 +27,3 @@ class NotificationListViewModel @Inject constructor(
         viewModelScope.launch { fcmRepository.deleteAll() }
     }
 }
-// update 128

@@ -350,5 +350,3 @@ private fun UserImageSection(
         }
     }
 }
-
-// update 133

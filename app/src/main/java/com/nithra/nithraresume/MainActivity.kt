@@ -73,4 +73,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-// update 58

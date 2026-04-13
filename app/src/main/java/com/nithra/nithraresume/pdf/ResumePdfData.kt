@@ -30,4 +30,3 @@ data class ResumePdfData(
     val sc7sByHeadId: Map<Int, List<SectionChild7>>,
     val sc8ByHeadId: Map<Int, SectionChild8>
 )
-// update 111

@@ -38,4 +38,3 @@ fun SectionChild2.toEntity() = SectionChild2Entity(
     sc2Accomplishments = accomplishments,
     sc2AccomplishmentsBulletType = accomplishmentsBulletType
 )
-// update 90

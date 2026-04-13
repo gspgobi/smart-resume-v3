@@ -38,4 +38,3 @@ interface UserProfileDao {
     @Query("UPDATE user_profile SET resume_format_base_id = :formatId, up_font_style = :fontStyle, up_font_size = :fontSize, up_backgroud_color = :bgColor WHERE user_profile_id = :id")
     suspend fun updateFormatSettings(id: Int, formatId: Int, fontStyle: String, fontSize: Int, bgColor: String)
 }
-// update 00

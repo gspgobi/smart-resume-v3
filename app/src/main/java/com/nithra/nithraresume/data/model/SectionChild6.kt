@@ -26,4 +26,3 @@ fun SectionChild6.toEntity() = SectionChild6Entity(
     sc6ContentTitle = contentTitle,
     sc6ContentDetail = contentDetail
 )
-// update 94

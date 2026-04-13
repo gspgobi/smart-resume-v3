@@ -31,4 +31,3 @@ fun ResumeFormat.toEntity() = ResumeFormatBaseEntity(
     upFontSize = fontSize,
     upBackgroundColor = backgroundColor
 )
-// update 88
