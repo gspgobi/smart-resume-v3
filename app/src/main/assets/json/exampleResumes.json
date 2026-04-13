@@ -1,0 +1,275 @@
+{
+  "userProfileArrayList": [
+    {
+      "profileId": -11,
+      "upName": "Example profile",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": false,
+      "sampleProfileId": -1,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 12,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Example_Profile",
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "John David",
+            "sc1Address": "159 Evergreen Ln,\nCordova,\nTN 38018,\nUSA",
+            "sc1Email": "example-email@example.com",
+            "sc1Phone": "555.322.7337",
+            "sc1Gender": "Male",
+            "sc1Dob": "03-Feb-1990",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Donec sollicitudin mi et magna. Proin non est. Vestibulum diam. Quisque in enim. Sed id dui. Nunc nec sapien. Nulla lacus. Quisque in ante vel nunc semper pellentesque. Nam sit amet lacus sit amet ipsum auctor eleifend. Quisque vitae justo eu neque mattis pellentesque. Suspendisse tristique. Nulla facilisi. Pellentesque hendrerit tristique turpis. Pellentesque eget mi. Vestibulum a lacus.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Suspendisse potenti. Vestibulum rhoncus. Ut rhoncus turpis a massa. Vivamus adipiscing vestibulum nunc. Maecenas vitae lorem. Donec mi.\nDonec justo quam, laoreet ut, fermentum at, blandit vitae, ligula. Vestibulum diam. Etiam ut velit nec lacus consectetuer sodales. Integer accumsan. Maecenas eleifend vestibulum libero.\nVestibulum metus ligula, volutpat vitae, feugiat at, blandit quis, lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Senior Software Engineer",
+              "sc2CompanyName": "Nelsonoct Development Centre",
+              "sc2Subtitle": "Android Developer",
+              "sc2WorkPeriod": "July 2015 - Till Date",
+              "sc2Accomplishments": "Proin non est. Vestibulum diam. Quisque in enim. Sed id dui. Nunc nec sapien. Nulla lacus. Quisque in ante vel nunc semper pellentesque. Nam sit amet lacus sit amet ipsum auctor eleifend. Quisque vitae justo eu neque mattis pellentesque. Suspendisse tristique. Nulla facilisi. Pellentesque hendrerit tristique turpis. Pellentesque eget mi. Vestibulum a lacus.",
+              "sc2AccomplishmentsBulletType": "None"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Software Engineer",
+              "sc2CompanyName": "Rivendell Works",
+              "sc2Subtitle": "Java Developer",
+              "sc2WorkPeriod": "April 2013 - June 2015",
+              "sc2Accomplishments": "Donec justo quam, laoreet ut, fermentum at, blandit vitae, ligula. Vestibulum diam. Etiam ut velit nec lacus consectetuer sodales. Integer accumsan. Maecenas eleifend vestibulum libero. Vestibulum metus ligula, volutpat vitae, feugiat at, blandit quis, lorem. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.",
+              "sc2AccomplishmentsBulletType": "None"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor in Computer Engineering",
+              "sc3SchoolName": "Gravito National University",
+              "sc3Subtitle": "Graduated with a 8.5 CGPA.",
+              "sc3StudyPeriod": "July 2008 - March 2012",
+              "sc3Concentrates": "Proin non est. Vestibulum diam. Quisque in enim. Sed id dui. Nunc nec sapien. Nulla lacus. Quisque in ante vel nunc semper pellentesque. Nam sit amet lacus sit amet ipsum auctor eleifend. Quisque vitae justo eu neque mattis pellentesque. Suspendisse tristique. Nulla facilisi. Pellentesque hendrerit tristique turpis. Pellentesque eget mi. Vestibulum a lacus.",
+              "sc3ConcentratesBulletType": "None"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Etiam cursus suscipit enim. Nulla facilisi. Integer eleifend diam eu diam. Donec dapibus enim sollicitudin nulla. Nam hendrerit. Nunc id nisi. Curabitur sed neque. Pellentesque placerat consequat pede.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 6,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Performance Improvement project",
+              "sc7ContentSubtitle": "XYZ plant, Busch Dr, Jacksonville, FL 32218",
+              "sc7ContentDetail": "Nulla facilisi. Integer eleifend diam eu diam. Donec dapibus enim sollicitudin nulla. Nam hendrerit. Nunc id nisi. Curabitur sed neque. Pellentesque placerat consequat pede.",
+              "sc7ContentDetailBulletType": "None"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "Time Optimisation project",
+              "sc7ContentSubtitle": "ABC company, Murillo Ave, San Jose, CA 95148",
+              "sc7ContentDetail": "Proin non est. Vestibulum diam. Quisque in enim. Sed id dui. Nunc nec sapien. Nulla lacus. Quisque vitae justo eu neque mattis pellentesque.\nSuspendisse tristique. Nulla facilisi. Pellentesque hendrerit tristique turpis. Pellentesque eget mi. Vestibulum a lacus.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 8,
+          "shaTitle": "ACHIEVEMENTS",
+          "shaIsEnable": false,
+          "shaIndexPosition": 7,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Nam ut est. In vehicula venenatis dui. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent venenatis gravida justo. In hac habitasse platea dictumst. Suspendisse dui.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 9,
+          "shaTitle": "AREA OF INTEREST",
+          "shaIsEnable": true,
+          "shaIndexPosition": 8,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Nam ut est. In vehicula venenatis dui.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 6,
+          "sectionHeadSampleDataId": 17,
+          "shaTitle": "SPLIT TEXT",
+          "shaIsEnable": true,
+          "shaIndexPosition": 9,
+          "sectionChild6ArrayList": [
+            {
+              "sectionChild6Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc6IndexPosition": 0,
+              "sc6ContentTitle": "Computer Skill",
+              "sc6ContentDetail": "Java, Android SDK"
+            },
+            {
+              "sectionChild6Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc6IndexPosition": 0,
+              "sc6ContentTitle": "Document",
+              "sc6ContentDetail": "Word, Excel, Powerpoint"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 4,
+          "sectionHeadSampleDataId": 14,
+          "shaTitle": "DECLARATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 10,
+          "sectionChild4": {
+            "sectionChild4Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc4DeclarationContent": "Donec sollicitudin mi et magna. Proin non est. Vestibulum diam. Quisque in enim. Sed id dui. Nunc nec sapien. Nulla lacus. Quisque in ante vel nunc semper pellentesque. Nam sit amet lacus sit amet ipsum auctor eleifend. Quisque vitae justo eu neque mattis pellentesque. Suspendisse tristique. Nulla facilisi. Pellentesque hendrerit tristique turpis. Pellentesque eget mi. Vestibulum a lacus.",
+            "sc4DeclarationContentBulletType": "None",
+            "sc4Date": "25 Dec 2017",
+            "sc4DateDateFormat": "dd MMM yyyy",
+            "sc4Place": "California",
+            "sc4SignatureImagePath": "",
+            "sc4IsSignatureImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "25-Dec-2017",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "159 Evergreen Ln,\nCordova,\nTN 38018,\nUSA",
+            "sc8Content": "Proin non est. Vestibulum diam. Quisque in enim. Sed id dui. Nunc nec sapien. Nulla lacus. Quisque in ante vel nunc semper pellentesque. Nam sit amet lacus sit amet ipsum auctor eleifend. Quisque vitae justo eu neque mattis pellentesque. Suspendisse tristique. Nulla facilisi. Pellentesque hendrerit tristique turpis. Pellentesque eget mi. Vestibulum a lacus."
+          }
+        }
+      ]
+    }
+  ]
+}
+// update 11

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SmartResumeBuilder" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Minimal base theme for the Compose activity (Compose owns all UI theming) -->
+    <style name="Theme.SmartResumeBuilder" parent="Theme.AppCompat.DayNight.NoActionBar" />
+
+    <!-- Splash screen theme — transitions to base theme after splash completes -->
+    <style name="Theme.SmartResumeBuilder.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.SmartResumeBuilder</item>
+    </style>
+
 </resources>
+// update 56
