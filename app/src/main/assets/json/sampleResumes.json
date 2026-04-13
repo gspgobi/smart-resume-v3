@@ -1,0 +1,1860 @@
+{
+  "userProfileArrayList": [
+    {
+      "profileId": -11,
+      "upName": "Aeronautical Engineering",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 1,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Aeronautical Engineering",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Kelly Hansen",
+            "sc1Address": "1200 Markham Road,\nGeorgia, 3002",
+            "sc1Email": "hansen.kelly@gmail.com",
+            "sc1Phone": "(406)-321-4560",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-87",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Seeking a challenging and rewarding opportunity in Engine maintenance, Production and manufacturing or design with an organization of repute which recognizes and utilize my true potential while nurturing my technical skills.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Qualified B.E (Aeronautical Engineering) from Tech Engineering College, determined to carve a successful and satisfying carrer in the industry.\nKnowledge of Avitation Management, Maintenance, Repair and Overhaul, Aircraft Maintenance, Airframe & Aero Engine Maintenance and repair in Avitation Industry.\nUnderstanding of routine/non-routine servicing such as Pre Flight servicing, Tranistion Checks, Daily Inspection, checking and rectification of snag of aircraft systems & completed project on \"Design and Fabrication\" of fixture for case  assembly of plenum for GARRETT engine.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.E Aeronautical",
+              "sc3SchoolName": "Air Force Institute of Technology, Texas",
+              "sc3Subtitle": "Graduated with a 3.62 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Design and Fabrication of fixture for case assembly of plenum for GARRETT engine.",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "The project was undertaken to design a turning fixture using CATIA to machine the component called CASE ASSEMBLY PLENUM used in GARRETT TYPE 331-5 Engine in Do-228 aircraft. The case assembly of plenum is frequently used in the combustion chamber of garrett engine which requires close tolerances in manufacturing",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Production Manager Position at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "IT sector",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 2,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "IT sector",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Johnny Edwards",
+            "sc1Address": "Snow Down Road,\nFlorida, 32003",
+            "sc1Email": "edward.johnny@gmail.com",
+            "sc1Phone": "(701)-324-2760",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-87",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Entry level position in Website Development & Design / Testing, preferably in the IT sector.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Master of Computer Application from ABC institute with exposure to web graphic designing, conversion of design to web pages, and creation of e-learning modules using Interactive multimedia.\nStrong communication, collaboration & interpersonal skills with proficiency in grasping new technical concepts quickly and utilizing them in an effective manner.\nExecuted various academic projects using technologies such as PHP, MYSQL, Visual Basic 6.0, SQL 2000, etc.\nAbilities in handling multiple priorities, with a bias for action and a genuine interest in personal and professional development.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Master in Computer Applications",
+              "sc3SchoolName": "Alma College, Alabama",
+              "sc3Subtitle": "Graduated with a 3.90 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            },
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 1,
+              "sc3StudyDegree": "Bachelor in Computer Applications",
+              "sc3SchoolName": "Adams State College, Colorado",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Automobile Portal",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "The project aimed at providing a window shop for Garages, Spare parts manufactures & dealers, Car rental companies.\nThis portal was an extension to already used Garage Management System. The objective was to organize the sector and benefit both users and service providers.\nThe portal would not only sell services and goods but also provide rating to acknowledge quality service providers.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Website Development Position at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Mechanical Engineering",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 3,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Mechanical Engineering",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Simon Peter",
+            "sc1Address": "Elwood Cottage,\nIndiana, 46001",
+            "sc1Email": "peter.simon@gmail.com",
+            "sc1Phone": "(252)-123-3456",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-87",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "To work for an organization which provides me the opportunity to improve my skills and knowledge to growth along with the organization objective.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "An enthusiastic fresher with highly motivated and leadership skills having bachelors of engineering degree in Mechanical Engineering.\nExpert in implementation of each step of project.\nEager to learn new technologies and methodologies.\nAlways willing to innovate the new things which can improve the existing technology.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor of Engineering",
+              "sc3SchoolName": "Babson College, California",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Manufacturing & Characterization of Biodegradable Nano-Fibres",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Biodegradable polymeric nanofibrous matrices containing gelatin were fabricated by simple electrospinning method. The electrospun poly(3-hydroxybutyrate-co-3-hydroxyvalerate)(PHBV)/gelatin (1:1) nanofiber structure revealed randomly aligned fibers with average diameter of 600 nm determined and calculated by SEM and image analyzer.\nATR-FTIR and ESCA mesurement were used to confirm the presence of gelatin in PHBV/gelatin nanofibers.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Engineering Position at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Hospitality",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 4,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Hospitality",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Zayden George",
+            "sc1Address": "128, BurnFoot Cottage,\nGrandDuff Road,\nWisconsin, 53001",
+            "sc1Email": "george.zayden@gmail.com",
+            "sc1Phone": "(610)-321-4560",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-84",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Competent and diligent professional; offering over 3 years of experience across  Food & Beverage Management, Hotel Operations, Menu Planning, Hospitality, Public Relation and Strategic Planning; curreltly working as Assistant Manager- Guest Relation at XY Pharama Ltd.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Key contributions to developing new business and revenue streams, customer-value maximization, relationship development, customer-need identification, and preemptive business response to competitor strategy.\nProfessional outlook, along with multi-tasking, time and people management, learning and organizational skills and perfectionist attitude, with fine attention to detail.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Assistant Manager - Guest Relations",
+              "sc2CompanyName": "Pfizer Pharama Ltd., New Jersey",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "May 2011 - Present",
+              "sc2Accomplishments": "Manage customer relations, planned & executed operations to ensure service. Offering a keen ear & deftly answered guest requests, complaints & feedbacks.\nEnsure proper steps for service recovery & follow-ups while working towards highest levels of customer satisfaction as indicated through feedbacks. Responsible for maintaining coordinal relations with large corporate clients to assure satisfactory service and speedy problem solving.\nAdhere to International standards in accordance with guidelines: formulate and implement policies, procedures and various operational strategies and forecast trends in occupancy, develope implement strategies for garnering larger market share.\nTimely service delivery to the clients within the stipulated period while maintaining smooth operations. Planning for optimizing costs and maximize efficiency.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor of Commerce",
+              "sc3SchoolName": "California College of Arts, California",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-11",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Manager Position at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Legal",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 5,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Legal",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Philip Reid",
+            "sc1Address": "223, Church Hill Road,\nCascade, 53011",
+            "sc1Email": "reid.philip@gmail.com",
+            "sc1Phone": "(206)-324-2760",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-84",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "An ambitious and results-driven individual with strong academic credentials combined with real world business experience and a diverse background of extra-curricular activities and interests. Possess strong leadership skills along with the ability to deal creatively and practically with legal problems/issues and interact effectively with colleagues and clients.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Reputation for excellence and high quality service to clients.\nGood eye for detail; well organized, skilled in setting priorities.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Legal Support Consultant",
+              "sc2CompanyName": "SPECTRANET BUSINESS SOLUTIONS, Toronto, Ontario",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "May 2011 - Present",
+              "sc2Accomplishments": "Provided legal assistance to the President on issues relating to management and organizational structure, internal accounting and administrative controls, and contract administration.\nDeveloped the legal terms and conditions for the Service Contract and other formal documents.\nManaged the administrative functions of the company, including accounting, invoicing and billing.\nAcquired practical skills in drafting legal contracts, contract negotiation, strategic planning, business management, and marketing",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Candidate for Bachelor of Law Degree",
+              "sc3SchoolName": "Florida College, Florida",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-11",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Legal Assistant Position at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Production",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 6,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Production",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Harold Herzog",
+            "sc1Address": "432, Hill Top Road,\nHampden County, MA, 01001",
+            "sc1Email": "haroldh@gmail.com",
+            "sc1Phone": "(386)-555-1484",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-84",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Seeking Produce Associate Team Leader (Assistant Department Manager) position with Whole Foods Market.\nMy combination of skills, experience, and education provide me the ability to maximize customer sales and satisfaction, understand merchandising and sales trends, assist in leading department staff, and generate increased revenue for the produce department.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Developed product stocking and inventory system that produced additional sales while reducing waste, resulting in increased profitability to the department and store.\nForged key relationships with local farms that generated positive publicity, helped lower costs, and increased store traffic, resulting in an a 20 percent increase in sales.\nDramatically reduced staff turnover and absenteeism by establishing team spirit and promoting a positive work environment in 10-person produce department, thereby reducing staffing expenses by 15 percent.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Production Department Lead",
+              "sc2CompanyName": "Huckleberrys Natural Market, Spokane, WA",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "May 2010 - Present",
+              "sc2Accomplishments": "Huckleberrys Natural Market provides customers with the best tasting, most healthful food possible. We actively seek partnerships with local, regional and national producers who are dedicated to stewardship of the land.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor of Arts",
+              "sc3SchoolName": "Eastern Washington University, Cheney, WA",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-11",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Legal Assosiate Team Lead Position at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Finance/Accounting",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 7,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Finance/Accounting",
+      "sampleProfileType": 4,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "WILLIAM SMITH",
+            "sc1Address": "147, Valley View Road,\nGeorgia, 43560",
+            "sc1Email": "smith.william@gmail.com",
+            "sc1Phone": "(750)-218-1837",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-77",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "A senior position in the Financial Services industry with a focus on Operational Management, Team Leadership, and Process improvements.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 15,
+          "shaTitle": "PROFESSIONAL SUMMARY",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Energetic and innovative Finance Professional/Controller with 7  years of diverse experience in financial-services industries and leading edge, fast-paced high-tech organizations.\nHigh achiever in managing all aspects of budgeting, forecasting, strategic planning, expense management, operations, and administration.\nTeam leader who effectively meets goals through strong leadership interpersonal communication, and analytical abilities.\nSkilled staff developer and coach who motivates staff to reach full potential.\nClient-driven change agent experienced in establishing and implementing department goals and objectives, managing change designing successful sales/customer-service strategies, overseeing budgets, and leading sales force toward targeted goals.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Vice-President/Controller, Financial and Management Reporting",
+              "sc2CompanyName": "Price Waterhouse Coopers, Mandan, ND",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "2011 - Present",
+              "sc2Accomplishments": "Report to Senior Director, Regulatory and Legal Reporting, and oversee forecasting, budgeting, management/corporate reporting, payroll, accounts payable, and P&L across PWCs business platforms and serve as Group Controller for all support groups, managing a staff of six.\nEngineered $US 50 million annual technology spend; obtained technology savings/expense reductions of $US 4.5 million, including $US 0.7 million in technology employee and consultant staff reductions.\nLed major initiatives, including IBM/ISM $US 12.0 million trade-processing contract renewal with savings of $US 2.2 million, AS400 lease contract renewal resulting in server consolidations and annual savings of $US 2.5 million, and CGI (Star Quote) market data contract conversion to Reuters and Bloomberg with annual savings of $US 1.0 million.\nLed vendor negotiations with Microsoft/Sony/Compaq/Acer for global desktop replacement program (entailing rollout of 3,000 desktops and networking systems nationwide); performed post-mortem review of projects expenditures; tightly controlled costs and optimized network/server systems to improve budget by $US 1.0 million.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Senior Manager, Service Quality",
+              "sc2CompanyName": "Comerica Online Financial Services Inc., Hebron, ND",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "2007 - 2011",
+              "sc2Accomplishments": "Developed and installed units assigned to Sales, Training and Quality, Comerica University, Escalation, Billing, as well as Business Analysis and Reporting, for Call Center Operations, managing sales, customer service, and distribution of Stock Plan Administration Software marketed to Corporate Accounts.\nExceeded sales goals to generate $1M+ in sales first year; analyzed market conditions to identify and interpret trends and responded by initiating policy, pricing, and procedures changes.\nDesigned, developed and delivered first training program to Corporate Services internal and new-hire associates, ensuring successful attainment of Equity Compensation industry certification program.\nDecreased inbound volume into help-desk support systems by more than 20 percent by expanding and refining Comerica University program to encompass client base as well as internal associates delivering Certified Equity Edge Expert program that trained clients to utilize online tools.\nManaged and packaged SAS70 audit results for Equity Edge software clients and internal outsourcing unit within 4 months and $3K under budget.\nInitiated and managed installation of Six Sigma process program to Corporate Services Department, extending to entire Comerica Corporate Operations planned for 2006; developed and managed external Best Practices client training and support programs to generate $1.6M+ in annual training revenue.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Master of Business Administration",
+              "sc3SchoolName": "Jamestown College, Jamestown, ND",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-95",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            },
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 1,
+              "sc3StudyDegree": "Bachelor of Arts in Business Administration",
+              "sc3SchoolName": "South Dakota State College",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-92",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Position in  Finance Professional at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Information Technology",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 8,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Information Technology",
+      "sampleProfileType": 3,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "CHRISTOPHER SCOTT",
+            "sc1Address": "13 OAK LANE TERRACE,\nBROOKEVILLE, MD20833.",
+            "sc1Email": "scott.chirstopher@gmail.com",
+            "sc1Phone": "(301)-555-8403",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-01-77",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 15,
+          "shaTitle": "PROFESSIONAL SUMMARY",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "CIO INFORMATION TECHNOLOGY EXECUTIVE\nInformation Resources Management (IRM) | Business Analysis and Quality Assurance | IT Strategic Plans PROJECT MANAGEMENT: INITIATION, DEFINITION, SCOPE, BUDGETING, PROJECT PLANNING, EXECUTION, CONTROL AND CLOSING",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Senior information leader who consistently demonstrates ability to meet managerial/technical automation requirements and customer needs while developing and implementing effective IRM and project-management solutions in utility, transportation, power-generation, and toxic-waste cleanup industries.\nRespected professional offering 15+ years of IRM management at both corporate and project level.\nCentralizing and managing all IRM operations at 4 permanent offices and 5 project offices.\nManaging all IRM activities on $600 million nuclear-plant contract.\nSuccessfully coordinating company-wide implementation of new information systems and standards.\nConducting IRM requirements evaluation for major utility and managing resulting 15 percent reduction of IRM department.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "DIRECTOR OF INFORMATION MANAGEMENT AND APPLICATION SERVICES",
+              "sc2CompanyName": "Montgomery County Gas Works, Bethesda, MD",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "May 2007 - June 2009",
+              "sc2Accomplishments": "Recruited to fill Director position as a result of outstanding job performance and timely delivery of initiatives while providing consulting services; implemented processes, standards and quality controls that increased organizations operational maturity; planned and managed $2M annual budget.\nCreated organizational design and built effective teams; structured and led new Information Management Division, including Business Response Team, Quality Assurance Group, and Application Services Team.\nCreated tracking process to manage 24 projects delivered during last fiscal year.\nDirected selection, procurement, and implementation of signifcant IT initiatives.\nIntegrated new Business Analyst team into organization, resulting in improved interaction between IT and its customers and alignment of IT initiatives with departmental goals.\nImplemented IT cost-allocation model resulting in equitable redistribution of IT costs back through corporation and clearer understanding of departmental technology expenses.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Masters Certificate in Project Management",
+              "sc3SchoolName": "Towson College, Towson, MD",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-95",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            },
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 1,
+              "sc3StudyDegree": "Bachelor of Arts in Organizational Management",
+              "sc3SchoolName": " Maryland Tech, College Park, MD",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-92",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Information Leader Position  at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Health & Science Resume",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 9,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Health & Science Resume",
+      "sampleProfileType": 3,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Davion Arjay",
+            "sc1Address": "303,Adrian Township,\nTexas, 73301",
+            "sc1Email": "davion.arjay.gmail.com",
+            "sc1Phone": "(125) 563 5896",
+            "sc1Gender": "Male",
+            "sc1Dob": "14-05-78",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Seeking senior managerial assignments in Operations Management with an organization of repute in Healthcare/Consulting sector",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 15,
+          "shaTitle": "PROFESSIONAL SUMMARY",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Over 12 years of experience in Strategy Planning ,Operations Management,Administration, and Human Resource Management  in the Healthcare sector.\nExtensive experience in developing plans & SOPs foroverall management ,supervision and implementation of  health programmes.\nActively involved developing marketing campaigns and handling cost saving initiatives in the processes.\nExcellent leader with exposure conceptualizing measures to optimize the resouce / capacity utilization.\nStrong communicator with the ability to ensure execution of the time-bound deliverables.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Zonal Head - Operations",
+              "sc2CompanyName": "Andalusia Regional Hospital, Alabama",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun-10",
+              "sc2Accomplishments": "Holds the credit of achieving target matrix of 99% as assigned by top management.\nInstrumental in hiring Consultants and increasing surgeries, thereby improving the profitability of the company.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Manager - Operations",
+              "sc2CompanyName": "Clay Country Hospital, Alabama",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Feb 2006 - Jun 2010",
+              "sc2Accomplishments": "Actively Involved in developing & implementing operational  system for the New Kidney Transplant cell.\nSteered efforts for restructuring & creating a new system for 24-hour patient service\nInstrumental in initiating ICD coding for processing patient files\nPlayed a pivotal role in streamling the computerized management of medical records/ reports\nEffectively organized the expansion programme for conversion to 500 Bedded hospital",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "M.B.A(Hospital Administration)",
+              "sc3SchoolName": "National College of Business, Towson, IN",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-95",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Management Position  at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "IT sector 1",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 10,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "IT sector 1",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Mick Jones",
+            "sc1Address": "SAD,Feri Street,\nDen,23342",
+            "sc1Email": "jone.mick@gmail.com",
+            "sc1Phone": "(344) 342 4567",
+            "sc1Gender": "Male",
+            "sc1Dob": "15-05-90",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "I want to secure a challenging position that allows me to get perfection in the field of IT. So I want to work with a progressive organization where I could utilize my knowledge & skills for mutual growth of company & me.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Operating Systems: Windows-2000/2007/XP Professional.\nProgramming Languages: Java\nDatabases: Oracle 10g.\nWeb Technologies: JSF/Richfaces, HTML, JavaScript\nJava Technologies: JDBC, J2EE, JPA",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor of Computer Applications(BCA)",
+              "sc3SchoolName": "United state of Technology, Wisconsin",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Bluetooth Hot spot",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Operating desktop or laptops from mobile Bluetooth. Making it easy to handle from anywhere anytime.\nMaking it as dashboard.\nCode generation and semantic checking.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Development Position  at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "IT sector 2",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 11,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "IT sector 2",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Micheal Johnson",
+            "sc1Address": "19 street,\nHillTop Road, \nNY-245",
+            "sc1Email": "john.123@gmail.com",
+            "sc1Phone": "(567) 355 5678",
+            "sc1Gender": "Male",
+            "sc1Dob": "12-06-95",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "To secure a job in the IT industry where I can utilize my knowledge for the organizations growth.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "An Innovative and resourceful fresher having Bachelor of Engineering degree in Civil engineering stream.\nExpert in making plans of various civil works.\nHigh Problem solving skills and analytical skills.\nExcellent written and communication skills.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Tech. Computer Science and Engineering",
+              "sc3SchoolName": "ASD Engineering College, Pennsylvania",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Publishing Search Logs A Comparative Study of Privacy Guarantees",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "This project starts with finding the best way to publish the search logs. But it should not affect the privacy of a user in any way. To achieve this various algorithms were analyzed in this project for publishing frequent keywords, queries and clicks of a search log.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Development Position  at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Civil Engineering",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 12,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Civil Engineering",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Benjamin",
+            "sc1Address": "CEB Net Cater, FP 78/3, \nPrawn corner,IR-789",
+            "sc1Email": "benjamin43@gmail.com",
+            "sc1Phone": "(234) 344 1232",
+            "sc1Gender": "Male",
+            "sc1Dob": "30-05-90",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "To Achieve high career growth through continuous process of learning for achieving goal & keeping myself dynamic in the changing scenario to become a successful professional and leading to best opportunity. And willing to work as A G M/DGM (Civil) and in the reputed construction industry.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": " A detail oriented and multitasking professional with exceptional coding techniques having bachelor of engineering degree in computer science technology.\nComprehensive knowledge of primary development languages for instance C, C++, JAVA and special talent of writing highly competent programs.\nDeep understanding regarding software development environments and considerable talent in achieving critical solutions.\nAble to understand and implement modern operating systems and great experience of their troubleshooting.\nExcellent in presenting and make people understand.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor of Engineering in Civil Engineering",
+              "sc3SchoolName": " ADS Engineering Institute, Rhode Island",
+              "sc3Subtitle": "Graduated with a 3.32 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": " Waste and Recycled material in Concrete Technology",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Recycled aggregate concrete containing fly ash is an example of construction material in harmony with this concept, whereby sustainable construction development is useful with satisfactory performance, in both service and safety of structure, at lower costs and with advantages over ordinary concrete.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "15-Jan-14",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nManagement Inc,\n726 52nd PI.,\nLos Angeles, CA 90182",
+            "sc8Content": "Dear Hiring Manager,\n\nI'm applying for a Development Position  at your company. Based on the posted description, I'm confident that I am fully qualified for the position and will be a strong addition to your team. I would appreciate a job interview at your earliest convience. Please find my resume attached.\n\nI can be reached at the number above or at my email address.\n\nSincerely,"
+          }
+        }
+      ]
+    }
+  ]
+}
+// update 13
