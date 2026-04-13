@@ -38,4 +38,3 @@ fun SectionChild3.toEntity() = SectionChild3Entity(
     sc3Concentrates = concentrates,
     sc3ConcentratesBulletType = concentratesBulletType
 )
-// update 91

@@ -29,4 +29,3 @@ fun SectionChild8.toEntity() = SectionChild8Entity(
     sc8Address = address,
     sc8Content = content
 )
-// update 96

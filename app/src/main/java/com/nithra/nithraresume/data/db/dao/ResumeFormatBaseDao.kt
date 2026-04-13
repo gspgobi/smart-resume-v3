@@ -21,4 +21,3 @@ interface ResumeFormatBaseDao {
     @Update
     suspend fun update(entity: ResumeFormatBaseEntity)
 }
-// update 64

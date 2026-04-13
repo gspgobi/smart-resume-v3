@@ -35,4 +35,3 @@ data class SectionChild3Entity(
     @ColumnInfo(name = "sc3_concentrates_bullet_type")
     val sc3ConcentratesBulletType: String?
 )
-// update 76

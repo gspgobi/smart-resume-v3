@@ -113,4 +113,3 @@ val SmartResumeTypography = Typography(
         letterSpacing = 0.5.sp
     )
 )
-// update 165

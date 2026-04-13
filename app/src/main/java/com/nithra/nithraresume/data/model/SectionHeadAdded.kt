@@ -34,4 +34,3 @@ fun SectionHeadAdded.toEntity() = SectionHeadAddedEntity(
     shaIsEnable = isEnable,
     shaIndexPosition = indexPosition
 )
-// update 97

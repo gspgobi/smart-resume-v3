@@ -23,4 +23,3 @@ data class SectionChild6Entity(
     @ColumnInfo(name = "sc6_content_detail")
     val sc6ContentDetail: String?
 )
-// update 79

@@ -143,4 +143,3 @@ class GenerateResumeViewModel @Inject constructor(
         return ResumePdfBuilder(context).build(data, fileName)
     }
 }
-// update 120

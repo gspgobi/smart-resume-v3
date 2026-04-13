@@ -29,4 +29,3 @@ fun SplashScreen(onNavigateToMain: () -> Unit) {
             .background(MaterialTheme.colorScheme.primary)
     )
 }
-// update 163

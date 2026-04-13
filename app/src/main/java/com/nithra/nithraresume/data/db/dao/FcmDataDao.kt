@@ -34,4 +34,3 @@ interface FcmDataDao {
     @Query("DELETE FROM fcm_data")
     suspend fun deleteAll()
 }
-// update 63

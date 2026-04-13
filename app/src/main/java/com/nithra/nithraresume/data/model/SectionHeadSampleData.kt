@@ -34,4 +34,3 @@ fun SectionHeadSampleData.toEntity() = SectionHeadSampleDataEntity(
     sectionHeadGroupBaseId = sectionHeadGroupBaseId,
     shsdIndexPosition = indexPosition
 )
-// update 100

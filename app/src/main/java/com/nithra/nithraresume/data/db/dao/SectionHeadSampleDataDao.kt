@@ -22,4 +22,3 @@ interface SectionHeadSampleDataDao {
     @Query("SELECT * FROM section_head_sample_data WHERE section_head_sample_data_id = :id")
     suspend fun getById(id: Int): SectionHeadSampleDataEntity?
 }
-// update 70

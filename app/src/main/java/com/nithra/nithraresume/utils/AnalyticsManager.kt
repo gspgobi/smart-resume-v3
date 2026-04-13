@@ -22,4 +22,3 @@ class AnalyticsManager @Inject constructor(
         analytics.setUserProperty("android_id", androidId)
     }
 }
-// update 169

@@ -22,4 +22,3 @@ data class SectionHeadBaseEntity(
     @ColumnInfo(name = "sc_table_name")
     val scTableName: String?
 )
-// update 83

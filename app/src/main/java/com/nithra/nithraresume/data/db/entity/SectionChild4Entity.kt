@@ -35,4 +35,3 @@ data class SectionChild4Entity(
     @ColumnInfo(name = "sc4_is_signature_image_enable")
     val sc4IsSignatureImageEnable: Int?
 )
-// update 77

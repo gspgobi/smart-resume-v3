@@ -31,4 +31,3 @@ data class SectionHeadSampleDataEntity(
     @ColumnInfo(name = "shsd_index_position")
     val shsdIndexPosition: Int
 )
-// update 85

@@ -99,4 +99,3 @@ class SectionChild4SignatureViewModel @Inject constructor(
         return File(dir, "${SrImagePrefix.SIGNATURE}$sc4Id${SrImageSuffix.JPG}")
     }
 }
-// update 145

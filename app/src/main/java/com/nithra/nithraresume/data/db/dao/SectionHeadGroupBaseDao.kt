@@ -14,4 +14,3 @@ interface SectionHeadGroupBaseDao {
     @Query("SELECT * FROM section_head_group_base ORDER BY section_head_group_base_id ASC")
     suspend fun getAllOnce(): List<SectionHeadGroupBaseEntity>
 }
-// update 69

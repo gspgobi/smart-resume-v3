@@ -41,4 +41,3 @@ class NotificationDetailViewModel @Inject constructor(
         viewModelScope.launch { fcmRepository.markAsRead(notificationId) }
     }
 }
-// update 126

@@ -166,5 +166,3 @@ fun SectionChild2SubScreen(
         }
     }
 }
-
-// update 136

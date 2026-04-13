@@ -50,4 +50,3 @@ interface SectionHeadAddedDao {
     @Query("UPDATE section_head_added SET sha_title = :title WHERE section_head_added_id = :id")
     suspend fun updateTitle(id: Int, title: String)
 }
-// update 67

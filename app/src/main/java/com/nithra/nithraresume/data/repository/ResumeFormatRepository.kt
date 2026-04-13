@@ -26,4 +26,3 @@ class ResumeFormatRepository @Inject constructor(
     suspend fun update(format: ResumeFormat) =
         dao.update(format.toEntity())
 }
-// update 103

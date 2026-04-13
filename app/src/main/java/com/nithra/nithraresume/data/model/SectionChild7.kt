@@ -32,4 +32,3 @@ fun SectionChild7.toEntity() = SectionChild7Entity(
     sc7ContentDetail = contentDetail,
     sc7ContentDetailBulletType = contentDetailBulletType
 )
-// update 95

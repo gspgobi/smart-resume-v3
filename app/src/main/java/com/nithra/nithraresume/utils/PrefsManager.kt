@@ -100,4 +100,3 @@ class PrefsManager @Inject constructor(
         context.dataStore.edit { it[Key.IS_PERFECT_NEW_SRV2_USER] = isNew }
     }
 }
-// update 172

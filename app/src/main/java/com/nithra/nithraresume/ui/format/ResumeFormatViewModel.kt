@@ -69,4 +69,3 @@ class ResumeFormatViewModel @Inject constructor(
         }
     }
 }
-// update 118

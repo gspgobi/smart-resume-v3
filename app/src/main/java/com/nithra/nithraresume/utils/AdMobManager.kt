@@ -52,4 +52,3 @@ fun BannerAdView(
         modifier = modifier
     )
 }
-// update 168

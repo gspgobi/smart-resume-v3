@@ -113,4 +113,3 @@ fun SmartResumeTheme(
         content     = content
     )
 }
-// update 38

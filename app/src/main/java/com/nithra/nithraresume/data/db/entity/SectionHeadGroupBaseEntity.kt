@@ -16,4 +16,3 @@ data class SectionHeadGroupBaseEntity(
     @ColumnInfo(name = "shgb_is_editable")
     val shgbIsEditable: Boolean
 )
-// update 84

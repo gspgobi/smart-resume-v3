@@ -169,4 +169,3 @@ class UserProfileViewModel @Inject constructor(
         sectionChildRepository.deleteChild8(sectionHeadAddedId)
     }
 }
-// update 130

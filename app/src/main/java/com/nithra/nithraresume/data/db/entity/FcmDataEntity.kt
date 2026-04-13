@@ -32,4 +32,3 @@ data class FcmDataEntity(
     @ColumnInfo(name = "fcm_is_read")
     val fcmIsRead: Int?
 )
-// update 72

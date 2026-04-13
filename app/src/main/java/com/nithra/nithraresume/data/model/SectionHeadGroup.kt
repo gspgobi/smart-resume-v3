@@ -19,4 +19,3 @@ fun SectionHeadGroup.toEntity() = SectionHeadGroupBaseEntity(
     shgbTitle = title,
     shgbIsEditable = isEditable
 )
-// update 99

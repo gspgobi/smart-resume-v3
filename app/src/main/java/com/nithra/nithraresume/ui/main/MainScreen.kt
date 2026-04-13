@@ -434,4 +434,3 @@ private fun shareApp(context: Context) {
     }
     context.startActivity(Intent.createChooser(intent, "Invite Friends"))
 }
-// update 121

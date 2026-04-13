@@ -101,4 +101,3 @@ sealed class Screen(val route: String) {
         fun createRoute(notificationId: Int) = "notification_detail/$notificationId"
     }
 }
-// update 124

@@ -44,4 +44,3 @@ data class SectionChild1Entity(
     @ColumnInfo(name = "sc1_is_user_image_enable")
     val sc1IsUserImageEnable: Int?
 )
-// update 74

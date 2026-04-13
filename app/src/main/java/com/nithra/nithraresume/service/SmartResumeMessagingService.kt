@@ -192,4 +192,3 @@ class SmartResumeMessagingService : FirebaseMessagingService() {
         }
     }
 }
-// update 112

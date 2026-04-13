@@ -47,4 +47,3 @@ fun SectionChild1.toEntity() = SectionChild1Entity(
     sc1UserImagePath = userImagePath,
     sc1IsUserImageEnable = if (isUserImageEnable) 1 else 0
 )
-// update 89

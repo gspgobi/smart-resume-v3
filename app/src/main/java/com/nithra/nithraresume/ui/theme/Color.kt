@@ -61,4 +61,3 @@ val md_dark_scrim                = Color(0xFF000000)
 val md_dark_inverseSurface       = Color(0xFFE2E2E9)
 val md_dark_inverseOnSurface     = Color(0xFF2E3135)
 val md_dark_inversePrimary       = Color(0xFF1565C0)
-// update 37
