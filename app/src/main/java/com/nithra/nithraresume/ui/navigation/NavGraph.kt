@@ -10,7 +10,10 @@ import androidx.navigation.navArgument
 import com.nithra.nithraresume.ui.format.ResumeFormatScreen
 import com.nithra.nithraresume.ui.generate.GenerateResumeScreen
 import com.nithra.nithraresume.ui.main.MainScreen
+import com.nithra.nithraresume.ui.notification.NotificationDetailScreen
+import com.nithra.nithraresume.ui.notification.NotificationListScreen
 import com.nithra.nithraresume.ui.profile.UserProfileScreen
+import com.nithra.nithraresume.ui.sample.SampleResumesScreen
 import com.nithra.nithraresume.ui.section.child.SectionChild1Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild2Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild2SubScreen
@@ -25,17 +28,13 @@ import com.nithra.nithraresume.ui.section.child.SectionChild7Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild7SubScreen
 import com.nithra.nithraresume.ui.section.child.SectionChild8Screen
 import com.nithra.nithraresume.ui.section.head.SectionHeadScreen
-import com.nithra.nithraresume.ui.notification.NotificationDetailScreen
-import com.nithra.nithraresume.ui.notification.NotificationListScreen
-import com.nithra.nithraresume.ui.sample.SampleResumesScreen
 import com.nithra.nithraresume.ui.settings.AppSettingsScreen
-import com.nithra.nithraresume.ui.splash.SplashScreen
 import com.nithra.nithraresume.ui.viewshare.ViewShareScreen
 
 @Composable
 fun SmartResumeNavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Splash.route
+    startDestination: String = Screen.Main.route
 ) {
     NavHost(
         navController = navController,
@@ -43,16 +42,6 @@ fun SmartResumeNavGraph(
     ) {
 
         // ── No-argument screens ───────────────────────────────────────────────
-
-        composable(Screen.Splash.route) {
-            SplashScreen(
-                onNavigateToMain = {
-                    navController.navigate(Screen.Main.route) {
-                        popUpTo(Screen.Splash.route) { inclusive = true }
-                    }
-                }
-            )
-        }
 
         composable(Screen.Main.route) {
             MainScreen(navController = navController)
