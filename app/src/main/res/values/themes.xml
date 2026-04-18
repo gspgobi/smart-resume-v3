@@ -6,7 +6,7 @@
 
     <!-- Splash screen theme — transitions to base theme after splash completes -->
     <style name="Theme.SmartResumeBuilder.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="postSplashScreenTheme">@style/Theme.SmartResumeBuilder</item>
     </style>

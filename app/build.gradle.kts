@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -7,6 +9,10 @@ plugins {
     alias(libs.plugins.firebase.crashlytics)
 }
 
+val keystoreProps = Properties()
+val keystoreFile = rootProject.file("keystore.properties")
+if (keystoreFile.exists()) keystoreFile.inputStream().use { keystoreProps.load(it) }
+
 android {
     namespace = "com.nithra.nithraresume"
     compileSdk = 36
@@ -15,25 +21,52 @@ android {
         applicationId = "com.nithra.nithraresume"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 72
+        versionName = "4.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = keystoreProps["storeFile"]?.toString()?.let { rootProject.file(it) }
+            storePassword = keystoreProps["storePassword"]?.toString() ?: ""
+            keyAlias = keystoreProps["keyAlias"]?.toString() ?: ""
+            keyPassword = keystoreProps["keyPassword"]?.toString() ?: ""
+        }
+    }
+
     buildTypes {
         debug {
-            buildConfigField("Boolean", "isAdMobEnable", "false")
-            buildConfigField("Boolean", "isTestAdMobId", "true")
+            versionNameSuffix = "-debug"
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("withProdAdMob") {
+            dimension = "environment"
             buildConfigField("Boolean", "isAdMobEnable", "true")
             buildConfigField("Boolean", "isTestAdMobId", "false")
+        }
+        create("withTestAdMob") {
+            dimension = "environment"
+            buildConfigField("Boolean", "isAdMobEnable", "true")
+            buildConfigField("Boolean", "isTestAdMobId", "true")
+        }
+        create("withoutAdMob") {
+            dimension = "environment"
+            buildConfigField("Boolean", "isAdMobEnable", "false")
+            buildConfigField("Boolean", "isTestAdMobId", "true")
         }
     }
     compileOptions {
