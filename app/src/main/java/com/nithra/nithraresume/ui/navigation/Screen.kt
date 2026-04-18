@@ -9,8 +9,6 @@ package com.nithra.nithraresume.ui.navigation
 sealed class Screen(val route: String) {
 
     // ── No-argument screens ───────────────────────────────────────────────────
-
-    data object Splash        : Screen("splash")
     data object Main          : Screen("main")
     data object UserProfiles  : Screen("user_profiles")
     data object SampleResumes : Screen("sample_resumes")

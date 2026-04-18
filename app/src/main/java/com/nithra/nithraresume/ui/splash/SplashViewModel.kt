@@ -1,9 +1,8 @@
 package com.nithra.nithraresume.ui.splash
 
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.provider.Settings
+import com.nithra.nithraresume.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.api.ApiRepository
@@ -36,7 +35,7 @@ class SplashViewModel @Inject constructor(
     }
 
     private suspend fun performAppInit() {
-        val currentVersionCode = currentAppVersionCode()
+        val currentVersionCode = BuildConfig.VERSION_CODE
         val storedVersionCode = prefsManager.currentAppVersionCode.first()
 
         if (storedVersionCode == 0) {
@@ -65,20 +64,4 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    @Suppress("DEPRECATION")
-    private fun currentAppVersionCode(): Int {
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                context.packageManager
-                    .getPackageInfo(context.packageName, 0)
-                    .longVersionCode.toInt()
-            } else {
-                context.packageManager
-                    .getPackageInfo(context.packageName, 0)
-                    .versionCode
-            }
-        } catch (e: PackageManager.NameNotFoundException) {
-            0
-        }
-    }
 }
