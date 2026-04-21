@@ -2,9 +2,9 @@ package com.nithra.nithraresume.ui.splash
 
 import android.content.Context
 import android.provider.Settings
-import com.nithra.nithraresume.BuildConfig
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.data.api.ApiRepository
 import com.nithra.nithraresume.data.db.SmartResumeDatabase
 import com.nithra.nithraresume.utils.AnalyticsManager
