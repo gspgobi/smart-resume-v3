@@ -214,7 +214,7 @@ private fun MainContent(
 
         BannerAdView(
             adUnitId = AdMobManager.banner01Id(),
-            adSize = AdSize.BANNER,
+            adSize = AdSize.MEDIUM_RECTANGLE,
             modifier = Modifier.fillMaxWidth()
         )
     }
