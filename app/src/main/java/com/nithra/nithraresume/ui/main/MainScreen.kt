@@ -82,6 +82,7 @@ import com.nithra.nithraresume.utils.BannerAdView
 import kotlinx.coroutines.launch
 import java.io.File
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -409,7 +410,7 @@ private fun openResumeTipsPdf(context: Context) {
 
 private fun openPrivacyPolicy(context: Context) {
     val intent = Intent(Intent.ACTION_VIEW,
-        Uri.parse("https://www.nithra.mobi/privacy/smart_resume_privacy_policy.html"))
+        "https://www.nithra.mobi/privacy/smart_resume_privacy_policy.html".toUri())
     runCatching { context.startActivity(intent) }
 }
 
@@ -417,12 +418,12 @@ private fun openPlayStore(context: Context) {
     runCatching {
         context.startActivity(
             Intent(Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=${context.packageName}"))
+                "market://details?id=${context.packageName}".toUri())
         )
     }.onFailure {
         context.startActivity(
             Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}"))
+                "https://play.google.com/store/apps/details?id=${context.packageName}".toUri())
         )
     }
 }
