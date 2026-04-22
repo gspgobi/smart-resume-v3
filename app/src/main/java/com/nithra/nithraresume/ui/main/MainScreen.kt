@@ -81,6 +81,8 @@ import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.BannerAdView
 import kotlinx.coroutines.launch
 import java.io.File
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -433,4 +435,54 @@ private fun shareApp(context: Context) {
             "https://play.google.com/store/apps/details?id=${context.packageName}")
     }
     context.startActivity(Intent.createChooser(intent, "Invite Friends"))
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@Preview(showBackground = true, name = "Main Content")
+@Composable
+private fun MainContentPreview() {
+    SmartResumeTheme {
+        MainContent(
+            onMyProfilesClick = {},
+            onViewResumesClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Home Card")
+@Composable
+private fun HomeCardPreview() {
+    SmartResumeTheme {
+        HomeCard(
+            icon = Icons.Default.Person,
+            title = "My Profiles",
+            subtitle = "Create and manage your resume profiles",
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Drawer — with badge", widthDp = 360)
+@Composable
+private fun MainDrawerContentWithBadgePreview() {
+    SmartResumeTheme {
+        MainDrawerContent(
+            unreadCount = 5,
+            appVersionName = BuildConfig.VERSION_NAME,
+            onItemClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Drawer — no badge", widthDp = 360)
+@Composable
+private fun MainDrawerContentNoBadgePreview() {
+    SmartResumeTheme {
+        MainDrawerContent(
+            unreadCount = 0,
+            appVersionName = BuildConfig.VERSION_NAME,
+            onItemClick = {}
+        )
+    }
 }
