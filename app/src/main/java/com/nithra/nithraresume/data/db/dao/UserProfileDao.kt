@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserProfileDao {
 
-    @Query("SELECT * FROM user_profile WHERE up_is_sample_profile = 0 ORDER BY up_index_position ASC")
+    @Query("SELECT * FROM user_profile ORDER BY up_index_position ASC")
     fun getAll(): Flow<List<UserProfileEntity>>
 
-    @Query("SELECT * FROM user_profile WHERE up_is_sample_profile = 0 ORDER BY up_index_position ASC")
+    @Query("SELECT * FROM user_profile ORDER BY up_index_position ASC")
     suspend fun getAllOnce(): List<UserProfileEntity>
 
     @Query("SELECT * FROM user_profile WHERE user_profile_id = :id")
     suspend fun getById(id: Int): UserProfileEntity?
 
-    @Query("SELECT COUNT(*) FROM user_profile WHERE up_is_sample_profile = 0")
+    @Query("SELECT COUNT(*) FROM user_profile")
     suspend fun getCount(): Int
 
     @Insert
