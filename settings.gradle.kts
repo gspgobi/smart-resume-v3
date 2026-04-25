@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Smart Resume Builder"
+rootProject.name = "smart-resume-v3"
 include(":app")
  
