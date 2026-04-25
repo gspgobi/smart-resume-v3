@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -137,6 +138,20 @@ fun UserProfileScreen(
                     tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
+        bottomBar = {
+            // AdMob banner placeholder — replaced in Step 30
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .height(50.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Ad", style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -183,18 +198,6 @@ fun UserProfileScreen(
                     .padding(8.dp)
             ) {
                 Text("Browse Sample Resumes", color = MaterialTheme.colorScheme.primary)
-            }
-
-            // AdMob banner placeholder — replaced in Step 30
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Ad", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
