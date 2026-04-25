@@ -57,12 +57,14 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.ui.navigation.Screen
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_PROFILES
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -423,5 +425,157 @@ private fun ProfileNameDialog(
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+private val previewProfiles = listOf(
+    UserProfile(id = 1, name = "Software Engineer", indexPosition = 0, isSampleProfile = false, sampleProfileId = null, resumeFormatBaseId = 1, fontStyle = "Default", fontSize = 12, backgroundColor = "", resumeFileName = null),
+    UserProfile(id = 2, name = "Product Manager", indexPosition = 1, isSampleProfile = false, sampleProfileId = null, resumeFormatBaseId = 1, fontStyle = "Default", fontSize = 12, backgroundColor = "", resumeFileName = null),
+    UserProfile(id = 3, name = "UX Designer", indexPosition = 2, isSampleProfile = false, sampleProfileId = null, resumeFormatBaseId = 1, fontStyle = "Default", fontSize = 12, backgroundColor = "", resumeFileName = null),
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Profile List")
+@Composable
+private fun UserProfileScreenListPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Resume Profiles") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = {}, containerColor = MaterialTheme.colorScheme.primary) {
+                    Icon(Icons.Default.Add, contentDescription = "Add profile", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            ) {
+                LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
+                    items(previewProfiles, key = { it.id }) { profile ->
+                        ProfileItem(profile = profile, onProfileClick = {}, onRenameClick = {}, onDeleteClick = {})
+                        HorizontalDivider()
+                    }
+                }
+                TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                    Text("Browse Sample Resumes", color = MaterialTheme.colorScheme.primary)
+                }
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(50.dp).background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Empty State")
+@Composable
+private fun UserProfileScreenEmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Resume Profiles") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = {}, containerColor = MaterialTheme.colorScheme.primary) {
+                    Icon(Icons.Default.Add, contentDescription = "Add profile", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            ) {
+                EmptyProfilesPlaceholder(modifier = Modifier.weight(1f), onAddClick = {})
+                TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+                    Text("Browse Sample Resumes", color = MaterialTheme.colorScheme.primary)
+                }
+                Box(
+                    modifier = Modifier.fillMaxWidth().height(50.dp).background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Profile Item")
+@Composable
+private fun ProfileItemPreview() {
+    SmartResumeTheme {
+        ProfileItem(
+            profile = previewProfiles.first(),
+            onProfileClick = {},
+            onRenameClick = {},
+            onDeleteClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Create Profile Dialog")
+@Composable
+private fun CreateProfileDialogPreview() {
+    SmartResumeTheme {
+        ProfileNameDialog(
+            title = "Create Profile",
+            confirmLabel = "Create",
+            initialName = "My Resume",
+            onConfirm = {},
+            onDismiss = {},
+            isDuplicate = { false }
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Rename Profile Dialog")
+@Composable
+private fun RenameProfileDialogPreview() {
+    SmartResumeTheme {
+        ProfileNameDialog(
+            title = "Rename Profile",
+            confirmLabel = "Rename",
+            initialName = "Software Engineer",
+            onConfirm = {},
+            onDismiss = {},
+            isDuplicate = { false }
+        )
     }
 }
