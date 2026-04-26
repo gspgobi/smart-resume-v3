@@ -15,8 +15,8 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_view_share">View &amp; Share</string>
 
-    <!-- Notification channel -->
-    <string name="notification_channel_informational">Smart Resume Notifications</string>
+    <!--Notification Channel Strings-->
+    <string name="notification_channel_informational">Informational</string>
 
     <!-- Common -->
     <string name="ok">OK</string>
