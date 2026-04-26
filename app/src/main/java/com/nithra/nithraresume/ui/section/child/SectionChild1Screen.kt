@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,9 +26,12 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -55,18 +57,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
-import com.nithra.nithraresume.utils.GENDER_FEMALE
-import com.nithra.nithraresume.utils.GENDER_MALE
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,6 +83,7 @@ fun SectionChild1Screen(
     val sha by viewModel.sha.collectAsStateWithLifecycle()
     val child1 by viewModel.child1.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
 
     // Form fields
     var title by rememberSaveable { mutableStateOf("") }
@@ -93,13 +98,18 @@ fun SectionChild1Screen(
 
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
 
-    // Populate fields once data loads
+    // Populate fields once both sha and child1 are loaded to avoid a race
+    // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
     LaunchedEffect(sha, child1) {
-        if (!fieldsInitialised && sha != null) {
+        if (!fieldsInitialised && sha != null && child1 != null) {
             title = sha!!.title
-            child1?.let { c ->
-                name = c.name; address = c.address; email = c.email
-                phone = c.phone; gender = c.gender; dob = c.dob
+            child1!!.let { c ->
+                name = c.name
+                address = c.address
+                email = c.email
+                phone = c.phone
+                gender = c.gender
+                dob = c.dob
                 if (c.dobDateFormat.isNotEmpty()) dobFormat = c.dobDateFormat
                 nationality = c.nationality
             }
@@ -129,6 +139,7 @@ fun SectionChild1Screen(
 
     // Date picker dialog state
     var showDateDialog by rememberSaveable { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -141,18 +152,30 @@ fun SectionChild1Screen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        name = ""; address = ""; email = ""; phone = ""
-                        gender = ""; dob = ""; nationality = ""
-                    }) {
-                        Icon(Icons.Default.ClearAll, contentDescription = "Clear all",
-                            tint = MaterialTheme.colorScheme.onPrimary)
-                    }
-                    IconButton(onClick = {
+                        focusManager.clearFocus()
                         viewModel.save(title, name, address, email, phone,
                             gender, dob, dobFormat, nationality)
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    IconButton(onClick = { showOverflowMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    DropdownMenu(
+                        expanded = showOverflowMenu,
+                        onDismissRequest = { showOverflowMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Clear all") },
+                            onClick = {
+                                showOverflowMenu = false
+                                focusManager.clearFocus()
+                                name = ""; address = ""; email = ""; phone = ""
+                                gender = ""; dob = ""; nationality = ""
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -179,7 +202,11 @@ fun SectionChild1Screen(
                 onValueChange = { title = it },
                 label = { Text("Section Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    imeAction = ImeAction.Next
+                )
             )
 
             SectionDivider("Contact Details")
@@ -189,28 +216,44 @@ fun SectionChild1Screen(
                 onValueChange = { name = it },
                 label = { Text("Full Name") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    imeAction = ImeAction.Next
+                )
             )
             OutlinedTextField(
                 value = address,
                 onValueChange = { address = it },
                 label = { Text("Address") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 2, maxLines = 3
+                minLines = 2, maxLines = 3,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Next
+                )
             )
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                )
             )
             OutlinedTextField(
                 value = phone,
                 onValueChange = { phone = it },
                 label = { Text("Phone") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
             )
 
             SectionDivider("Gender (optional)")
@@ -234,7 +277,7 @@ fun SectionChild1Screen(
             ) {
                 OutlinedTextField(
                     value = dob,
-                    onValueChange = { dob = it },
+                    onValueChange = {},
                     label = { Text("Date of Birth") },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
@@ -251,7 +294,11 @@ fun SectionChild1Screen(
                 onValueChange = { nationality = it },
                 label = { Text("Nationality (optional)") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    imeAction = ImeAction.Done
+                )
             )
 
             SectionDivider("Profile Photo (optional)")
