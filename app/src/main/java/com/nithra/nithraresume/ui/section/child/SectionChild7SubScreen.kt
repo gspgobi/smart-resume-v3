@@ -11,7 +11,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ClearAll
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,6 +55,7 @@ fun SectionChild7SubScreen(
     var contentDetail by rememberSaveable { mutableStateOf("") }
     var bulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(item) {
         if (!initialised && item != null) {
@@ -88,17 +91,27 @@ fun SectionChild7SubScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        contentTitle = ""; contentSubtitle = ""
-                        contentDetail = ""; bulletType = BULLET_NONE
-                    }) {
-                        Icon(Icons.Default.ClearAll, contentDescription = "Clear all",
-                            tint = MaterialTheme.colorScheme.onPrimary)
-                    }
-                    IconButton(onClick = {
                         viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    IconButton(onClick = { showOverflowMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    DropdownMenu(
+                        expanded = showOverflowMenu,
+                        onDismissRequest = { showOverflowMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Clear all") },
+                            onClick = {
+                                showOverflowMenu = false
+                                contentTitle = ""; contentSubtitle = ""
+                                contentDetail = ""; bulletType = BULLET_NONE
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

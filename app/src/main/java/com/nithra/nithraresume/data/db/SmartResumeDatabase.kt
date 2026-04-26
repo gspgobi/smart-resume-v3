@@ -62,6 +62,7 @@ abstract class SmartResumeDatabase : RoomDatabase() {
     abstract fun fcmDataDao(): FcmDataDao
 
     companion object {
+        const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "smart_resume_v2.db"
 
         /**

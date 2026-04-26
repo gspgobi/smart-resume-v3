@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.People
@@ -39,6 +40,8 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -64,9 +67,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.nithra.nithraresume.R
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -81,6 +87,9 @@ import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.BannerAdView
 import kotlinx.coroutines.launch
 import java.io.File
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.net.toUri
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,6 +104,7 @@ fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
 
     if (showFeedbackDialog) {
         FeedbackDialog(
@@ -132,7 +142,7 @@ fun MainScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Smart Resume") },
+                    title = { Text("Smart Resume Builder") },
                     navigationIcon = {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(Icons.Default.Menu, contentDescription = "Open menu")
@@ -153,6 +163,38 @@ fun MainScreen(
                                     contentDescription = "Notifications"
                                 )
                             }
+                        }
+                        IconButton(onClick = { showOverflowMenu = true }) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                        }
+                        DropdownMenu(
+                            expanded = showOverflowMenu,
+                            onDismissRequest = { showOverflowMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Feedback") },
+                                leadingIcon = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    showFeedbackDialog = true
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Rate Us") },
+                                leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    openPlayStore(context)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Invite Friends") },
+                                leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    shareApp(context)
+                                }
+                            )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -187,11 +229,10 @@ private fun MainContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
-            .padding(24.dp),
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(16.dp))
 
         HomeCard(
             icon = Icons.Default.Person,
@@ -211,7 +252,7 @@ private fun MainContent(
 
         BannerAdView(
             adUnitId = AdMobManager.banner01Id(),
-            adSize = AdSize.BANNER,
+            adSize = AdSize.MEDIUM_RECTANGLE,
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -294,19 +335,28 @@ private fun MainDrawerContent(
                 .background(MaterialTheme.colorScheme.primary)
                 .padding(24.dp)
         ) {
-            Column {
-                Text(
-                    text = "Smart Resume",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                androidx.compose.foundation.Image(
+                    painter = painterResource(R.drawable.ic_launcher_logo),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(48.dp)
                 )
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    text = "Version $appVersionName",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
-                )
+                Spacer(Modifier.width(12.dp))
+                Column {
+                    Text(
+                        text = "Smart Resume Builder",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = "Version $appVersionName",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                    )
+                }
             }
         }
 
@@ -407,7 +457,7 @@ private fun openResumeTipsPdf(context: Context) {
 
 private fun openPrivacyPolicy(context: Context) {
     val intent = Intent(Intent.ACTION_VIEW,
-        Uri.parse("https://www.nithra.mobi/privacy/smart_resume_privacy_policy.html"))
+        "https://www.nithra.mobi/privacy/smart_resume_privacy_policy.html".toUri())
     runCatching { context.startActivity(intent) }
 }
 
@@ -415,12 +465,12 @@ private fun openPlayStore(context: Context) {
     runCatching {
         context.startActivity(
             Intent(Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=${context.packageName}"))
+                "market://details?id=${context.packageName}".toUri())
         )
     }.onFailure {
         context.startActivity(
             Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}"))
+                "https://play.google.com/store/apps/details?id=${context.packageName}".toUri())
         )
     }
 }
@@ -433,4 +483,54 @@ private fun shareApp(context: Context) {
             "https://play.google.com/store/apps/details?id=${context.packageName}")
     }
     context.startActivity(Intent.createChooser(intent, "Invite Friends"))
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@Preview(showBackground = true, name = "Main Content")
+@Composable
+private fun MainContentPreview() {
+    SmartResumeTheme {
+        MainContent(
+            onMyProfilesClick = {},
+            onViewResumesClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Home Card")
+@Composable
+private fun HomeCardPreview() {
+    SmartResumeTheme {
+        HomeCard(
+            icon = Icons.Default.Person,
+            title = "My Profiles",
+            subtitle = "Create and manage your resume profiles",
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Drawer — with badge", widthDp = 360)
+@Composable
+private fun MainDrawerContentWithBadgePreview() {
+    SmartResumeTheme {
+        MainDrawerContent(
+            unreadCount = 5,
+            appVersionName = BuildConfig.VERSION_NAME,
+            onItemClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Drawer — no badge", widthDp = 360)
+@Composable
+private fun MainDrawerContentNoBadgePreview() {
+    SmartResumeTheme {
+        MainDrawerContent(
+            unreadCount = 0,
+            appVersionName = BuildConfig.VERSION_NAME,
+            onItemClick = {}
+        )
+    }
 }

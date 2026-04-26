@@ -11,7 +11,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ClearAll
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,6 +56,7 @@ fun SectionChild3SubScreen(
     var concentrates by rememberSaveable { mutableStateOf("") }
     var bulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(item) {
         if (!initialised && item != null) {
@@ -91,18 +94,28 @@ fun SectionChild3SubScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        studyDegree = ""; schoolName = ""; subtitle = ""
-                        studyPeriod = ""; concentrates = ""; bulletType = BULLET_NONE
-                    }) {
-                        Icon(Icons.Default.ClearAll, contentDescription = "Clear all",
-                            tint = MaterialTheme.colorScheme.onPrimary)
-                    }
-                    IconButton(onClick = {
                         viewModel.save(studyDegree, schoolName, subtitle,
                             studyPeriod, concentrates, bulletType)
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    IconButton(onClick = { showOverflowMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    DropdownMenu(
+                        expanded = showOverflowMenu,
+                        onDismissRequest = { showOverflowMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Clear all") },
+                            onClick = {
+                                showOverflowMenu = false
+                                studyDegree = ""; schoolName = ""; subtitle = ""
+                                studyPeriod = ""; concentrates = ""; bulletType = BULLET_NONE
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
