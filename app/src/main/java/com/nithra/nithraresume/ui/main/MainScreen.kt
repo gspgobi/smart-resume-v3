@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.People
@@ -39,6 +40,8 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -98,6 +101,7 @@ fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
 
     if (showFeedbackDialog) {
         FeedbackDialog(
@@ -156,6 +160,38 @@ fun MainScreen(
                                     contentDescription = "Notifications"
                                 )
                             }
+                        }
+                        IconButton(onClick = { showOverflowMenu = true }) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                        }
+                        DropdownMenu(
+                            expanded = showOverflowMenu,
+                            onDismissRequest = { showOverflowMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Feedback") },
+                                leadingIcon = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    showFeedbackDialog = true
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Rate Us") },
+                                leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    openPlayStore(context)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Invite Friends") },
+                                leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    shareApp(context)
+                                }
+                            )
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
