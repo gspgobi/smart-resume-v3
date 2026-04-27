@@ -1,7 +1,6 @@
 package com.nithra.nithraresume.ui.format
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,15 +13,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import android.content.Context
+import android.content.Intent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.FindInPage
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.FileProvider
+import java.io.File
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -52,7 +54,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -77,6 +78,7 @@ fun ResumeFormatScreen(
     val profile by viewModel.profile.collectAsStateWithLifecycle()
     val formats by viewModel.formats.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     var selectedFormatId by rememberSaveable { mutableIntStateOf(0) }
     var selectedFontStyle by rememberSaveable { mutableStateOf(FONT_TIMES_NEW_ROMAN) }
@@ -142,10 +144,11 @@ fun ResumeFormatScreen(
         ) {
             // ── Template section ──────────────────────────────────────────────
             SectionHeader("Template")
-            FormatGrid(
+            FormatList(
                 formats = formats,
                 selectedId = selectedFormatId,
-                onSelect = { selectedFormatId = it }
+                onSelect = { selectedFormatId = it },
+                onPreview = { formatId -> openFormatPreview(context, formatId) }
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -208,85 +211,72 @@ private fun SectionHeader(title: String) {
 }
 
 @Composable
-private fun FormatGrid(
+private fun FormatList(
     formats: List<ResumeFormat>,
     selectedId: Int,
-    onSelect: (Int) -> Unit
+    onSelect: (Int) -> Unit,
+    onPreview: (Int) -> Unit
 ) {
-    // Fixed-height grid (non-scrollable inside scroll column)
-    val rows = (formats.size + 1) / 2
-    val itemHeight = 80.dp
-    val gridHeight = itemHeight * rows + 8.dp * (rows - 1)
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(gridHeight)
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        userScrollEnabled = false
-    ) {
-        items(formats, key = { it.id }) { format ->
-            FormatCard(
+    Column(modifier = Modifier.fillMaxWidth()) {
+        formats.forEachIndexed { index, format ->
+            FormatListItem(
                 format = format,
                 isSelected = format.id == selectedId,
-                onClick = { onSelect(format.id) }
+                onClick = { onSelect(format.id) },
+                onPreviewClick = { onPreview(format.id) }
             )
+            if (index < formats.lastIndex) HorizontalDivider()
         }
     }
 }
 
 @Composable
-private fun FormatCard(
+private fun FormatListItem(
     format: ResumeFormat,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onPreviewClick: () -> Unit
 ) {
-    val borderColor = if (isSelected) MaterialTheme.colorScheme.primary
-                      else MaterialTheme.colorScheme.outline
-    val borderWidth = if (isSelected) 2.dp else 1.dp
-
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .border(borderWidth, borderColor, RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
             .background(
-                if (isSelected) MaterialTheme.colorScheme.primaryContainer
+                if (isSelected) MaterialTheme.colorScheme.surfaceVariant
                 else MaterialTheme.colorScheme.surface
             )
-            .clickable(onClick = onClick)
-            .padding(12.dp),
-        contentAlignment = Alignment.Center
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = format.title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-                        else MaterialTheme.colorScheme.onSurface
-            )
-            if (format.description.isNotEmpty()) {
-                Text(
-                    text = format.description,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-                            else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-        if (isSelected) {
+        // Check icon — always reserves space; transparent when not selected
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = null,
+            tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+            modifier = Modifier.size(24.dp)
+        )
+        // Format title
+        Text(
+            text = format.title,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier
+                .weight(1f)
+                .padding(horizontal = 12.dp)
+        )
+        // Preview icon — independent click, opens PDF sample
+        Box(
+            modifier = Modifier
+                .clickable(onClick = onPreviewClick)
+                .padding(4.dp),
+            contentAlignment = Alignment.Center
+        ) {
             Icon(
-                imageVector = Icons.Default.Check,
-                contentDescription = null,
+                imageVector = Icons.Default.FindInPage,
+                contentDescription = "Preview",
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .size(16.dp)
+                modifier = Modifier.size(24.dp)
             )
         }
     }
@@ -373,5 +363,21 @@ private fun FontSizeStepper(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+private fun openFormatPreview(context: Context, formatId: Int) {
+    val filename = "ResumeFormatPreview$formatId.pdf"
+    val file = File(context.filesDir, filename)
+    runCatching {
+        context.assets.open("resume-format-previews/$filename").use { input ->
+            file.outputStream().use { output -> input.copyTo(output) }
+        }
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/pdf")
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        context.startActivity(Intent.createChooser(intent, "Open PDF"))
     }
 }
