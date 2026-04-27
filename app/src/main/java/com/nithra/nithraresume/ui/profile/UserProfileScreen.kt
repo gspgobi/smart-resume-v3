@@ -500,36 +500,42 @@ private fun UserProfileScreenListPreview() {
             },
             bottomBar = {
                 Box(
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp).background(MaterialTheme.colorScheme.surfaceVariant),
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         ) { innerPadding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
             ) {
-                LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
-                    items(previewProfiles, key = { it.id }) { profile ->
-                        ProfileItem(profile = profile, onProfileClick = {}, onRenameClick = {}, onDeleteClick = {})
-                        HorizontalDivider()
+                items(previewProfiles, key = { it.id }) { profile ->
+                    ProfileItem(profile = profile, onProfileClick = {}, onRenameClick = {}, onDeleteClick = {})
+                    HorizontalDivider()
+                }
+                item(key = "create_new") {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 64.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
+                        Text("Create New Profile", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
                     }
+                    HorizontalDivider()
                 }
-                HorizontalDivider()
-                Row(
-                    modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp).clickable {},
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.AddBox, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
-                    Text("Create New Profile", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
-                }
-                HorizontalDivider()
-                TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
-                    Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                item(key = "browse_samples") {
+                    TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
+                        Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    }
+                    HorizontalDivider()
                 }
             }
         }
@@ -564,31 +570,42 @@ private fun UserProfileScreenEmptyPreview() {
             },
             bottomBar = {
                 Box(
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp).background(MaterialTheme.colorScheme.surfaceVariant),
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         ) { innerPadding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
             ) {
-                EmptyProfilesPlaceholder()
-                HorizontalDivider()
-                Row(
-                    modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp).clickable {},
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(Icons.Default.AddBox, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
-                    Text("Create New Profile", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
+                item(key = "empty_state") {
+                    EmptyProfilesPlaceholder()
                 }
-                HorizontalDivider()
-                TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
-                    Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                item(key = "create_new") {
+                    HorizontalDivider()
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 64.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
+                        Text("Create New Profile", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
+                    }
+                    HorizontalDivider()
+                }
+                item(key = "browse_samples") {
+                    TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
+                        Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    }
+                    HorizontalDivider()
                 }
             }
         }
