@@ -55,11 +55,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.ResumeFormat
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_BG_COLORS
 import com.nithra.nithraresume.utils.ALL_FONT_STYLES
 import com.nithra.nithraresume.utils.BG_COLOR_WHITE
@@ -363,6 +365,113 @@ private fun FontSizeStepper(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+    }
+}
+
+// ── Preview data ──────────────────────────────────────────────────────────────
+
+private val previewFormats = listOf(
+    ResumeFormat(id = 1, title = "Classic",      description = "", isDefault = true,  fontStyle = FONT_TIMES_NEW_ROMAN, fontSize = FONT_SIZE_DEFAULT, backgroundColor = BG_COLOR_WHITE),
+    ResumeFormat(id = 2, title = "Modern",       description = "", isDefault = false, fontStyle = FONT_TIMES_NEW_ROMAN, fontSize = FONT_SIZE_DEFAULT, backgroundColor = BG_COLOR_WHITE),
+    ResumeFormat(id = 3, title = "Professional", description = "", isDefault = false, fontStyle = FONT_TIMES_NEW_ROMAN, fontSize = FONT_SIZE_DEFAULT, backgroundColor = BG_COLOR_WHITE),
+    ResumeFormat(id = 4, title = "Creative",     description = "", isDefault = false, fontStyle = FONT_TIMES_NEW_ROMAN, fontSize = FONT_SIZE_DEFAULT, backgroundColor = BG_COLOR_WHITE),
+    ResumeFormat(id = 5, title = "Minimal",      description = "", isDefault = false, fontStyle = FONT_TIMES_NEW_ROMAN, fontSize = FONT_SIZE_DEFAULT, backgroundColor = BG_COLOR_WHITE),
+    ResumeFormat(id = 6, title = "Executive",    description = "", isDefault = false, fontStyle = FONT_TIMES_NEW_ROMAN, fontSize = FONT_SIZE_DEFAULT, backgroundColor = BG_COLOR_WHITE),
+)
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Resume Format Screen")
+@Composable
+private fun ResumeFormatScreenPreview() {
+    SmartResumeTheme {
+        var selectedFormatId by remember { mutableIntStateOf(1) }
+        var selectedFontStyle by remember { mutableStateOf(FONT_TIMES_NEW_ROMAN) }
+        var selectedFontSize by remember { mutableIntStateOf(FONT_SIZE_DEFAULT) }
+        var selectedBgColor by remember { mutableStateOf(BG_COLOR_WHITE) }
+
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Resume Format") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                SectionHeader("Template")
+                FormatList(
+                    formats = previewFormats,
+                    selectedId = selectedFormatId,
+                    onSelect = { selectedFormatId = it },
+                    onPreview = {}
+                )
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                SectionHeader("Font")
+                FontStyleDropdown(
+                    selected = selectedFontStyle,
+                    onSelected = { selectedFontStyle = it },
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider()
+
+                SectionHeader("Font Size")
+                FontSizeStepper(
+                    value = selectedFontSize,
+                    onDecrement = { if (selectedFontSize > FONT_SIZE_MIN) selectedFontSize-- },
+                    onIncrement = { if (selectedFontSize < FONT_SIZE_MAX) selectedFontSize++ },
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider()
+
+                SectionHeader("Background Color")
+                ALL_BG_COLORS.forEach { color ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { selectedBgColor = color }
+                            .padding(horizontal = 16.dp, vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = selectedBgColor == color,
+                            onClick = { selectedBgColor = color }
+                        )
+                        Text(color, style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = 8.dp))
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
     }
 }
 
