@@ -501,6 +501,19 @@ private fun FormatListItemSelectedPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Font Size Stepper")
+@Composable
+private fun FontSizeStepperPreview() {
+    SmartResumeTheme {
+        FontSizeStepper(
+            value = FONT_SIZE_DEFAULT,
+            onDecrement = {},
+            onIncrement = {},
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
 private fun openFormatPreview(context: Context, formatId: Int) {
     val filename = "ResumeFormatPreview$formatId.pdf"
     val file = File(context.filesDir, filename)
