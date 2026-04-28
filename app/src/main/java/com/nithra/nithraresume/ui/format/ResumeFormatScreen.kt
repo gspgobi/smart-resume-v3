@@ -488,6 +488,19 @@ private fun FormatListItemUnselectedPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Format List Item - Selected")
+@Composable
+private fun FormatListItemSelectedPreview() {
+    SmartResumeTheme {
+        FormatListItem(
+            format = previewFormats[0],
+            isSelected = true,
+            onClick = {},
+            onPreviewClick = {}
+        )
+    }
+}
+
 private fun openFormatPreview(context: Context, formatId: Int) {
     val filename = "ResumeFormatPreview$formatId.pdf"
     val file = File(context.filesDir, filename)
