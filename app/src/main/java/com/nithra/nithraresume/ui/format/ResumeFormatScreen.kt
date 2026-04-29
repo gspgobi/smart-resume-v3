@@ -16,12 +16,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.FindInPage
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.core.content.FileProvider
 import java.io.File
 import androidx.compose.material3.DropdownMenuItem
@@ -289,8 +291,15 @@ private fun FontStyleDropdown(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    // Display name strips the .TTF suffix
     val displayName = { s: String -> s.removeSuffix(".TTF").replace(".", " ") }
+
+    val context = LocalContext.current
+    val fontFamilies = remember {
+        ALL_FONT_STYLES.associateWith { font ->
+            FontFamily(Typeface.createFromAsset(context.assets, "fonts/$font"))
+        }
+    }
+    val selectedFontFamily = fontFamilies[selected] ?: FontFamily.Default
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -303,14 +312,16 @@ private fun FontStyleDropdown(
             readOnly = true,
             label = { Text("Font") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = selectedFontFamily),
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable)
         )
         ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             ALL_FONT_STYLES.forEach { font ->
+                val fontFamily = fontFamilies[font] ?: FontFamily.Default
                 DropdownMenuItem(
-                    text = { Text(displayName(font)) },
+                    text = { Text(displayName(font), fontFamily = fontFamily) },
                     onClick = { onSelected(font); expanded = false }
                 )
             }
