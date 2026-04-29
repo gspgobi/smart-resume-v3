@@ -1,8 +1,10 @@
 package com.nithra.nithraresume.ui.format
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,10 +40,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -88,6 +93,7 @@ fun ResumeFormatScreen(
     var selectedFontSize by rememberSaveable { mutableIntStateOf(FONT_SIZE_DEFAULT) }
     var selectedBgColor by rememberSaveable { mutableStateOf(BG_COLOR_WHITE) }
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var showUnsavedDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(profile) {
         if (!initialised && profile != null) {
@@ -99,6 +105,15 @@ fun ResumeFormatScreen(
             initialised = true
         }
     }
+
+    val isDirty = initialised && profile != null && (
+        selectedFormatId != profile!!.resumeFormatBaseId ||
+        selectedFontStyle != profile!!.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN } ||
+        selectedFontSize  != (profile!!.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT) ||
+        selectedBgColor   != profile!!.backgroundColor.ifEmpty { BG_COLOR_WHITE }
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -116,7 +131,9 @@ fun ResumeFormatScreen(
             TopAppBar(
                 title = { Text("Resume Format") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -138,6 +155,32 @@ fun ResumeFormatScreen(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
+        if (showUnsavedDialog) {
+            AlertDialog(
+                onDismissRequest = { showUnsavedDialog = false },
+                title = { Text("Unsaved Changes") },
+                text  = { Text("You have unsaved changes. Save before leaving?") },
+                confirmButton = {
+                    Button(onClick = {
+                        showUnsavedDialog = false
+                        viewModel.save(selectedFormatId, selectedFontStyle,
+                            selectedFontSize, selectedBgColor)
+                    }) { Text("Save") }
+                },
+                dismissButton = {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TextButton(onClick = { showUnsavedDialog = false }) {
+                            Text("Cancel")
+                        }
+                        TextButton(onClick = {
+                            showUnsavedDialog = false
+                            navController.popBackStack()
+                        }) { Text("Discard") }
+                    }
+                }
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
