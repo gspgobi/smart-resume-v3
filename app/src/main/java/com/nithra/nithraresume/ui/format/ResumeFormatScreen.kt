@@ -300,7 +300,6 @@ private fun FontStyleDropdown(
             value = displayName(selected),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Font") },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
             textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = selectedFontFamily),
             modifier = Modifier
