@@ -1,6 +1,7 @@
 package com.nithra.nithraresume.ui.format
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -64,6 +64,7 @@ import com.nithra.nithraresume.data.model.ResumeFormat
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_BG_COLORS
 import com.nithra.nithraresume.utils.ALL_FONT_STYLES
+import com.nithra.nithraresume.utils.BG_COLOR_PEACH
 import com.nithra.nithraresume.utils.BG_COLOR_WHITE
 import com.nithra.nithraresume.utils.FONT_SIZE_DEFAULT
 import com.nithra.nithraresume.utils.FONT_SIZE_MAX
@@ -179,22 +180,11 @@ fun ResumeFormatScreen(
 
             // ── Background Color section ──────────────────────────────────────
             SectionHeader("Background Color")
-            ALL_BG_COLORS.forEach { color ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { selectedBgColor = color }
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    RadioButton(
-                        selected = selectedBgColor == color,
-                        onClick = { selectedBgColor = color }
-                    )
-                    Text(color, style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(start = 8.dp))
-                }
-            }
+            BgColorDropdown(
+                selected = selectedBgColor,
+                onSelected = { selectedBgColor = it },
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -329,6 +319,56 @@ private fun FontStyleDropdown(
     }
 }
 
+private val BG_COLOR_MAP = mapOf(
+    BG_COLOR_WHITE to Color(0xFFFFFFFF),
+    BG_COLOR_PEACH to Color(0xFFF7F2DF)
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun BgColorDropdown(
+    selected: String,
+    onSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val selectedColor = BG_COLOR_MAP[selected] ?: Color.White
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            value = selected,
+            onValueChange = {},
+            readOnly = true,
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            leadingIcon = {
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .background(selectedColor, CircleShape)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, CircleShape)
+                )
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+        )
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            ALL_BG_COLORS.forEach { colorName ->
+                val bgColor = BG_COLOR_MAP[colorName] ?: Color.White
+                DropdownMenuItem(
+                    text = { Text(colorName) },
+                    onClick = { onSelected(colorName); expanded = false },
+                    modifier = Modifier.background(bgColor)
+                )
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FontSizeSlider(
@@ -456,22 +496,11 @@ private fun ResumeFormatScreenPreview() {
                 HorizontalDivider()
 
                 SectionHeader("Background Color")
-                ALL_BG_COLORS.forEach { color ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedBgColor = color }
-                            .padding(horizontal = 16.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(
-                            selected = selectedBgColor == color,
-                            onClick = { selectedBgColor = color }
-                        )
-                        Text(color, style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(start = 8.dp))
-                    }
-                }
+                BgColorDropdown(
+                    selected = selectedBgColor,
+                    onSelected = { selectedBgColor = it },
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
