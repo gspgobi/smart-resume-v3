@@ -2,7 +2,6 @@ package com.nithra.nithraresume.ui.format
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import android.content.Context
@@ -29,12 +28,11 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -168,10 +166,9 @@ fun ResumeFormatScreen(
 
             // ── Font Size section ─────────────────────────────────────────────
             SectionHeader("Font Size")
-            FontSizeStepper(
+            FontSizeSlider(
                 value = selectedFontSize,
-                onDecrement = { if (selectedFontSize > FONT_SIZE_MIN) selectedFontSize-- },
-                onIncrement = { if (selectedFontSize < FONT_SIZE_MAX) selectedFontSize++ },
+                onValueChange = { selectedFontSize = it },
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
@@ -321,48 +318,44 @@ private fun FontStyleDropdown(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun FontSizeStepper(
+private fun FontSizeSlider(
     value: Int,
-    onDecrement: () -> Unit,
-    onIncrement: () -> Unit,
+    onValueChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        FilledIconButton(
-            onClick = onDecrement,
-            enabled = value > FONT_SIZE_MIN,
-            colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Text("−", style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer)
-        }
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Text(
-            text = value.toString(),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.width(40.dp),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            FONT_SIZE_MIN.toString(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        FilledIconButton(
-            onClick = onIncrement,
-            enabled = value < FONT_SIZE_MAX,
-            colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Text("+", style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer)
-        }
+        Slider(
+            value = value.toFloat(),
+            onValueChange = { onValueChange(it.toInt()) },
+            valueRange = FONT_SIZE_MIN.toFloat()..FONT_SIZE_MAX.toFloat(),
+            steps = FONT_SIZE_MAX - FONT_SIZE_MIN - 1,
+            modifier = Modifier.weight(1f),
+            thumb = {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(MaterialTheme.colorScheme.primary, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = value.toString(),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
+        )
         Text(
-            text = "($FONT_SIZE_MIN – $FONT_SIZE_MAX)",
-            style = MaterialTheme.typography.bodySmall,
+            FONT_SIZE_MAX.toString(),
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -442,10 +435,9 @@ private fun ResumeFormatScreenPreview() {
                 HorizontalDivider()
 
                 SectionHeader("Font Size")
-                FontSizeStepper(
+                FontSizeSlider(
                     value = selectedFontSize,
-                    onDecrement = { if (selectedFontSize > FONT_SIZE_MIN) selectedFontSize-- },
-                    onIncrement = { if (selectedFontSize < FONT_SIZE_MAX) selectedFontSize++ },
+                    onValueChange = { selectedFontSize = it },
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
@@ -501,14 +493,13 @@ private fun FormatListItemSelectedPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Font Size Stepper")
+@Preview(showBackground = true, name = "Font Size Slider")
 @Composable
-private fun FontSizeStepperPreview() {
+private fun FontSizeSliderPreview() {
     SmartResumeTheme {
-        FontSizeStepper(
+        FontSizeSlider(
             value = FONT_SIZE_DEFAULT,
-            onDecrement = {},
-            onIncrement = {},
+            onValueChange = {},
             modifier = Modifier.padding(16.dp)
         )
     }
