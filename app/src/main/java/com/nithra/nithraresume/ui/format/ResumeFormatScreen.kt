@@ -357,7 +357,7 @@ private fun FontSizeSlider(
                 ) {
                     Text(
                         text = value.toString(),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
