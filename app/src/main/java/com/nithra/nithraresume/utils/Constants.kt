@@ -88,8 +88,8 @@ val ALL_FONT_STYLES = listOf(
 )
 
 const val FONT_SUFFIX_TTF = ".TTF"
-const val FONT_SIZE_MIN   = 8
-const val FONT_SIZE_MAX   = 20
+const val FONT_SIZE_MIN   = 7
+const val FONT_SIZE_MAX   = 14
 const val FONT_SIZE_DEFAULT = 12
 
 // ── Asset directories ─────────────────────────────────────────────────────────
