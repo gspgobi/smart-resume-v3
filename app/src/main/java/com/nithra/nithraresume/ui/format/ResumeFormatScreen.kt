@@ -476,13 +476,16 @@ private fun ResumeFormatScreenPreview() {
         var selectedFontStyle by remember { mutableStateOf(FONT_TIMES_NEW_ROMAN) }
         var selectedFontSize by remember { mutableIntStateOf(FONT_SIZE_DEFAULT) }
         var selectedBgColor by remember { mutableStateOf(BG_COLOR_WHITE) }
+        var showUnsavedDialog by remember { mutableStateOf(false) }
 
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Resume Format") },
                     navigationIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            showUnsavedDialog = true
+                        }) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                     },
@@ -500,6 +503,23 @@ private fun ResumeFormatScreenPreview() {
                 )
             }
         ) { innerPadding ->
+            if (showUnsavedDialog) {
+                AlertDialog(
+                    onDismissRequest = { showUnsavedDialog = false },
+                    title = { Text("Unsaved Changes") },
+                    text  = { Text("You have unsaved changes. Save before leaving?") },
+                    confirmButton = {
+                        Button(onClick = { showUnsavedDialog = false }) { Text("Save") }
+                    },
+                    dismissButton = {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                            TextButton(onClick = { showUnsavedDialog = false }) { Text("Discard") }
+                        }
+                    }
+                )
+            }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -546,6 +566,27 @@ private fun ResumeFormatScreenPreview() {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Unsaved Changes Dialog")
+@Composable
+private fun UnsavedChangesDialogPreview() {
+    SmartResumeTheme {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Unsaved Changes") },
+            text  = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {}) { Text("Save") }
+            },
+            dismissButton = {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TextButton(onClick = {}) { Text("Cancel") }
+                    TextButton(onClick = {}) { Text("Discard") }
+                }
+            }
+        )
     }
 }
 
