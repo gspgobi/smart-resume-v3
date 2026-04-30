@@ -693,3 +693,15 @@ private fun SectionItemContactInfoPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Section Item - Enabled")
+@Composable
+private fun SectionItemEnabledPreview() {
+    SmartResumeTheme {
+        Column {
+            SectionItem(sha = previewSections[1], isContactInfo = false,
+                onClick = {}, onToggleEnable = {}, onDelete = {})
+            HorizontalDivider()
+        }
+    }
+}
+
