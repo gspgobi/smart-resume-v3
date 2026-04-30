@@ -583,3 +583,85 @@ private val previewAvailableSections = listOf(
     SectionHeadSampleData(id = 3,  title = "Languages",       isEnable = true, isDefault = false, groupName = "Custom",   sectionHeadBaseId = 7, sectionHeadGroupBaseId = 1, indexPosition = 4),
 )
 
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Head Screen")
+@Composable
+private fun SectionHeadScreenPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Software Engineer") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.spacedBy(0.dp)
+            ) {
+                item {
+                    ResumeFormatRow(formatTitle = "Classic", onClick = {})
+                    HorizontalDivider()
+                }
+                item { GroupHeader(title = "Sections", onAddClick = {}) }
+                items(previewSections, key = { it.id }) { sha ->
+                    SectionItem(
+                        sha = sha,
+                        isContactInfo = sha.headBaseId == 1,
+                        onClick = {},
+                        onToggleEnable = {},
+                        onDelete = {}
+                    )
+                    HorizontalDivider()
+                }
+                item {
+                    Spacer(Modifier.height(8.dp))
+                    GroupHeader(title = "Add-ons", onAddClick = {})
+                }
+                items(previewAddons, key = { it.id }) { sha ->
+                    SectionItem(
+                        sha = sha,
+                        isContactInfo = false,
+                        onClick = {},
+                        onToggleEnable = {},
+                        onDelete = {}
+                    )
+                    HorizontalDivider()
+                }
+                item {
+                    Spacer(Modifier.height(16.dp))
+                    ActionButtons(onGenerate = {}, onViewShare = {})
+                    Spacer(Modifier.height(16.dp))
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Ad", style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
+            }
+        }
+    }
+}
+
