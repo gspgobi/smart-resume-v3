@@ -561,3 +561,25 @@ private fun AddSectionSheet(
         Spacer(Modifier.height(24.dp))
     }
 }
+
+// ── Preview data ──────────────────────────────────────────────────────────────
+
+private val previewSections = listOf(
+    SectionHeadAdded(id = 1, profileId = 1, groupBaseId = 1, headBaseId = 1, sampleDataId = null, title = "Contact Information", isEnable = true,  indexPosition = 0),
+    SectionHeadAdded(id = 2, profileId = 1, groupBaseId = 1, headBaseId = 2, sampleDataId = null, title = "Work Experience",     isEnable = true,  indexPosition = 1),
+    SectionHeadAdded(id = 3, profileId = 1, groupBaseId = 1, headBaseId = 3, sampleDataId = null, title = "Education",           isEnable = true,  indexPosition = 2),
+    SectionHeadAdded(id = 4, profileId = 1, groupBaseId = 1, headBaseId = 6, sampleDataId = null, title = "Skills",              isEnable = false, indexPosition = 3),
+)
+
+private val previewAddons = listOf(
+    SectionHeadAdded(id = 5, profileId = 1, groupBaseId = 2, headBaseId = 8, sampleDataId = null, title = "Cover Letter", isEnable = true, indexPosition = 0),
+)
+
+private val previewAvailableSections = listOf(
+    SectionHeadSampleData(id = -1, title = "Standard",        isEnable = true, isDefault = false, groupName = "Standard", sectionHeadBaseId = 0, sectionHeadGroupBaseId = 1, indexPosition = 0),
+    SectionHeadSampleData(id = 1,  title = "Accomplishments", isEnable = true, isDefault = false, groupName = "Standard", sectionHeadBaseId = 4, sectionHeadGroupBaseId = 1, indexPosition = 1),
+    SectionHeadSampleData(id = 2,  title = "Projects",        isEnable = true, isDefault = false, groupName = "Standard", sectionHeadBaseId = 5, sectionHeadGroupBaseId = 1, indexPosition = 2),
+    SectionHeadSampleData(id = -2, title = "Custom",          isEnable = true, isDefault = false, groupName = "Custom",   sectionHeadBaseId = 0, sectionHeadGroupBaseId = 1, indexPosition = 3),
+    SectionHeadSampleData(id = 3,  title = "Languages",       isEnable = true, isDefault = false, groupName = "Custom",   sectionHeadBaseId = 7, sectionHeadGroupBaseId = 1, indexPosition = 4),
+)
+
