@@ -673,3 +673,11 @@ private fun ResumeFormatRowPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Group Header")
+@Composable
+private fun GroupHeaderPreview() {
+    SmartResumeTheme {
+        GroupHeader(title = "Sections", onAddClick = {})
+    }
+}
+
