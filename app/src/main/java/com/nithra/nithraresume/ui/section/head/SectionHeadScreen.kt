@@ -725,3 +725,15 @@ private fun ActionButtonsPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Add Section Sheet")
+@Composable
+private fun AddSectionSheetPreview() {
+    SmartResumeTheme {
+        AddSectionSheet(
+            title = "Add New Section",
+            items = previewAvailableSections,
+            onItemClick = {}
+        )
+    }
+}
+
