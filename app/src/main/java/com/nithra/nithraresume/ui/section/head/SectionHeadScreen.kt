@@ -745,3 +745,23 @@ private fun AddSectionSheetEmptyPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Delete Section Dialog")
+@Composable
+private fun DeleteSectionDialogPreview() {
+    SmartResumeTheme {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Delete Section") },
+            text  = { Text("Delete \"Work Experience\"? All data in this section will be permanently removed.") },
+            confirmButton = {
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(onClick = {}) { Text("Cancel") }
+            }
+        )
+    }
+}
