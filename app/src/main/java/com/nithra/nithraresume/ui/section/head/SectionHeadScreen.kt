@@ -737,3 +737,11 @@ private fun AddSectionSheetPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Add Section Sheet - Empty")
+@Composable
+private fun AddSectionSheetEmptyPreview() {
+    SmartResumeTheme {
+        AddSectionSheet(title = "Add New Section", items = emptyList(), onItemClick = {})
+    }
+}
+
