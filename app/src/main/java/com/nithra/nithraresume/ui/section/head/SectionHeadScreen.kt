@@ -717,3 +717,11 @@ private fun SectionItemDisabledPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Action Buttons")
+@Composable
+private fun ActionButtonsPreview() {
+    SmartResumeTheme {
+        ActionButtons(onGenerate = {}, onViewShare = {})
+    }
+}
+
