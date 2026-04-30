@@ -681,3 +681,15 @@ private fun GroupHeaderPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Section Item - Contact Info")
+@Composable
+private fun SectionItemContactInfoPreview() {
+    SmartResumeTheme {
+        Column {
+            SectionItem(sha = previewSections[0], isContactInfo = true,
+                onClick = {}, onToggleEnable = {}, onDelete = {})
+            HorizontalDivider()
+        }
+    }
+}
+
