@@ -178,7 +178,6 @@ fun SectionHeadScreen(
 
             // ── Add-ons group header ──────────────────────────────────────────
             item {
-                Spacer(Modifier.height(8.dp))
                 GroupHeader(
                     title = "Add-ons",
                     onAddClick = {
@@ -317,6 +316,7 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .defaultMinSize(minHeight = 72.dp)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -335,8 +335,9 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
             Text(
                 text = "Resume Format",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.primary
             )
+            Spacer(Modifier.size(4.dp))
             Text(
                 text = formatTitle.ifEmpty { "Select format" },
                 style = MaterialTheme.typography.bodyLarge,
