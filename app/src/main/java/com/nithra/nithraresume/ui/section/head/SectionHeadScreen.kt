@@ -665,3 +665,11 @@ private fun SectionHeadScreenPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Resume Format Row")
+@Composable
+private fun ResumeFormatRowPreview() {
+    SmartResumeTheme {
+        ResumeFormatRow(formatTitle = "Classic", onClick = {})
+    }
+}
+
