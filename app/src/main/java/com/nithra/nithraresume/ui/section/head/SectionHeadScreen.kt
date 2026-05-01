@@ -761,7 +761,7 @@ private fun ResumeFormatRowPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Group Header")
+@Preview(showBackground = true, name = "Group Header - No Edit")
 @Composable
 private fun GroupHeaderPreview() {
     SmartResumeTheme {
