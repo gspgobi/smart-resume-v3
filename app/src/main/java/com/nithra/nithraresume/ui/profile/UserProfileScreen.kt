@@ -71,6 +71,7 @@ import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_PROFILES
+import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -145,20 +146,7 @@ fun UserProfileScreen(
                     tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
-        bottomBar = {
-            // AdMob banner placeholder — replaced in Step 30
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .height(50.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Ad", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        },
+        bottomBar = { MediumRectangleAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(
