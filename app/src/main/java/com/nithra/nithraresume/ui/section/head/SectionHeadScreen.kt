@@ -382,19 +382,19 @@ private fun GroupHeader(
         modifier = Modifier
             .fillMaxWidth()
             .defaultMinSize(minHeight = 48.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.weight(1f)
         )
         if (onEditClick != null) {
-            TextButton(onClick = onEditClick) {
+            Button(onClick = onEditClick) {
                 Text("Edit", style = MaterialTheme.typography.labelMedium)
             }
         }
@@ -587,10 +587,10 @@ private fun AddSectionSheet(
                         text = sample.title,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .background(MaterialTheme.colorScheme.primaryContainer)
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                     )
                 } else {
