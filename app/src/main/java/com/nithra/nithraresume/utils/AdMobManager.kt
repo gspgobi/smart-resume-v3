@@ -85,3 +85,12 @@ fun MediumRectangleAdBottomBar() {
         modifier = Modifier.fillMaxWidth().navigationBarsPadding()
     )
 }
+
+@Composable
+fun LargeBannerAdBottomBar() {
+    BannerAdView(
+        adUnitId = AdMobManager.banner02Id(),
+        adSize = AdSize.LARGE_BANNER,
+        modifier = Modifier.fillMaxWidth().navigationBarsPadding()
+    )
+}
