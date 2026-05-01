@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -70,7 +71,6 @@ import com.nithra.nithraresume.data.model.SectionHeadSampleData
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
-import com.nithra.nithraresume.utils.MAX_SECTIONS
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,16 +151,6 @@ fun SectionHeadScreen(
             item {
                 GroupHeader(
                     title = "Sections",
-                    onAddClick = {
-                        if (sections.size >= MAX_SECTIONS) {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Maximum $MAX_SECTIONS sections reached")
-                            }
-                        } else {
-                            viewModel.loadAvailableSections(sections)
-                            showAddSectionSheet = true
-                        }
-                    },
                     onEditClick = if (sections.size > 1) {
                         { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_SECTIONS)) }
                     } else null
@@ -179,15 +169,20 @@ fun SectionHeadScreen(
                 HorizontalDivider()
             }
 
+            // ── Add New Section ───────────────────────────────────────────────
+            if (availableSections.isNotEmpty()) {
+                item {
+                    AddItemRow(label = "Add New Section") {
+                        showAddSectionSheet = true
+                    }
+                    HorizontalDivider()
+                }
+            }
+
             // ── Add-ons group header ──────────────────────────────────────────
             item {
-                Spacer(Modifier.height(8.dp))
                 GroupHeader(
                     title = "Add-ons",
-                    onAddClick = {
-                        viewModel.loadAvailableAddons(addons)
-                        showAddAddonSheet = true
-                    },
                     onEditClick = if (addons.size > 1) {
                         { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_ADDONS)) }
                     } else null
@@ -204,6 +199,16 @@ fun SectionHeadScreen(
                     onDelete = { deleteTarget = sha }
                 )
                 HorizontalDivider()
+            }
+
+            // ── Add New Add-on (only when available) ─────────────────────────
+            if (availableAddons.isNotEmpty()) {
+                item {
+                    AddItemRow(label = "Add New Add-on") {
+                        showAddAddonSheet = true
+                    }
+                    HorizontalDivider()
+                }
             }
 
             // ── Generate + View/Share buttons ─────────────────────────────────
@@ -363,21 +368,21 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
 @Composable
 private fun GroupHeader(
     title: String,
-    onAddClick: () -> Unit,
     onEditClick: (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .defaultMinSize(minHeight = 48.dp)
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
         if (onEditClick != null) {
@@ -385,14 +390,33 @@ private fun GroupHeader(
                 Text("Edit", style = MaterialTheme.typography.labelMedium)
             }
         }
-        IconButton(onClick = onAddClick, modifier = Modifier.size(32.dp)) {
-            Icon(
-                Icons.Default.Add,
-                contentDescription = "Add $title",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+    }
+}
+
+// ── Add item row ──────────────────────────────────────────────────────────────
+
+@Composable
+private fun AddItemRow(label: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            Icons.Default.Add,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
@@ -645,7 +669,7 @@ private fun SectionHeadScreenPreview() {
                     ResumeFormatRow(formatTitle = "Classic", onClick = {})
                     HorizontalDivider()
                 }
-                item { GroupHeader(title = "Sections", onAddClick = {}) }
+                item { GroupHeader(title = "Sections") }
                 items(previewSections, key = { it.id }) { sha ->
                     SectionItem(
                         sha = sha,
@@ -656,9 +680,10 @@ private fun SectionHeadScreenPreview() {
                     )
                     HorizontalDivider()
                 }
+                item { AddItemRow(label = "Add New Section", onClick = {}) }
                 item {
                     Spacer(Modifier.height(8.dp))
-                    GroupHeader(title = "Add-ons", onAddClick = {})
+                    GroupHeader(title = "Add-ons")
                 }
                 items(previewAddons, key = { it.id }) { sha ->
                     SectionItem(
@@ -704,7 +729,7 @@ private fun ResumeFormatRowPreview() {
 @Composable
 private fun GroupHeaderPreview() {
     SmartResumeTheme {
-        GroupHeader(title = "Sections", onAddClick = {})
+        GroupHeader(title = "Sections")
     }
 }
 
