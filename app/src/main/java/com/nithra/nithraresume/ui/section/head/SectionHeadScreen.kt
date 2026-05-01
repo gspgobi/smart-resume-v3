@@ -776,6 +776,19 @@ private fun GroupHeaderWithEditPreview() {
         GroupHeader(title = "Sections", onEditClick = {})
     }
 }
+
+@Preview(showBackground = true, name = "Add Item Row")
+@Composable
+private fun AddItemRowPreview() {
+    SmartResumeTheme {
+        Column {
+            AddItemRow(label = "Add New Section", onClick = {})
+            HorizontalDivider()
+            AddItemRow(label = "Add New Add-on", onClick = {})
+        }
+    }
+}
+
 @Preview(showBackground = true, name = "Section Item - Contact Info")
 @Composable
 private fun SectionItemContactInfoPreview() {
