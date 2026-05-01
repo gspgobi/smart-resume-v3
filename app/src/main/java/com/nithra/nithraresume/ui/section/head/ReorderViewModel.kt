@@ -27,11 +27,12 @@ class ReorderViewModel @Inject constructor(
         .map { list -> list.filter { it.groupBaseId == groupId }.sortedBy { it.indexPosition } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
-    fun persistOrder(reorderedItems: List<SectionHeadAdded>) {
+    fun persistOrder(reorderedItems: List<SectionHeadAdded>, startIndex: Int = 0) {
         viewModelScope.launch {
             reorderedItems.forEachIndexed { index, item ->
-                if (item.indexPosition != index) {
-                    sectionHeadRepository.updateAddedPosition(item.id, index)
+                val position = startIndex + index
+                if (item.indexPosition != position) {
+                    sectionHeadRepository.updateAddedPosition(item.id, position)
                 }
             }
         }
