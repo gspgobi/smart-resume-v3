@@ -38,6 +38,7 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.ui.common.ObjAccompBottomSheet
 import com.nithra.nithraresume.utils.BULLET_NONE
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -117,6 +118,7 @@ fun SectionChild5Screen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(

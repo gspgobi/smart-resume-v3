@@ -39,6 +39,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.utils.BULLET_NONE
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,6 +127,7 @@ fun SectionChild2SubScreen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(

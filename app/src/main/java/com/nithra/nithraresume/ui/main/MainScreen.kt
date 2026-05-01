@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -77,14 +78,12 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.google.android.gms.ads.AdSize
 import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.ui.common.FeedbackDialog
 import com.nithra.nithraresume.ui.navigation.Screen
-import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
-import com.nithra.nithraresume.utils.BannerAdView
+import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
 import androidx.compose.ui.tooling.preview.Preview
@@ -205,6 +204,7 @@ fun MainScreen(
                     )
                 )
             },
+            bottomBar = { MediumRectangleAdBottomBar() },
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             MainContent(
@@ -248,13 +248,6 @@ private fun MainContent(
             onClick = onViewResumesClick
         )
 
-        Spacer(Modifier.weight(1f))
-
-        BannerAdView(
-            adUnitId = AdMobManager.banner01Id(),
-            adSize = AdSize.MEDIUM_RECTANGLE,
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 }
 

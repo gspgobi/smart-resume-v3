@@ -55,6 +55,7 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,6 +105,7 @@ fun SectionChild2Screen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(

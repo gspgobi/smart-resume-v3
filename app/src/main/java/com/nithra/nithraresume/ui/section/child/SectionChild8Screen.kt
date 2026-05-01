@@ -38,6 +38,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,6 +108,7 @@ fun SectionChild8Screen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(

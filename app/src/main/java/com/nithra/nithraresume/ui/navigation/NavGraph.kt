@@ -27,6 +27,7 @@ import com.nithra.nithraresume.ui.section.child.SectionChild6SubScreen
 import com.nithra.nithraresume.ui.section.child.SectionChild7Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild7SubScreen
 import com.nithra.nithraresume.ui.section.child.SectionChild8Screen
+import com.nithra.nithraresume.ui.section.head.ReorderSectionsScreen
 import com.nithra.nithraresume.ui.section.head.SectionHeadScreen
 import com.nithra.nithraresume.ui.settings.AppSettingsScreen
 import com.nithra.nithraresume.ui.viewshare.ViewShareScreen
@@ -198,6 +199,18 @@ fun SmartResumeNavGraph(
             )
         ) {
             SectionChild7SubScreen(navController = navController)
+        }
+
+        // ── Reorder sections / add-ons ────────────────────────────────────────
+
+        composable(
+            route = Screen.ReorderSections.route,
+            arguments = listOf(
+                navArgument("profileId") { type = NavType.IntType },
+                navArgument("groupId")   { type = NavType.IntType }
+            )
+        ) {
+            ReorderSectionsScreen(navController = navController)
         }
 
         // ── Notification detail ───────────────────────────────────────────────
