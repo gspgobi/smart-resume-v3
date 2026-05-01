@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -73,6 +74,7 @@ import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.utils.verticalScrollbar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,6 +93,7 @@ fun SectionHeadScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     // Bottom sheet state
     var showAddSectionSheet by rememberSaveable { mutableStateOf(false) }
@@ -132,10 +135,12 @@ fun SectionHeadScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScrollbar(listState),
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 
