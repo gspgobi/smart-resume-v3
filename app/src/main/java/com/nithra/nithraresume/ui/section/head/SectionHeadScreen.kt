@@ -68,6 +68,8 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.model.SectionHeadSampleData
 import com.nithra.nithraresume.ui.navigation.Screen
+import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
+import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import com.nithra.nithraresume.utils.MAX_SECTIONS
 import kotlinx.coroutines.launch
 
@@ -158,7 +160,10 @@ fun SectionHeadScreen(
                             viewModel.loadAvailableSections(sections)
                             showAddSectionSheet = true
                         }
-                    }
+                    },
+                    onEditClick = if (sections.size > 1) {
+                        { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_SECTIONS)) }
+                    } else null
                 )
             }
 
@@ -167,9 +172,7 @@ fun SectionHeadScreen(
                 SectionItem(
                     sha = sha,
                     isContactInfo = sha.headBaseId == 1,
-                    onClick = {
-                        navController.navigate(childRoute(sha))
-                    },
+                    onClick = { navController.navigate(childRoute(sha)) },
                     onToggleEnable = { viewModel.toggleEnable(sha) },
                     onDelete = { deleteTarget = sha }
                 )
@@ -178,12 +181,16 @@ fun SectionHeadScreen(
 
             // ── Add-ons group header ──────────────────────────────────────────
             item {
+                Spacer(Modifier.height(8.dp))
                 GroupHeader(
                     title = "Add-ons",
                     onAddClick = {
                         viewModel.loadAvailableAddons(addons)
                         showAddAddonSheet = true
-                    }
+                    },
+                    onEditClick = if (addons.size > 1) {
+                        { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_ADDONS)) }
+                    } else null
                 )
             }
 
@@ -192,9 +199,7 @@ fun SectionHeadScreen(
                 SectionItem(
                     sha = sha,
                     isContactInfo = false,
-                    onClick = {
-                        navController.navigate(childRoute(sha))
-                    },
+                    onClick = { navController.navigate(childRoute(sha)) },
                     onToggleEnable = { viewModel.toggleEnable(sha) },
                     onDelete = { deleteTarget = sha }
                 )
@@ -356,12 +361,16 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
 // ── Group header ──────────────────────────────────────────────────────────────
 
 @Composable
-private fun GroupHeader(title: String, onAddClick: () -> Unit) {
+private fun GroupHeader(
+    title: String,
+    onAddClick: () -> Unit,
+    onEditClick: (() -> Unit)? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
@@ -371,6 +380,11 @@ private fun GroupHeader(title: String, onAddClick: () -> Unit) {
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.weight(1f)
         )
+        if (onEditClick != null) {
+            TextButton(onClick = onEditClick) {
+                Text("Edit", style = MaterialTheme.typography.labelMedium)
+            }
+        }
         IconButton(onClick = onAddClick, modifier = Modifier.size(32.dp)) {
             Icon(
                 Icons.Default.Add,
@@ -398,7 +412,7 @@ private fun SectionItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(start = 16.dp, end = 4.dp, top = 12.dp, bottom = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         val titleColor = if (sha.isEnable) MaterialTheme.colorScheme.onSurface
