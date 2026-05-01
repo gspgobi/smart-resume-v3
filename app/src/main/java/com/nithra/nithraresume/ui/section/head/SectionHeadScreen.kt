@@ -126,6 +126,20 @@ fun SectionHeadScreen(
                 )
             )
         },
+        bottomBar = {
+            // AdMob banner placeholder — replaced in Step 30
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .height(50.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Ad", style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(
@@ -223,20 +237,6 @@ fun SectionHeadScreen(
                     }
                 )
                 Spacer(Modifier.height(16.dp))
-            }
-
-            // AdMob banner placeholder — replaced in Step 30
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
         }
     }
