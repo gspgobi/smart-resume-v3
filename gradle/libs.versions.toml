@@ -23,7 +23,6 @@ googleServices = "4.4.2"
 firebaseCrashlytics = "3.0.2"
 itextpdf = "5.4.0"
 splashscreen = "1.0.1"
-reorderable = "2.4.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
@@ -92,9 +91,6 @@ androidx-datastore-preferences = { group = "androidx.datastore", name = "datasto
 
 # Splash Screen
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
-
-# Drag-to-reorder for LazyColumn
-reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }

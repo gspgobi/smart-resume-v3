@@ -154,9 +154,6 @@ dependencies {
     // Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
-    // Drag-to-reorder for LazyColumn
-    implementation(libs.reorderable)
-
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
