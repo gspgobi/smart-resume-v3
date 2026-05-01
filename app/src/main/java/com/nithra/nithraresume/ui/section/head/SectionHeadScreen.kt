@@ -72,6 +72,7 @@ import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,20 +128,7 @@ fun SectionHeadScreen(
                 )
             )
         },
-        bottomBar = {
-            // AdMob banner placeholder — replaced in Step 30
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .height(50.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Ad", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(

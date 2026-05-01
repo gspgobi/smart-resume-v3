@@ -71,6 +71,7 @@ import coil.compose.AsyncImage
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -185,6 +186,7 @@ fun SectionChild1Screen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(

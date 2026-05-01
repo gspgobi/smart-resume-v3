@@ -46,6 +46,7 @@ import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.BULLET_NONE
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,6 +119,7 @@ fun SectionChild4Screen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
