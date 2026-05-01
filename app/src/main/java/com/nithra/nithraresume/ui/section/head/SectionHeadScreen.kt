@@ -769,6 +769,13 @@ private fun GroupHeaderPreview() {
     }
 }
 
+@Preview(showBackground = true, name = "Group Header - With Edit")
+@Composable
+private fun GroupHeaderWithEditPreview() {
+    SmartResumeTheme {
+        GroupHeader(title = "Sections", onEditClick = {})
+    }
+}
 @Preview(showBackground = true, name = "Section Item - Contact Info")
 @Composable
 private fun SectionItemContactInfoPreview() {
