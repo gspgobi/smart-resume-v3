@@ -276,7 +276,7 @@ private fun FormatListItem(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .background(
-                if (isSelected) MaterialTheme.colorScheme.surfaceVariant
+                if (isSelected) MaterialTheme.colorScheme.primaryContainer
                 else MaterialTheme.colorScheme.surface
             )
             .padding(horizontal = 16.dp, vertical = 12.dp),
