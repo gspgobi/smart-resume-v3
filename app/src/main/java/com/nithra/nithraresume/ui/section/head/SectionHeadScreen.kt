@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -59,9 +60,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
-import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -69,6 +69,7 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.model.SectionHeadSampleData
 import com.nithra.nithraresume.ui.navigation.Screen
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import kotlinx.coroutines.launch
@@ -663,6 +664,18 @@ private fun SectionHeadScreenPreview() {
                         navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
+            },
+            bottomBar = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Ad", style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
         ) { innerPadding ->
             LazyColumn(
@@ -676,7 +689,12 @@ private fun SectionHeadScreenPreview() {
                     ResumeFormatRow(formatTitle = "Classic", onClick = {})
                     HorizontalDivider()
                 }
-                item { GroupHeader(title = "Sections") }
+                item {
+                    GroupHeader(
+                        title = "Sections",
+                        onEditClick = if (previewSections.size > 1) {{}} else null
+                    )
+                }
                 items(previewSections, key = { it.id }) { sha ->
                     SectionItem(
                         sha = sha,
@@ -687,10 +705,17 @@ private fun SectionHeadScreenPreview() {
                     )
                     HorizontalDivider()
                 }
-                item { AddItemRow(label = "Add New Section", onClick = {}) }
+                if (previewAvailableSections.isNotEmpty()) {
+                    item {
+                        AddItemRow(label = "Add New Section", onClick = {})
+                        HorizontalDivider()
+                    }
+                }
                 item {
-                    Spacer(Modifier.height(8.dp))
-                    GroupHeader(title = "Add-ons")
+                    GroupHeader(
+                        title = "Add-ons",
+                        onEditClick = if (previewAddons.size > 1) {{}} else null
+                    )
                 }
                 items(previewAddons, key = { it.id }) { sha ->
                     SectionItem(
@@ -702,22 +727,21 @@ private fun SectionHeadScreenPreview() {
                     )
                     HorizontalDivider()
                 }
+                if (previewAvailableAddons.isNotEmpty()) {
+                    item {
+                        AddItemRow(label = "Add New Add-on", onClick = {})
+                        HorizontalDivider()
+                    }
+                }
+                item {
+                    GroupHeader(
+                        title = "Complete"
+                    )
+                }
                 item {
                     Spacer(Modifier.height(16.dp))
                     ActionButtons(onGenerate = {}, onViewShare = {})
                     Spacer(Modifier.height(16.dp))
-                }
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Ad", style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
                 }
             }
         }
