@@ -438,7 +438,7 @@ private fun SectionItem(
         if (isContactInfo) {
             // Contact Info: only chevron — sized to match IconButton's 48 dp touch target
             Box(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(32.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -450,8 +450,14 @@ private fun SectionItem(
             }
         } else {
             Box {
-                IconButton(onClick = { menuExpanded = true }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clickable { menuExpanded = true },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "Options",
+                        modifier = Modifier.size(24.dp))
                 }
                 DropdownMenu(
                     expanded = menuExpanded,
