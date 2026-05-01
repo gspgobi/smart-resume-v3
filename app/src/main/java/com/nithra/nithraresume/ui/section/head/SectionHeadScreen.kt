@@ -225,6 +225,13 @@ fun SectionHeadScreen(
                 }
             }
 
+            // ── Complete group header ──────────────────────────────────────────
+            item {
+                GroupHeader(
+                    title = "Complete"
+                )
+            }
+
             // ── Generate + View/Share buttons ─────────────────────────────────
             item {
                 Spacer(Modifier.height(16.dp))
