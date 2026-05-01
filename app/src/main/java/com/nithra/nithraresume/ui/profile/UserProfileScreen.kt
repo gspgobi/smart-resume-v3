@@ -9,17 +9,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.MoreVert
@@ -49,8 +52,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -67,6 +72,8 @@ import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_PROFILES
+import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
+import com.nithra.nithraresume.utils.verticalScrollbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,6 +84,8 @@ fun UserProfileScreen(
     val profiles by viewModel.profiles.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     // Dialog state
     var showCreateDialog by rememberSaveable { mutableStateOf(false) }
@@ -127,7 +136,9 @@ fun UserProfileScreen(
             FloatingActionButton(
                 onClick = {
                     if (profiles.size >= MAX_PROFILES) {
-                        // Show limit snackbar via uiState — handled inline
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Maximum $MAX_PROFILES profiles reached")
+                        }
                     } else {
                         showCreateDialog = true
                     }
@@ -138,66 +149,89 @@ fun UserProfileScreen(
                     tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
-        bottomBar = {
-            // AdMob banner placeholder — replaced in Step 30
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .height(50.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Ad", style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-        },
+        bottomBar = { MediumRectangleAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
+                .verticalScrollbar(listState)
         ) {
             if (profiles.isEmpty()) {
-                EmptyProfilesPlaceholder(
-                    modifier = Modifier.weight(1f),
-                    onAddClick = { showCreateDialog = true }
-                )
+                item(key = "empty_state") {
+                    EmptyProfilesPlaceholder()
+                }
             } else {
-                LazyColumn(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(0.dp)
-                ) {
-                    items(profiles, key = { it.id }) { profile ->
-                        ProfileItem(
-                            profile = profile,
-                            onProfileClick = {
-                                navController.navigate(Screen.SectionHead.createRoute(profile.id))
-                            },
-                            onRenameClick = {
-                                targetProfile = profile
-                                showRenameDialog = true
-                            },
-                            onDeleteClick = {
-                                targetProfile = profile
-                                showDeleteDialog = true
-                            }
-                        )
-                        HorizontalDivider()
-                    }
+                items(profiles, key = { it.id }) { profile ->
+                    ProfileItem(
+                        profile = profile,
+                        onProfileClick = {
+                            navController.navigate(Screen.SectionHead.createRoute(profile.id))
+                        },
+                        onRenameClick = {
+                            targetProfile = profile
+                            showRenameDialog = true
+                        },
+                        onDeleteClick = {
+                            targetProfile = profile
+                            showDeleteDialog = true
+                        }
+                    )
+                    HorizontalDivider()
                 }
             }
 
-            // Browse sample resumes link
-            TextButton(
-                onClick = { navController.navigate(Screen.SampleResumes.route) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                Text("Browse Sample Resumes", color = MaterialTheme.colorScheme.primary)
+            item(key = "create_new") {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 64.dp)
+                        .clickable {
+                            if (profiles.size >= MAX_PROFILES) {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Maximum $MAX_PROFILES profiles reached")
+                                }
+                            } else {
+                                showCreateDialog = true
+                            }
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AddBox,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(28.dp)
+                    )
+                    Text(
+                        text = "Create New Profile",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
+                    )
+                }
+                HorizontalDivider()
+            }
+
+            item(key = "browse_samples") {
+                TextButton(
+                    onClick = { navController.navigate(Screen.SampleResumes.route) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 64.dp)
+                ) {
+                    Text(
+                        text = "Browse Sample Resumes",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                HorizontalDivider()
             }
         }
     }
@@ -261,13 +295,6 @@ fun UserProfileScreen(
         )
     }
 
-    // Maximum limit dialog
-    LaunchedEffect(profiles.size) {
-        if (profiles.size >= MAX_PROFILES && showCreateDialog) {
-            showCreateDialog = false
-            snackbarHostState.showSnackbar("Maximum $MAX_PROFILES profiles reached")
-        }
-    }
 }
 
 // ── Profile list item ─────────────────────────────────────────────────────────
@@ -344,12 +371,11 @@ private fun ProfileItem(
 // ── Empty state ───────────────────────────────────────────────────────────────
 
 @Composable
-private fun EmptyProfilesPlaceholder(
-    modifier: Modifier = Modifier,
-    onAddClick: () -> Unit
-) {
+private fun EmptyProfilesPlaceholder() {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 80.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -467,27 +493,42 @@ private fun UserProfileScreenListPreview() {
             },
             bottomBar = {
                 Box(
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp).background(MaterialTheme.colorScheme.surfaceVariant),
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         ) { innerPadding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
             ) {
-                LazyColumn(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
-                    items(previewProfiles, key = { it.id }) { profile ->
-                        ProfileItem(profile = profile, onProfileClick = {}, onRenameClick = {}, onDeleteClick = {})
-                        HorizontalDivider()
-                    }
+                items(previewProfiles, key = { it.id }) { profile ->
+                    ProfileItem(profile = profile, onProfileClick = {}, onRenameClick = {}, onDeleteClick = {})
+                    HorizontalDivider()
                 }
-                TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-                    Text("Browse Sample Resumes", color = MaterialTheme.colorScheme.primary)
+                item(key = "create_new") {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 64.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
+                        Text("Create New Profile", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
+                    }
+                    HorizontalDivider()
+                }
+                item(key = "browse_samples") {
+                    TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
+                        Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    }
+                    HorizontalDivider()
                 }
             }
         }
@@ -522,22 +563,42 @@ private fun UserProfileScreenEmptyPreview() {
             },
             bottomBar = {
                 Box(
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp).background(MaterialTheme.colorScheme.surfaceVariant),
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         ) { innerPadding ->
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
             ) {
-                EmptyProfilesPlaceholder(modifier = Modifier.weight(1f), onAddClick = {})
-                TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().padding(8.dp)) {
-                    Text("Browse Sample Resumes", color = MaterialTheme.colorScheme.primary)
+                item(key = "empty_state") {
+                    EmptyProfilesPlaceholder()
+                }
+                item(key = "create_new") {
+                    HorizontalDivider()
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = 64.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(28.dp))
+                        Text("Create New Profile", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp))
+                    }
+                    HorizontalDivider()
+                }
+                item(key = "browse_samples") {
+                    TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
+                        Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    }
+                    HorizontalDivider()
                 }
             }
         }

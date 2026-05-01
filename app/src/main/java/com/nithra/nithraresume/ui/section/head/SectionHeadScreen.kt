@@ -7,13 +7,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
@@ -58,6 +62,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,7 +70,11 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.model.SectionHeadSampleData
 import com.nithra.nithraresume.ui.navigation.Screen
-import com.nithra.nithraresume.utils.MAX_SECTIONS
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
+import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
+import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.utils.verticalScrollbar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,6 +93,7 @@ fun SectionHeadScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
     // Bottom sheet state
     var showAddSectionSheet by rememberSaveable { mutableStateOf(false) }
@@ -121,13 +131,16 @@ fun SectionHeadScreen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScrollbar(listState),
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 
@@ -146,16 +159,9 @@ fun SectionHeadScreen(
             item {
                 GroupHeader(
                     title = "Sections",
-                    onAddClick = {
-                        if (sections.size >= MAX_SECTIONS) {
-                            scope.launch {
-                                snackbarHostState.showSnackbar("Maximum $MAX_SECTIONS sections reached")
-                            }
-                        } else {
-                            viewModel.loadAvailableSections(sections)
-                            showAddSectionSheet = true
-                        }
-                    }
+                    onEditClick = if (sections.size > 1) {
+                        { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_SECTIONS)) }
+                    } else null
                 )
             }
 
@@ -164,24 +170,30 @@ fun SectionHeadScreen(
                 SectionItem(
                     sha = sha,
                     isContactInfo = sha.headBaseId == 1,
-                    onClick = {
-                        navController.navigate(childRoute(sha))
-                    },
+                    onClick = { navController.navigate(childRoute(sha)) },
                     onToggleEnable = { viewModel.toggleEnable(sha) },
                     onDelete = { deleteTarget = sha }
                 )
                 HorizontalDivider()
             }
 
+            // ── Add New Section ───────────────────────────────────────────────
+            if (availableSections.isNotEmpty()) {
+                item {
+                    AddItemRow(label = "Add New Section") {
+                        showAddSectionSheet = true
+                    }
+                    HorizontalDivider()
+                }
+            }
+
             // ── Add-ons group header ──────────────────────────────────────────
             item {
-                Spacer(Modifier.height(8.dp))
                 GroupHeader(
                     title = "Add-ons",
-                    onAddClick = {
-                        viewModel.loadAvailableAddons(addons)
-                        showAddAddonSheet = true
-                    }
+                    onEditClick = if (addons.size > 1) {
+                        { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_ADDONS)) }
+                    } else null
                 )
             }
 
@@ -190,13 +202,28 @@ fun SectionHeadScreen(
                 SectionItem(
                     sha = sha,
                     isContactInfo = false,
-                    onClick = {
-                        navController.navigate(childRoute(sha))
-                    },
+                    onClick = { navController.navigate(childRoute(sha)) },
                     onToggleEnable = { viewModel.toggleEnable(sha) },
                     onDelete = { deleteTarget = sha }
                 )
                 HorizontalDivider()
+            }
+
+            // ── Add New Add-on (only when available) ─────────────────────────
+            if (availableAddons.isNotEmpty()) {
+                item {
+                    AddItemRow(label = "Add New Add-on") {
+                        showAddAddonSheet = true
+                    }
+                    HorizontalDivider()
+                }
+            }
+
+            // ── Complete group header ──────────────────────────────────────────
+            item {
+                GroupHeader(
+                    title = "Complete"
+                )
             }
 
             // ── Generate + View/Share buttons ─────────────────────────────────
@@ -211,20 +238,6 @@ fun SectionHeadScreen(
                     }
                 )
                 Spacer(Modifier.height(16.dp))
-            }
-
-            // AdMob banner placeholder — replaced in Step 30
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
         }
     }
@@ -314,6 +327,7 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .defaultMinSize(minHeight = 72.dp)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -332,8 +346,9 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
             Text(
                 text = "Resume Format",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.primary
             )
+            Spacer(Modifier.size(4.dp))
             Text(
                 text = formatTitle.ifEmpty { "Select format" },
                 style = MaterialTheme.typography.bodyLarge,
@@ -352,29 +367,57 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
 // ── Group header ──────────────────────────────────────────────────────────────
 
 @Composable
-private fun GroupHeader(title: String, onAddClick: () -> Unit) {
+private fun GroupHeader(
+    title: String,
+    onEditClick: (() -> Unit)? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .defaultMinSize(minHeight = 48.dp)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier.weight(1f)
         )
-        IconButton(onClick = onAddClick, modifier = Modifier.size(32.dp)) {
-            Icon(
-                Icons.Default.Add,
-                contentDescription = "Add $title",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
+        if (onEditClick != null) {
+            Button(onClick = onEditClick) {
+                Text("Edit", style = MaterialTheme.typography.labelMedium)
+            }
         }
+    }
+}
+
+// ── Add item row ──────────────────────────────────────────────────────────────
+
+@Composable
+private fun AddItemRow(label: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            Icons.Default.Add,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
     }
 }
 
@@ -394,7 +437,7 @@ private fun SectionItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(start = 16.dp, end = 4.dp, top = 12.dp, bottom = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         val titleColor = if (sha.isEnable) MaterialTheme.colorScheme.onSurface
@@ -418,19 +461,28 @@ private fun SectionItem(
         }
 
         if (isContactInfo) {
-            // Contact Info: only chevron — no popup menu
-            Icon(
-                Icons.AutoMirrored.Filled.ArrowForwardIos,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(16.dp),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            // Contact Info: only chevron — sized to match IconButton's 48 dp touch target
+            Box(
+                modifier = Modifier.size(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         } else {
             Box {
-                IconButton(onClick = { menuExpanded = true }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clickable { menuExpanded = true },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.MoreVert, contentDescription = "Options",
+                        modifier = Modifier.size(24.dp))
                 }
                 DropdownMenu(
                     expanded = menuExpanded,
@@ -507,7 +559,7 @@ private fun AddSectionSheet(
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
         )
@@ -528,11 +580,11 @@ private fun AddSectionSheet(
                         text = sample.title,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(horizontal = 16.dp, vertical = 6.dp)
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
                     )
                 } else {
                     Row(
@@ -559,5 +611,258 @@ private fun AddSectionSheet(
             }
         }
         Spacer(Modifier.height(24.dp))
+    }
+}
+
+// ── Preview data ──────────────────────────────────────────────────────────────
+
+private val previewSections = listOf(
+    SectionHeadAdded(id = 1, profileId = 1, groupBaseId = 1, headBaseId = 1, sampleDataId = null, title = "Contact Information", isEnable = true,  indexPosition = 0),
+    SectionHeadAdded(id = 2, profileId = 1, groupBaseId = 1, headBaseId = 2, sampleDataId = null, title = "Work Experience",     isEnable = true,  indexPosition = 1),
+    SectionHeadAdded(id = 3, profileId = 1, groupBaseId = 1, headBaseId = 3, sampleDataId = null, title = "Education",           isEnable = true,  indexPosition = 2),
+    SectionHeadAdded(id = 4, profileId = 1, groupBaseId = 1, headBaseId = 6, sampleDataId = null, title = "Skills",              isEnable = false, indexPosition = 3),
+)
+
+private val previewAddons = listOf(
+    SectionHeadAdded(id = 5, profileId = 1, groupBaseId = 2, headBaseId = 8, sampleDataId = null, title = "Cover Letter", isEnable = true, indexPosition = 0),
+)
+
+private val previewAvailableSections = listOf(
+    SectionHeadSampleData(id = -1, title = "Standard",        isEnable = true, isDefault = false, groupName = "Standard", sectionHeadBaseId = 0, sectionHeadGroupBaseId = 1, indexPosition = 0),
+    SectionHeadSampleData(id = 1,  title = "Accomplishments", isEnable = true, isDefault = false, groupName = "Standard", sectionHeadBaseId = 4, sectionHeadGroupBaseId = 1, indexPosition = 1),
+    SectionHeadSampleData(id = 2,  title = "Projects",        isEnable = true, isDefault = false, groupName = "Standard", sectionHeadBaseId = 5, sectionHeadGroupBaseId = 1, indexPosition = 2),
+    SectionHeadSampleData(id = -2, title = "Custom",          isEnable = true, isDefault = false, groupName = "Custom",   sectionHeadBaseId = 0, sectionHeadGroupBaseId = 1, indexPosition = 3),
+    SectionHeadSampleData(id = 3,  title = "Languages",       isEnable = true, isDefault = false, groupName = "Custom",   sectionHeadBaseId = 7, sectionHeadGroupBaseId = 1, indexPosition = 4),
+)
+
+private val previewAvailableAddons = listOf(
+    SectionHeadSampleData(id = -1, title = "Add-ons",    isEnable = true, isDefault = false, groupName = "Add-ons", sectionHeadBaseId = 0, sectionHeadGroupBaseId = 2, indexPosition = 0),
+    SectionHeadSampleData(id = 9,  title = "References", isEnable = true, isDefault = false, groupName = "Add-ons", sectionHeadBaseId = 9, sectionHeadGroupBaseId = 2, indexPosition = 1),
+)
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Head Screen")
+@Composable
+private fun SectionHeadScreenPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Software Engineer") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            },
+            bottomBar = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Ad", style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.spacedBy(0.dp)
+            ) {
+                item {
+                    ResumeFormatRow(formatTitle = "Classic", onClick = {})
+                    HorizontalDivider()
+                }
+                item {
+                    GroupHeader(
+                        title = "Sections",
+                        onEditClick = if (previewSections.size > 1) {{}} else null
+                    )
+                }
+                items(previewSections, key = { it.id }) { sha ->
+                    SectionItem(
+                        sha = sha,
+                        isContactInfo = sha.headBaseId == 1,
+                        onClick = {},
+                        onToggleEnable = {},
+                        onDelete = {}
+                    )
+                    HorizontalDivider()
+                }
+                if (previewAvailableSections.isNotEmpty()) {
+                    item {
+                        AddItemRow(label = "Add New Section", onClick = {})
+                        HorizontalDivider()
+                    }
+                }
+                item {
+                    GroupHeader(
+                        title = "Add-ons",
+                        onEditClick = if (previewAddons.size > 1) {{}} else null
+                    )
+                }
+                items(previewAddons, key = { it.id }) { sha ->
+                    SectionItem(
+                        sha = sha,
+                        isContactInfo = false,
+                        onClick = {},
+                        onToggleEnable = {},
+                        onDelete = {}
+                    )
+                    HorizontalDivider()
+                }
+                if (previewAvailableAddons.isNotEmpty()) {
+                    item {
+                        AddItemRow(label = "Add New Add-on", onClick = {})
+                        HorizontalDivider()
+                    }
+                }
+                item {
+                    GroupHeader(
+                        title = "Complete"
+                    )
+                }
+                item {
+                    Spacer(Modifier.height(16.dp))
+                    ActionButtons(onGenerate = {}, onViewShare = {})
+                    Spacer(Modifier.height(16.dp))
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Resume Format Row")
+@Composable
+private fun ResumeFormatRowPreview() {
+    SmartResumeTheme {
+        ResumeFormatRow(formatTitle = "Classic", onClick = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Group Header - No Edit")
+@Composable
+private fun GroupHeaderPreview() {
+    SmartResumeTheme {
+        GroupHeader(title = "Sections")
+    }
+}
+
+@Preview(showBackground = true, name = "Group Header - With Edit")
+@Composable
+private fun GroupHeaderWithEditPreview() {
+    SmartResumeTheme {
+        GroupHeader(title = "Sections", onEditClick = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Add Item Row")
+@Composable
+private fun AddItemRowPreview() {
+    SmartResumeTheme {
+        Column {
+            AddItemRow(label = "Add New Section", onClick = {})
+            HorizontalDivider()
+            AddItemRow(label = "Add New Add-on", onClick = {})
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Section Item - Contact Info")
+@Composable
+private fun SectionItemContactInfoPreview() {
+    SmartResumeTheme {
+        Column {
+            SectionItem(sha = previewSections[0], isContactInfo = true,
+                onClick = {}, onToggleEnable = {}, onDelete = {})
+            HorizontalDivider()
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Section Item - Enabled")
+@Composable
+private fun SectionItemEnabledPreview() {
+    SmartResumeTheme {
+        Column {
+            SectionItem(sha = previewSections[1], isContactInfo = false,
+                onClick = {}, onToggleEnable = {}, onDelete = {})
+            HorizontalDivider()
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Section Item - Disabled")
+@Composable
+private fun SectionItemDisabledPreview() {
+    SmartResumeTheme {
+        Column {
+            SectionItem(sha = previewSections[3], isContactInfo = false,
+                onClick = {}, onToggleEnable = {}, onDelete = {})
+            HorizontalDivider()
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Action Buttons")
+@Composable
+private fun ActionButtonsPreview() {
+    SmartResumeTheme {
+        ActionButtons(onGenerate = {}, onViewShare = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Add Section Sheet")
+@Composable
+private fun AddSectionSheetPreview() {
+    SmartResumeTheme {
+        AddSectionSheet(
+            title = "Add New Section",
+            items = previewAvailableSections,
+            onItemClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Add Section Sheet - Empty")
+@Composable
+private fun AddSectionSheetEmptyPreview() {
+    SmartResumeTheme {
+        AddSectionSheet(title = "Add New Section", items = emptyList(), onItemClick = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Delete Section Dialog")
+@Composable
+private fun DeleteSectionDialogPreview() {
+    SmartResumeTheme {
+        AlertDialog(
+            onDismissRequest = {},
+            title = { Text("Delete Section") },
+            text  = { Text("Delete \"Work Experience\"? All data in this section will be permanently removed.") },
+            confirmButton = {
+                Button(
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                ) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(onClick = {}) { Text("Cancel") }
+            }
+        )
     }
 }

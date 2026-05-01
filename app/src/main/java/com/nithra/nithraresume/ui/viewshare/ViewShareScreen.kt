@@ -49,6 +49,7 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.navigation.Screen
 import java.io.File
 import java.text.DecimalFormat
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,6 +83,7 @@ fun ViewShareScreen(
                 )
             )
         },
+        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         when (val state = uiState) {
