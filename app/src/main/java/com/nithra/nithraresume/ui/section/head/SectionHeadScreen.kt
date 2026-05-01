@@ -642,6 +642,11 @@ private val previewAvailableSections = listOf(
     SectionHeadSampleData(id = 3,  title = "Languages",       isEnable = true, isDefault = false, groupName = "Custom",   sectionHeadBaseId = 7, sectionHeadGroupBaseId = 1, indexPosition = 4),
 )
 
+private val previewAvailableAddons = listOf(
+    SectionHeadSampleData(id = -1, title = "Add-ons",    isEnable = true, isDefault = false, groupName = "Add-ons", sectionHeadBaseId = 0, sectionHeadGroupBaseId = 2, indexPosition = 0),
+    SectionHeadSampleData(id = 9,  title = "References", isEnable = true, isDefault = false, groupName = "Add-ons", sectionHeadBaseId = 9, sectionHeadGroupBaseId = 2, indexPosition = 1),
+)
+
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
