@@ -466,3 +466,9 @@ private fun Child2ListItemPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, name = "Child2 Group Header - No Edit")
+@Composable
+private fun Child2GroupHeaderNoEditPreview() {
+    SmartResumeTheme { Child2GroupHeader(title = "Entries") }
+}
