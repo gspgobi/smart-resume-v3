@@ -159,14 +159,6 @@ fun SectionChild3Screen(
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
         }
     }

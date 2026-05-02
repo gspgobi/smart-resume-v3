@@ -662,18 +662,6 @@ private fun SectionHeadScreenPreview() {
                         navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-            },
-            bottomBar = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
         ) { innerPadding ->
             LazyColumn(
