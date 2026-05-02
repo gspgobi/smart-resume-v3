@@ -296,3 +296,20 @@ private fun Child2GroupHeader(
         }
     }
 }
+
+// ── Preview data ──────────────────────────────────────────────────────────────
+
+private val previewChild2Items = listOf(
+    SectionChild2(id = 1, sectionHeadAddedId = 1, indexPosition = 0,
+        workRole = "Senior Android Developer", companyName = "Google",
+        subtitle = "", workPeriod = "Jan 2021 – Present",
+        accomplishments = "", accomplishmentsBulletType = ""),
+    SectionChild2(id = 2, sectionHeadAddedId = 1, indexPosition = 1,
+        workRole = "Android Developer", companyName = "Acme Corp",
+        subtitle = "", workPeriod = "Mar 2018 – Dec 2020",
+        accomplishments = "", accomplishmentsBulletType = ""),
+    SectionChild2(id = 3, sectionHeadAddedId = 1, indexPosition = 2,
+        workRole = "", companyName = "Startup Inc",
+        subtitle = "", workPeriod = "2017",
+        accomplishments = "", accomplishmentsBulletType = ""),
+)
