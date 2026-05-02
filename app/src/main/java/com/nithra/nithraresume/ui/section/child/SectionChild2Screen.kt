@@ -313,3 +313,69 @@ private val previewChild2Items = listOf(
         subtitle = "", workPeriod = "2017",
         accomplishments = "", accomplishmentsBulletType = ""),
 )
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 2 - Empty")
+@Composable
+private fun SectionChild2EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Work Experience") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            ) {
+                item {
+                    OutlinedTextField(
+                        value = "Work Experience", onValueChange = {},
+                        label = { Text("Section Title") },
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        singleLine = true
+                    )
+                    HorizontalDivider()
+                }
+                item { Child2GroupHeader(title = "Entries") }
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp))
+                        Text("Add New Entry",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(start = 8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
