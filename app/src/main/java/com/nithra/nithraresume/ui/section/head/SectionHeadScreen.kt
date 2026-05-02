@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -388,8 +387,13 @@ private fun GroupHeader(
             modifier = Modifier.weight(1f)
         )
         if (onEditClick != null) {
-            Button(onClick = onEditClick) {
-                Text("Edit", style = MaterialTheme.typography.labelMedium)
+            TextButton(
+                onClick = onEditClick,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Edit", style = MaterialTheme.typography.labelLarge)
             }
         }
     }
