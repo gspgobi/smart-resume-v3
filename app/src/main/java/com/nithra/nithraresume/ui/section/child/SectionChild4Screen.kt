@@ -46,6 +46,7 @@ import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.BULLET_NONE
+import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,17 +152,15 @@ fun SectionChild4Screen(
             )
             OutlinedTextField(
                 value = date,
-                onValueChange = {},
-                readOnly = true,
+                onValueChange = { date = it },
                 label = { Text("Date") },
                 trailingIcon = {
                     IconButton(onClick = { showDateFormatDialog = true }) {
                         Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date format")
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showDateFormatDialog = true }
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
             OutlinedTextField(
                 value = place,
@@ -202,6 +201,7 @@ fun SectionChild4Screen(
     if (showDateFormatDialog) {
         DateFormatPickerDialog(
             currentFormat = dateDateFormat,
+            currentDateMs = DateTimeUtils.parseDateToUtcMillis(date, dateDateFormat),
             onConfirm = { fmt, dateStr ->
                 dateDateFormat = fmt
                 date = dateStr

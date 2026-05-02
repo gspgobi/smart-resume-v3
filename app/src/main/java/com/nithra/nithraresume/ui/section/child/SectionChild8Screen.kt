@@ -1,7 +1,6 @@
 package com.nithra.nithraresume.ui.section.child
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
+import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,17 +129,15 @@ fun SectionChild8Screen(
             )
             OutlinedTextField(
                 value = date,
-                onValueChange = {},
-                readOnly = true,
+                onValueChange = { date = it },
                 label = { Text("Date") },
                 trailingIcon = {
                     IconButton(onClick = { showDateFormatDialog = true }) {
                         Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date format")
                     }
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showDateFormatDialog = true }
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
             OutlinedTextField(
                 value = address,
@@ -161,6 +159,7 @@ fun SectionChild8Screen(
     if (showDateFormatDialog) {
         DateFormatPickerDialog(
             currentFormat = dateDateFormat,
+            currentDateMs = DateTimeUtils.parseDateToUtcMillis(date, dateDateFormat),
             onConfirm = { fmt, dateStr ->
                 dateDateFormat = fmt
                 date = dateStr
