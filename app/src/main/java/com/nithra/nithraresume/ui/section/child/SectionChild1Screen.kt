@@ -70,7 +70,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
 import com.nithra.nithraresume.utils.DateTimeUtils
@@ -447,6 +449,86 @@ private fun UserImageSection(
                     Spacer(Modifier.width(4.dp))
                     Text("Delete")
                 }
+            }
+        }
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 1 - Empty")
+@Composable
+private fun SectionChild1EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Contact Information") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Contact Information", onValueChange = {},
+                    label = { Text("Section Title") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Contact Details")
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Full Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 2, maxLines = 4)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Phone") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Gender (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ALL_GENDERS.forEach { g ->
+                        RadioButton(selected = false, onClick = {})
+                        Text(g, modifier = Modifier.padding(end = 16.dp))
+                    }
+                }
+                SectionDivider("Date of Birth (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = "", onValueChange = {},
+                        label = { Text("Date of Birth") }, modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Nationality (optional)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Profile Photo (optional)")
+                UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
             }
         }
     }
