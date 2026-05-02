@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -23,6 +25,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,8 +56,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.ui.navigation.Screen
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
@@ -128,6 +133,15 @@ fun SectionChild2Screen(
                 HorizontalDivider()
             }
 
+            item {
+                Child2GroupHeader(
+                    title = "Entries",
+                    onEditClick = if (items.size > 1) {
+                        { navController.navigate(Screen.ReorderChild2.createRoute(viewModel.sectionHeadAddedId)) }
+                    } else null
+                )
+            }
+
             items(items.sortedBy { it.indexPosition }, key = { it.id }) { item ->
                 Child2ListItem(
                     item = item,
@@ -149,21 +163,28 @@ fun SectionChild2Screen(
                             enabled = viewModel.canAddItem(items.size),
                             onClick = {
                                 navController.navigate(
-                                    Screen.SectionChild2Sub.createRoute(viewModel.sectionHeadAddedId, -1)
+                                    Screen.SectionChild2Sub.createRoute(
+                                        viewModel.sectionHeadAddedId,
+                                        -1
+                                    )
                                 )
                             }
                         )
                         .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(Icons.Default.AddBox, contentDescription = null,
-                        tint = if (viewModel.canAddItem(items.size))
-                            MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.outline,
-                        modifier = Modifier.size(20.dp))
+                    if (viewModel.canAddItem(items.size)) {
+                        Icon(
+                            Icons.Default.AddBox, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                    }
                     Text(
                         text = if (viewModel.canAddItem(items.size)) "Add New Entry"
-                               else "Maximum $MAX_CHILD_ITEMS entries reached",
+                        else "Maximum $MAX_CHILD_ITEMS entries reached",
                         style = MaterialTheme.typography.bodyMedium,
                         color = if (viewModel.canAddItem(items.size))
                             MaterialTheme.colorScheme.primary
@@ -171,6 +192,7 @@ fun SectionChild2Screen(
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
+                HorizontalDivider()
             }
         }
     }
@@ -237,6 +259,39 @@ private fun Child2ListItem(
                     leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
                     onClick = { menuExpanded = false; onDelete() }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Child2GroupHeader(
+    title: String,
+    onEditClick: (() -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 48.dp)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.weight(1f)
+        )
+        if (onEditClick != null) {
+            TextButton(
+                onClick = onEditClick,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Edit", style = MaterialTheme.typography.labelLarge)
             }
         }
     }
