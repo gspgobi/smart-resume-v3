@@ -28,6 +28,8 @@ import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Image
+import androidx.activity.compose.BackHandler
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -71,6 +73,7 @@ import coil.compose.AsyncImage
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
+import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
 
@@ -97,26 +100,47 @@ fun SectionChild1Screen(
     var dobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
     var nationality by rememberSaveable { mutableStateOf("") }
 
+    // Original snapshots for dirty detection
+    var origTitle by rememberSaveable { mutableStateOf("") }
+    var origName by rememberSaveable { mutableStateOf("") }
+    var origAddress by rememberSaveable { mutableStateOf("") }
+    var origEmail by rememberSaveable { mutableStateOf("") }
+    var origPhone by rememberSaveable { mutableStateOf("") }
+    var origGender by rememberSaveable { mutableStateOf("") }
+    var origDob by rememberSaveable { mutableStateOf("") }
+    var origDobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
+    var origNationality by rememberSaveable { mutableStateOf("") }
+
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
 
     // Populate fields once both sha and child1 are loaded to avoid a race
     // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
     LaunchedEffect(sha, child1) {
         if (!fieldsInitialised && sha != null && child1 != null) {
-            title = sha!!.title
+            title = sha!!.title; origTitle = title
             child1!!.let { c ->
-                name = c.name
-                address = c.address
-                email = c.email
-                phone = c.phone
-                gender = c.gender
-                dob = c.dob
+                name = c.name; origName = name
+                address = c.address; origAddress = address
+                email = c.email; origEmail = email
+                phone = c.phone; origPhone = phone
+                gender = c.gender; origGender = gender
+                dob = c.dob; origDob = dob
                 if (c.dobDateFormat.isNotEmpty()) dobFormat = c.dobDateFormat
-                nationality = c.nationality
+                origDobFormat = dobFormat
+                nationality = c.nationality; origNationality = nationality
             }
             fieldsInitialised = true
         }
     }
+
+    val isDirty = fieldsInitialised && (
+        title != origTitle || name != origName || address != origAddress ||
+        email != origEmail || phone != origPhone || gender != origGender ||
+        dob != origDob || dobFormat != origDobFormat || nationality != origNationality
+    )
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -147,7 +171,9 @@ fun SectionChild1Screen(
             TopAppBar(
                 title = { Text(title.ifEmpty { "Contact Information" }) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -229,7 +255,7 @@ fun SectionChild1Screen(
                 onValueChange = { address = it },
                 label = { Text("Address") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 2, maxLines = 3,
+                minLines = 2, maxLines = 4,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
@@ -279,11 +305,11 @@ fun SectionChild1Screen(
             ) {
                 OutlinedTextField(
                     value = dob,
-                    onValueChange = {},
+                    onValueChange = { dob = it },
                     label = { Text("Date of Birth") },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
-                    readOnly = true
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
                 IconButton(onClick = { showDateDialog = true }) {
                     Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
@@ -318,10 +344,36 @@ fun SectionChild1Screen(
         }
     }
 
+    // Unsaved changes dialog
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    focusManager.clearFocus()
+                    viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
+        )
+    }
+
     // Date picker dialog
     if (showDateDialog) {
         DateFormatPickerDialog(
             currentFormat = dobFormat,
+            currentDateMs = DateTimeUtils.parseDateToUtcMillis(dob, dobFormat),
             onConfirm = { fmt, dateStr ->
                 dobFormat = fmt
                 dob = dateStr
