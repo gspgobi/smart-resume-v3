@@ -42,4 +42,26 @@ object DateTimeUtils {
      */
     fun isValidPattern(pattern: String): Boolean =
         runCatching { SimpleDateFormat(pattern, Locale.getDefault()) }.isSuccess
+
+    /**
+     * Parse [dateStr] using [format] and return UTC-midnight millis suitable for
+     * Material3 DatePicker. Returns null if [dateStr] is blank or doesn't match [format].
+     */
+    fun parseDateToUtcMillis(dateStr: String, format: String): Long? {
+        if (dateStr.isBlank()) return null
+        return runCatching {
+            val sdf = SimpleDateFormat(format, Locale.getDefault()).apply { isLenient = false }
+            val parsed = sdf.parse(dateStr) ?: return null
+            val local = java.util.Calendar.getInstance().also { it.time = parsed }
+            val year = local.get(java.util.Calendar.YEAR)
+            if (year !in 1900..2100) return null
+            java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC")).apply {
+                set(year,
+                    local.get(java.util.Calendar.MONTH),
+                    local.get(java.util.Calendar.DAY_OF_MONTH),
+                    0, 0, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+            }.timeInMillis
+        }.getOrNull()
+    }
 }
