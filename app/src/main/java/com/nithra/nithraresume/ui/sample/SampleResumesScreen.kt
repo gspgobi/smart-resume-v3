@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -250,7 +251,7 @@ private fun SampleResumeItem(
             modifier = Modifier.size(40.dp)
         ) {
             Icon(
-                Icons.Default.AddCircleOutline,
+                Icons.Default.AddBox,
                 contentDescription = "Add",
                 tint = MaterialTheme.colorScheme.primary
             )

@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
@@ -146,7 +147,7 @@ fun SectionChild3Screen(
                         .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = null,
+                    Icon(Icons.Default.AddBox, contentDescription = null,
                         tint = if (viewModel.canAddItem(items.size)) MaterialTheme.colorScheme.primary
                                else MaterialTheme.colorScheme.outline,
                         modifier = Modifier.size(20.dp))
