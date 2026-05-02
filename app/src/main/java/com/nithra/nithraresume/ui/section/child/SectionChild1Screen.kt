@@ -533,3 +533,82 @@ private fun SectionChild1EmptyPreview() {
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 1 - Filled")
+@Composable
+private fun SectionChild1FilledPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Contact Information") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Contact Information", onValueChange = {},
+                    label = { Text("Section Title") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Contact Details")
+                OutlinedTextField(value = "John Doe", onValueChange = {},
+                    label = { Text("Full Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "123 Main Street, Springfield", onValueChange = {},
+                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 2, maxLines = 4)
+                OutlinedTextField(value = "john.doe@email.com", onValueChange = {},
+                    label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "+1 555 123 4567", onValueChange = {},
+                    label = { Text("Phone") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Gender (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ALL_GENDERS.forEach { g ->
+                        RadioButton(selected = g == "Male", onClick = {})
+                        Text(g, modifier = Modifier.padding(end = 16.dp))
+                    }
+                    TextButton(onClick = {}) { Text("Clear") }
+                }
+                SectionDivider("Date of Birth (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = "15 Jan 1990", onValueChange = {},
+                        label = { Text("Date of Birth") }, modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "American", onValueChange = {},
+                    label = { Text("Nationality (optional)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Profile Photo (optional)")
+                UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
+            }
+        }
+    }
+}
