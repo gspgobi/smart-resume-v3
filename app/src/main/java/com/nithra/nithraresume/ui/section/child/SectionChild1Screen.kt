@@ -612,3 +612,16 @@ private fun SectionChild1FilledPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, name = "Section Divider")
+@Composable
+private fun SectionDividerPreview() {
+    SmartResumeTheme {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            SectionDivider("Contact Details")
+            SectionDivider("Gender (optional)")
+            SectionDivider("Date of Birth (optional)")
+            SectionDivider("Profile Photo (optional)")
+        }
+    }
+}
