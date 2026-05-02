@@ -447,3 +447,22 @@ private fun SectionChild2FilledPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, name = "Child2 List Item")
+@Composable
+private fun Child2ListItemPreview() {
+    SmartResumeTheme {
+        Column {
+            Child2ListItem(item = previewChild2Items[0], onClick = {}, onDelete = {})
+            HorizontalDivider()
+            Child2ListItem(item = previewChild2Items[2], onClick = {}, onDelete = {})
+            HorizontalDivider()
+            Child2ListItem(
+                item = SectionChild2(id = 4, sectionHeadAddedId = 1, indexPosition = 3,
+                    workRole = "", companyName = "", subtitle = "", workPeriod = "",
+                    accomplishments = "", accomplishmentsBulletType = ""),
+                onClick = {}, onDelete = {}
+            )
+        }
+    }
+}
