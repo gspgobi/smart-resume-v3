@@ -625,3 +625,13 @@ private fun SectionDividerPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, name = "User Image Section - Empty")
+@Composable
+private fun UserImageSectionEmptyPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
+        }
+    }
+}
