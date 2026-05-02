@@ -490,15 +490,6 @@ private fun UserProfileScreenListPreview() {
                 FloatingActionButton(onClick = {}, containerColor = MaterialTheme.colorScheme.primary) {
                     Icon(Icons.Default.Add, contentDescription = "Add profile", tint = MaterialTheme.colorScheme.onPrimary)
                 }
-            },
-            bottomBar = {
-                Box(
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
         ) { innerPadding ->
             LazyColumn(
@@ -558,16 +549,7 @@ private fun UserProfileScreenEmptyPreview() {
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = {}, containerColor = MaterialTheme.colorScheme.primary) {
-                    Icon(Icons.Default.Add, contentDescription = "Add profile", tint = MaterialTheme.colorScheme.onPrimary)
-                }
-            },
-            bottomBar = {
-                Box(
-                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(Icons.Default.AddBox, contentDescription = "Add profile", tint = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         ) { innerPadding ->
