@@ -1,8 +1,10 @@
 package com.nithra.nithraresume.ui.section.child
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,7 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -59,22 +64,40 @@ fun SectionChild2SubScreen(
     var workPeriod by rememberSaveable { mutableStateOf("") }
     var accomplishments by rememberSaveable { mutableStateOf("") }
     var bulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
+
+    var origWorkRole by rememberSaveable { mutableStateOf("") }
+    var origCompanyName by rememberSaveable { mutableStateOf("") }
+    var origSubtitle by rememberSaveable { mutableStateOf("") }
+    var origWorkPeriod by rememberSaveable { mutableStateOf("") }
+    var origAccomplishments by rememberSaveable { mutableStateOf("") }
+    var origBulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
+
     var initialised by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
     LaunchedEffect(item) {
         if (!initialised && item != null) {
-            workRole = item!!.workRole
-            companyName = item!!.companyName
-            subtitle = item!!.subtitle
-            workPeriod = item!!.workPeriod
-            accomplishments = item!!.accomplishments
+            workRole = item!!.workRole;         origWorkRole = workRole
+            companyName = item!!.companyName;   origCompanyName = companyName
+            subtitle = item!!.subtitle;         origSubtitle = subtitle
+            workPeriod = item!!.workPeriod;     origWorkPeriod = workPeriod
+            accomplishments = item!!.accomplishments; origAccomplishments = accomplishments
             bulletType = item!!.accomplishmentsBulletType.ifEmpty { BULLET_NONE }
+            origBulletType = bulletType
             initialised = true
         } else if (!initialised && uiState is Child2SubUiState.Ready) {
-            initialised = true // new item
+            initialised = true // new item — no originals needed, all fields start empty
         }
     }
+
+    val isDirty = initialised && (
+        workRole != origWorkRole || companyName != origCompanyName ||
+        subtitle != origSubtitle || workPeriod != origWorkPeriod ||
+        accomplishments != origAccomplishments || bulletType != origBulletType
+    )
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -92,7 +115,9 @@ fun SectionChild2SubScreen(
             TopAppBar(
                 title = { Text(if (item != null) "Edit Entry" else "New Entry") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -181,6 +206,30 @@ fun SectionChild2SubScreen(
                 onSelected = { bulletType = it }
             )
         }
+    }
+
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    viewModel.save(workRole, companyName, subtitle,
+                        workPeriod, accomplishments, bulletType)
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
+        )
     }
 }
 
