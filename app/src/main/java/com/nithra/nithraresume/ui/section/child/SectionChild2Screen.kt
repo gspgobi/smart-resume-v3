@@ -1,5 +1,6 @@
 package com.nithra.nithraresume.ui.section.child
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -75,15 +76,22 @@ fun SectionChild2Screen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var title by rememberSaveable { mutableStateOf("") }
+    var origTitle by rememberSaveable { mutableStateOf("") }
     var titleInitialised by rememberSaveable { mutableStateOf(false) }
     var deleteTarget by remember { mutableStateOf<SectionChild2?>(null) }
 
     LaunchedEffect(sha) {
         if (!titleInitialised && sha != null) {
             title = sha!!.title
+            origTitle = title
             titleInitialised = true
         }
     }
+
+    val isDirty = titleInitialised && title != origTitle
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(snackbar) {
         snackbar?.let { snackbarHostState.showSnackbar(it); viewModel.clearSnackbar() }
@@ -94,7 +102,9 @@ fun SectionChild2Screen(
             TopAppBar(
                 title = { Text(title.ifEmpty { "Work Experience" }) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -195,6 +205,30 @@ fun SectionChild2Screen(
                 HorizontalDivider()
             }
         }
+    }
+
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    viewModel.saveTitle(title)
+                    navController.popBackStack()
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
+        )
     }
 
     if (deleteTarget != null) {
