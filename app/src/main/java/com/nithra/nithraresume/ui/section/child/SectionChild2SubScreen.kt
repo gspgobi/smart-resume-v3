@@ -248,3 +248,66 @@ private fun SectionChild2SubNewPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Child2 Sub - Edit Entry")
+@Composable
+private fun SectionChild2SubEditPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Edit Entry") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Senior Android Developer", onValueChange = {},
+                    label = { Text("Work Role / Position") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "Google", onValueChange = {},
+                    label = { Text("Company Name") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "Android Platform Team", onValueChange = {},
+                    label = { Text("Subtitle (optional)") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "Jan 2021 – Present", onValueChange = {},
+                    label = { Text("Work Period") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(
+                    value = "Led development of core Android features\nImproved app performance by 40%\nMentored junior developers",
+                    onValueChange = {},
+                    label = { Text("Accomplishments / Description") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
+            }
+        }
+    }
+}
