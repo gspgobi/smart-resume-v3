@@ -96,6 +96,16 @@ fun SectionChild2SubScreen(
         accomplishments != origAccomplishments || bulletType != origBulletType
     )
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+    var workRoleError by rememberSaveable { mutableStateOf(false) }
+    var companyNameError by rememberSaveable { mutableStateOf(false) }
+
+    fun attemptSave() {
+        workRoleError = workRole.isBlank()
+        companyNameError = companyName.isBlank()
+        if (!workRoleError && !companyNameError) {
+            viewModel.save(workRole, companyName, subtitle, workPeriod, accomplishments, bulletType)
+        }
+    }
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
@@ -122,10 +132,7 @@ fun SectionChild2SubScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        viewModel.save(workRole, companyName, subtitle,
-                            workPeriod, accomplishments, bulletType)
-                    }) {
+                    IconButton(onClick = { attemptSave() }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -168,17 +175,21 @@ fun SectionChild2SubScreen(
         ) {
             OutlinedTextField(
                 value = workRole,
-                onValueChange = { workRole = it },
+                onValueChange = { workRole = it; if (it.isNotBlank()) workRoleError = false },
                 label = { Text("Work Role / Position") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = workRoleError,
+                supportingText = if (workRoleError) {{ Text("Work Role is required") }} else null
             )
             OutlinedTextField(
                 value = companyName,
-                onValueChange = { companyName = it },
+                onValueChange = { companyName = it; if (it.isNotBlank()) companyNameError = false },
                 label = { Text("Company Name") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = companyNameError,
+                supportingText = if (companyNameError) {{ Text("Company Name is required") }} else null
             )
             OutlinedTextField(
                 value = subtitle,
@@ -216,8 +227,7 @@ fun SectionChild2SubScreen(
             confirmButton = {
                 Button(onClick = {
                     showUnsavedDialog = false
-                    viewModel.save(workRole, companyName, subtitle,
-                        workPeriod, accomplishments, bulletType)
+                    attemptSave()
                 }) { Text("Save") }
             },
             dismissButton = {
