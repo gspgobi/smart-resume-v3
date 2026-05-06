@@ -147,7 +147,7 @@ fun SectionChild2Screen(
                 Child2GroupHeader(
                     title = "Entries",
                     onEditClick = if (items.size > 1) {
-                        { navController.navigate(Screen.ReorderChild2.createRoute(viewModel.sectionHeadAddedId)) }
+                        { navController.navigate(Screen.ReorderChild.createRoute(viewModel.sectionHeadAddedId, 2)) }
                     } else null
                 )
             }
