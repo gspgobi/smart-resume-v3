@@ -99,12 +99,9 @@ sealed class Screen(val route: String) {
         fun createRoute(profileId: Int, groupId: Int) = "reorder_sections/$profileId/$groupId"
     }
 
-    data object ReorderChild2 : Screen("reorder_child_2/{sectionHeadAddedId}") {
-        fun createRoute(sectionHeadAddedId: Int) = "reorder_child_2/$sectionHeadAddedId"
-    }
-
-    data object ReorderChild3 : Screen("reorder_child_3/{sectionHeadAddedId}") {
-        fun createRoute(sectionHeadAddedId: Int) = "reorder_child_3/$sectionHeadAddedId"
+    data object ReorderChild : Screen("reorder_child/{sectionHeadAddedId}/{childType}") {
+        fun createRoute(sectionHeadAddedId: Int, childType: Int) =
+            "reorder_child/$sectionHeadAddedId/$childType"
     }
 
     // ── Notification detail ───────────────────────────────────────────────────
