@@ -14,8 +14,7 @@ import com.nithra.nithraresume.ui.notification.NotificationDetailScreen
 import com.nithra.nithraresume.ui.notification.NotificationListScreen
 import com.nithra.nithraresume.ui.profile.UserProfileScreen
 import com.nithra.nithraresume.ui.sample.SampleResumesScreen
-import com.nithra.nithraresume.ui.section.child.ReorderChild2Screen
-import com.nithra.nithraresume.ui.section.child.ReorderChild3Screen
+import com.nithra.nithraresume.ui.section.child.ReorderChildScreen
 import com.nithra.nithraresume.ui.section.child.SectionChild1Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild2Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild2SubScreen
@@ -216,17 +215,13 @@ fun SmartResumeNavGraph(
         }
 
         composable(
-            route = Screen.ReorderChild2.route,
-            arguments = listOf(navArgument("sectionHeadAddedId") { type = NavType.IntType })
+            route = Screen.ReorderChild.route,
+            arguments = listOf(
+                navArgument("sectionHeadAddedId") { type = NavType.IntType },
+                navArgument("childType")          { type = NavType.IntType }
+            )
         ) {
-            ReorderChild2Screen(navController = navController)
-        }
-
-        composable(
-            route = Screen.ReorderChild3.route,
-            arguments = listOf(navArgument("sectionHeadAddedId") { type = NavType.IntType })
-        ) {
-            ReorderChild3Screen(navController = navController)
+            ReorderChildScreen(navController = navController)
         }
 
         // ── Notification detail ───────────────────────────────────────────────
