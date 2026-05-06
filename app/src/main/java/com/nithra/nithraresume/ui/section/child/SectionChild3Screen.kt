@@ -139,7 +139,7 @@ fun SectionChild3Screen(
                 Child3GroupHeader(
                     title = "Entries",
                     onEditClick = if (items.size > 1) {
-                        { navController.navigate(Screen.ReorderChild3.createRoute(viewModel.sectionHeadAddedId)) }
+                        { navController.navigate(Screen.ReorderChild.createRoute(viewModel.sectionHeadAddedId, 3)) }
                     } else null
                 )
             }
