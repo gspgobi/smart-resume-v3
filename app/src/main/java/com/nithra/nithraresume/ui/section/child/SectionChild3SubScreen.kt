@@ -283,6 +283,10 @@ private fun SectionChild3SubNewPreview() {
                             Icon(Icons.Default.Check, contentDescription = "Save",
                                 tint = MaterialTheme.colorScheme.onPrimary)
                         }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -297,6 +301,7 @@ private fun SectionChild3SubNewPreview() {
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -312,6 +317,10 @@ private fun SectionChild3SubNewPreview() {
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Study Period") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Concentrates / Subjects") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
             }
         }
     }
@@ -345,6 +354,10 @@ private fun SectionChild3SubEditPreview() {
                             Icon(Icons.Default.Check, contentDescription = "Save",
                                 tint = MaterialTheme.colorScheme.onPrimary)
                         }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -359,6 +372,7 @@ private fun SectionChild3SubEditPreview() {
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -377,6 +391,7 @@ private fun SectionChild3SubEditPreview() {
                 OutlinedTextField(value = previewItem.concentrates, onValueChange = {},
                     label = { Text("Concentrates / Subjects") },
                     modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
             }
         }
     }
