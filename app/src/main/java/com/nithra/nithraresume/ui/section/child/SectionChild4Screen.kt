@@ -1,5 +1,6 @@
 package com.nithra.nithraresume.ui.section.child
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -26,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -37,6 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -59,6 +64,7 @@ fun SectionChild4Screen(
     val sha by viewModel.sha.collectAsStateWithLifecycle()
     val child4 by viewModel.child4.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
 
     var title by rememberSaveable { mutableStateOf("") }
     var declarationContent by rememberSaveable { mutableStateOf("") }
@@ -66,23 +72,40 @@ fun SectionChild4Screen(
     var date by rememberSaveable { mutableStateOf("") }
     var dateDateFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
     var place by rememberSaveable { mutableStateOf("") }
+
+    var origTitle by rememberSaveable { mutableStateOf("") }
+    var origDeclarationContent by rememberSaveable { mutableStateOf("") }
+    var origBulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
+    var origDate by rememberSaveable { mutableStateOf("") }
+    var origDateFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
+    var origPlace by rememberSaveable { mutableStateOf("") }
+
     var initialised by rememberSaveable { mutableStateOf(false) }
     var showDateFormatDialog by remember { mutableStateOf(false) }
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(sha, child4) {
         if (!initialised && sha != null) {
-            title = sha!!.title
+            title = sha!!.title; origTitle = title
             val c4 = child4
             if (c4 != null) {
-                declarationContent = c4.declarationContent
-                bulletType = c4.declarationContentBulletType.ifEmpty { BULLET_NONE }
-                date = c4.date
-                dateDateFormat = c4.dateDateFormat.ifEmpty { ALL_DATE_FORMATS.first() }
-                place = c4.place
+                declarationContent = c4.declarationContent; origDeclarationContent = declarationContent
+                bulletType = c4.declarationContentBulletType.ifEmpty { BULLET_NONE }; origBulletType = bulletType
+                date = c4.date; origDate = date
+                dateDateFormat = c4.dateDateFormat.ifEmpty { ALL_DATE_FORMATS.first() }; origDateFormat = dateDateFormat
+                place = c4.place; origPlace = place
             }
             initialised = true
         }
     }
+
+    val isDirty = initialised && (
+        title != origTitle || declarationContent != origDeclarationContent ||
+        bulletType != origBulletType || date != origDate ||
+        dateDateFormat != origDateFormat || place != origPlace
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -100,12 +123,15 @@ fun SectionChild4Screen(
             TopAppBar(
                 title = { Text(title.ifEmpty { "Declaration" }) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
                     IconButton(onClick = {
+                        focusManager.clearFocus()
                         viewModel.save(title, declarationContent, bulletType,
                             date, dateDateFormat, place)
                     }) {
@@ -212,6 +238,30 @@ fun SectionChild4Screen(
                 showDateFormatDialog = false
             },
             onDismiss = { showDateFormatDialog = false }
+        )
+    }
+
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    focusManager.clearFocus()
+                    viewModel.save(title, declarationContent, bulletType, date, dateDateFormat, place)
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
         )
     }
 }
