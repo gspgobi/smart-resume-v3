@@ -74,25 +74,15 @@ fun SectionChild5Screen(
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(sha, child5) {
-        if (!initialised && sha != null) {
-            title = sha!!.title; origTitle = title
-            val c5 = child5
-            if (c5 != null) {
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child5UiState.Ready) {
+            sha?.let { title = it.title; origTitle = title }
+            child5?.let { c5 ->
                 content = c5.content; origContent = content
                 bulletType = c5.contentBulletType.ifEmpty { BULLET_NONE }; origBulletType = bulletType
             }
             initialised = true
         }
-    }
-
-    val isDirty = initialised && (
-        title != origTitle || content != origContent || bulletType != origBulletType
-    )
-
-    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
-
-    LaunchedEffect(uiState) {
         when (uiState) {
             is Child5UiState.Saved -> navController.popBackStack()
             is Child5UiState.Error -> {
@@ -102,6 +92,12 @@ fun SectionChild5Screen(
             else -> {}
         }
     }
+
+    val isDirty = initialised && (
+        title != origTitle || content != origContent || bulletType != origBulletType
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     if (showSuggestions) {
         ObjAccompBottomSheet(
