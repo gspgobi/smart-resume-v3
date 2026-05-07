@@ -214,7 +214,9 @@ fun SectionChild2SubScreen(
             )
             BulletTypeDropdown(
                 selected = bulletType,
-                onSelected = { bulletType = it }
+                onSelected = { bulletType = it },
+                primaryText = "Show accomplishments as bullet points",
+                hintText = "(Here new line will be considered as bullet points)"
             )
         }
     }
@@ -301,7 +303,11 @@ private fun SectionChild2SubNewPreview() {
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Accomplishments / Description") },
                     modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
-                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
+                BulletTypeDropdown(
+                    selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show accomplishments as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)"
+                )
             }
         }
     }
@@ -365,7 +371,11 @@ private fun SectionChild2SubEditPreview() {
                     onValueChange = {},
                     label = { Text("Accomplishments / Description") },
                     modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
-                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
+                BulletTypeDropdown(
+                    selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show accomplishments as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)"
+                )
             }
         }
     }
