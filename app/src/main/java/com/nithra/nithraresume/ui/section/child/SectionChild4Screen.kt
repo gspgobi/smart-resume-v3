@@ -1,25 +1,31 @@
 package com.nithra.nithraresume.ui.section.child
 
+import android.net.Uri
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,6 +33,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -44,11 +51,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.ui.navigation.Screen
@@ -87,6 +96,11 @@ fun SectionChild4Screen(
     var showDateFormatDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+    var showDeleteSigDialog by remember { mutableStateOf(false) }
+
+    val imagePicker = rememberLauncherForActivityResult(PickVisualMedia()) { uri: Uri? ->
+        if (uri != null) viewModel.saveSignatureFromUri(uri)
+    }
 
     LaunchedEffect(sha, child4) {
         if (!initialised && sha != null) {
@@ -121,6 +135,8 @@ fun SectionChild4Screen(
             else -> {}
         }
     }
+
+    val sigPath = child4?.signatureImagePath?.takeIf { it.isNotEmpty() }
 
     Scaffold(
         topBar = {
@@ -226,28 +242,67 @@ fun SectionChild4Screen(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-            Row(
+            Text(
+                text = "Signature",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
+                    .height(120.dp)
+                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                if (sigPath != null) {
+                    AsyncImage(
+                        model = sigPath,
+                        contentDescription = "Signature preview",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .padding(8.dp)
+                    )
+                } else {
+                    Text(
+                        text = "No signature added",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = {
                         navController.navigate(
                             Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
                         )
-                    }
-                    .padding(vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Signature",
-                    style = MaterialTheme.typography.bodyLarge,
+                    },
                     modifier = Modifier.weight(1f)
-                )
-                Icon(
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                ) { Text("New Signature") }
+                OutlinedButton(
+                    onClick = {
+                        imagePicker.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
+                    },
+                    modifier = Modifier.weight(1f)
+                ) { Text("Browse Gallery") }
+            }
+
+            if (sigPath != null) {
+                OutlinedButton(
+                    onClick = { showDeleteSigDialog = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    )
+                ) { Text("Delete Signature") }
             }
         }
     }
@@ -262,6 +317,28 @@ fun SectionChild4Screen(
                 showDateFormatDialog = false
             },
             onDismiss = { showDateFormatDialog = false }
+        )
+    }
+
+    if (showDeleteSigDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteSigDialog = false },
+            title = { Text("Delete Signature") },
+            text = { Text("Are you sure you want to delete the signature?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDeleteSigDialog = false
+                        viewModel.deleteSignatureImage()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteSigDialog = false }) { Text("Cancel") }
+            }
         )
     }
 
