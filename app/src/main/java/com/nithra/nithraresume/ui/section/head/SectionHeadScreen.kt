@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -22,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
@@ -387,8 +387,13 @@ private fun GroupHeader(
             modifier = Modifier.weight(1f)
         )
         if (onEditClick != null) {
-            Button(onClick = onEditClick) {
-                Text("Edit", style = MaterialTheme.typography.labelMedium)
+            TextButton(
+                onClick = onEditClick,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Edit", style = MaterialTheme.typography.labelLarge)
             }
         }
     }
@@ -407,7 +412,7 @@ private fun AddItemRow(label: String, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.Center
     ) {
         Icon(
-            Icons.Default.Add,
+            Icons.Default.AddBox,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(20.dp)
@@ -662,18 +667,6 @@ private fun SectionHeadScreenPreview() {
                         navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                     )
                 )
-            },
-            bottomBar = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Ad", style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
             }
         ) { innerPadding ->
             LazyColumn(

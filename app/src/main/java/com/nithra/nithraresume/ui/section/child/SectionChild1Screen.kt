@@ -28,8 +28,11 @@ import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Image
+import androidx.activity.compose.BackHandler
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -68,9 +71,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
+import com.nithra.nithraresume.ui.common.SectionDivider
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
+import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
 
@@ -97,26 +104,47 @@ fun SectionChild1Screen(
     var dobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
     var nationality by rememberSaveable { mutableStateOf("") }
 
+    // Original snapshots for dirty detection
+    var origTitle by rememberSaveable { mutableStateOf("") }
+    var origName by rememberSaveable { mutableStateOf("") }
+    var origAddress by rememberSaveable { mutableStateOf("") }
+    var origEmail by rememberSaveable { mutableStateOf("") }
+    var origPhone by rememberSaveable { mutableStateOf("") }
+    var origGender by rememberSaveable { mutableStateOf("") }
+    var origDob by rememberSaveable { mutableStateOf("") }
+    var origDobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
+    var origNationality by rememberSaveable { mutableStateOf("") }
+
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
 
     // Populate fields once both sha and child1 are loaded to avoid a race
     // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
     LaunchedEffect(sha, child1) {
         if (!fieldsInitialised && sha != null && child1 != null) {
-            title = sha!!.title
+            title = sha!!.title; origTitle = title
             child1!!.let { c ->
-                name = c.name
-                address = c.address
-                email = c.email
-                phone = c.phone
-                gender = c.gender
-                dob = c.dob
+                name = c.name; origName = name
+                address = c.address; origAddress = address
+                email = c.email; origEmail = email
+                phone = c.phone; origPhone = phone
+                gender = c.gender; origGender = gender
+                dob = c.dob; origDob = dob
                 if (c.dobDateFormat.isNotEmpty()) dobFormat = c.dobDateFormat
-                nationality = c.nationality
+                origDobFormat = dobFormat
+                nationality = c.nationality; origNationality = nationality
             }
             fieldsInitialised = true
         }
     }
+
+    val isDirty = fieldsInitialised && (
+        title != origTitle || name != origName || address != origAddress ||
+        email != origEmail || phone != origPhone || gender != origGender ||
+        dob != origDob || dobFormat != origDobFormat || nationality != origNationality
+    )
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -147,7 +175,9 @@ fun SectionChild1Screen(
             TopAppBar(
                 title = { Text(title.ifEmpty { "Contact Information" }) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -189,7 +219,14 @@ fun SectionChild1Screen(
         bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        Column(
+        if (uiState is Child1UiState.Loading) {
+            Box(
+                modifier = Modifier.fillMaxSize().padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
@@ -229,7 +266,7 @@ fun SectionChild1Screen(
                 onValueChange = { address = it },
                 label = { Text("Address") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 2, maxLines = 3,
+                minLines = 4, maxLines = 8,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
@@ -279,11 +316,11 @@ fun SectionChild1Screen(
             ) {
                 OutlinedTextField(
                     value = dob,
-                    onValueChange = {},
+                    onValueChange = { dob = it },
                     label = { Text("Date of Birth") },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
-                    readOnly = true
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
                 IconButton(onClick = { showDateDialog = true }) {
                     Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
@@ -318,10 +355,36 @@ fun SectionChild1Screen(
         }
     }
 
+    // Unsaved changes dialog
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    focusManager.clearFocus()
+                    viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
+        )
+    }
+
     // Date picker dialog
     if (showDateDialog) {
         DateFormatPickerDialog(
             currentFormat = dobFormat,
+            currentDateMs = DateTimeUtils.parseDateToUtcMillis(dob, dobFormat),
             onConfirm = { fmt, dateStr ->
                 dobFormat = fmt
                 dob = dateStr
@@ -334,16 +397,6 @@ fun SectionChild1Screen(
 
 // ── Composable helpers ────────────────────────────────────────────────────────
 
-@Composable
-private fun SectionDivider(label: String) {
-    Text(
-        text = label,
-        style = MaterialTheme.typography.labelMedium,
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 4.dp)
-    )
-}
 
 @Composable
 private fun UserImageSection(
@@ -396,6 +449,188 @@ private fun UserImageSection(
                     Text("Delete")
                 }
             }
+        }
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 1 - Empty")
+@Composable
+private fun SectionChild1EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Contact Information") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Contact Information", onValueChange = {},
+                    label = { Text("Section Title") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Contact Details")
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Full Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Phone") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Gender (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ALL_GENDERS.forEach { g ->
+                        RadioButton(selected = false, onClick = {})
+                        Text(g, modifier = Modifier.padding(end = 16.dp))
+                    }
+                }
+                SectionDivider("Date of Birth (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = "", onValueChange = {},
+                        label = { Text("Date of Birth") }, modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Nationality (optional)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Profile Photo (optional)")
+                UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 1 - Filled")
+@Composable
+private fun SectionChild1FilledPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Contact Information") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Contact Information", onValueChange = {},
+                    label = { Text("Section Title") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Contact Details")
+                OutlinedTextField(value = "John Doe", onValueChange = {},
+                    label = { Text("Full Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "123 Main Street, Springfield", onValueChange = {},
+                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)
+                OutlinedTextField(value = "john.doe@email.com", onValueChange = {},
+                    label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "+1 555 123 4567", onValueChange = {},
+                    label = { Text("Phone") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Gender (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ALL_GENDERS.forEach { g ->
+                        RadioButton(selected = g == "Male", onClick = {})
+                        Text(g, modifier = Modifier.padding(end = 16.dp))
+                    }
+                    TextButton(onClick = {}) { Text("Clear") }
+                }
+                SectionDivider("Date of Birth (optional)")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = "15 Jan 1990", onValueChange = {},
+                        label = { Text("Date of Birth") }, modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "American", onValueChange = {},
+                    label = { Text("Nationality (optional)") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                SectionDivider("Profile Photo (optional)")
+                UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Section Divider")
+@Composable
+private fun SectionDividerPreview() {
+    SmartResumeTheme {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            SectionDivider("Contact Details")
+            SectionDivider("Gender (optional)")
+            SectionDivider("Date of Birth (optional)")
+            SectionDivider("Profile Photo (optional)")
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "User Image Section - Empty")
+@Composable
+private fun UserImageSectionEmptyPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
         }
     }
 }

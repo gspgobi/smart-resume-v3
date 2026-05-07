@@ -1,28 +1,39 @@
 package com.nithra.nithraresume.ui.generate
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -34,12 +45,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+
+private val FORMAT_NAMES = mapOf(
+    1 to "Classic",
+    2 to "Modern",
+    3 to "Professional",
+    4 to "Creative",
+    5 to "Minimal",
+    6 to "Executive"
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,10 +70,21 @@ fun GenerateResumeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val profile by viewModel.profile.collectAsStateWithLifecycle()
+    val sc1 by viewModel.sc1.collectAsStateWithLifecycle()
+    val sc4 by viewModel.sc4.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     var fileName by rememberSaveable { mutableStateOf("") }
     var fileNameInitialised by rememberSaveable { mutableStateOf(false) }
+
+    var includeUserImage by rememberSaveable { mutableStateOf(false) }
+    var userImageInitialised by rememberSaveable { mutableStateOf(false) }
+
+    var includeSignature by rememberSaveable { mutableStateOf(false) }
+    var signatureInitialised by rememberSaveable { mutableStateOf(false) }
+
+    var showOverwriteDialog by rememberSaveable { mutableStateOf(false) }
+    var pendingFileName by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(profile) {
         if (!fileNameInitialised && profile != null) {
@@ -61,12 +93,24 @@ fun GenerateResumeScreen(
         }
     }
 
+    LaunchedEffect(sc1) {
+        if (!userImageInitialised && sc1 != null) {
+            includeUserImage = sc1!!.isUserImageEnable
+            userImageInitialised = true
+        }
+    }
+
+    LaunchedEffect(sc4) {
+        if (!signatureInitialised && sc4 != null) {
+            includeSignature = sc4!!.isSignatureImageEnable
+            signatureInitialised = true
+        }
+    }
+
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is GenerateResumeUiState.Done -> {
-                navController.navigate(
-                    Screen.ViewShare.createRoute(viewModel.profileId)
-                ) {
+                navController.navigate(Screen.ViewShare.createRoute(viewModel.profileId, justGenerated = true)) {
                     popUpTo(Screen.GenerateResume.createRoute(viewModel.profileId)) {
                         inclusive = true
                     }
@@ -80,14 +124,22 @@ fun GenerateResumeScreen(
         }
     }
 
+    val isLoading    = uiState is GenerateResumeUiState.Loading
     val isGenerating = uiState is GenerateResumeUiState.Generating
+
+    val hasUserImageSet   = sc1 != null && sc1!!.userImagePath.isNotEmpty()
+    val hasSignatureSet   = sc4 != null && sc4!!.signatureImagePath.isNotEmpty()
+    val showGenerateWith  = sc1 != null || sc4 != null
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Generate Resume") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }, enabled = !isGenerating) {
+                    IconButton(
+                        onClick = { navController.popBackStack() },
+                        enabled = !isGenerating
+                    ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -101,78 +153,255 @@ fun GenerateResumeScreen(
         bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        if (isGenerating) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
+        when {
+            isGenerating -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(56.dp))
+                        Text("Generating your resume…", style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+            }
+            isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            else -> {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(innerPadding)
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    CircularProgressIndicator(modifier = Modifier.size(56.dp))
-                    Text("Generating your resume…",
-                        style = MaterialTheme.typography.bodyLarge)
+                    // ── File Name ─────────────────────────────────────────────
+                    Text(
+                        "File Name",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    OutlinedTextField(
+                        value = fileName,
+                        onValueChange = { fileName = it },
+                        label = { Text("File Name") },
+                        supportingText = { Text("Do not include .pdf extension") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+
+                    // ── Resume Settings ───────────────────────────────────────
+                    Text(
+                        "Resume Settings",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    profile?.let { p ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Column {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            navController.navigate(
+                                                Screen.ResumeFormat.createRoute(viewModel.profileId)
+                                            )
+                                        }
+                                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                                        Text(
+                                            "Resume Format",
+                                            style = MaterialTheme.typography.labelMedium,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Text(
+                                            FORMAT_NAMES[p.resumeFormatBaseId]
+                                                ?: "Format ${p.resumeFormatBaseId}",
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                    }
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                        contentDescription = "Edit resume settings",
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                                SettingsInfoRow("Font Style", p.fontStyle)
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                                SettingsInfoRow("Font Size", "${p.fontSize} pt")
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                                SettingsInfoRow(
+                                    "Background",
+                                    p.backgroundColor.ifEmpty { "White" }
+                                )
+                            }
+                        }
+                    }
+
+                    // ── Generate Resume With ──────────────────────────────────
+                    if (showGenerateWith) {
+                        Text(
+                            "Generate Resume With",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Column {
+                                if (sc1 != null) {
+                                    GenerateWithRow(
+                                        label = "User Photo",
+                                        hint = if (hasUserImageSet) "Photo added"
+                                               else "No photo added — add one in Personal Info",
+                                        checked = includeUserImage,
+                                        enabled = hasUserImageSet,
+                                        onCheckedChange = { includeUserImage = it }
+                                    )
+                                }
+                                if (sc1 != null && sc4 != null) {
+                                    HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                                }
+                                if (sc4 != null) {
+                                    GenerateWithRow(
+                                        label = "Signature",
+                                        hint = if (hasSignatureSet) "Signature added"
+                                               else "No signature added — add one in Declaration",
+                                        checked = includeSignature,
+                                        enabled = hasSignatureSet,
+                                        onCheckedChange = { includeSignature = it }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    // ── Generate button ───────────────────────────────────────
+                    Button(
+                        onClick = {
+                            val trimmed = fileName.trim()
+                            if (trimmed.isNotEmpty()) {
+                                if (viewModel.fileExists(trimmed)) {
+                                    pendingFileName = trimmed
+                                    showOverwriteDialog = true
+                                } else {
+                                    viewModel.generate(trimmed, includeUserImage, includeSignature)
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        enabled = fileName.isNotBlank()
+                    ) {
+                        Text("Generate Resume", style = MaterialTheme.typography.titleMedium)
+                    }
                 }
             }
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(innerPadding)
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Text(
-                    "Your resume will be saved as a PDF in the app's storage folder.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+        }
+    }
 
-                OutlinedTextField(
-                    value = fileName,
-                    onValueChange = { fileName = it },
-                    label = { Text("File Name") },
-                    supportingText = { Text("Do not include .pdf extension") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                profile?.let { p ->
-                    val formatId = p.resumeFormatBaseId
-                    InfoRow("Format", "Format $formatId")
-                    InfoRow("Font Size", "${p.fontSize} pt")
-                    InfoRow("Background", p.backgroundColor)
-                }
-
-                Button(
-                    onClick = {
-                        val trimmed = fileName.trim()
-                        if (trimmed.isNotEmpty()) viewModel.generate(trimmed)
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = fileName.isNotBlank()
-                ) {
-                    Text("Generate Resume")
-                }
+    if (showOverwriteDialog) {
+        AlertDialog(
+            onDismissRequest = { showOverwriteDialog = false },
+            title = { Text("File Already Exists") },
+            text = {
+                Text("A resume named \"$pendingFileName.pdf\" already exists. Do you want to overwrite it?")
+            },
+            confirmButton = {
+                Button(onClick = {
+                    showOverwriteDialog = false
+                    viewModel.generate(pendingFileName, includeUserImage, includeSignature)
+                }) { Text("Overwrite") }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { showOverwriteDialog = false }) { Text("Cancel") }
             }
+        )
+    }
+}
+
+@Composable
+private fun GenerateWithRow(
+    label: String,
+    hint: String,
+    checked: Boolean,
+    enabled: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = enabled) { onCheckedChange(!checked) }
+            .padding(start = 4.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            enabled = enabled
+        )
+        Column(modifier = Modifier.padding(start = 4.dp)) {
+            Text(
+                label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (enabled) MaterialTheme.colorScheme.onSurface
+                        else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                hint,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
 
 @Composable
-private fun InfoRow(label: String, value: String) {
-    androidx.compose.foundation.layout.Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+private fun SettingsInfoRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(
+            label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
         Text(value, style = MaterialTheme.typography.bodyMedium)
     }
 }

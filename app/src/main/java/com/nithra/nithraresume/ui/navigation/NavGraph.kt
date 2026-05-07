@@ -14,6 +14,7 @@ import com.nithra.nithraresume.ui.notification.NotificationDetailScreen
 import com.nithra.nithraresume.ui.notification.NotificationListScreen
 import com.nithra.nithraresume.ui.profile.UserProfileScreen
 import com.nithra.nithraresume.ui.sample.SampleResumesScreen
+import com.nithra.nithraresume.ui.section.child.ReorderChildScreen
 import com.nithra.nithraresume.ui.section.child.SectionChild1Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild2Screen
 import com.nithra.nithraresume.ui.section.child.SectionChild2SubScreen
@@ -89,7 +90,10 @@ fun SmartResumeNavGraph(
 
         composable(
             route = Screen.ViewShare.route,
-            arguments = listOf(navArgument("profileId") { type = NavType.IntType })
+            arguments = listOf(
+                navArgument("profileId") { type = NavType.IntType },
+                navArgument("justGenerated") { type = NavType.BoolType; defaultValue = false }
+            )
         ) {
             ViewShareScreen(navController = navController)
         }
@@ -211,6 +215,16 @@ fun SmartResumeNavGraph(
             )
         ) {
             ReorderSectionsScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.ReorderChild.route,
+            arguments = listOf(
+                navArgument("sectionHeadAddedId") { type = NavType.IntType },
+                navArgument("childType")          { type = NavType.IntType }
+            )
+        ) {
+            ReorderChildScreen(navController = navController)
         }
 
         // ── Notification detail ───────────────────────────────────────────────

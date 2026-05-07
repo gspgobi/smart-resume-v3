@@ -30,6 +30,7 @@ class ViewShareViewModel @Inject constructor(
 ) : ViewModel() {
 
     val profileId: Int = checkNotNull(savedStateHandle["profileId"])
+    val justGenerated: Boolean = savedStateHandle.get<Boolean>("justGenerated") ?: false
 
     private val _uiState = MutableStateFlow<ViewShareUiState>(ViewShareUiState.Loading)
     val uiState: StateFlow<ViewShareUiState> = _uiState.asStateFlow()
