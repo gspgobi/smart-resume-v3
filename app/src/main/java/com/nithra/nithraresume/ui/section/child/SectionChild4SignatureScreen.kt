@@ -33,7 +33,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -117,6 +119,64 @@ fun SectionChild4SignatureScreen(
                     modifier = Modifier.weight(1f),
                     enabled = captureController.hasStrokes
                 ) { Text("Save") }
+            }
+        }
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 4 Signature - Empty Canvas")
+@Composable
+private fun SectionChild4SignatureEmptyPreview() {
+    SmartResumeTheme {
+        val captureController = rememberSignatureCaptureController()
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Draw Signature") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                ) {
+                    SignatureCanvas(
+                        clearKey = 0,
+                        captureController = captureController,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Clear") }
+                    Button(onClick = {}, modifier = Modifier.weight(1f), enabled = false) { Text("Save") }
+                }
             }
         }
     }
