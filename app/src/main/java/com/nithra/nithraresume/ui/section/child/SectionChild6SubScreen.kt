@@ -66,23 +66,14 @@ fun SectionChild6SubScreen(
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(item) {
-        if (!initialised && item != null) {
-            contentTitle = item!!.contentTitle; origContentTitle = contentTitle
-            contentDetail = item!!.contentDetail; origContentDetail = contentDetail
-            initialised = true
-        } else if (!initialised && uiState is Child6SubUiState.Ready) {
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child6SubUiState.Ready) {
+            item?.let {
+                contentTitle = it.contentTitle; origContentTitle = contentTitle
+                contentDetail = it.contentDetail; origContentDetail = contentDetail
+            }
             initialised = true
         }
-    }
-
-    val isDirty = initialised && (
-        contentTitle != origContentTitle || contentDetail != origContentDetail
-    )
-
-    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
-
-    LaunchedEffect(uiState) {
         when (uiState) {
             is Child6SubUiState.Saved -> navController.popBackStack()
             is Child6SubUiState.Error -> {
@@ -92,6 +83,12 @@ fun SectionChild6SubScreen(
             else -> {}
         }
     }
+
+    val isDirty = initialised && (
+        contentTitle != origContentTitle || contentDetail != origContentDetail
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
         topBar = {

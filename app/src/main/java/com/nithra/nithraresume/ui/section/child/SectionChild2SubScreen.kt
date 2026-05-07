@@ -75,18 +75,26 @@ fun SectionChild2SubScreen(
     var initialised by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
-    LaunchedEffect(item) {
-        if (!initialised && item != null) {
-            workRole = item!!.workRole;         origWorkRole = workRole
-            companyName = item!!.companyName;   origCompanyName = companyName
-            subtitle = item!!.subtitle;         origSubtitle = subtitle
-            workPeriod = item!!.workPeriod;     origWorkPeriod = workPeriod
-            accomplishments = item!!.accomplishments; origAccomplishments = accomplishments
-            bulletType = item!!.accomplishmentsBulletType.ifEmpty { BULLET_NONE }
-            origBulletType = bulletType
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child2SubUiState.Ready) {
+            item?.let {
+                workRole = it.workRole;         origWorkRole = workRole
+                companyName = it.companyName;   origCompanyName = companyName
+                subtitle = it.subtitle;         origSubtitle = subtitle
+                workPeriod = it.workPeriod;     origWorkPeriod = workPeriod
+                accomplishments = it.accomplishments; origAccomplishments = accomplishments
+                bulletType = it.accomplishmentsBulletType.ifEmpty { BULLET_NONE }
+                origBulletType = bulletType
+            }
             initialised = true
-        } else if (!initialised && uiState is Child2SubUiState.Ready) {
-            initialised = true // new item — no originals needed, all fields start empty
+        }
+        when (uiState) {
+            is Child2SubUiState.Saved -> navController.popBackStack()
+            is Child2SubUiState.Error -> {
+                snackbarHostState.showSnackbar((uiState as Child2SubUiState.Error).message)
+                viewModel.resetState()
+            }
+            else -> {}
         }
     }
 
@@ -108,17 +116,6 @@ fun SectionChild2SubScreen(
     }
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
-
-    LaunchedEffect(uiState) {
-        when (uiState) {
-            is Child2SubUiState.Saved -> navController.popBackStack()
-            is Child2SubUiState.Error -> {
-                snackbarHostState.showSnackbar((uiState as Child2SubUiState.Error).message)
-                viewModel.resetState()
-            }
-            else -> {}
-        }
-    }
 
     Scaffold(
         topBar = {
