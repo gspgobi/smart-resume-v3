@@ -144,14 +144,14 @@ fun SectionChild8Screen(
                 onValueChange = { address = it },
                 label = { Text("Address / Recipient") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 2, maxLines = 4
+                minLines = 4, maxLines = 8
             )
             OutlinedTextField(
                 value = content,
                 onValueChange = { content = it },
                 label = { Text("Content") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 5, maxLines = 20
+                minLines = 8, maxLines = 20
             )
         }
     }

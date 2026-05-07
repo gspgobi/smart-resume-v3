@@ -144,7 +144,7 @@ fun SectionChild4Screen(
                 onValueChange = { declarationContent = it },
                 label = { Text("Declaration Content") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3, maxLines = 10
+                minLines = 8, maxLines = 20
             )
             BulletTypeDropdown(
                 selected = bulletType,
