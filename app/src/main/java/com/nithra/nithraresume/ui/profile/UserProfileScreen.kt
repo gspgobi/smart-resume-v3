@@ -21,9 +21,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
@@ -218,20 +220,49 @@ fun UserProfileScreen(
             }
 
             item(key = "browse_samples") {
-                TextButton(
+                Card(
                     onClick = { navController.navigate(Screen.SampleResumes.route) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .defaultMinSize(minHeight = 64.dp)
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                    ),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text(
-                        text = "Browse Sample Resumes",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Description,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.size(32.dp)
+                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                "Browse Sample Resumes",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                            Text(
+                                "Get inspired with pre-built resume templates",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
                 }
-                HorizontalDivider()
             }
         }
     }
@@ -516,10 +547,29 @@ private fun UserProfileScreenListPreview() {
                     HorizontalDivider()
                 }
                 item(key = "browse_samples") {
-                    TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
-                        Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Card(
+                        onClick = {},
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Icon(Icons.Default.Description, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(32.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Browse Sample Resumes", style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                                Text("Get inspired with pre-built resume templates", style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer)
+                            }
+                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                        }
                     }
-                    HorizontalDivider()
                 }
             }
         }
@@ -577,10 +627,29 @@ private fun UserProfileScreenEmptyPreview() {
                     HorizontalDivider()
                 }
                 item(key = "browse_samples") {
-                    TextButton(onClick = {}, modifier = Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp)) {
-                        Text("Browse Sample Resumes", style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    Card(
+                        onClick = {},
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Icon(Icons.Default.Description, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer, modifier = Modifier.size(32.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Browse Sample Resumes", style = MaterialTheme.typography.titleSmall,
+                                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSecondaryContainer)
+                                Text("Get inspired with pre-built resume templates", style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer)
+                            }
+                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                        }
                     }
-                    HorizontalDivider()
                 }
             }
         }
