@@ -72,6 +72,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
+import com.nithra.nithraresume.ui.common.SectionDivider
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
@@ -388,16 +389,6 @@ fun SectionChild1Screen(
 
 // ── Composable helpers ────────────────────────────────────────────────────────
 
-@Composable
-private fun SectionDivider(label: String) {
-    Text(
-        text = label,
-        style = MaterialTheme.typography.labelMedium,
-        fontWeight = FontWeight.SemiBold,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 4.dp)
-    )
-}
 
 @Composable
 private fun UserImageSection(
