@@ -90,7 +90,10 @@ fun SmartResumeNavGraph(
 
         composable(
             route = Screen.ViewShare.route,
-            arguments = listOf(navArgument("profileId") { type = NavType.IntType })
+            arguments = listOf(
+                navArgument("profileId") { type = NavType.IntType },
+                navArgument("justGenerated") { type = NavType.BoolType; defaultValue = false }
+            )
         ) {
             ViewShareScreen(navController = navController)
         }
