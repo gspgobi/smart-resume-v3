@@ -43,12 +43,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.ui.common.ObjAccompBottomSheet
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.BULLET_NONE
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
@@ -226,5 +228,176 @@ fun SectionChild5Screen(
                 }
             }
         )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC5 - Loading")
+@Composable
+private fun SectionChild5LoadingPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Paragraph") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Lightbulb, contentDescription = "Suggestions",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.fillMaxSize().padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC5 - Empty")
+@Composable
+private fun SectionChild5EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Paragraph") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Lightbulb, contentDescription = "Suggestions",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Section Title") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Content") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
+                BulletTypeDropdown(
+                    selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show content as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)"
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC5 - Filled")
+@Composable
+private fun SectionChild5FilledPreview() {
+    val sampleContent = "Motivated software engineer with 5+ years of experience building scalable Android applications.\nPassionate about clean architecture and delivering high-quality user experiences.\nSeeking a senior role to drive impactful product development."
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Objective") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Lightbulb, contentDescription = "Suggestions",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Objective", onValueChange = {},
+                    label = { Text("Section Title") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = sampleContent, onValueChange = {},
+                    label = { Text("Content") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
+                BulletTypeDropdown(
+                    selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show content as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)"
+                )
+            }
+        }
     }
 }

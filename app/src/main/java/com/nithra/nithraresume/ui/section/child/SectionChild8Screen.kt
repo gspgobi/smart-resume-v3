@@ -43,11 +43,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
@@ -247,5 +249,185 @@ fun SectionChild8Screen(
                 }
             }
         )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC8 - Loading")
+@Composable
+private fun SectionChild8LoadingPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Cover Letter") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.fillMaxSize().padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC8 - Empty")
+@Composable
+private fun SectionChild8EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Cover Letter") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Section Title") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(value = "", onValueChange = {},
+                        label = { Text("Date") },
+                        modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Address / Recipient") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Content") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC8 - Filled")
+@Composable
+private fun SectionChild8FilledPreview() {
+    val sampleAddress = "Hiring Manager\nTech Corp Inc.\n123 Innovation Drive\nSan Francisco, CA 94105"
+    val sampleContent = "Dear Hiring Manager,\n\nI am writing to express my strong interest in the Senior Android Engineer position at Tech Corp Inc. With over five years of experience developing high-quality Android applications, I am confident in my ability to contribute to your team.\n\nThroughout my career, I have built scalable apps using Jetpack Compose, Kotlin, and MVVM architecture. I am passionate about clean code and delivering exceptional user experiences.\n\nI look forward to the opportunity to discuss how my skills align with your team's goals.\n\nSincerely,\nJohn Doe"
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Cover Letter") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Cover Letter", onValueChange = {},
+                    label = { Text("Section Title") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    OutlinedTextField(value = "May 07, 2026", onValueChange = {},
+                        label = { Text("Date") },
+                        modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = sampleAddress, onValueChange = {},
+                    label = { Text("Address / Recipient") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)
+                OutlinedTextField(value = sampleContent, onValueChange = {},
+                    label = { Text("Content") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
+            }
+        }
     }
 }

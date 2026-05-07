@@ -42,10 +42,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -194,5 +196,154 @@ fun SectionChild6SubScreen(
                 }
             }
         )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC6Sub - Loading")
+@Composable
+private fun SectionChild6SubLoadingPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("New Entry") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.fillMaxSize().padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC6Sub - New Entry")
+@Composable
+private fun SectionChild6SubNewEntryPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("New Entry") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Detail") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "SC6Sub - Edit Entry")
+@Composable
+private fun SectionChild6SubEditEntryPreview() {
+    val sampleDetail = "Developed and maintained scalable RESTful APIs using Spring Boot.\nCollaborated with cross-functional teams to deliver features on schedule.\nImproved application performance by 30% through query optimization."
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Edit Entry") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Backend Developer", onValueChange = {},
+                    label = { Text("Title") },
+                    modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = sampleDetail, onValueChange = {},
+                    label = { Text("Detail") },
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
+            }
+        }
     }
 }
