@@ -145,7 +145,14 @@ fun MainScreen(
                     }
                 },
                 appVersionName = BuildConfig.VERSION_NAME,
-                onVersionTap = { viewModel.createDummyProfile() }
+                onVersionTap = { viewModel.createDummyProfile() },
+                onVersionTapProgress = { remaining ->
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            "$remaining more tap${if (remaining == 1) "" else "s"} away!"
+                        )
+                    }
+                }
             )
         }
     ) {
@@ -330,7 +337,8 @@ private fun MainDrawerContent(
     unreadCount: Int,
     appVersionName: String,
     onItemClick: (DrawerItem) -> Unit,
-    onVersionTap: () -> Unit = {}
+    onVersionTap: () -> Unit = {},
+    onVersionTapProgress: (tapsRemaining: Int) -> Unit = {}
 ) {
     var tapCount by remember { mutableIntStateOf(0) }
     var firstTapTime by remember { mutableLongStateOf(0L) }
@@ -374,6 +382,8 @@ private fun MainDrawerContent(
                                 if (tapCount >= 12) {
                                     onVersionTap()
                                     tapCount = 0
+                                } else if (tapCount >= 10) {
+                                    onVersionTapProgress(12 - tapCount)
                                 }
                             }
                         }
