@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -26,11 +27,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -80,6 +83,9 @@ fun GenerateResumeScreen(
     var includeSignature by rememberSaveable { mutableStateOf(false) }
     var signatureInitialised by rememberSaveable { mutableStateOf(false) }
 
+    var showOverwriteDialog by rememberSaveable { mutableStateOf(false) }
+    var pendingFileName by rememberSaveable { mutableStateOf("") }
+
     LaunchedEffect(profile) {
         if (!fileNameInitialised && profile != null) {
             fileName = profile!!.resumeFileName?.ifEmpty { profile!!.name } ?: profile!!.name
@@ -104,7 +110,7 @@ fun GenerateResumeScreen(
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is GenerateResumeUiState.Done -> {
-                navController.navigate(Screen.ViewShare.createRoute(viewModel.profileId)) {
+                navController.navigate(Screen.ViewShare.createRoute(viewModel.profileId, justGenerated = true)) {
                     popUpTo(Screen.GenerateResume.createRoute(viewModel.profileId)) {
                         inclusive = true
                     }
@@ -306,7 +312,12 @@ fun GenerateResumeScreen(
                         onClick = {
                             val trimmed = fileName.trim()
                             if (trimmed.isNotEmpty()) {
-                                viewModel.generate(trimmed, includeUserImage, includeSignature)
+                                if (viewModel.fileExists(trimmed)) {
+                                    pendingFileName = trimmed
+                                    showOverwriteDialog = true
+                                } else {
+                                    viewModel.generate(trimmed, includeUserImage, includeSignature)
+                                }
                             }
                         },
                         modifier = Modifier
@@ -319,6 +330,25 @@ fun GenerateResumeScreen(
                 }
             }
         }
+    }
+
+    if (showOverwriteDialog) {
+        AlertDialog(
+            onDismissRequest = { showOverwriteDialog = false },
+            title = { Text("File Already Exists") },
+            text = {
+                Text("A resume named \"$pendingFileName.pdf\" already exists. Do you want to overwrite it?")
+            },
+            confirmButton = {
+                Button(onClick = {
+                    showOverwriteDialog = false
+                    viewModel.generate(pendingFileName, includeUserImage, includeSignature)
+                }) { Text("Overwrite") }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { showOverwriteDialog = false }) { Text("Cancel") }
+            }
+        )
     }
 }
 
