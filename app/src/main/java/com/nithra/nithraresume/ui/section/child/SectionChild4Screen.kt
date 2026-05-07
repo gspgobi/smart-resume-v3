@@ -54,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,6 +67,7 @@ import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.BULLET_NONE
 import com.nithra.nithraresume.utils.DateTimeUtils
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -360,5 +362,184 @@ fun SectionChild4Screen(
                 }
             }
         )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 4 - Empty")
+@Composable
+private fun SectionChild4EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Declaration") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Declaration", onValueChange = {},
+                    label = { Text("Section Title") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Declaration Content") }, modifier = Modifier.fillMaxWidth(),
+                    minLines = 8, maxLines = 20)
+                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show declaration as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = "", onValueChange = {},
+                        label = { Text("Date") }, modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "", onValueChange = {},
+                    label = { Text("Place") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                SectionDivider("Signature(optional)")
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .width(200.dp)
+                        .height(125.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No signature added", style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
+                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Browse Gallery") }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 4 - With Signature")
+@Composable
+private fun SectionChild4WithSignaturePreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Declaration") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(value = "Declaration", onValueChange = {},
+                    label = { Text("Section Title") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                OutlinedTextField(
+                    value = "I hereby declare that all the information provided above is true and correct to the best of my knowledge.",
+                    onValueChange = {},
+                    label = { Text("Declaration Content") }, modifier = Modifier.fillMaxWidth(),
+                    minLines = 8, maxLines = 20)
+                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show declaration as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(value = "01 Jan 2025", onValueChange = {},
+                        label = { Text("Date") }, modifier = Modifier.weight(1f), singleLine = true)
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.CalendarMonth, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                OutlinedTextField(value = "Chennai", onValueChange = {},
+                    label = { Text("Place") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                SectionDivider("Signature(optional)")
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .width(200.dp)
+                        .height(125.dp)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("~ Signature ~", style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
+                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Browse Gallery") }
+                }
+                OutlinedButton(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    )
+                ) { Text("Delete Signature") }
+            }
+        }
     }
 }
