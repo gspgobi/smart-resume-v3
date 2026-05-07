@@ -79,11 +79,10 @@ fun SectionChild8Screen(
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(sha, child8) {
-        if (!initialised && sha != null) {
-            title = sha!!.title; origTitle = title
-            val c8 = child8
-            if (c8 != null) {
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child8UiState.Ready) {
+            sha?.let { title = it.title; origTitle = title }
+            child8?.let { c8 ->
                 date = c8.date; origDate = date
                 dateDateFormat = c8.dateDateFormat.ifEmpty { ALL_DATE_FORMATS.first() }; origDateFormat = dateDateFormat
                 address = c8.address; origAddress = address
@@ -91,16 +90,6 @@ fun SectionChild8Screen(
             }
             initialised = true
         }
-    }
-
-    val isDirty = initialised && (
-        title != origTitle || date != origDate || dateDateFormat != origDateFormat ||
-        address != origAddress || content != origContent
-    )
-
-    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
-
-    LaunchedEffect(uiState) {
         when (uiState) {
             is Child8UiState.Saved -> navController.popBackStack()
             is Child8UiState.Error -> {
@@ -110,6 +99,13 @@ fun SectionChild8Screen(
             else -> {}
         }
     }
+
+    val isDirty = initialised && (
+        title != origTitle || date != origDate || dateDateFormat != origDateFormat ||
+        address != origAddress || content != origContent
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
         topBar = {
