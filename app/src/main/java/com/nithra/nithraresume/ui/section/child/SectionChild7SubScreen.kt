@@ -1,8 +1,10 @@
 package com.nithra.nithraresume.ui.section.child
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +27,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -33,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -50,25 +56,40 @@ fun SectionChild7SubScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val item by viewModel.item.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
 
     var contentTitle by rememberSaveable { mutableStateOf("") }
     var contentSubtitle by rememberSaveable { mutableStateOf("") }
     var contentDetail by rememberSaveable { mutableStateOf("") }
     var bulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
+
+    var origContentTitle by rememberSaveable { mutableStateOf("") }
+    var origContentSubtitle by rememberSaveable { mutableStateOf("") }
+    var origContentDetail by rememberSaveable { mutableStateOf("") }
+    var origBulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
+
     var initialised by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(item) {
         if (!initialised && item != null) {
-            contentTitle = item!!.contentTitle
-            contentSubtitle = item!!.contentSubtitle
-            contentDetail = item!!.contentDetail
-            bulletType = item!!.contentDetailBulletType.ifEmpty { BULLET_NONE }
+            contentTitle = item!!.contentTitle; origContentTitle = contentTitle
+            contentSubtitle = item!!.contentSubtitle; origContentSubtitle = contentSubtitle
+            contentDetail = item!!.contentDetail; origContentDetail = contentDetail
+            bulletType = item!!.contentDetailBulletType.ifEmpty { BULLET_NONE }; origBulletType = bulletType
             initialised = true
         } else if (!initialised && uiState is Child7SubUiState.Ready) {
             initialised = true
         }
     }
+
+    val isDirty = initialised && (
+        contentTitle != origContentTitle || contentSubtitle != origContentSubtitle ||
+        contentDetail != origContentDetail || bulletType != origBulletType
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     LaunchedEffect(uiState) {
         when (uiState) {
@@ -86,12 +107,15 @@ fun SectionChild7SubScreen(
             TopAppBar(
                 title = { Text(if (item != null) "Edit Entry" else "New Entry") },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
                     IconButton(onClick = {
+                        focusManager.clearFocus()
                         viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
@@ -160,5 +184,29 @@ fun SectionChild7SubScreen(
                 onSelected = { bulletType = it }
             )
         }
+    }
+
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    focusManager.clearFocus()
+                    viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
+        )
     }
 }
