@@ -432,8 +432,8 @@ private fun SectionChild4EmptyPreview() {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .width(200.dp)
-                        .height(125.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
@@ -518,8 +518,8 @@ private fun SectionChild4WithSignaturePreview() {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .width(200.dp)
-                        .height(125.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
