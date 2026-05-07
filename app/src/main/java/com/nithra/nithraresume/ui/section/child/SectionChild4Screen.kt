@@ -174,7 +174,9 @@ fun SectionChild4Screen(
             )
             BulletTypeDropdown(
                 selected = bulletType,
-                onSelected = { bulletType = it }
+                onSelected = { bulletType = it },
+                primaryText = "Show declaration as bullet points",
+                hintText = "(Here new line will be considered as bullet points)"
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
