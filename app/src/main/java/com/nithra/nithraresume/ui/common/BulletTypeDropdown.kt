@@ -66,7 +66,7 @@ fun BulletTypeDropdown(
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = it },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1.3f)
             ) {
                 OutlinedTextField(
                     value = if (selected == BULLET_NONE) "None" else selected,
