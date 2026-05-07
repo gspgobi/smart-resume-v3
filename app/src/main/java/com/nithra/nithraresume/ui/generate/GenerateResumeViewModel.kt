@@ -13,8 +13,10 @@ import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
 import com.nithra.nithraresume.pdf.ResumePdfBuilder
 import com.nithra.nithraresume.pdf.ResumePdfData
+import com.nithra.nithraresume.utils.DOT_PDF
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
+import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +61,14 @@ class GenerateResumeViewModel @Inject constructor(
     val sc4: StateFlow<SectionChild4?> = _sc4.asStateFlow()
 
     fun resetState() { _uiState.value = GenerateResumeUiState.Idle }
+
+    fun fileExists(fileName: String): Boolean {
+        val file = java.io.File(
+            context.getExternalFilesDir(null),
+            "${SrDir.GENERATED_RESUME}/$fileName$DOT_PDF"
+        )
+        return file.exists()
+    }
 
     init {
         viewModelScope.launch {
