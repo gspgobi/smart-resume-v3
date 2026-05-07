@@ -1,26 +1,28 @@
 package com.nithra.nithraresume.ui.section.child
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,14 +49,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionChild7
 import com.nithra.nithraresume.ui.navigation.Screen
-import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,22 +72,34 @@ fun SectionChild7Screen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var title by rememberSaveable { mutableStateOf("") }
+    var origTitle by rememberSaveable { mutableStateOf("") }
     var titleInitialised by rememberSaveable { mutableStateOf(false) }
     var deleteTarget by remember { mutableStateOf<SectionChild7?>(null) }
 
     LaunchedEffect(sha) {
-        if (!titleInitialised && sha != null) { title = sha!!.title; titleInitialised = true }
+        if (!titleInitialised && sha != null) {
+            title = sha!!.title
+            origTitle = title
+            titleInitialised = true
+        }
     }
     LaunchedEffect(snackbar) {
         snackbar?.let { snackbarHostState.showSnackbar(it); viewModel.clearSnackbar() }
     }
+
+    val isDirty = titleInitialised && title != origTitle
+    var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(title.ifEmpty { "Items" }) },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        if (isDirty) showUnsavedDialog = true else navController.popBackStack()
+                    }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -119,6 +135,15 @@ fun SectionChild7Screen(
                 HorizontalDivider()
             }
 
+            item {
+                Child7GroupHeader(
+                    title = "Entries",
+                    onEditClick = if (items.size > 1) {
+                        { navController.navigate(Screen.ReorderChild.createRoute(viewModel.sectionHeadAddedId, 7)) }
+                    } else null
+                )
+            }
+
             items(items.sortedBy { it.indexPosition }, key = { it.id }) { item ->
                 Child7ListItem(
                     item = item,
@@ -145,7 +170,8 @@ fun SectionChild7Screen(
                             }
                         )
                         .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Icon(Icons.Default.AddBox, contentDescription = null,
                         tint = if (viewModel.canAddItem(items.size)) MaterialTheme.colorScheme.primary
@@ -162,6 +188,30 @@ fun SectionChild7Screen(
                 }
             }
         }
+    }
+
+    if (showUnsavedDialog) {
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    showUnsavedDialog = false
+                    viewModel.saveTitle(title)
+                    navController.popBackStack()
+                }) { Text("Save") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
+            }
+        )
     }
 
     if (deleteTarget != null) {
@@ -221,4 +271,208 @@ private fun Child7ListItem(
             }
         }
     }
+}
+
+@Composable
+private fun Child7GroupHeader(
+    title: String,
+    onEditClick: (() -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 48.dp)
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.weight(1f)
+        )
+        if (onEditClick != null) {
+            TextButton(
+                onClick = onEditClick,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text("Edit", style = MaterialTheme.typography.labelLarge)
+            }
+        }
+    }
+}
+
+// ── Preview data ──────────────────────────────────────────────────────────────
+
+private val previewChild7Items = listOf(
+    SectionChild7(id = 1, sectionHeadAddedId = 1, indexPosition = 0,
+        contentTitle = "Volunteering", contentSubtitle = "Local NGO",
+        contentDetail = "Taught coding to underprivileged kids.", contentDetailBulletType = ""),
+    SectionChild7(id = 2, sectionHeadAddedId = 1, indexPosition = 1,
+        contentTitle = "Awards", contentSubtitle = "Best Developer 2023",
+        contentDetail = "Won internal hackathon.", contentDetailBulletType = ""),
+    SectionChild7(id = 3, sectionHeadAddedId = 1, indexPosition = 2,
+        contentTitle = "", contentSubtitle = "", contentDetail = "", contentDetailBulletType = ""),
+)
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 7 - Empty")
+@Composable
+private fun SectionChild7EmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Items") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            ) {
+                item {
+                    OutlinedTextField(
+                        value = "Items", onValueChange = {},
+                        label = { Text("Section Title") },
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        singleLine = true
+                    )
+                    HorizontalDivider()
+                }
+                item { Child7GroupHeader(title = "Entries") }
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp))
+                        Text("Add New Entry",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(start = 8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Section Child 7 - With Items")
+@Composable
+private fun SectionChild7FilledPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Items") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Check, contentDescription = "Save",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            ) {
+                item {
+                    OutlinedTextField(
+                        value = "Items", onValueChange = {},
+                        label = { Text("Section Title") },
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        singleLine = true
+                    )
+                    HorizontalDivider()
+                }
+                item { Child7GroupHeader(title = "Entries", onEditClick = {}) }
+                items(previewChild7Items, key = { it.id }) { item ->
+                    Child7ListItem(item = item, onClick = {}, onDelete = {})
+                    HorizontalDivider()
+                }
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(Icons.Default.AddBox, contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(20.dp))
+                        Text("Add New Entry",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(start = 8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Child7 List Item")
+@Composable
+private fun Child7ListItemPreview() {
+    SmartResumeTheme {
+        Column {
+            Child7ListItem(item = previewChild7Items[0], onClick = {}, onDelete = {})
+            HorizontalDivider()
+            Child7ListItem(item = previewChild7Items[2], onClick = {}, onDelete = {})
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Child7 Group Header - No Edit")
+@Composable
+private fun Child7GroupHeaderNoEditPreview() {
+    SmartResumeTheme { Child7GroupHeader(title = "Entries") }
+}
+
+@Preview(showBackground = true, name = "Child7 Group Header - With Edit")
+@Composable
+private fun Child7GroupHeaderWithEditPreview() {
+    SmartResumeTheme { Child7GroupHeader(title = "Entries", onEditClick = {}) }
 }
