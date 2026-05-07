@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -60,6 +61,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
+import com.nithra.nithraresume.ui.common.SectionDivider
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.BULLET_NONE
@@ -242,16 +244,13 @@ fun SectionChild4Screen(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-            Text(
-                text = "Signature",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            SectionDivider("Signature Image (optional)")
 
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .width(200.dp)
+                    .height(125.dp)
                     .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                     .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
@@ -261,10 +260,7 @@ fun SectionChild4Screen(
                         model = sigPath,
                         contentDescription = "Signature preview",
                         contentScale = ContentScale.Fit,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .padding(8.dp)
+                        modifier = Modifier.fillMaxSize().padding(8.dp)
                     )
                 } else {
                     Text(
