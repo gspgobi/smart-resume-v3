@@ -106,11 +106,10 @@ fun SectionChild4Screen(
         if (uri != null) viewModel.saveSignatureFromUri(uri)
     }
 
-    LaunchedEffect(sha, child4) {
-        if (!initialised && sha != null) {
-            title = sha!!.title; origTitle = title
-            val c4 = child4
-            if (c4 != null) {
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child4UiState.Ready) {
+            sha?.let { title = it.title; origTitle = title }
+            child4?.let { c4 ->
                 declarationContent = c4.declarationContent; origDeclarationContent = declarationContent
                 bulletType = c4.declarationContentBulletType.ifEmpty { BULLET_NONE }; origBulletType = bulletType
                 date = c4.date; origDate = date
@@ -118,6 +117,14 @@ fun SectionChild4Screen(
                 place = c4.place; origPlace = place
             }
             initialised = true
+        }
+        when (uiState) {
+            is Child4UiState.Saved -> navController.popBackStack()
+            is Child4UiState.Error -> {
+                snackbarHostState.showSnackbar((uiState as Child4UiState.Error).message)
+                viewModel.resetState()
+            }
+            else -> {}
         }
     }
 
@@ -128,17 +135,6 @@ fun SectionChild4Screen(
     )
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
-
-    LaunchedEffect(uiState) {
-        when (uiState) {
-            is Child4UiState.Saved -> navController.popBackStack()
-            is Child4UiState.Error -> {
-                snackbarHostState.showSnackbar((uiState as Child4UiState.Error).message)
-                viewModel.resetState()
-            }
-            else -> {}
-        }
-    }
 
     val sigPath = child4?.signatureImagePath?.takeIf { it.isNotEmpty() }
 

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.io.File
@@ -55,6 +56,8 @@ class SectionChild4ViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _sha.value = sectionHeadRepository.getAddedById(sectionHeadAddedId)
+            // Wait for the first Room DB emission so child4 stateIn is populated before Ready
+            sectionChildRepository.getChild4(sectionHeadAddedId).first()
             _uiState.value = Child4UiState.Ready
         }
     }
