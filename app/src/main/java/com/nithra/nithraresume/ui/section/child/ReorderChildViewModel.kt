@@ -29,6 +29,10 @@ class ReorderChildViewModel @Inject constructor(
         3 -> repo.getChild3List(sectionHeadAddedId)
                  .map { list -> list.map { ReorderableItem(it.id, it.indexPosition,
                      it.studyDegree.ifEmpty { it.schoolName }) } }
+        6 -> repo.getChild6List(sectionHeadAddedId)
+                 .map { list -> list.map { ReorderableItem(it.id, it.indexPosition, it.contentTitle) } }
+        7 -> repo.getChild7List(sectionHeadAddedId)
+                 .map { list -> list.map { ReorderableItem(it.id, it.indexPosition, it.contentTitle) } }
         else -> flow { emit(emptyList()) }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
@@ -38,6 +42,8 @@ class ReorderChildViewModel @Inject constructor(
                 when (childType) {
                     2 -> repo.updateChild2Position(item.id, index)
                     3 -> repo.updateChild3Position(item.id, index)
+                    6 -> repo.updateChild6Position(item.id, index)
+                    7 -> repo.updateChild7Position(item.id, index)
                 }
             }
         }
