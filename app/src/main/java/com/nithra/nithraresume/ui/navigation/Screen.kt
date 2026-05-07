@@ -29,8 +29,9 @@ sealed class Screen(val route: String) {
         fun createRoute(profileId: Int) = "generate_resume/$profileId"
     }
 
-    data object ViewShare : Screen("view_share/{profileId}") {
-        fun createRoute(profileId: Int) = "view_share/$profileId"
+    data object ViewShare : Screen("view_share/{profileId}?justGenerated={justGenerated}") {
+        fun createRoute(profileId: Int, justGenerated: Boolean = false) =
+            "view_share/$profileId?justGenerated=$justGenerated"
     }
 
     // ── Screens that receive sectionHeadAddedId ───────────────────────────────
@@ -97,6 +98,11 @@ sealed class Screen(val route: String) {
 
     data object ReorderSections : Screen("reorder_sections/{profileId}/{groupId}") {
         fun createRoute(profileId: Int, groupId: Int) = "reorder_sections/$profileId/$groupId"
+    }
+
+    data object ReorderChild : Screen("reorder_child/{sectionHeadAddedId}/{childType}") {
+        fun createRoute(sectionHeadAddedId: Int, childType: Int) =
+            "reorder_child/$sectionHeadAddedId/$childType"
     }
 
     // ── Notification detail ───────────────────────────────────────────────────

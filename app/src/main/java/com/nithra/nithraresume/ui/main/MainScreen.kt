@@ -60,7 +60,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -105,6 +108,13 @@ fun MainScreen(
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        viewModel.dummyProfileCreated.collect {
+            drawerState.close()
+            snackbarHostState.showSnackbar("Dummy profile created!")
+        }
+    }
+
     if (showFeedbackDialog) {
         FeedbackDialog(
             onDismiss = { showFeedbackDialog = false },
@@ -134,7 +144,15 @@ fun MainScreen(
                         DrawerItem.InviteFriends  -> shareApp(context)
                     }
                 },
-                appVersionName = BuildConfig.VERSION_NAME
+                appVersionName = BuildConfig.VERSION_NAME,
+                onVersionTap = { viewModel.createDummyProfile() },
+                onVersionTapProgress = { remaining ->
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            "$remaining more tap${if (remaining == 1) "" else "s"} away!"
+                        )
+                    }
+                }
             )
         }
     ) {
@@ -318,8 +336,13 @@ private enum class DrawerItem {
 private fun MainDrawerContent(
     unreadCount: Int,
     appVersionName: String,
-    onItemClick: (DrawerItem) -> Unit
+    onItemClick: (DrawerItem) -> Unit,
+    onVersionTap: () -> Unit = {},
+    onVersionTapProgress: (tapsRemaining: Int) -> Unit = {}
 ) {
+    var tapCount by remember { mutableIntStateOf(0) }
+    var firstTapTime by remember { mutableLongStateOf(0L) }
+
     ModalDrawerSheet {
         // Header
         Box(
@@ -347,7 +370,23 @@ private fun MainDrawerContent(
                     Text(
                         text = "Version $appVersionName",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                        modifier = Modifier.clickable {
+                            val now = System.currentTimeMillis()
+                            if (tapCount > 0 && now - firstTapTime > 3000L) {
+                                tapCount = 1
+                                firstTapTime = now
+                            } else {
+                                if (tapCount == 0) firstTapTime = now
+                                tapCount++
+                                if (tapCount >= 12) {
+                                    onVersionTap()
+                                    tapCount = 0
+                                } else if (tapCount >= 10) {
+                                    onVersionTapProgress(12 - tapCount)
+                                }
+                            }
+                        }
                     )
                 }
             }
