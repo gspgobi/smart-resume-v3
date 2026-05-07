@@ -170,7 +170,9 @@ fun SectionChild5Screen(
             )
             BulletTypeDropdown(
                 selected = bulletType,
-                onSelected = { bulletType = it }
+                onSelected = { bulletType = it },
+                primaryText = "Show content as bullet points",
+                hintText = "(Here new line will be considered as bullet points)"
             )
         }
     }
