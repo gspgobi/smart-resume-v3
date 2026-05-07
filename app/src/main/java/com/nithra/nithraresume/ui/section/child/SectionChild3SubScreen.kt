@@ -233,7 +233,9 @@ fun SectionChild3SubScreen(
             )
             BulletTypeDropdown(
                 selected = bulletType,
-                onSelected = { bulletType = it }
+                onSelected = { bulletType = it },
+                primaryText = "Show concentration as bullet points",
+                hintText = "(Here new line will be considered as bullet points)"
             )
         }
     }
@@ -320,7 +322,11 @@ private fun SectionChild3SubNewPreview() {
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Concentrates / Subjects") },
                     modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
-                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
+                BulletTypeDropdown(
+                    selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show concentration as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)"
+                )
             }
         }
     }
@@ -391,7 +397,11 @@ private fun SectionChild3SubEditPreview() {
                 OutlinedTextField(value = previewItem.concentrates, onValueChange = {},
                     label = { Text("Concentrates / Subjects") },
                     modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
-                BulletTypeDropdown(selected = BULLET_NONE, onSelected = {})
+                BulletTypeDropdown(
+                    selected = BULLET_NONE, onSelected = {},
+                    primaryText = "Show concentration as bullet points",
+                    hintText = "(Here new line will be considered as bullet points)"
+                )
             }
         }
     }
