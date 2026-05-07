@@ -142,7 +142,7 @@ fun SectionChild5Screen(
                 onValueChange = { content = it },
                 label = { Text("Content") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 5, maxLines = 20
+                minLines = 8, maxLines = 20
             )
             BulletTypeDropdown(
                 selected = bulletType,

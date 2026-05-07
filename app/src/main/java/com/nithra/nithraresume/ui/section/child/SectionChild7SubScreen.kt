@@ -153,7 +153,7 @@ fun SectionChild7SubScreen(
                 onValueChange = { contentDetail = it },
                 label = { Text("Detail") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3, maxLines = 8
+                minLines = 8, maxLines = 20
             )
             BulletTypeDropdown(
                 selected = bulletType,

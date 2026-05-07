@@ -229,7 +229,7 @@ fun SectionChild3SubScreen(
                 onValueChange = { concentrates = it },
                 label = { Text("Concentrates / Subjects") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3, maxLines = 8
+                minLines = 8, maxLines = 20
             )
             BulletTypeDropdown(
                 selected = bulletType,
@@ -321,7 +321,7 @@ private fun SectionChild3SubNewPreview() {
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Concentrates / Subjects") },
-                    modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
                 BulletTypeDropdown(
                     selected = BULLET_NONE, onSelected = {},
                     primaryText = "Show concentration as bullet points",
@@ -396,7 +396,7 @@ private fun SectionChild3SubEditPreview() {
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = previewItem.concentrates, onValueChange = {},
                     label = { Text("Concentrates / Subjects") },
-                    modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
                 BulletTypeDropdown(
                     selected = BULLET_NONE, onSelected = {},
                     primaryText = "Show concentration as bullet points",

@@ -257,7 +257,7 @@ fun SectionChild1Screen(
                 onValueChange = { address = it },
                 label = { Text("Address") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 2, maxLines = 4,
+                minLines = 4, maxLines = 8,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
@@ -503,7 +503,7 @@ private fun SectionChild1EmptyPreview() {
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Full Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
-                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 2, maxLines = 4)
+                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
@@ -581,7 +581,7 @@ private fun SectionChild1FilledPreview() {
                 OutlinedTextField(value = "John Doe", onValueChange = {},
                     label = { Text("Full Name") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "123 Main Street, Springfield", onValueChange = {},
-                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 2, maxLines = 4)
+                    label = { Text("Address") }, modifier = Modifier.fillMaxWidth(), minLines = 4, maxLines = 8)
                 OutlinedTextField(value = "john.doe@email.com", onValueChange = {},
                     label = { Text("Email") }, modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "+1 555 123 4567", onValueChange = {},

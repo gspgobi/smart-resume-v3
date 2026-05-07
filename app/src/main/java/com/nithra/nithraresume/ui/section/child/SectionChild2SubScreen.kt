@@ -210,7 +210,7 @@ fun SectionChild2SubScreen(
                 onValueChange = { accomplishments = it },
                 label = { Text("Accomplishments / Description") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3, maxLines = 8
+                minLines = 8, maxLines = 20
             )
             BulletTypeDropdown(
                 selected = bulletType,
@@ -302,7 +302,7 @@ private fun SectionChild2SubNewPreview() {
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Accomplishments / Description") },
-                    modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
                 BulletTypeDropdown(
                     selected = BULLET_NONE, onSelected = {},
                     primaryText = "Show accomplishments as bullet points",
@@ -370,7 +370,7 @@ private fun SectionChild2SubEditPreview() {
                     value = "Led development of core Android features\nImproved app performance by 40%\nMentored junior developers",
                     onValueChange = {},
                     label = { Text("Accomplishments / Description") },
-                    modifier = Modifier.fillMaxWidth(), minLines = 3, maxLines = 8)
+                    modifier = Modifier.fillMaxWidth(), minLines = 8, maxLines = 20)
                 BulletTypeDropdown(
                     selected = BULLET_NONE, onSelected = {},
                     primaryText = "Show accomplishments as bullet points",
