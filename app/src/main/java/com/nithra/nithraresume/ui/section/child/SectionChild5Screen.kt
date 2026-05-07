@@ -14,7 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -68,6 +71,7 @@ fun SectionChild5Screen(
 
     var initialised by rememberSaveable { mutableStateOf(false) }
     var showSuggestions by remember { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(sha, child5) {
@@ -133,6 +137,23 @@ fun SectionChild5Screen(
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    IconButton(onClick = { showOverflowMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    DropdownMenu(
+                        expanded = showOverflowMenu,
+                        onDismissRequest = { showOverflowMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Clear all") },
+                            onClick = {
+                                showOverflowMenu = false
+                                focusManager.clearFocus()
+                                content = ""; bulletType = BULLET_NONE
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
