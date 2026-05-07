@@ -72,26 +72,16 @@ fun SectionChild7SubScreen(
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(item) {
-        if (!initialised && item != null) {
-            contentTitle = item!!.contentTitle; origContentTitle = contentTitle
-            contentSubtitle = item!!.contentSubtitle; origContentSubtitle = contentSubtitle
-            contentDetail = item!!.contentDetail; origContentDetail = contentDetail
-            bulletType = item!!.contentDetailBulletType.ifEmpty { BULLET_NONE }; origBulletType = bulletType
-            initialised = true
-        } else if (!initialised && uiState is Child7SubUiState.Ready) {
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child7SubUiState.Ready) {
+            item?.let {
+                contentTitle = it.contentTitle; origContentTitle = contentTitle
+                contentSubtitle = it.contentSubtitle; origContentSubtitle = contentSubtitle
+                contentDetail = it.contentDetail; origContentDetail = contentDetail
+                bulletType = it.contentDetailBulletType.ifEmpty { BULLET_NONE }; origBulletType = bulletType
+            }
             initialised = true
         }
-    }
-
-    val isDirty = initialised && (
-        contentTitle != origContentTitle || contentSubtitle != origContentSubtitle ||
-        contentDetail != origContentDetail || bulletType != origBulletType
-    )
-
-    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
-
-    LaunchedEffect(uiState) {
         when (uiState) {
             is Child7SubUiState.Saved -> navController.popBackStack()
             is Child7SubUiState.Error -> {
@@ -101,6 +91,13 @@ fun SectionChild7SubScreen(
             else -> {}
         }
     }
+
+    val isDirty = initialised && (
+        contentTitle != origContentTitle || contentSubtitle != origContentSubtitle ||
+        contentDetail != origContentDetail || bulletType != origBulletType
+    )
+
+    BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
         topBar = {

@@ -78,27 +78,19 @@ fun SectionChild3SubScreen(
     var studyDegreeError by rememberSaveable { mutableStateOf(false) }
     var schoolNameError  by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(item) {
-        if (!initialised && item != null) {
-            studyDegree = item!!.studyDegree
-            schoolName  = item!!.schoolName
-            subtitle    = item!!.subtitle
-            studyPeriod = item!!.studyPeriod
-            concentrates = item!!.concentrates
-            bulletType  = item!!.concentratesBulletType.ifEmpty { BULLET_NONE }
-            origStudyDegree = studyDegree
-            origSchoolName  = schoolName
-            origSubtitle    = subtitle
-            origStudyPeriod = studyPeriod
-            origConcentrates = concentrates
-            origBulletType  = bulletType
-            initialised = true
-        } else if (!initialised && uiState is Child3SubUiState.Ready) {
+    LaunchedEffect(uiState) {
+        if (!initialised && uiState is Child3SubUiState.Ready) {
+            item?.let {
+                studyDegree = it.studyDegree;   origStudyDegree = studyDegree
+                schoolName  = it.schoolName;    origSchoolName  = schoolName
+                subtitle    = it.subtitle;      origSubtitle    = subtitle
+                studyPeriod = it.studyPeriod;   origStudyPeriod = studyPeriod
+                concentrates = it.concentrates; origConcentrates = concentrates
+                bulletType  = it.concentratesBulletType.ifEmpty { BULLET_NONE }
+                origBulletType = bulletType
+            }
             initialised = true
         }
-    }
-
-    LaunchedEffect(uiState) {
         when (uiState) {
             is Child3SubUiState.Saved -> navController.popBackStack()
             is Child3SubUiState.Error -> {
