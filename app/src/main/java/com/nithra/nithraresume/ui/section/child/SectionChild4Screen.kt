@@ -17,8 +17,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -82,6 +85,7 @@ fun SectionChild4Screen(
 
     var initialised by rememberSaveable { mutableStateOf(false) }
     var showDateFormatDialog by remember { mutableStateOf(false) }
+    var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(sha, child4) {
@@ -137,6 +141,24 @@ fun SectionChild4Screen(
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    IconButton(onClick = { showOverflowMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                            tint = MaterialTheme.colorScheme.onPrimary)
+                    }
+                    DropdownMenu(
+                        expanded = showOverflowMenu,
+                        onDismissRequest = { showOverflowMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Clear all") },
+                            onClick = {
+                                showOverflowMenu = false
+                                focusManager.clearFocus()
+                                declarationContent = ""; bulletType = BULLET_NONE
+                                date = ""; place = ""
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
