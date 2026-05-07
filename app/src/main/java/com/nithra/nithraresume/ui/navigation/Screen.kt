@@ -29,8 +29,9 @@ sealed class Screen(val route: String) {
         fun createRoute(profileId: Int) = "generate_resume/$profileId"
     }
 
-    data object ViewShare : Screen("view_share/{profileId}") {
-        fun createRoute(profileId: Int) = "view_share/$profileId"
+    data object ViewShare : Screen("view_share/{profileId}?justGenerated={justGenerated}") {
+        fun createRoute(profileId: Int, justGenerated: Boolean = false) =
+            "view_share/$profileId?justGenerated=$justGenerated"
     }
 
     // ── Screens that receive sectionHeadAddedId ───────────────────────────────
