@@ -30,7 +30,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Switch
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -120,7 +121,7 @@ fun SectionChild4SignatureScreen(
                     .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                if (hasImage && child4?.isSignatureImageEnable == true) {
+                if (hasImage) {
                     AsyncImage(
                         model = sigPath,
                         contentDescription = "Signature",
@@ -132,51 +133,25 @@ fun SectionChild4SignatureScreen(
                     )
                 } else {
                     Text(
-                        text = if (hasImage) "Signature hidden" else "No signature added",
+                        text = "No signature added",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
 
-            // Show in resume toggle (only when image exists)
-            if (hasImage) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text("Show in resume", style = MaterialTheme.typography.bodyLarge)
-                    Switch(
-                        checked = child4?.isSignatureImageEnable == true,
-                        onCheckedChange = { viewModel.toggleSignatureEnable() }
-                    )
-                }
-            }
-
-            // Mode selector
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlinedButton(
+            // Mode tabs
+            TabRow(selectedTabIndex = selectedMode.ordinal) {
+                Tab(
+                    selected = selectedMode == SignatureMode.Draw,
                     onClick = { selectedMode = SignatureMode.Draw },
-                    modifier = Modifier.weight(1f),
-                    colors = if (selectedMode == SignatureMode.Draw)
-                        ButtonDefaults.outlinedButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
-                        )
-                    else ButtonDefaults.outlinedButtonColors()
-                ) { Text("Draw") }
-                OutlinedButton(
+                    text = { Text("Draw") }
+                )
+                Tab(
+                    selected = selectedMode == SignatureMode.Browse,
                     onClick = { selectedMode = SignatureMode.Browse },
-                    modifier = Modifier.weight(1f),
-                    colors = if (selectedMode == SignatureMode.Browse)
-                        ButtonDefaults.outlinedButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer
-                        )
-                    else ButtonDefaults.outlinedButtonColors()
-                ) { Text("Browse Gallery") }
+                    text = { Text("Browse Gallery") }
+                )
             }
 
             // Draw mode panel
