@@ -150,18 +150,22 @@ fun SectionChild4Screen(
                 selected = bulletType,
                 onSelected = { bulletType = it }
             )
-            OutlinedTextField(
-                value = date,
-                onValueChange = { date = it },
-                label = { Text("Date") },
-                trailingIcon = {
-                    IconButton(onClick = { showDateFormatDialog = true }) {
-                        Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date format")
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedTextField(
+                    value = date,
+                    onValueChange = { date = it },
+                    label = { Text("Date") },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true
+                )
+                IconButton(onClick = { showDateFormatDialog = true }) {
+                    Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
+                        tint = MaterialTheme.colorScheme.primary)
+                }
+            }
             OutlinedTextField(
                 value = place,
                 onValueChange = { place = it },
