@@ -49,7 +49,12 @@ fun SmartResumeNavGraph(
             MainScreen(navController = navController)
         }
 
-        composable(Screen.UserProfiles.route) {
+        composable(
+            route = Screen.UserProfiles.routeWithArgs,
+            arguments = listOf(
+                navArgument("dummyCreated") { type = NavType.BoolType; defaultValue = false }
+            )
+        ) {
             UserProfileScreen(navController = navController)
         }
 
