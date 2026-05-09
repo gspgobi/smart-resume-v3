@@ -377,7 +377,7 @@ private fun GenerateWithRow(
         Column(modifier = Modifier.padding(start = 4.dp)) {
             Text(
                 label,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleSmall,
                 color = if (enabled) MaterialTheme.colorScheme.onSurface
                         else MaterialTheme.colorScheme.onSurfaceVariant
             )
