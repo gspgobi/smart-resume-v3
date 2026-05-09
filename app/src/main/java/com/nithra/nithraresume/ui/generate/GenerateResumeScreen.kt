@@ -284,7 +284,7 @@ fun GenerateResumeScreen(
                                     GenerateWithRow(
                                         label = "User Photo",
                                         hint = if (hasUserImageSet) "Photo added"
-                                               else "No photo added — add one in Personal Info",
+                                               else "No photo added — add one in Contact Information section",
                                         checked = includeUserImage,
                                         enabled = hasUserImageSet,
                                         onCheckedChange = { includeUserImage = it }
@@ -297,7 +297,7 @@ fun GenerateResumeScreen(
                                     GenerateWithRow(
                                         label = "Signature",
                                         hint = if (hasSignatureSet) "Signature added"
-                                               else "No signature added — add one in Declaration",
+                                               else "No signature added — add one in Declaration section",
                                         checked = includeSignature,
                                         enabled = hasSignatureSet,
                                         onCheckedChange = { includeSignature = it }
