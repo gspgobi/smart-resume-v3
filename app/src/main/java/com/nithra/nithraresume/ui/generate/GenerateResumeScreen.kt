@@ -227,7 +227,7 @@ fun GenerateResumeScreen(
                                     showChevron = true
                                 )
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                                SettingsInfoRow("Font Style", p.fontStyle)
+                                SettingsInfoRow("Font Style", p.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), ""))
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                                 SettingsInfoRow("Font Size", "${p.fontSize} pt")
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
