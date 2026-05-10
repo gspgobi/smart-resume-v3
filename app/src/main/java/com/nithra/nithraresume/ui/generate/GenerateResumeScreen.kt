@@ -210,46 +210,22 @@ fun GenerateResumeScreen(
                     )
                     profile?.let { p ->
                         Card(
+                            onClick = {
+                                navController.navigate(
+                                    Screen.ResumeFormat.createRoute(viewModel.profileId)
+                                )
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.surfaceVariant
                             )
                         ) {
                             Column {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clickable {
-                                            navController.navigate(
-                                                Screen.ResumeFormat.createRoute(viewModel.profileId)
-                                            )
-                                        }
-                                        .padding(horizontal = 16.dp, vertical = 14.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        "Resume Format",
-                                        style = MaterialTheme.typography.labelMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(2.dp)
-                                    ) {
-                                        Text(
-                                            currentFormat?.title ?: "",
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.primary
-                                        )
-                                        Icon(
-                                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                            contentDescription = "Change resume format",
-                                            tint = MaterialTheme.colorScheme.primary,
-                                            modifier = Modifier.size(16.dp)
-                                        )
-                                    }
-                                }
+                                SettingsInfoRow(
+                                    label = "Resume Format",
+                                    value = currentFormat?.title ?: "",
+                                    showChevron = true
+                                )
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                                 SettingsInfoRow("Font Style", p.fontStyle)
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
@@ -387,7 +363,11 @@ private fun GenerateWithRow(
 }
 
 @Composable
-private fun SettingsInfoRow(label: String, value: String) {
+private fun SettingsInfoRow(
+    label: String,
+    value: String,
+    showChevron: Boolean = false
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -400,11 +380,24 @@ private fun SettingsInfoRow(label: String, value: String) {
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Text(
-            value,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                value,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+            if (showChevron) {
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
     }
 }
 
