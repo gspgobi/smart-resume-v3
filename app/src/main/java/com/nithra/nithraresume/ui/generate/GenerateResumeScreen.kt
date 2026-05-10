@@ -55,15 +55,6 @@ import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
-private val FORMAT_NAMES = mapOf(
-    1 to "Classic",
-    2 to "Modern",
-    3 to "Professional",
-    4 to "Creative",
-    5 to "Minimal",
-    6 to "Executive"
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenerateResumeScreen(
@@ -72,6 +63,7 @@ fun GenerateResumeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val profile by viewModel.profile.collectAsStateWithLifecycle()
+    val currentFormat by viewModel.currentFormat.collectAsStateWithLifecycle()
     val sc1 by viewModel.sc1.collectAsStateWithLifecycle()
     val sc4 by viewModel.sc4.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -243,8 +235,7 @@ fun GenerateResumeScreen(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                         Text(
-                                            FORMAT_NAMES[p.resumeFormatBaseId]
-                                                ?: "Format ${p.resumeFormatBaseId}",
+                                            currentFormat?.title ?: "",
                                             style = MaterialTheme.typography.bodyMedium
                                         )
                                     }

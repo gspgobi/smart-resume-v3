@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nithra.nithraresume.data.model.ResumeFormat
 import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionChild4
 import com.nithra.nithraresume.data.model.UserProfile
@@ -54,6 +55,9 @@ class GenerateResumeViewModel @Inject constructor(
     private val _profile = MutableStateFlow<UserProfile?>(null)
     val profile: StateFlow<UserProfile?> = _profile.asStateFlow()
 
+    private val _currentFormat = MutableStateFlow<ResumeFormat?>(null)
+    val currentFormat: StateFlow<ResumeFormat?> = _currentFormat.asStateFlow()
+
     private val _sc1 = MutableStateFlow<SectionChild1?>(null)
     val sc1: StateFlow<SectionChild1?> = _sc1.asStateFlow()
 
@@ -72,8 +76,6 @@ class GenerateResumeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _profile.value = userProfileRepository.getById(profileId)
-
             val sections = sectionHeadRepository.getEnabledByProfileId(profileId)
                 .filter { it.groupBaseId == GROUP_ID_SECTIONS }
             sections.firstOrNull { it.headBaseId == 1 }?.let { sha ->
@@ -82,8 +84,16 @@ class GenerateResumeViewModel @Inject constructor(
             sections.firstOrNull { it.headBaseId == 4 }?.let { sha ->
                 _sc4.value = sectionChildRepository.getChild4Once(sha.id)
             }
-
             _uiState.value = GenerateResumeUiState.Idle
+        }
+
+        viewModelScope.launch {
+            userProfileRepository.getByIdFlow(profileId).collect { profile ->
+                _profile.value = profile
+                _currentFormat.value = profile?.let {
+                    resumeFormatRepository.getById(it.resumeFormatBaseId)
+                }
+            }
         }
     }
 
@@ -109,7 +119,6 @@ class GenerateResumeViewModel @Inject constructor(
                     buildPdf(currentProfile, fileName)
                 }
                 userProfileRepository.updateResumeFileName(profileId, fileName)
-                _profile.value = userProfileRepository.getById(profileId)
                 _uiState.value = GenerateResumeUiState.Done(pdfFile)
             } catch (e: Exception) {
                 _uiState.value = GenerateResumeUiState.Error(e.message ?: "Failed to generate resume")
