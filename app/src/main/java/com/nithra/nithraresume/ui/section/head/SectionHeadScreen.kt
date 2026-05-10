@@ -103,11 +103,6 @@ fun SectionHeadScreen(
     // Delete confirmation
     var deleteTarget by remember { mutableStateOf<SectionHeadAdded?>(null) }
 
-    // Reload format when returning from ResumeFormat screen
-    LaunchedEffect(navController) {
-        // reloadFormat called via LaunchedEffect on resume via BackStackEntry
-    }
-
     LaunchedEffect(uiEvent) {
         if (uiEvent is SectionHeadUiEvent.Error) {
             snackbarHostState.showSnackbar((uiEvent as SectionHeadUiEvent.Error).message)
