@@ -18,6 +18,7 @@ import com.nithra.nithraresume.data.model.SectionChild7
 import com.nithra.nithraresume.data.model.SectionChild8
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.model.UserProfile
+import com.nithra.nithraresume.data.repository.ResumeFormatRepository
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
@@ -107,6 +108,7 @@ class SplashViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
     private val analyticsManager: AnalyticsManager,
     private val userProfileRepository: UserProfileRepository,
+    private val resumeFormatRepository: ResumeFormatRepository,
     private val sectionHeadRepository: SectionHeadRepository,
     private val sectionChildRepository: SectionChildRepository
 ) : ViewModel() {
@@ -130,6 +132,7 @@ class SplashViewModel @Inject constructor(
             prefsManager.setIsPerfectNewSrv2User(true)
             prefsManager.setAppInstalledDuringSrv2DbVersion(SmartResumeDatabase.DATABASE_VERSION)
             createExampleProfile()
+            createNewProfile()
         }
 
         if (storedVersionCode != currentVersionCode) {
@@ -148,6 +151,49 @@ class SplashViewModel @Inject constructor(
             val token = prefsManager.fcmTokenId.first()
             if (token.isNotEmpty()) {
                 apiRepository.registerFcmToken(token, firstOrUpdate = "update")
+            }
+        }
+    }
+
+    private suspend fun createNewProfile() {
+        withContext(Dispatchers.IO) {
+            val defaultFormat = resumeFormatRepository.getDefault()
+                ?: resumeFormatRepository.getAll().first().firstOrNull()
+                ?: return@withContext
+
+            val existingProfiles = userProfileRepository.getAllOnce()
+            val nextPosition = if (existingProfiles.isEmpty()) 0
+                               else existingProfiles.maxOf { it.indexPosition } + 1
+
+            val profileId = userProfileRepository.insert(
+                UserProfile(
+                    id = 0,
+                    name = "My Profile",
+                    indexPosition = nextPosition,
+                    isSampleProfile = false,
+                    sampleProfileId = -1,
+                    resumeFormatBaseId = defaultFormat.id,
+                    fontStyle = defaultFormat.fontStyle,
+                    fontSize = defaultFormat.fontSize,
+                    backgroundColor = defaultFormat.backgroundColor,
+                    resumeFileName = "My Profile"
+                )
+            )
+
+            val defaults = sectionHeadRepository.getDefaultSampleData()
+            defaults.forEach { sample ->
+                sectionHeadRepository.insertAdded(
+                    SectionHeadAdded(
+                        id = 0,
+                        profileId = profileId.toInt(),
+                        groupBaseId = sample.sectionHeadGroupBaseId,
+                        headBaseId = sample.sectionHeadBaseId,
+                        sampleDataId = sample.id,
+                        title = sample.title,
+                        isEnable = sample.isEnable,
+                        indexPosition = sample.indexPosition
+                    )
+                )
             }
         }
     }
