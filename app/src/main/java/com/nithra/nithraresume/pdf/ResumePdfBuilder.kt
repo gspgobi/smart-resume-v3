@@ -15,6 +15,7 @@ import com.itextpdf.text.Phrase
 import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.BaseFont
 import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.ColumnText
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.nithra.nithraresume.data.model.SectionChild2
@@ -77,10 +78,11 @@ class ResumePdfBuilder(private val context: Context) {
         writer.setFullCompression()
         document.open()
 
+        val availablePageHeight = PageSize.A4.height - 30f - 40f
         data.addons.forEach { sha ->
             if (sha.headBaseId == 8) {
                 data.sc8ByHeadId[sha.id]?.let {
-                    document.add(makeCoverLetterParagraph(it, fonts))
+                    document.add(buildCoverLetterTable(it, fonts, availablePageHeight))
                     document.newPage()
                 }
             }
@@ -379,6 +381,37 @@ class ResumePdfBuilder(private val context: Context) {
     }
 
     // ── SC8 – Cover Letter ─────────────────────────────────────────────────────
+
+    private fun buildCoverLetterTable(
+        sc8: com.nithra.nithraresume.data.model.SectionChild8,
+        fonts: PdfFonts,
+        availableHeight: Float
+    ): PdfPTable {
+        // Pass 1: simulate to measure actual content height
+        val columnWidth = PageSize.A4.width - 72f // 36pt left + 36pt right margins
+        val ct = ColumnText(null)
+        ct.setSimpleColumn(0f, 0f, columnWidth, availableHeight)
+        ct.addElement(makeCoverLetterParagraph(sc8, fonts))
+        ct.go(true)
+        val contentHeight = (availableHeight - ct.yLine).coerceAtLeast(0f)
+        val spacerHeight = ((availableHeight - contentHeight) / 2f).coerceAtLeast(0f)
+
+        // Pass 2: build table — top spacer row (equal to bottom gap) + content row
+        val table = PdfPTable(1).apply { widthPercentage = 100f }
+        if (spacerHeight > 1f) {
+            table.addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
+                fixedHeight = spacerHeight
+                setBorder(Rectangle.NO_BORDER)
+                setPadding(0f)
+            })
+        }
+        table.addCell(PdfPCell().apply {
+            addElement(makeCoverLetterParagraph(sc8, fonts))
+            setBorder(Rectangle.NO_BORDER)
+            setPadding(0f)
+        })
+        return table
+    }
 
     private fun makeCoverLetterParagraph(
         sc8: com.nithra.nithraresume.data.model.SectionChild8,
