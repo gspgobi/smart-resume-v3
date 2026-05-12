@@ -71,11 +71,8 @@ fun GenerateResumeScreen(
     var fileName by rememberSaveable { mutableStateOf("") }
     var fileNameInitialised by rememberSaveable { mutableStateOf(false) }
 
-    var includeUserImage by rememberSaveable { mutableStateOf(false) }
-    var userImageInitialised by rememberSaveable { mutableStateOf(false) }
-
-    var includeSignature by rememberSaveable { mutableStateOf(false) }
-    var signatureInitialised by rememberSaveable { mutableStateOf(false) }
+    val includeUserImage = sc1?.isUserImageEnable ?: false
+    val includeSignature = sc4?.isSignatureImageEnable ?: false
 
     var showOverwriteDialog by rememberSaveable { mutableStateOf(false) }
     var pendingFileName by rememberSaveable { mutableStateOf("") }
@@ -84,20 +81,6 @@ fun GenerateResumeScreen(
         if (!fileNameInitialised && profile != null) {
             fileName = profile!!.resumeFileName?.ifEmpty { profile!!.name } ?: profile!!.name
             fileNameInitialised = true
-        }
-    }
-
-    LaunchedEffect(sc1) {
-        if (!userImageInitialised && sc1 != null) {
-            includeUserImage = sc1!!.isUserImageEnable
-            userImageInitialised = true
-        }
-    }
-
-    LaunchedEffect(sc4) {
-        if (!signatureInitialised && sc4 != null) {
-            includeSignature = sc4!!.isSignatureImageEnable
-            signatureInitialised = true
         }
     }
 
@@ -261,7 +244,7 @@ fun GenerateResumeScreen(
                                                else "No photo added — add one in Contact Information section",
                                         checked = includeUserImage,
                                         enabled = hasUserImageSet,
-                                        onCheckedChange = { includeUserImage = it }
+                                        onCheckedChange = { viewModel.setIncludeUserImage(it) }
                                     )
                                 }
                                 if (sc1 != null && sc4 != null) {
@@ -274,7 +257,7 @@ fun GenerateResumeScreen(
                                                else "No signature added — add one in Declaration section",
                                         checked = includeSignature,
                                         enabled = hasSignatureSet,
-                                        onCheckedChange = { includeSignature = it }
+                                        onCheckedChange = { viewModel.setIncludeSignature(it) }
                                     )
                                 }
                             }
@@ -290,7 +273,7 @@ fun GenerateResumeScreen(
                                     pendingFileName = trimmed
                                     showOverwriteDialog = true
                                 } else {
-                                    viewModel.generate(trimmed, includeUserImage, includeSignature)
+                                    viewModel.generate(trimmed)
                                 }
                             }
                         },
@@ -316,7 +299,7 @@ fun GenerateResumeScreen(
             confirmButton = {
                 Button(onClick = {
                     showOverwriteDialog = false
-                    viewModel.generate(pendingFileName, includeUserImage, includeSignature)
+                    viewModel.generate(pendingFileName)
                 }) { Text("Overwrite") }
             },
             dismissButton = {
