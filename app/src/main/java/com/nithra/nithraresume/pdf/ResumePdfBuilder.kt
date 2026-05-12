@@ -415,72 +415,49 @@ class ResumePdfBuilder(private val context: Context) {
     ): Paragraph {
         val p = Paragraph()
 
-        // Section title (e.g. "COVER LETTER")
+        // Title (e.g. "COVER LETTER") — centered
         if (title.isNotEmpty()) {
             p.add(Paragraph(title, fonts.nameFont).also {
                 it.alignment = Element.ALIGN_CENTER
-                it.spacingAfter = 24f
             })
         }
 
-        // SC1 header: name, email, phone — each on its own left-aligned line
+        // 6 empty lines after title (mirrors addEmptyLine(paragraph_cover, 6) in v2)
+        repeat(6) { p.add(Paragraph(" ", fonts.subFont)) }
+
+        // SC1 contact block: each field + one spacer line, same as v2 cover_table rows
         sc1?.let { c1 ->
             if (c1.name.isNotEmpty()) {
-                p.add(Paragraph(c1.name, fonts.subBoldFont).also {
-                    it.alignment = Element.ALIGN_LEFT
-                    it.spacingAfter = 2f
-                })
+                p.add(Paragraph(c1.name, fonts.subFont).apply { alignment = Element.ALIGN_LEFT })
+            }
+
+            // Address — left-aligned, large spacingAfter mirrors v2's paddingBottom=50
+            if (sc8.address.isNotEmpty()) {
+                p.add(Paragraph(sc8.address, fonts.subFont).apply { alignment = Element.ALIGN_LEFT })
             }
             if (c1.email.isNotEmpty()) {
-                p.add(Paragraph(c1.email, fonts.addressFont).also {
-                    it.alignment = Element.ALIGN_LEFT
-                    it.spacingAfter = 2f
-                })
+                p.add(Paragraph(c1.email, fonts.subFont).apply { alignment = Element.ALIGN_LEFT })
             }
             if (c1.phone.isNotEmpty()) {
-                p.add(Paragraph(c1.phone, fonts.addressFont).also {
-                    it.alignment = Element.ALIGN_LEFT
-                    it.spacingAfter = 12f
-                })
+                p.add(Paragraph(c1.phone, fonts.subFont).apply { alignment = Element.ALIGN_LEFT })
             }
+            p.add(Paragraph(" ", fonts.subFont).apply { spacingAfter = 20f })
         }
 
-        // Date (left-aligned)
+        // Date
         if (sc8.date.isNotEmpty()) {
-            p.add(Paragraph(sc8.date, fonts.subFont).also {
-                it.alignment = Element.ALIGN_LEFT
-                it.spacingAfter = 4f
-            })
+            p.add(Paragraph(sc8.date, fonts.subFont).apply { alignment = Element.ALIGN_LEFT
+            spacingAfter = 30f})
         }
 
-        // Address (multiline via Chunk.NEWLINE)
-        if (sc8.address.isNotEmpty()) {
-            val addrPara = Paragraph()
-            addrPara.setLeading(2f, 1.3f)
-            addrPara.spacingAfter = 8f
-            sc8.address.split("\n").forEachIndexed { index, line ->
-                if (index > 0) addrPara.add(Chunk.NEWLINE)
-                addrPara.add(Chunk(line, fonts.subFont))
-            }
-            p.add(addrPara)
-        }
-
-        // Body content (justified)
+        // Content + "\n\n" + SC1 name in one paragraph (mirrors v2's single cell)
         if (sc8.content.isNotEmpty()) {
-            p.add(Paragraph(sc8.content, fonts.subFont).also {
-                it.alignment = Element.ALIGN_JUSTIFIED
-                it.setLeading(2f, 1.3f)
-                it.spacingAfter = 12f
+            val sc1Name = sc1?.name?.takeIf { it.isNotEmpty() } ?: ""
+            val text = if (sc1Name.isNotEmpty()) "${sc8.content}\n\n\n$sc1Name" else sc8.content
+            p.add(Paragraph(text, fonts.subFont).apply {
+                alignment = Element.ALIGN_LEFT
+                setLeading(2f, 1.3f)
             })
-        }
-
-        // Signature: SC1 name
-        sc1?.let { c1 ->
-            if (c1.name.isNotEmpty()) {
-                p.add(Paragraph(c1.name, fonts.subFont).also {
-                    it.alignment = Element.ALIGN_LEFT
-                })
-            }
         }
 
         return p
