@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.itextpdf.text.BaseColor
-import com.itextpdf.text.Chunk
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
 import com.itextpdf.text.Font
@@ -79,11 +78,10 @@ class ResumePdfBuilder(private val context: Context) {
         document.open()
 
         val sc1ForCoverLetter = data.sc1ByHeadId.values.firstOrNull()
-        val availablePageHeight = PageSize.A4.height - 30f - 40f
         data.addons.forEach { sha ->
             if (sha.headBaseId == 8) {
                 data.sc8ByHeadId[sha.id]?.let {
-                    document.add(buildCoverLetterTable(sha.title, it, sc1ForCoverLetter, fonts, availablePageHeight))
+                    document.add(buildCoverLetterTable(sha.title, it, sc1ForCoverLetter, fonts))
                     document.newPage()
                 }
             }
@@ -398,8 +396,7 @@ class ResumePdfBuilder(private val context: Context) {
         title: String,
         sc8: com.nithra.nithraresume.data.model.SectionChild8,
         sc1: com.nithra.nithraresume.data.model.SectionChild1?,
-        fonts: PdfFonts,
-        availableHeight: Float
+        fonts: PdfFonts
     ): PdfPTable {
         val table = PdfPTable(1).apply { widthPercentage = 100f }
         table.addCell(PdfPCell().apply {
