@@ -87,11 +87,7 @@ fun GenerateResumeScreen(
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is GenerateResumeUiState.Done -> {
-                navController.navigate(Screen.ViewShare.createRoute(viewModel.profileId, justGenerated = true)) {
-                    popUpTo(Screen.GenerateResume.createRoute(viewModel.profileId)) {
-                        inclusive = true
-                    }
-                }
+                navController.navigate(Screen.ViewShare.createRoute(viewModel.profileId, justGenerated = true))
             }
             is GenerateResumeUiState.Error -> {
                 snackbarHostState.showSnackbar(state.message)
