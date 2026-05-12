@@ -16,7 +16,6 @@ import com.itextpdf.text.Phrase
 import com.itextpdf.text.Rectangle
 import com.itextpdf.text.pdf.BaseFont
 import com.itextpdf.text.pdf.PdfPCell
-import com.itextpdf.text.pdf.ColumnText
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.nithra.nithraresume.data.model.SectionChild2
@@ -402,26 +401,7 @@ class ResumePdfBuilder(private val context: Context) {
         fonts: PdfFonts,
         availableHeight: Float
     ): PdfPTable {
-        val columnWidth = PageSize.A4.width - 72f
-        val content = makeCoverLetterParagraph(title, sc8, sc1, fonts)
-
-        // Pass 1: simulate to measure actual content height
-        val ct = ColumnText(null)
-        ct.setSimpleColumn(0f, 0f, columnWidth, availableHeight)
-        ct.addElement(content)
-        ct.go(true)
-        val contentHeight = (availableHeight - ct.yLine).coerceAtLeast(0f)
-        val spacerHeight = ((availableHeight - contentHeight) / 2f).coerceAtLeast(0f)
-
-        // Pass 2: build table — top spacer row (equal to bottom gap) + content row
         val table = PdfPTable(1).apply { widthPercentage = 100f }
-        if (spacerHeight > 1f) {
-            table.addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
-                fixedHeight = spacerHeight
-                setBorder(Rectangle.NO_BORDER)
-                setPadding(0f)
-            })
-        }
         table.addCell(PdfPCell().apply {
             addElement(makeCoverLetterParagraph(title, sc8, sc1, fonts))
             setBorder(Rectangle.NO_BORDER)
@@ -442,22 +422,27 @@ class ResumePdfBuilder(private val context: Context) {
         if (title.isNotEmpty()) {
             p.add(Paragraph(title, fonts.nameFont).also {
                 it.alignment = Element.ALIGN_CENTER
-                it.spacingAfter = 8f
+                it.spacingAfter = 24f
             })
         }
 
-        // SC1 header: name + contact line
+        // SC1 header: name, email, phone — each on its own left-aligned line
         sc1?.let { c1 ->
             if (c1.name.isNotEmpty()) {
                 p.add(Paragraph(c1.name, fonts.subBoldFont).also {
-                    it.alignment = Element.ALIGN_CENTER
+                    it.alignment = Element.ALIGN_LEFT
                     it.spacingAfter = 2f
                 })
             }
-            val contact = listOf(c1.email, c1.phone).filter { it.isNotEmpty() }.joinToString("  |  ")
-            if (contact.isNotEmpty()) {
-                p.add(Paragraph(contact, fonts.addressFont).also {
-                    it.alignment = Element.ALIGN_CENTER
+            if (c1.email.isNotEmpty()) {
+                p.add(Paragraph(c1.email, fonts.addressFont).also {
+                    it.alignment = Element.ALIGN_LEFT
+                    it.spacingAfter = 2f
+                })
+            }
+            if (c1.phone.isNotEmpty()) {
+                p.add(Paragraph(c1.phone, fonts.addressFont).also {
+                    it.alignment = Element.ALIGN_LEFT
                     it.spacingAfter = 12f
                 })
             }
