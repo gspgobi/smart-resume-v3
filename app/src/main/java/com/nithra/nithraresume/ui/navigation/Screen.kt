@@ -15,9 +15,10 @@ sealed class Screen(val route: String) {
         fun createRoute(dummyCreated: Boolean = false) =
             if (dummyCreated) "user_profiles?dummyCreated=true" else "user_profiles"
     }
-    data object SampleResumes : Screen("sample_resumes")
-    data object Notifications : Screen("notifications")
-    data object AppSettings   : Screen("app_settings")
+    data object SampleResumes     : Screen("sample_resumes")
+    data object Notifications     : Screen("notifications")
+    data object AppSettings       : Screen("app_settings")
+    data object GeneratedResumes  : Screen("generated_resumes")
 
     // ── Screens that receive profileId ────────────────────────────────────────
 
