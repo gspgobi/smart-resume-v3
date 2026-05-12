@@ -221,7 +221,7 @@ fun MainScreen(
             MainContent(
                 modifier = Modifier.padding(innerPadding),
                 onMyProfilesClick = { navController.navigate(Screen.UserProfiles.route) },
-                onViewResumesClick = { navController.navigate(Screen.UserProfiles.route) }
+                onViewResumesClick = { navController.navigate(Screen.GeneratedResumes.route) }
             )
         }
     }
