@@ -66,6 +66,24 @@ class GenerateResumeViewModel @Inject constructor(
 
     fun resetState() { _uiState.value = GenerateResumeUiState.Idle }
 
+    fun setIncludeUserImage(enabled: Boolean) {
+        val c1 = _sc1.value ?: return
+        viewModelScope.launch {
+            val updated = c1.copy(isUserImageEnable = enabled)
+            sectionChildRepository.updateChild1(updated)
+            _sc1.value = updated
+        }
+    }
+
+    fun setIncludeSignature(enabled: Boolean) {
+        val c4 = _sc4.value ?: return
+        viewModelScope.launch {
+            val updated = c4.copy(isSignatureImageEnable = enabled)
+            sectionChildRepository.updateChild4(updated)
+            _sc4.value = updated
+        }
+    }
+
     fun fileExists(fileName: String): Boolean {
         val file = java.io.File(
             context.getExternalFilesDir(null),
@@ -97,24 +115,12 @@ class GenerateResumeViewModel @Inject constructor(
         }
     }
 
-    fun generate(fileName: String, includeUserImage: Boolean, includeSignature: Boolean) {
+    fun generate(fileName: String) {
         val currentProfile = _profile.value ?: return
         _uiState.value = GenerateResumeUiState.Generating
 
         viewModelScope.launch {
             try {
-                // Persist flags to DB first — buildPdf reads fresh values from DB
-                _sc1.value?.let { c1 ->
-                    val updated = c1.copy(isUserImageEnable = includeUserImage)
-                    sectionChildRepository.updateChild1(updated)
-                    _sc1.value = updated
-                }
-                _sc4.value?.let { c4 ->
-                    val updated = c4.copy(isSignatureImageEnable = includeSignature)
-                    sectionChildRepository.updateChild4(updated)
-                    _sc4.value = updated
-                }
-
                 val pdfFile = withContext(Dispatchers.IO) {
                     buildPdf(currentProfile, fileName)
                 }
