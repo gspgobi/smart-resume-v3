@@ -88,6 +88,7 @@ fun GenerateResumeScreen(
         when (val state = uiState) {
             is GenerateResumeUiState.Done -> {
                 navController.navigate(Screen.ViewShare.createRoute(viewModel.profileId, justGenerated = true))
+                viewModel.resetState()
             }
             is GenerateResumeUiState.Error -> {
                 snackbarHostState.showSnackbar(state.message)
