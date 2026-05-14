@@ -600,14 +600,6 @@ class ResumePdfBuilder(private val context: Context) {
                     this.colspan = colspan
                 })
             }
-        val genderDob = joinNonEmpty(sc1.gender, sc1.dob, "  |  ")
-        if (genderDob.isNotEmpty()) {
-            table.addCell(PdfPCell(Phrase(genderDob, fonts.addressFont)).apply {
-                horizontalAlignment = alignment
-                setBorder(Rectangle.NO_BORDER)
-                this.colspan = colspan
-            })
-        }
     }
 
     private fun addNameCell(table: PdfPTable, name: String, font: Font, alignment: Int) {
