@@ -69,7 +69,7 @@ class ResumePdfBuilder(private val context: Context) {
         }
 
         val document = Document(pageSize)
-        document.setMargins(36f, 36f, 30f, 40f)
+        document.setMargins(36f, 36f, 36f, 36f)
         document.setMarginMirroringTopBottom(true)
 
         val writer = PdfWriter.getInstance(document, FileOutputStream(outputFile))
