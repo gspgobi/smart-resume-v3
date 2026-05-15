@@ -39,9 +39,9 @@ class ResumePdfBuilder(private val context: Context) {
 
     private companion object { const val TAG = "ResumePdfBuilder" }
 
-    private val COLOR_BLUE     = BaseColor(51, 102, 153)
-    private val COLOR_GRAY     = BaseColor(192, 192, 192)
-    private val COLOR_PEACH_BG = BaseColor(247, 242, 223)
+    private val colorBlue    = BaseColor(51, 102, 153)
+    private val colorGray    = BaseColor(192, 192, 192)
+    private val colorPeachBg = BaseColor(247, 242, 223)
 
     // ── Public entry point ─────────────────────────────────────────────────────
 
@@ -71,7 +71,7 @@ class ResumePdfBuilder(private val context: Context) {
 
         val pageSize = Rectangle(PageSize.A4)
         if (bgColor.equals(BG_COLOR_PEACH, ignoreCase = true)) {
-            pageSize.backgroundColor = COLOR_PEACH_BG
+            pageSize.backgroundColor = colorPeachBg
         }
 
         val document = Document(pageSize)
@@ -524,7 +524,7 @@ class ResumePdfBuilder(private val context: Context) {
                     spacingBefore = 8f
                 }
                 val grayCell = PdfPCell(Phrase("", fonts.subFont)).apply {
-                    backgroundColor = COLOR_GRAY
+                    backgroundColor = colorGray
                     setBorder(Rectangle.NO_BORDER)
                 }
                 table.addCell(grayCell)
@@ -691,7 +691,7 @@ class ResumePdfBuilder(private val context: Context) {
         return PdfFonts(
             nameFont          = font((fontSize + 12).toFloat(), Font.BOLD),
             headingFont       = font((fontSize + 1).toFloat(),  Font.BOLD),
-            headingModernFont = font((fontSize + 1).toFloat(),  Font.BOLD, COLOR_BLUE),
+            headingModernFont = font((fontSize + 1).toFloat(),  Font.BOLD, colorBlue),
             subFont           = font(fontSize.toFloat(),         Font.NORMAL),
             subBoldFont       = font(fontSize.toFloat(),         Font.BOLD),
             addressFont       = font((fontSize - 2).coerceAtLeast(6).toFloat(), Font.ITALIC)
