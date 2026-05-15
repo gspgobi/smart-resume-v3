@@ -54,6 +54,7 @@ android {
 
     productFlavors {
         create("withTestAdMob") {
+            isDefault = true
             dimension = "environment"
             buildConfigField("Boolean", "isAdMobEnable", "true")
             buildConfigField("Boolean", "isTestAdMobId", "true")
