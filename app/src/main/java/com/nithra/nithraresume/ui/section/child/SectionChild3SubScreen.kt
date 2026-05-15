@@ -215,7 +215,7 @@ fun SectionChild3SubScreen(
             OutlinedTextField(
                 value = subtitle,
                 onValueChange = { subtitle = it },
-                label = { Text("Subtitle (optional)") },
+                label = { Text("Subtitle") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -316,7 +316,7 @@ private fun SectionChild3SubNewPreview() {
                     label = { Text("School / University Name") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Study Period") },
@@ -391,7 +391,7 @@ private fun SectionChild3SubEditPreview() {
                     label = { Text("School / University Name") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = previewItem.subtitle, onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = previewItem.studyPeriod, onValueChange = {},
                     label = { Text("Study Period") },

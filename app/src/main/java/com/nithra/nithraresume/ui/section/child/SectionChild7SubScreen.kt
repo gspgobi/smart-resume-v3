@@ -177,7 +177,7 @@ fun SectionChild7SubScreen(
             OutlinedTextField(
                 value = contentSubtitle,
                 onValueChange = { contentSubtitle = it },
-                label = { Text("Subtitle (optional)") },
+                label = { Text("Subtitle") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -311,7 +311,7 @@ private fun SectionChild7SubNewEntryPreview() {
                     label = { Text("Title") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Detail") },
@@ -372,7 +372,7 @@ private fun SectionChild7SubEditEntryPreview() {
                     label = { Text("Title") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "Tech Corp • 2020 – Present", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = sampleDetail, onValueChange = {},
                     label = { Text("Detail") },
