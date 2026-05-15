@@ -116,6 +116,7 @@ fun SectionChild1Screen(
     var origNationality by rememberSaveable { mutableStateOf("") }
 
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
+    var titleError by rememberSaveable { mutableStateOf(false) }
 
     // Populate fields once both sha and child1 are loaded to avoid a race
     // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
@@ -173,7 +174,7 @@ fun SectionChild1Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title.ifEmpty { "Contact Information" }) },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
@@ -183,9 +184,11 @@ fun SectionChild1Screen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(title, name, address, email, phone,
-                            gender, dob, dobFormat, nationality)
+                        if (title.isBlank()) { titleError = true } else {
+                            focusManager.clearFocus()
+                            viewModel.save(title, name, address, email, phone,
+                                gender, dob, dobFormat, nationality)
+                        }
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
@@ -238,10 +241,12 @@ fun SectionChild1Screen(
             // Section title
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it; titleError = false },
                 label = { Text("Section Title") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = titleError,
+                supportingText = if (titleError) { { Text("Section title is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Next
@@ -363,9 +368,14 @@ fun SectionChild1Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
-                    showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                    if (title.isBlank()) {
+                        showUnsavedDialog = false
+                        titleError = true
+                    } else {
+                        showUnsavedDialog = false
+                        focusManager.clearFocus()
+                        viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                    }
                 }) { Text("Save") }
             },
             dismissButton = {
