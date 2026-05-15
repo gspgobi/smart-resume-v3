@@ -117,6 +117,10 @@ fun SectionChild1Screen(
 
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
     var titleError by rememberSaveable { mutableStateOf(false) }
+    var nameError by rememberSaveable { mutableStateOf(false) }
+    var addressError by rememberSaveable { mutableStateOf(false) }
+    var emailError by rememberSaveable { mutableStateOf(false) }
+    var phoneError by rememberSaveable { mutableStateOf(false) }
 
     // Populate fields once both sha and child1 are loaded to avoid a race
     // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
@@ -184,7 +188,13 @@ fun SectionChild1Screen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        if (title.isBlank()) { titleError = true } else {
+                        val tErr = title.isBlank(); val nErr = name.isBlank()
+                        val aErr = address.isBlank(); val eErr = email.isBlank()
+                        val pErr = phone.isBlank()
+                        if (tErr || nErr || aErr || eErr || pErr) {
+                            titleError = tErr; nameError = nErr; addressError = aErr
+                            emailError = eErr; phoneError = pErr
+                        } else {
                             focusManager.clearFocus()
                             viewModel.save(title, name, address, email, phone,
                                 gender, dob, dobFormat, nationality)
@@ -257,10 +267,12 @@ fun SectionChild1Screen(
 
             OutlinedTextField(
                 value = name,
-                onValueChange = { name = it },
+                onValueChange = { name = it; nameError = false },
                 label = { Text("Full Name") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = nameError,
+                supportingText = if (nameError) { { Text("Name is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Next
@@ -268,10 +280,12 @@ fun SectionChild1Screen(
             )
             OutlinedTextField(
                 value = address,
-                onValueChange = { address = it },
+                onValueChange = { address = it; addressError = false },
                 label = { Text("Address") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 4, maxLines = 8,
+                isError = addressError,
+                supportingText = if (addressError) { { Text("Address is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
@@ -279,10 +293,12 @@ fun SectionChild1Screen(
             )
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { email = it; emailError = false },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = emailError,
+                supportingText = if (emailError) { { Text("Email is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
@@ -290,10 +306,12 @@ fun SectionChild1Screen(
             )
             OutlinedTextField(
                 value = phone,
-                onValueChange = { phone = it },
+                onValueChange = { phone = it; phoneError = false },
                 label = { Text("Phone") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = phoneError,
+                supportingText = if (phoneError) { { Text("Phone is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone,
                     imeAction = ImeAction.Next
@@ -368,11 +386,14 @@ fun SectionChild1Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
-                    if (title.isBlank()) {
-                        showUnsavedDialog = false
-                        titleError = true
+                    val tErr = title.isBlank(); val nErr = name.isBlank()
+                    val aErr = address.isBlank(); val eErr = email.isBlank()
+                    val pErr = phone.isBlank()
+                    showUnsavedDialog = false
+                    if (tErr || nErr || aErr || eErr || pErr) {
+                        titleError = tErr; nameError = nErr; addressError = aErr
+                        emailError = eErr; phoneError = pErr
                     } else {
-                        showUnsavedDialog = false
                         focusManager.clearFocus()
                         viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
                     }
