@@ -37,7 +37,8 @@ import com.nithra.nithraresume.ui.viewshare.ViewShareScreen
 @Composable
 fun SmartResumeNavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Main.route
+    startDestination: String = Screen.Main.route,
+    onExitApp: () -> Unit = {}
 ) {
     NavHost(
         navController = navController,
@@ -47,7 +48,7 @@ fun SmartResumeNavGraph(
         // ── No-argument screens ───────────────────────────────────────────────
 
         composable(Screen.Main.route) {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, onExitApp = onExitApp)
         }
 
         composable(
