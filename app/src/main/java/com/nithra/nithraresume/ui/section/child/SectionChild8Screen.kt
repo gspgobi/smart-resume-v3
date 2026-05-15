@@ -79,6 +79,7 @@ fun SectionChild8Screen(
     var origContent by rememberSaveable { mutableStateOf("") }
 
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var titleError by rememberSaveable { mutableStateOf(false) }
     var showDateFormatDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
@@ -114,7 +115,7 @@ fun SectionChild8Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title.ifEmpty { "Cover Letter" }) },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
@@ -124,8 +125,10 @@ fun SectionChild8Screen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(title, date, dateDateFormat, address, content)
+                        if (title.isBlank()) { titleError = true } else {
+                            focusManager.clearFocus()
+                            viewModel.save(title, date, dateDateFormat, address, content)
+                        }
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
@@ -176,10 +179,12 @@ fun SectionChild8Screen(
         ) {
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it; titleError = false },
                 label = { Text("Section Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = titleError,
+                supportingText = if (titleError) { { Text("Section title is required") } } else null
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -234,9 +239,14 @@ fun SectionChild8Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
-                    showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(title, date, dateDateFormat, address, content)
+                    if (title.isBlank()) {
+                        showUnsavedDialog = false
+                        titleError = true
+                    } else {
+                        showUnsavedDialog = false
+                        focusManager.clearFocus()
+                        viewModel.save(title, date, dateDateFormat, address, content)
+                    }
                 }) { Text("Save") }
             },
             dismissButton = {

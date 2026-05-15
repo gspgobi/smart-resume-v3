@@ -75,6 +75,7 @@ fun SectionChild5Screen(
     var origBulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
 
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var titleError by rememberSaveable { mutableStateOf(false) }
     var showSuggestions by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
@@ -116,7 +117,7 @@ fun SectionChild5Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title.ifEmpty { "Paragraph" }) },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
@@ -133,8 +134,10 @@ fun SectionChild5Screen(
                         )
                     }
                     IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(title, content, bulletType)
+                        if (title.isBlank()) { titleError = true } else {
+                            focusManager.clearFocus()
+                            viewModel.save(title, content, bulletType)
+                        }
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
@@ -185,10 +188,12 @@ fun SectionChild5Screen(
         ) {
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it; titleError = false },
                 label = { Text("Section Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = titleError,
+                supportingText = if (titleError) { { Text("Section title is required") } } else null
             )
             OutlinedTextField(
                 value = content,
@@ -213,9 +218,14 @@ fun SectionChild5Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
-                    showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(title, content, bulletType)
+                    if (title.isBlank()) {
+                        showUnsavedDialog = false
+                        titleError = true
+                    } else {
+                        showUnsavedDialog = false
+                        focusManager.clearFocus()
+                        viewModel.save(title, content, bulletType)
+                    }
                 }) { Text("Save") }
             },
             dismissButton = {
