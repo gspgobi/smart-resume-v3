@@ -3,6 +3,7 @@ package com.nithra.nithraresume.ui.main
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -97,7 +98,8 @@ import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 @Composable
 fun MainScreen(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    onExitApp: () -> Unit = {}
 ) {
     val unreadCount by viewModel.unreadNotificationCount.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -124,6 +126,8 @@ fun MainScreen(
             }
         )
     }
+
+    BackHandler(enabled = !drawerState.isOpen) { onExitApp() }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
