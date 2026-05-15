@@ -45,13 +45,11 @@ class ResumePdfBuilder(private val context: Context) {
 
     // ── Public entry point ─────────────────────────────────────────────────────
 
-    fun build(data: ResumePdfData, fileName: String): File {
-        try {
-            return buildInternal(data, fileName)
-        } catch (e: Exception) {
-            Log.e(TAG, "PDF generation failed", e)
-            throw e
-        }
+    fun build(data: ResumePdfData, fileName: String): File = try {
+        buildInternal(data, fileName)
+    } catch (e: Exception) {
+        Log.e(TAG, "PDF generation failed", e)
+        throw e
     }
 
     private fun buildInternal(data: ResumePdfData, fileName: String): File {
@@ -78,26 +76,28 @@ class ResumePdfBuilder(private val context: Context) {
         document.setMargins(36f, 36f, 36f, 36f)
         document.setMarginMirroringTopBottom(true)
 
-        val writer = PdfWriter.getInstance(document, FileOutputStream(outputFile))
-        writer.setPdfVersion(PdfWriter.VERSION_1_5)
-        writer.setFullCompression()
-        document.open()
+        FileOutputStream(outputFile).use { fos ->
+            val writer = PdfWriter.getInstance(document, fos)
+            writer.setPdfVersion(PdfWriter.VERSION_1_5)
+            writer.setFullCompression()
+            document.open()
 
-        val sc1ForCoverLetter = data.sc1ByHeadId.values.firstOrNull()
-        data.addons.forEach { sha ->
-            if (sha.headBaseId == 8) {
-                data.sc8ByHeadId[sha.id]?.let {
-                    document.add(buildCoverLetterTable(sha.title, it, sc1ForCoverLetter, fonts))
-                    document.newPage()
+            val sc1ForCoverLetter = data.sc1ByHeadId.values.firstOrNull()
+            data.addons.forEach { sha ->
+                if (sha.headBaseId == 8) {
+                    data.sc8ByHeadId[sha.id]?.let {
+                        document.add(buildCoverLetterTable(sha.title, it, sc1ForCoverLetter, fonts))
+                        document.newPage()
+                    }
                 }
             }
+
+            val paragraph = Paragraph()
+            data.sections.forEach { sha -> buildSection(paragraph, sha, data, fonts, fmt, bgColor) }
+            if (!paragraph.isEmpty()) document.add(paragraph)
+
+            document.close()
         }
-
-        val paragraph = Paragraph()
-        data.sections.forEach { sha -> buildSection(paragraph, sha, data, fonts, fmt, bgColor) }
-        if (!paragraph.isEmpty()) document.add(paragraph)
-
-        document.close()
         return outputFile
     }
 
