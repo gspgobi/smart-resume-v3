@@ -18,12 +18,16 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.nithra.nithraresume.data.model.ResumeFormatType
-import com.nithra.nithraresume.data.model.toFormatType
+import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.data.model.SectionChild3
+import com.nithra.nithraresume.data.model.SectionChild4
+import com.nithra.nithraresume.data.model.SectionChild5
 import com.nithra.nithraresume.data.model.SectionChild6
 import com.nithra.nithraresume.data.model.SectionChild7
+import com.nithra.nithraresume.data.model.SectionChild8
 import com.nithra.nithraresume.data.model.SectionHeadAdded
+import com.nithra.nithraresume.data.model.toFormatType
 import com.nithra.nithraresume.utils.BG_COLOR_PEACH
 import com.nithra.nithraresume.utils.BULLET_NONE
 import com.nithra.nithraresume.utils.SrDir
@@ -121,7 +125,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc1(
         p: Paragraph,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1,
+        sc1: SectionChild1,
         fonts: PdfFonts,
         fmt: ResumeFormatType
     ) {
@@ -138,7 +142,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun sc1Functional(
         p: Paragraph,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1,
+        sc1: SectionChild1,
         fonts: PdfFonts,
         photo: Image?
     ) {
@@ -164,7 +168,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun sc1Classic(
         p: Paragraph,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1,
+        sc1: SectionChild1,
         fonts: PdfFonts,
         photo: Image?
     ) {
@@ -192,7 +196,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun sc1Centered(
         p: Paragraph,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1,
+        sc1: SectionChild1,
         fonts: PdfFonts
     ) {
         val table = PdfPTable(1).apply { widthPercentage = 100f }
@@ -295,8 +299,8 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc4(
         p: Paragraph, sectionTitle: String,
-        sc4: com.nithra.nithraresume.data.model.SectionChild4,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1?,
+        sc4: SectionChild4,
+        sc1: SectionChild1?,
         fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
@@ -329,7 +333,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc5(
         p: Paragraph, sectionTitle: String,
-        sc5: com.nithra.nithraresume.data.model.SectionChild5,
+        sc5: SectionChild5,
         fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
@@ -397,8 +401,8 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildCoverLetterTable(
         title: String,
-        sc8: com.nithra.nithraresume.data.model.SectionChild8,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1?,
+        sc8: SectionChild8,
+        sc1: SectionChild1?,
         fonts: PdfFonts
     ): PdfPTable {
         val table = PdfPTable(1).apply { widthPercentage = 100f }
@@ -412,8 +416,8 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun makeCoverLetterParagraph(
         title: String,
-        sc8: com.nithra.nithraresume.data.model.SectionChild8,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1?,
+        sc8: SectionChild8,
+        sc1: SectionChild1?,
         fonts: PdfFonts
     ): Paragraph {
         val p = Paragraph()
@@ -591,7 +595,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun addContactRows(
         table: PdfPTable,
-        sc1: com.nithra.nithraresume.data.model.SectionChild1,
+        sc1: SectionChild1,
         fonts: PdfFonts, alignment: Int, colspan: Int
     ) {
         listOf(sc1.address, sc1.phone, sc1.email)
