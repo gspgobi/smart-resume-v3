@@ -1,5 +1,6 @@
 package com.nithra.nithraresume.ui.viewshare
 
+import android.app.Activity
 import android.content.Intent
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
@@ -63,9 +64,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.navigation.Screen
+import com.nithra.nithraresume.utils.AdMobManager
+import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
 import java.text.DecimalFormat
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,9 +76,21 @@ fun ViewShareScreen(
     viewModel: ViewShareViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val showGenerateAd by viewModel.showGenerateAd.collectAsStateWithLifecycle()
     val justGenerated = viewModel.justGenerated
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
+
+    LaunchedEffect(showGenerateAd) {
+        if (showGenerateAd) {
+            val activity = context as? Activity
+            if (activity != null) {
+                viewModel.generateAdHelper.showSuspend(activity)
+                viewModel.generateAdHelper.load(context, AdMobManager.interstitial02Id())
+            }
+            viewModel.resetShowGenerateAd()
+        }
+    }
 
     var iconVisible by remember { mutableStateOf(false) }
     val iconScale by animateFloatAsState(
