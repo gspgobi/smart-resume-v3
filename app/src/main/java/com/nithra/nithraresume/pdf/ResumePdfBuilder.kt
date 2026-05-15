@@ -17,6 +17,8 @@ import com.itextpdf.text.pdf.BaseFont
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
+import com.nithra.nithraresume.data.model.ResumeFormatType
+import com.nithra.nithraresume.data.model.toFormatType
 import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.data.model.SectionChild3
 import com.nithra.nithraresume.data.model.SectionChild6
@@ -60,7 +62,7 @@ class ResumePdfBuilder(private val context: Context) {
             BaseFont.createFont(fontFile.absolutePath, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED)
         }
         val fonts = buildFonts(baseFont, data.profile.fontSize)
-        val fmt = data.format.title.uppercase()
+        val fmt = data.format.toFormatType()
         val bgColor = data.profile.backgroundColor
 
         val pageSize = Rectangle(PageSize.A4)
@@ -99,7 +101,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSection(
         p: Paragraph, sha: SectionHeadAdded, data: ResumePdfData,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         val id = sha.id
         when (sha.headBaseId) {
@@ -121,15 +123,16 @@ class ResumePdfBuilder(private val context: Context) {
         p: Paragraph,
         sc1: com.nithra.nithraresume.data.model.SectionChild1,
         fonts: PdfFonts,
-        fmt: String
+        fmt: ResumeFormatType
     ) {
         val photo = if (sc1.userImagePath.isNotEmpty() && sc1.isUserImageEnable)
             loadScaledImage(sc1.userImagePath, 150) else null
 
         when (fmt) {
-            "CLASSIC"              -> sc1Classic(p, sc1, fonts, photo)
-            "HARVARD", "GRAYSCALE" -> sc1Centered(p, sc1, fonts)
-            else                   -> sc1Functional(p, sc1, fonts, photo)
+            ResumeFormatType.CLASSIC              -> sc1Classic(p, sc1, fonts, photo)
+            ResumeFormatType.HARVARD,
+            ResumeFormatType.GRAYSCALE            -> sc1Centered(p, sc1, fonts)
+            else                                  -> sc1Functional(p, sc1, fonts, photo)
         }
     }
 
@@ -202,9 +205,9 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc2(
         p: Paragraph, sectionTitle: String, items: List<SectionChild2>,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
-        if (fmt == "HARVARD") {
+        if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEach { item ->
                     addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
@@ -226,10 +229,10 @@ class ResumePdfBuilder(private val context: Context) {
         table: PdfPTable,
         role: String, company: String, subtitle: String,
         period: String, content: String, bulletType: String,
-        fonts: PdfFonts, fmt: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         when (fmt) {
-            "FUNCTIONAL", "HARVARD" -> {
+            ResumeFormatType.FUNCTIONAL, ResumeFormatType.HARVARD -> {
                 if (company.isNotEmpty()) addBoldCell(table, " $company", fonts.subBoldFont, Element.ALIGN_LEFT, 2)
                 val left = joinNonEmpty(role, subtitle, ", ")
                 table.addCell(noBorderCell(Phrase(" $left", fonts.subFont), Element.ALIGN_LEFT, 1))
@@ -247,9 +250,9 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc3(
         p: Paragraph, sectionTitle: String, items: List<SectionChild3>,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
-        if (fmt == "HARVARD") {
+        if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEach { item ->
                     addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
@@ -271,10 +274,10 @@ class ResumePdfBuilder(private val context: Context) {
         table: PdfPTable,
         degree: String, school: String, subtitle: String,
         period: String, concentrates: String, bulletType: String,
-        fonts: PdfFonts, fmt: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         when (fmt) {
-            "CLASSIC" -> {
+            ResumeFormatType.CLASSIC -> {
                 addBoldCell(table, buildClassicItemLine(degree, subtitle, school, period), fonts.subBoldFont, Element.ALIGN_LEFT, 2)
                 addBulletContent(table, concentrates, bulletType, fonts)
             }
@@ -294,7 +297,7 @@ class ResumePdfBuilder(private val context: Context) {
         p: Paragraph, sectionTitle: String,
         sc4: com.nithra.nithraresume.data.model.SectionChild4,
         sc1: com.nithra.nithraresume.data.model.SectionChild1?,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
 
@@ -327,7 +330,7 @@ class ResumePdfBuilder(private val context: Context) {
     private fun buildSc5(
         p: Paragraph, sectionTitle: String,
         sc5: com.nithra.nithraresume.data.model.SectionChild5,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
         val table = itemTable()
@@ -339,7 +342,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc6(
         p: Paragraph, sectionTitle: String, items: List<SectionChild6>,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         fun splitTable() = PdfPTable(floatArrayOf(5f, 10f)).apply { widthPercentage = 100f }
         fun fillSplitTable(t: PdfPTable) = items.forEach { item ->
@@ -350,7 +353,7 @@ class ResumePdfBuilder(private val context: Context) {
             t.addCell(titleCell); t.addCell(detailCell)
         }
 
-        if (fmt == "HARVARD") {
+        if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts, splitTable()) { t -> fillSplitTable(t) }
             return
         }
@@ -365,9 +368,9 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc7(
         p: Paragraph, sectionTitle: String, items: List<SectionChild7>,
-        fonts: PdfFonts, fmt: String, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
-        if (fmt == "HARVARD") {
+        if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEach { item ->
                     addBoldCell(t, joinNonEmpty(item.contentTitle, item.contentSubtitle, " — "), fonts.subBoldFont, Element.ALIGN_LEFT, 2)
@@ -493,17 +496,17 @@ class ResumePdfBuilder(private val context: Context) {
     // ── Section heading ────────────────────────────────────────────────────────
 
     private fun addSectionHeading(
-        p: Paragraph, title: String, fonts: PdfFonts, fmt: String, bgColor: String
+        p: Paragraph, title: String, fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
     ) {
         when (fmt) {
-            "CLASSIC" -> {
+            ResumeFormatType.CLASSIC -> {
                 val table = PdfPTable(floatArrayOf(0.5f, 10f)).apply { widthPercentage = 100f }
                 val cell = noBorderCell(Phrase(title, fonts.headingFont), Element.ALIGN_LEFT, 2)
                 cell.setLeading(2f, 1.5f)
                 table.addCell(cell)
                 p.add(table)
             }
-            "MODERN" -> {
+            ResumeFormatType.MODERN -> {
                 val table = PdfPTable(floatArrayOf(10f, 5f)).apply { widthPercentage = 100f }
                 val cell = noBorderCell(Phrase(title, fonts.headingModernFont), Element.ALIGN_LEFT, 2)
                 cell.setLeading(2f, 1.5f)
@@ -511,7 +514,7 @@ class ResumePdfBuilder(private val context: Context) {
                 table.addCell(ruleTopCell(fonts.headingModernFont, colspan = 2))
                 p.add(table)
             }
-            "GRAYSCALE" -> {
+            ResumeFormatType.GRAYSCALE -> {
                 val table = PdfPTable(floatArrayOf(0.4f, 10f)).apply {
                     widthPercentage = 100f
                     spacingBefore = 8f
@@ -527,7 +530,7 @@ class ResumePdfBuilder(private val context: Context) {
                 table.addCell(PdfPCell(nested).apply { setBorder(Rectangle.NO_BORDER) })
                 p.add(table)
             }
-            "FUNCTIONAL", "SIMPLE" -> {
+            ResumeFormatType.FUNCTIONAL, ResumeFormatType.SIMPLE -> {
                 val table = PdfPTable(1).apply {
                     widthPercentage = 100f
                     spacingBefore = 8f
