@@ -93,7 +93,7 @@ class ResumePdfBuilder(private val context: Context) {
             }
 
             val paragraph = Paragraph()
-            data.sections.forEach { sha -> buildSection(paragraph, sha, data, fonts, fmt, bgColor) }
+            data.sections.forEach { sha -> buildSection(paragraph, sha, data, fonts, fmt) }
             if (!paragraph.isEmpty()) document.add(paragraph)
 
             document.close()
@@ -105,19 +105,19 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSection(
         p: Paragraph, sha: SectionHeadAdded, data: ResumePdfData,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         val id = sha.id
         when (sha.headBaseId) {
             1 -> data.sc1ByHeadId[id]?.let { buildSc1(p, it, fonts, fmt) }
-            2 -> buildSc2(p, sha.title, data.sc2sByHeadId[id] ?: emptyList(), fonts, fmt, bgColor)
-            3 -> buildSc3(p, sha.title, data.sc3sByHeadId[id] ?: emptyList(), fonts, fmt, bgColor)
+            2 -> buildSc2(p, sha.title, data.sc2sByHeadId[id] ?: emptyList(), fonts, fmt)
+            3 -> buildSc3(p, sha.title, data.sc3sByHeadId[id] ?: emptyList(), fonts, fmt)
             4 -> data.sc4ByHeadId[id]?.let {
-                    buildSc4(p, sha.title, it, data.sc1ByHeadId.values.firstOrNull(), fonts, fmt, bgColor)
+                    buildSc4(p, sha.title, it, data.sc1ByHeadId.values.firstOrNull(), fonts, fmt)
                 }
-            5 -> data.sc5ByHeadId[id]?.let { buildSc5(p, sha.title, it, fonts, fmt, bgColor) }
-            6 -> buildSc6(p, sha.title, data.sc6sByHeadId[id] ?: emptyList(), fonts, fmt, bgColor)
-            7 -> buildSc7(p, sha.title, data.sc7sByHeadId[id] ?: emptyList(), fonts, fmt, bgColor)
+            5 -> data.sc5ByHeadId[id]?.let { buildSc5(p, sha.title, it, fonts, fmt) }
+            6 -> buildSc6(p, sha.title, data.sc6sByHeadId[id] ?: emptyList(), fonts, fmt)
+            7 -> buildSc7(p, sha.title, data.sc7sByHeadId[id] ?: emptyList(), fonts, fmt)
         }
     }
 
@@ -209,7 +209,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc2(
         p: Paragraph, sectionTitle: String, items: List<SectionChild2>,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
@@ -220,7 +220,7 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
-        addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
+        addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEach { item ->
             val t = itemTable()
             addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
@@ -254,7 +254,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc3(
         p: Paragraph, sectionTitle: String, items: List<SectionChild3>,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
@@ -265,7 +265,7 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
-        addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
+        addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEach { item ->
             val t = itemTable()
             addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
@@ -301,9 +301,9 @@ class ResumePdfBuilder(private val context: Context) {
         p: Paragraph, sectionTitle: String,
         sc4: SectionChild4,
         sc1: SectionChild1?,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
-        addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
+        addSectionHeading(p, sectionTitle, fonts, fmt)
 
         val table = itemTable()
         addBulletContent(table, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
@@ -334,9 +334,9 @@ class ResumePdfBuilder(private val context: Context) {
     private fun buildSc5(
         p: Paragraph, sectionTitle: String,
         sc5: SectionChild5,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
-        addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
+        addSectionHeading(p, sectionTitle, fonts, fmt)
         val table = itemTable()
         addBulletContent(table, sc5.content, sc5.contentBulletType, fonts)
         p.add(table)
@@ -346,7 +346,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc6(
         p: Paragraph, sectionTitle: String, items: List<SectionChild6>,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         fun splitTable() = PdfPTable(floatArrayOf(5f, 10f)).apply { widthPercentage = 100f }
         fun fillSplitTable(t: PdfPTable) = items.forEach { item ->
@@ -361,7 +361,7 @@ class ResumePdfBuilder(private val context: Context) {
             buildHarvardSection(p, sectionTitle, fonts, splitTable()) { t -> fillSplitTable(t) }
             return
         }
-        addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
+        addSectionHeading(p, sectionTitle, fonts, fmt)
         if (items.isEmpty()) return
         val table = splitTable()
         fillSplitTable(table)
@@ -372,7 +372,7 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun buildSc7(
         p: Paragraph, sectionTitle: String, items: List<SectionChild7>,
-        fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
@@ -383,7 +383,7 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
-        addSectionHeading(p, sectionTitle, fonts, fmt, bgColor)
+        addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEach { item ->
             val t = itemTable()
             if (item.contentTitle.isNotEmpty()) {
@@ -500,7 +500,7 @@ class ResumePdfBuilder(private val context: Context) {
     // ── Section heading ────────────────────────────────────────────────────────
 
     private fun addSectionHeading(
-        p: Paragraph, title: String, fonts: PdfFonts, fmt: ResumeFormatType, bgColor: String
+        p: Paragraph, title: String, fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         when (fmt) {
             ResumeFormatType.CLASSIC -> {
