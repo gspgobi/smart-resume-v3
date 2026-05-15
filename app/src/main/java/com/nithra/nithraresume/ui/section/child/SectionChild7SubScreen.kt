@@ -74,6 +74,8 @@ fun SectionChild7SubScreen(
     var origBulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
 
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var contentTitleError by rememberSaveable { mutableStateOf(false) }
+    var contentSubtitleError by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -102,6 +104,15 @@ fun SectionChild7SubScreen(
         contentDetail != origContentDetail || bulletType != origBulletType
     )
 
+    fun attemptSave() {
+        contentTitleError = contentTitle.isBlank()
+        contentSubtitleError = contentSubtitle.isBlank()
+        if (!contentTitleError && !contentSubtitleError) {
+            focusManager.clearFocus()
+            viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
+        }
+    }
+
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
@@ -116,10 +127,7 @@ fun SectionChild7SubScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
-                    }) {
+                    IconButton(onClick = { attemptSave() }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -169,17 +177,21 @@ fun SectionChild7SubScreen(
         ) {
             OutlinedTextField(
                 value = contentTitle,
-                onValueChange = { contentTitle = it },
+                onValueChange = { contentTitle = it; contentTitleError = false },
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = contentTitleError,
+                supportingText = if (contentTitleError) { { Text("Title is required") } } else null
             )
             OutlinedTextField(
                 value = contentSubtitle,
-                onValueChange = { contentSubtitle = it },
+                onValueChange = { contentSubtitle = it; contentSubtitleError = false },
                 label = { Text("Subtitle") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = contentSubtitleError,
+                supportingText = if (contentSubtitleError) { { Text("Subtitle is required") } } else null
             )
             OutlinedTextField(
                 value = contentDetail,
@@ -205,8 +217,7 @@ fun SectionChild7SubScreen(
             confirmButton = {
                 Button(onClick = {
                     showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
+                    attemptSave()
                 }) { Text("Save") }
             },
             dismissButton = {
