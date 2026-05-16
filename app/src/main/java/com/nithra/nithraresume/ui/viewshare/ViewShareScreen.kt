@@ -342,10 +342,7 @@ private fun RateUsDialog(
             Button(onClick = onRateNow) { Text("Rate Now") }
         },
         dismissButton = {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TextButton(onClick = onWriteFeedback) { Text("Write Feedback") }
-                TextButton(onClick = onDismiss) { Text("Maybe Later") }
-            }
+            TextButton(onClick = onWriteFeedback) { Text("Write Feedback") }
         }
     )
 }
