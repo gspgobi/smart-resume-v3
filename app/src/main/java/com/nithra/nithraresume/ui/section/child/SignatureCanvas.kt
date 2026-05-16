@@ -7,6 +7,10 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -111,5 +115,19 @@ fun SignatureCanvas(
         if (!currentPath.isEmpty) {
             drawPath(currentPath, color = Color.DarkGray, style = style)
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SignatureCanvasPreview() {
+    SmartResumeTheme {
+        SignatureCanvas(
+            clearKey = 0,
+            captureController = remember { SignatureCaptureController() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        )
     }
 }
