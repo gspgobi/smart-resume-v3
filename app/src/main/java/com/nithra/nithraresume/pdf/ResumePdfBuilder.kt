@@ -127,10 +127,10 @@ class ResumePdfBuilder(private val context: Context) {
         val photo = if (sc1.userImagePath.isNotEmpty() && sc1.isUserImageEnable)
             loadScaledImage(sc1.userImagePath, 150) else null
         when (fmt) {
-            ResumeFormatType.CLASSIC              -> sc1Classic(p, sc1, fonts, photo)
-            ResumeFormatType.HARVARD,
-            ResumeFormatType.GRAYSCALE            -> sc1Centered(p, sc1, fonts)
-            else                                  -> sc1Functional(p, sc1, fonts, photo)
+            ResumeFormatType.CLASSIC   -> sc1Classic(p, sc1, fonts, photo)
+            ResumeFormatType.HARVARD   -> sc1Harvard(p, sc1, fonts)
+            ResumeFormatType.GRAYSCALE -> sc1Centered(p, sc1, fonts)
+            else                       -> sc1Functional(p, sc1, fonts, photo)
         }
     }
 
@@ -215,6 +215,30 @@ class ResumePdfBuilder(private val context: Context) {
         }
     }
 
+    private fun sc1Harvard(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts) {
+        val table = PdfPTable(1).apply { widthPercentage = 100f }
+        table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
+            horizontalAlignment = Element.ALIGN_CENTER
+            setBorder(Rectangle.NO_BORDER)
+            paddingBottom = 3f
+        })
+        buildFunctionalContactLines(sc1).forEach { line ->
+            table.addCell(PdfPCell(Phrase(line, fonts.subFont)).apply {
+                horizontalAlignment = Element.ALIGN_CENTER
+                setBorder(Rectangle.NO_BORDER)
+                paddingTop = 1f
+            })
+        }
+        table.addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
+            setBorder(Rectangle.BOTTOM)
+            borderColorBottom = BaseColor.BLACK
+            borderWidthBottom = 0.5f
+            paddingTop        = 6f
+            paddingBottom     = 0f
+        })
+        p.add(table)
+    }
+
     private fun sc1Centered(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts) {
         val table = PdfPTable(1).apply { widthPercentage = 100f }
         addNameCell(table, sc1.name, fonts.nameFont, Element.ALIGN_CENTER)
@@ -230,7 +254,8 @@ class ResumePdfBuilder(private val context: Context) {
     ) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
-                items.forEach { item ->
+                items.forEachIndexed { index, item ->
+                    if (index > 0) addHarvardItemSpacer(t, fonts)
                     addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
                         item.workPeriod, item.accomplishments, item.accomplishmentsBulletType, fonts, fmt)
                 }
@@ -285,7 +310,8 @@ class ResumePdfBuilder(private val context: Context) {
     ) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
-                items.forEach { item ->
+                items.forEachIndexed { index, item ->
+                    if (index > 0) addHarvardItemSpacer(t, fonts)
                     addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
                         item.studyPeriod, item.concentrates, item.concentratesBulletType, fonts, fmt)
                 }
@@ -412,7 +438,8 @@ class ResumePdfBuilder(private val context: Context) {
     ) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
-                items.forEach { item ->
+                items.forEachIndexed { index, item ->
+                    if (index > 0) addHarvardItemSpacer(t, fonts)
                     addBoldCell(t, joinNonEmpty(item.contentTitle, item.contentSubtitle, " — "), fonts.subBoldFont)
                     addBulletContent(t, item.contentDetail, item.contentDetailBulletType, fonts)
                 }
@@ -484,6 +511,15 @@ class ResumePdfBuilder(private val context: Context) {
 
     // ── Harvard layout helper ──────────────────────────────────────────────────
 
+    private fun addHarvardItemSpacer(table: PdfPTable, fonts: PdfFonts) {
+        table.addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
+            setBorder(Rectangle.NO_BORDER)
+            colspan       = 2
+            paddingTop    = 4f
+            paddingBottom = 0f
+        })
+    }
+
     private fun buildHarvardSection(
         p: Paragraph,
         sectionTitle: String,
@@ -493,15 +529,21 @@ class ResumePdfBuilder(private val context: Context) {
     ) {
         buildContent(contentTable)
 
-        val titleCell = noBorderCell(Phrase(sectionTitle, fonts.headingFont), Element.ALIGN_LEFT, 1)
-            .also { it.paddingTop = 4f }
+        val titleCell = PdfPCell(Phrase(sectionTitle, fonts.headingFont)).apply {
+            horizontalAlignment = Element.ALIGN_RIGHT
+            verticalAlignment   = Element.ALIGN_TOP
+            setBorder(Rectangle.NO_BORDER)
+            paddingTop    = 2f
+            paddingRight  = 8f
+            paddingBottom = 0f
+        }
         val contentCell = PdfPCell(contentTable).apply {
             setBorder(Rectangle.NO_BORDER)
             setPadding(0f)
         }
         p.add(PdfPTable(floatArrayOf(3f, 10f)).apply {
             widthPercentage = 100f
-            spacingBefore = 6f
+            spacingBefore   = 10f
             addCell(titleCell)
             addCell(contentCell)
         })
@@ -562,7 +604,23 @@ class ResumePdfBuilder(private val context: Context) {
                     addCell(cell)
                 })
             }
-            else -> { // HARVARD: reached from sc4/sc5 which don't early-return for this format
+            ResumeFormatType.HARVARD -> {
+                val cell = PdfPCell(Phrase(title, fonts.headingFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.BOTTOM)
+                    borderColorBottom = BaseColor.BLACK
+                    borderWidthBottom = 0.5f
+                    paddingTop        = 2f
+                    paddingBottom     = 4f
+                }
+                p.add(PdfPTable(1).apply {
+                    widthPercentage = 100f
+                    spacingBefore   = 10f
+                    spacingAfter    = 2f
+                    addCell(cell)
+                })
+            }
+            else -> {
                 val cell = noBorderCell(Phrase(title, fonts.headingFont), Element.ALIGN_LEFT, 2)
                     .also { it.setLeading(2f, 1.5f) }
                 p.add(PdfPTable(floatArrayOf(10f, 5f)).apply {
