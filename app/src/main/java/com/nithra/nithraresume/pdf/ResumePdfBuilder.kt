@@ -590,24 +590,50 @@ class ResumePdfBuilder(private val context: Context) {
 
         val table = itemTable()
         addBulletContent(table, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
-        if (sc4.date.isNotEmpty()) {
-            table.addCell(noBorderCell(Phrase(sc4.date, fonts.subFont), Element.ALIGN_LEFT, 2))
+
+        // 1 line of spacing after bullet content
+        table.addCell(PdfPCell().apply {
+            setBorder(Rectangle.NO_BORDER)
+            colspan     = 2
+            fixedHeight = 24f
+        })
+
+        val sigImg = if (sc4.signatureImagePath.isNotEmpty() && sc4.isSignatureImageEnable)
+            loadScaledImage(sc4.signatureImagePath, 200) else null
+        sigImg?.scaleAbsolute(80f, 40f)
+        val name = sc1?.name?.takeIf { it.isNotEmpty() }
+
+        // Row 1: date (LEFT) | signature image (RIGHT)
+        table.addCell(PdfPCell(Phrase(sc4.date, fonts.subFont)).apply {
+            horizontalAlignment = Element.ALIGN_LEFT
+            verticalAlignment = Element.ALIGN_BOTTOM
+            setBorder(Rectangle.NO_BORDER)
+            paddingTop = 2f
+        })
+        if (sigImg != null) {
+            table.addCell(PdfPCell(sigImg).apply {
+                horizontalAlignment = Element.ALIGN_RIGHT
+                verticalAlignment = Element.ALIGN_BOTTOM
+                setBorder(Rectangle.NO_BORDER)
+                paddingTop = 2f
+            })
+        } else {
+            table.addCell(PdfPCell().apply { setBorder(Rectangle.NO_BORDER) })
         }
-        if (sc4.place.isNotEmpty()) {
-            table.addCell(noBorderCell(Phrase(sc4.place, fonts.subFont), Element.ALIGN_LEFT, 2))
-        }
-        if (sc4.signatureImagePath.isNotEmpty() && sc4.isSignatureImageEnable) {
-            loadScaledImage(sc4.signatureImagePath, 200)?.let { img ->
-                img.scaleAbsolute(80f, 40f)
-                table.addCell(PdfPCell(img).apply {
-                    setBorder(Rectangle.NO_BORDER)
-                    colspan = 2
-                })
-            }
-        }
-        sc1?.name?.takeIf { it.isNotEmpty() }?.let {
-            table.addCell(noBorderCell(Phrase(it, fonts.subFont), Element.ALIGN_LEFT, 2))
-        }
+
+        // Row 2: place (LEFT) | name (RIGHT)
+        table.addCell(PdfPCell(Phrase(sc4.place, fonts.subFont)).apply {
+            horizontalAlignment = Element.ALIGN_LEFT
+            verticalAlignment = Element.ALIGN_TOP
+            setBorder(Rectangle.NO_BORDER)
+            paddingTop = 1f
+        })
+        table.addCell(PdfPCell(Phrase(name ?: "", fonts.subFont)).apply {
+            horizontalAlignment = Element.ALIGN_RIGHT
+            verticalAlignment = Element.ALIGN_TOP
+            setBorder(Rectangle.NO_BORDER)
+            paddingTop = 1f
+        })
         p.add(table)
     }
 
