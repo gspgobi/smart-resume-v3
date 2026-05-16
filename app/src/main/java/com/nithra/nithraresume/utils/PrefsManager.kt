@@ -37,6 +37,7 @@ class PrefsManager @Inject constructor(
 
         // Resume generation counters
         val RESUME_GENERATED_COUNT = intPreferencesKey("v2_resume_generated_count")
+        val RATE_US_DONE           = booleanPreferencesKey("v1_rate_us")
 
         // App versioning / first-launch
         val CURRENT_APP_VERSION_CODE = intPreferencesKey("v2_current_app_version_code")
@@ -85,6 +86,13 @@ class PrefsManager @Inject constructor(
         context.dataStore.edit { prefs ->
             prefs[Key.RESUME_GENERATED_COUNT] = (prefs[Key.RESUME_GENERATED_COUNT] ?: 0) + 1
         }
+    }
+
+    val rateUsDone: Flow<Boolean> = safeData
+        .map { it[Key.RATE_US_DONE] ?: false }
+
+    suspend fun setRateUsDone() {
+        context.dataStore.edit { it[Key.RATE_US_DONE] = true }
     }
 
     // ── App version tracking ──────────────────────────────────────────────────
