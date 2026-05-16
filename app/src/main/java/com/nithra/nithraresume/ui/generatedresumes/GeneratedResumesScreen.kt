@@ -259,6 +259,50 @@ private fun sharePdf(context: Context, file: File) {
 
 // ── Previews ──────────────────────────────────────────────────────────────────
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Generated Resumes Screen - With Files")
+@Composable
+private fun GeneratedResumesScreenPreview() {
+    val previewFiles = listOf(
+        File("/fake/John_Doe_Resume.pdf"),
+        File("/fake/Product_Manager_Resume.pdf"),
+    )
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Generated Resumes") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                    horizontal = 16.dp, vertical = 12.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(previewFiles, key = { it.name }) { file ->
+                    GeneratedResumeCard(file = file, onOpen = {}, onShare = {})
+                }
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true, name = "Empty State")
 @Composable
 private fun EmptyGeneratedResumesPreview() {
