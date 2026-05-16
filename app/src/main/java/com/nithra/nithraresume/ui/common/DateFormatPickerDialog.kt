@@ -21,6 +21,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -116,5 +118,17 @@ fun DateFormatPickerDialog(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DateFormatPickerDialogPreview() {
+    SmartResumeTheme {
+        DateFormatPickerDialog(
+            currentFormat = "dd/MM/yyyy",
+            onConfirm = { _, _ -> },
+            onDismiss = {}
+        )
     }
 }

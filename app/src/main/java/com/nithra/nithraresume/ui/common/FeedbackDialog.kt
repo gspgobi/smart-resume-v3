@@ -17,6 +17,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -84,5 +86,16 @@ fun FeedbackDialog(
                 ) { Text("Send") }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FeedbackDialogPreview() {
+    SmartResumeTheme {
+        FeedbackDialog(
+            onDismiss = {},
+            onSend = { _, _ -> }
+        )
     }
 }
