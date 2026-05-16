@@ -154,36 +154,6 @@ fun NotificationDetailScreen(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Notification Detail - Loading")
-@Composable
-private fun NotificationDetailLoadingPreview() {
-    SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Notification") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) { CircularProgressIndicator() }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "Notification Detail - Not Found")
 @Composable
 private fun NotificationDetailNotFoundPreview() {
