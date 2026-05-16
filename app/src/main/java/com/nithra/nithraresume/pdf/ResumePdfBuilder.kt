@@ -438,7 +438,10 @@ class ResumePdfBuilder(private val context: Context) {
         }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEachIndexed { index, item ->
-            val t = itemTable().also { if (index > 0) it.spacingBefore = 4f }
+            val t = itemTable().also {
+                it.spacingBefore = 4f
+                it.spacingAfter  = 4f
+            }
             addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
                 item.workPeriod, item.accomplishments, item.accomplishmentsBulletType, fonts, fmt)
             p.add(t)
@@ -458,14 +461,14 @@ class ResumePdfBuilder(private val context: Context) {
                 table.addCell(PdfPCell(Phrase(left, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
-                    paddingTop    = 1f
-                    paddingBottom = 1f
+                    paddingTop    = 2f
+                    paddingBottom = 2f
                 })
                 table.addCell(PdfPCell(Phrase(period, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_RIGHT
                     setBorder(Rectangle.NO_BORDER)
-                    paddingTop    = 1f
-                    paddingBottom = 1f
+                    paddingTop    = 2f
+                    paddingBottom = 2f
                 })
                 addBulletContent(table, content, bulletType, fonts)
             }
@@ -516,7 +519,10 @@ class ResumePdfBuilder(private val context: Context) {
         }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEachIndexed { index, item ->
-            val t = itemTable().also { if (index > 0) it.spacingBefore = 4f }
+            val t = itemTable().also {
+                it.spacingBefore = 4f
+                it.spacingAfter  = 4f
+            }
             addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
                 item.studyPeriod, item.concentrates, item.concentratesBulletType, fonts, fmt)
             p.add(t)
@@ -558,14 +564,14 @@ class ResumePdfBuilder(private val context: Context) {
                 table.addCell(PdfPCell(Phrase(left, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
-                    paddingTop    = 1f
-                    paddingBottom = 1f
+                    paddingTop    = 2f
+                    paddingBottom = 2f
                 })
                 table.addCell(PdfPCell(Phrase(period, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_RIGHT
                     setBorder(Rectangle.NO_BORDER)
-                    paddingTop    = 1f
-                    paddingBottom = 1f
+                    paddingTop    = 2f
+                    paddingBottom = 2f
                 })
                 addBulletContent(table, concentrates, bulletType, fonts)
             }
@@ -662,7 +668,10 @@ class ResumePdfBuilder(private val context: Context) {
         }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEachIndexed { index, item ->
-            val t = itemTable().also { if (index > 0) it.spacingBefore = 4f }
+            val t = itemTable().also {
+                it.spacingBefore = 4f
+                it.spacingAfter  = 4f
+            }
             if (item.contentTitle.isNotEmpty())    addBoldCell(t, item.contentTitle, fonts.subBoldFont)
             if (item.contentSubtitle.isNotEmpty()) t.addCell(noBorderCell(Phrase(item.contentSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
             addBulletContent(t, item.contentDetail, item.contentDetailBulletType, fonts)
