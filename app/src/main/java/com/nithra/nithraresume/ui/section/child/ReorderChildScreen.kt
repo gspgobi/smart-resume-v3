@@ -25,6 +25,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
@@ -195,5 +197,67 @@ private fun ReorderChildRow(
                 .weight(1f)
                 .padding(start = 12.dp)
         )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+private val previewChildItems = listOf(
+    ReorderableItem(id = 1, indexPosition = 0, displayText = "Software Engineer at Google"),
+    ReorderableItem(id = 2, indexPosition = 1, displayText = "Product Manager at Meta"),
+    ReorderableItem(id = 3, indexPosition = 2, displayText = ""),
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Reorder Child Screen")
+@Composable
+private fun ReorderChildScreenPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Reorder Entries") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                previewChildItems.forEach { item ->
+                    ReorderChildRow(item = item)
+                    HorizontalDivider()
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Reorder Child Row")
+@Composable
+private fun ReorderChildRowPreview() {
+    SmartResumeTheme {
+        ReorderChildRow(item = previewChildItems[0])
+    }
+}
+
+@Preview(showBackground = true, name = "Reorder Child Row - Empty")
+@Composable
+private fun ReorderChildRowEmptyPreview() {
+    SmartResumeTheme {
+        ReorderChildRow(item = previewChildItems[2])
     }
 }
