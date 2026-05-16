@@ -32,6 +32,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -216,5 +218,113 @@ private fun NotificationListItem(
                 )
             }
         }
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+private val previewNotifications = listOf(
+    FcmData(id = 1, messageType = "", notificationType = "", title = "New Feature Available", message = "Check out what's new!", imageUrl = "", timestamp = "16 May 2026, 10:30", isRead = false),
+    FcmData(id = 2, messageType = "", notificationType = "", title = "Resume Tips", message = "Improve your resume today", imageUrl = "", timestamp = "15 May 2026, 09:00", isRead = true),
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Notification List - Empty")
+@Composable
+private fun NotificationListEmptyPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Notifications") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier.fillMaxSize().padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(
+                        Icons.Default.NotificationsNone,
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
+                        tint = MaterialTheme.colorScheme.outline
+                    )
+                    Text(
+                        "No notifications",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Preview(showBackground = true, name = "Notification List - With Items")
+@Composable
+private fun NotificationListWithItemsPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Notifications") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.Default.Delete, contentDescription = "Delete all",
+                                tint = MaterialTheme.colorScheme.onPrimary)
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            LazyColumn(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+                itemsIndexed(previewNotifications, key = { _, item -> item.id }) { _, item ->
+                    NotificationListItem(item = item, onClick = {}, onLongClick = {})
+                    HorizontalDivider()
+                }
+            }
+        }
+    }
+}
+
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Preview(showBackground = true, name = "Notification Item - Unread")
+@Composable
+private fun NotificationListItemUnreadPreview() {
+    SmartResumeTheme {
+        NotificationListItem(item = previewNotifications[0], onClick = {}, onLongClick = {})
+    }
+}
+
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
+@Preview(showBackground = true, name = "Notification Item - Read")
+@Composable
+private fun NotificationListItemReadPreview() {
+    SmartResumeTheme {
+        NotificationListItem(item = previewNotifications[1], onClick = {}, onLongClick = {})
     }
 }
