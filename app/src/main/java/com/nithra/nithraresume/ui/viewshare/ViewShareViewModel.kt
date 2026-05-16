@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.data.api.ApiRepository
 import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.DOT_PDF
 import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_AD
+import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
 import com.nithra.nithraresume.utils.InterstitialAdHelper
 import com.nithra.nithraresume.utils.PrefsManager
 import com.nithra.nithraresume.utils.SrDir
@@ -32,6 +34,7 @@ class ViewShareViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val userProfileRepository: UserProfileRepository,
+    private val apiRepository: ApiRepository,
     private val prefsManager: PrefsManager
 ) : ViewModel() {
 
@@ -48,6 +51,24 @@ class ViewShareViewModel @Inject constructor(
 
     fun resetShowGenerateAd() { _showGenerateAd.value = false }
 
+    private val _showRateUsDialog = MutableStateFlow(false)
+    val showRateUsDialog: StateFlow<Boolean> = _showRateUsDialog.asStateFlow()
+
+    fun dismissRateUsDialog() { _showRateUsDialog.value = false }
+
+    fun onRateUsAccepted() {
+        viewModelScope.launch {
+            prefsManager.setRateUsDone()
+            _showRateUsDialog.value = false
+        }
+    }
+
+    fun sendFeedback(email: String, feedback: String) {
+        viewModelScope.launch {
+            apiRepository.postFeedback(feedback = feedback, email = email)
+        }
+    }
+
     init {
         if (justGenerated) {
             viewModelScope.launch {
@@ -56,6 +77,10 @@ class ViewShareViewModel @Inject constructor(
                 if (count % GENERATE_COUNT_SHOW_AD == 0) {
                     val loaded = generateAdHelper.loadSuspend(context, AdMobManager.interstitial02Id())
                     if (loaded) _showGenerateAd.value = true
+                }
+                if (count >= GENERATE_COUNT_SHOW_RATE_US && count % 2 == 1) {
+                    val rated = prefsManager.rateUsDone.first()
+                    if (!rated) _showRateUsDialog.value = true
                 }
             }
         }
