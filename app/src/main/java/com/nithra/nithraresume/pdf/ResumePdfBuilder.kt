@@ -130,6 +130,7 @@ class ResumePdfBuilder(private val context: Context) {
             ResumeFormatType.CLASSIC   -> sc1Classic(p, sc1, fonts, photo)
             ResumeFormatType.HARVARD   -> sc1Harvard(p, sc1, fonts)
             ResumeFormatType.GRAYSCALE -> sc1Centered(p, sc1, fonts)
+            ResumeFormatType.MODERN    -> sc1Modern(p, sc1, fonts, photo)
             else                       -> sc1Functional(p, sc1, fonts, photo)
         }
     }
@@ -262,6 +263,56 @@ class ResumePdfBuilder(private val context: Context) {
         p.add(table)
     }
 
+    private fun sc1Modern(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts, photo: Image?) {
+        val contactParts = listOf(sc1.phone, sc1.email, sc1.address).filter { it.isNotEmpty() }
+        val rowCount = 1 + if (contactParts.isNotEmpty()) 1 else 0
+
+        if (photo != null) {
+            photo.scaleAbsolute(60f, 60f)
+            val table = PdfPTable(floatArrayOf(11f, 2f)).apply {
+                widthPercentage = 100f
+                spacingAfter    = 6f
+            }
+            table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
+                horizontalAlignment = Element.ALIGN_LEFT
+                setBorder(Rectangle.NO_BORDER)
+                paddingBottom = 2f
+            })
+            table.addCell(PdfPCell(photo).apply {
+                horizontalAlignment = Element.ALIGN_RIGHT
+                verticalAlignment   = Element.ALIGN_MIDDLE
+                setBorder(Rectangle.NO_BORDER)
+                rowspan = rowCount
+            })
+            if (contactParts.isNotEmpty()) {
+                table.addCell(PdfPCell(Phrase(contactParts.joinToString("  |  "), fonts.subFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.NO_BORDER)
+                    paddingTop = 1f
+                })
+            }
+            p.add(table)
+        } else {
+            val table = PdfPTable(1).apply {
+                widthPercentage = 100f
+                spacingAfter    = 6f
+            }
+            table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
+                horizontalAlignment = Element.ALIGN_LEFT
+                setBorder(Rectangle.NO_BORDER)
+                paddingBottom = 2f
+            })
+            if (contactParts.isNotEmpty()) {
+                table.addCell(PdfPCell(Phrase(contactParts.joinToString("  |  "), fonts.subFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.NO_BORDER)
+                    paddingTop = 1f
+                })
+            }
+            p.add(table)
+        }
+    }
+
     private fun sc1Centered(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts) {
         val table = PdfPTable(1).apply { widthPercentage = 100f }
         addNameCell(table, sc1.name, fonts.nameFont, Element.ALIGN_CENTER)
@@ -318,7 +369,7 @@ class ResumePdfBuilder(private val context: Context) {
                 })
                 addBulletContent(table, content, bulletType, fonts)
             }
-            ResumeFormatType.CLASSIC -> {
+            ResumeFormatType.CLASSIC, ResumeFormatType.MODERN -> {
                 if (company.isNotEmpty() || period.isNotEmpty()) {
                     table.addCell(PdfPCell(Phrase(company, fonts.subBoldFont)).apply {
                         horizontalAlignment = Element.ALIGN_LEFT
@@ -378,7 +429,7 @@ class ResumePdfBuilder(private val context: Context) {
         fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         when (fmt) {
-            ResumeFormatType.CLASSIC -> {
+            ResumeFormatType.CLASSIC, ResumeFormatType.MODERN -> {
                 if (school.isNotEmpty() || period.isNotEmpty()) {
                     table.addCell(PdfPCell(Phrase(school, fonts.subBoldFont)).apply {
                         horizontalAlignment = Element.ALIGN_LEFT
@@ -634,9 +685,15 @@ class ResumePdfBuilder(private val context: Context) {
             }
             ResumeFormatType.MODERN -> {
                 val cell = noBorderCell(Phrase(title, fonts.headingModernFont), Element.ALIGN_LEFT, 2)
-                    .also { it.setLeading(2f, 1.5f) }
+                    .also {
+                        it.setLeading(2f, 1.5f)
+                        it.paddingTop    = 2f
+                        it.paddingBottom = 2f
+                    }
                 p.add(PdfPTable(floatArrayOf(10f, 5f)).apply {
                     widthPercentage = 100f
+                    spacingBefore   = 10f
+                    spacingAfter    = 2f
                     addCell(cell)
                     addCell(ruleTopCell(fonts.headingModernFont, colspan = 2))
                 })
