@@ -609,3 +609,11 @@ private fun ViewShareWithPdfPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, name = "Rate Us Dialog")
+@Composable
+private fun RateUsDialogPreview() {
+    SmartResumeTheme {
+        RateUsDialog(onRateNow = {}, onWriteFeedback = {}, onDismiss = {})
+    }
+}
