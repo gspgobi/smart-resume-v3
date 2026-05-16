@@ -213,48 +213,6 @@ fun SectionChild6SubScreen(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC6Sub - Loading")
-@Composable
-private fun SectionChild6SubLoadingPreview() {
-    SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("New Entry") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.Check, contentDescription = "Save",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "SC6Sub - New Entry")
 @Composable
 private fun SectionChild6SubNewEntryPreview() {
