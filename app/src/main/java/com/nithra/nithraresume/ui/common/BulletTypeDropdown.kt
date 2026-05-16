@@ -13,6 +13,8 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -121,5 +123,31 @@ fun BulletTypeDropdown(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Bullet Dropdown - Default")
+@Composable
+private fun BulletTypeDropdownDefaultPreview() {
+    SmartResumeTheme {
+        BulletTypeDropdown(
+            selected = "•",
+            onSelected = {},
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Bullet Dropdown - With Label")
+@Composable
+private fun BulletTypeDropdownWithLabelPreview() {
+    SmartResumeTheme {
+        BulletTypeDropdown(
+            selected = "•",
+            onSelected = {},
+            primaryText = "Skills",
+            hintText = "Choose bullet style",
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
