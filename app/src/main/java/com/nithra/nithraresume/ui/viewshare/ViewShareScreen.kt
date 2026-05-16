@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -602,42 +601,6 @@ private fun ViewShareWithPdfPreview() {
                 }
                 OutlinedButton(onClick = {}, modifier = Modifier.fillMaxWidth()) {
                     Text("Regenerate")
-                }
-            }
-        }
-    }
-}
-
-@Preview(showBackground = true, name = "Rate Us Dialog")
-@Composable
-private fun RateUsDialogPreview() {
-    SmartResumeTheme {
-        // AlertDialog renders in a separate window; preview the content directly.
-        androidx.compose.material3.Surface(
-            shape = MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp)
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = "Enjoying Smart Resume?",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Spacer(Modifier.height(16.dp))
-                Text(
-                    text = "If you find this app helpful, please take a moment to rate it on the Play Store.",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = {}) { Text("Write Feedback") }
-                    Spacer(Modifier.width(8.dp))
-                    Button(onClick = {}) { Text("Rate Now") }
                 }
             }
         }
