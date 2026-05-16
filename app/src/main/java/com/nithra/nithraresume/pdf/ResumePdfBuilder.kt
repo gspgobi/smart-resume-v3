@@ -194,22 +194,45 @@ class ResumePdfBuilder(private val context: Context) {
     }
 
     private fun sc1Classic(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts, photo: Image?) {
+        val contactValues = listOf(sc1.address, sc1.phone, sc1.email).filter { it.isNotEmpty() }
+
         if (photo != null) {
-            photo.scaleAbsolute(50f, 50f)
+            photo.scaleAbsolute(60f, 60f)
             val table = PdfPTable(floatArrayOf(2f, 11f)).apply { widthPercentage = 100f }
             table.addCell(PdfPCell(photo).apply {
                 horizontalAlignment = Element.ALIGN_LEFT
+                verticalAlignment   = Element.ALIGN_MIDDLE
                 setBorder(Rectangle.NO_BORDER)
-                rowspan = 4
+                rowspan = 1 + contactValues.size  // name + contact rows; rule uses colspan=2 below
             })
-            addNameCell(table, sc1.name, fonts.nameFont, Element.ALIGN_RIGHT)
-            addContactRows(table, sc1, fonts, Element.ALIGN_RIGHT)
+            table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
+                horizontalAlignment = Element.ALIGN_RIGHT
+                setBorder(Rectangle.NO_BORDER)
+                paddingBottom = 2f
+            })
+            contactValues.forEach { value ->
+                table.addCell(PdfPCell(Phrase(value, fonts.subFont)).apply {
+                    horizontalAlignment = Element.ALIGN_RIGHT
+                    setBorder(Rectangle.NO_BORDER)
+                    paddingTop = 1f
+                })
+            }
             addRuleCell(table, colspan = 2, font = fonts.subFont)
             p.add(table)
         } else {
             val table = PdfPTable(1).apply { widthPercentage = 100f }
-            addNameCell(table, sc1.name, fonts.nameFont, Element.ALIGN_RIGHT)
-            addContactRows(table, sc1, fonts, Element.ALIGN_RIGHT)
+            table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
+                horizontalAlignment = Element.ALIGN_RIGHT
+                setBorder(Rectangle.NO_BORDER)
+                paddingBottom = 2f
+            })
+            contactValues.forEach { value ->
+                table.addCell(PdfPCell(Phrase(value, fonts.subFont)).apply {
+                    horizontalAlignment = Element.ALIGN_RIGHT
+                    setBorder(Rectangle.NO_BORDER)
+                    paddingTop = 1f
+                })
+            }
             addRuleCell(table, colspan = 1, font = fonts.subFont)
             p.add(table)
         }
@@ -295,6 +318,27 @@ class ResumePdfBuilder(private val context: Context) {
                 })
                 addBulletContent(table, content, bulletType, fonts)
             }
+            ResumeFormatType.CLASSIC -> {
+                if (company.isNotEmpty() || period.isNotEmpty()) {
+                    table.addCell(PdfPCell(Phrase(company, fonts.subBoldFont)).apply {
+                        horizontalAlignment = Element.ALIGN_LEFT
+                        setBorder(Rectangle.NO_BORDER)
+                        paddingTop    = 1f
+                        paddingBottom = 1f
+                    })
+                    table.addCell(PdfPCell(Phrase(period, fonts.subFont)).apply {
+                        horizontalAlignment = Element.ALIGN_RIGHT
+                        setBorder(Rectangle.NO_BORDER)
+                        paddingTop    = 1f
+                        paddingBottom = 1f
+                    })
+                }
+                val roleSubtitle = joinNonEmpty(role, subtitle, ", ")
+                if (roleSubtitle.isNotEmpty()) {
+                    table.addCell(noBorderCell(Phrase(roleSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
+                }
+                addBulletContent(table, content, bulletType, fonts)
+            }
             else -> {
                 addBoldCell(table, buildClassicItemLine(role, subtitle, company, period), fonts.subBoldFont)
                 addBulletContent(table, content, bulletType, fonts)
@@ -335,7 +379,24 @@ class ResumePdfBuilder(private val context: Context) {
     ) {
         when (fmt) {
             ResumeFormatType.CLASSIC -> {
-                addBoldCell(table, buildClassicItemLine(degree, subtitle, school, period), fonts.subBoldFont)
+                if (school.isNotEmpty() || period.isNotEmpty()) {
+                    table.addCell(PdfPCell(Phrase(school, fonts.subBoldFont)).apply {
+                        horizontalAlignment = Element.ALIGN_LEFT
+                        setBorder(Rectangle.NO_BORDER)
+                        paddingTop    = 1f
+                        paddingBottom = 1f
+                    })
+                    table.addCell(PdfPCell(Phrase(period, fonts.subFont)).apply {
+                        horizontalAlignment = Element.ALIGN_RIGHT
+                        setBorder(Rectangle.NO_BORDER)
+                        paddingTop    = 1f
+                        paddingBottom = 1f
+                    })
+                }
+                val degreeSubtitle = joinNonEmpty(degree, subtitle, ", ")
+                if (degreeSubtitle.isNotEmpty()) {
+                    table.addCell(noBorderCell(Phrase(degreeSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
+                }
                 addBulletContent(table, concentrates, bulletType, fonts)
             }
             else -> {
@@ -556,10 +617,18 @@ class ResumePdfBuilder(private val context: Context) {
     ) {
         when (fmt) {
             ResumeFormatType.CLASSIC -> {
-                val cell = noBorderCell(Phrase(title, fonts.headingFont), Element.ALIGN_LEFT, 2)
-                    .also { it.setLeading(2f, 1.5f) }
-                p.add(PdfPTable(floatArrayOf(0.5f, 10f)).apply {
+                val cell = PdfPCell(Phrase(title, fonts.headingFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.BOTTOM)
+                    borderColorBottom = BaseColor.BLACK
+                    borderWidthBottom = 0.5f
+                    paddingTop        = 2f
+                    paddingBottom     = 4f
+                }
+                p.add(PdfPTable(1).apply {
                     widthPercentage = 100f
+                    spacingBefore   = 10f
+                    spacingAfter    = 2f
                     addCell(cell)
                 })
             }
