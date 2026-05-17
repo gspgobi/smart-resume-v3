@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,7 +36,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -186,7 +187,7 @@ fun GenerateResumeScreen(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.Bottom
                     ) {
                         Text(
                             "Resume Settings",
@@ -199,7 +200,9 @@ fun GenerateResumeScreen(
                                 navController.navigate(
                                     Screen.ResumeFormat.createRoute(viewModel.profileId)
                                 )
-                            }
+                            },
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                            modifier = Modifier.height(28.dp)
                         ) {
                             Text("Edit")
                         }
@@ -486,7 +489,11 @@ private fun GenerateResumeReadyPreview() {
                 ) {
                     Text("Resume Settings", style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                    FilledTonalButton(onClick = {}) { Text("Edit") }
+                    FilledTonalButton(
+                        onClick = {},
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        modifier = Modifier.height(28.dp)
+                    ) { Text("Edit", style = MaterialTheme.typography.labelSmall) }
                 }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -495,21 +502,7 @@ private fun GenerateResumeReadyPreview() {
                     )
                 ) {
                     Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 14.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text("Resume Format", style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Text("Classic", style = MaterialTheme.typography.bodyMedium)
-                            }
-                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
+                        SettingsInfoRow("Resume Format", "Classic", showChevron = true)
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                         SettingsInfoRow("Font Style", "Roboto")
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
@@ -574,7 +567,11 @@ private fun GenerateResumeReadyWithOptionsPreview() {
                 ) {
                     Text("Resume Settings", style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
-                    FilledTonalButton(onClick = {}) { Text("Edit") }
+                    FilledTonalButton(
+                        onClick = {},
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        modifier = Modifier.height(28.dp)
+                    ) { Text("Edit", style = MaterialTheme.typography.labelSmall) }
                 }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -583,21 +580,7 @@ private fun GenerateResumeReadyWithOptionsPreview() {
                     )
                 ) {
                     Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 14.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text("Resume Format", style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Text("Modern", style = MaterialTheme.typography.bodyMedium)
-                            }
-                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
+                        SettingsInfoRow("Resume Format", "Modern", showChevron = true)
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                         SettingsInfoRow("Font Style", "Lato")
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
