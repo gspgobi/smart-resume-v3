@@ -23,6 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -182,12 +183,27 @@ fun GenerateResumeScreen(
                     )
 
                     // ── Resume Settings ───────────────────────────────────────
-                    Text(
-                        "Resume Settings",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Resume Settings",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        FilledTonalButton(
+                            onClick = {
+                                navController.navigate(
+                                    Screen.ResumeFormat.createRoute(viewModel.profileId)
+                                )
+                            }
+                        ) {
+                            Text("Edit")
+                        }
+                    }
                     profile?.let { p ->
                         Card(
                             onClick = {
@@ -463,8 +479,15 @@ private fun GenerateResumeReadyPreview() {
                     supportingText = { Text("Do not include .pdf extension") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true
                 )
-                Text("Resume Settings", style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Resume Settings", style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    FilledTonalButton(onClick = {}) { Text("Edit") }
+                }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
@@ -544,8 +567,15 @@ private fun GenerateResumeReadyWithOptionsPreview() {
                     supportingText = { Text("Do not include .pdf extension") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true
                 )
-                Text("Resume Settings", style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Resume Settings", style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                    FilledTonalButton(onClick = {}) { Text("Edit") }
+                }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
