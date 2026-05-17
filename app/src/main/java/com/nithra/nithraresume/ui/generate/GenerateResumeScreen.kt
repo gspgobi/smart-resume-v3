@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
@@ -79,10 +80,18 @@ fun GenerateResumeScreen(
     var showOverwriteDialog by rememberSaveable { mutableStateOf(false) }
     var pendingFileName by rememberSaveable { mutableStateOf("") }
 
-    LaunchedEffect(profile) {
-        if (!fileNameInitialised && profile != null) {
-            fileName = profile!!.resumeFileName?.ifEmpty { profile!!.name } ?: profile!!.name
-            fileNameInitialised = true
+    LaunchedEffect(profile, currentFormat) {
+        if (profile != null && currentFormat != null) {
+            if (BuildConfig.DEBUG) {
+                val base = profile!!.name
+                val fmt = currentFormat!!.title
+                val font = profile!!.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), "")
+                val size = profile!!.fontSize
+                fileName = "${base}_${fmt}_${font}_${size}pt"
+            } else if (!fileNameInitialised) {
+                fileName = profile!!.resumeFileName?.ifEmpty { profile!!.name } ?: profile!!.name
+                fileNameInitialised = true
+            }
         }
     }
 
