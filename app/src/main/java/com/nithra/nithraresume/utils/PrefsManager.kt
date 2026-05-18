@@ -43,6 +43,7 @@ class PrefsManager @Inject constructor(
         val CURRENT_APP_VERSION_CODE = intPreferencesKey("v2_current_app_version_code")
         val APP_INSTALLED_DURING_SRV2_DB_VERSION = intPreferencesKey("v2_app_installed_during_srv2_db_version")
         val IS_PERFECT_NEW_SRV2_USER = booleanPreferencesKey("v2_is_perfect_new_srv2_user")
+        val IS_PERFECT_NEW_SRV3_USER = booleanPreferencesKey("v3_is_perfect_new_srv3_user")
     }
 
     // ── Safe data flow (recovers from corrupted preferences file) ────────────
@@ -116,5 +117,12 @@ class PrefsManager @Inject constructor(
 
     suspend fun setIsPerfectNewSrv2User(isNew: Boolean) {
         context.dataStore.edit { it[Key.IS_PERFECT_NEW_SRV2_USER] = isNew }
+    }
+
+    val isPerfectNewSrv3User: Flow<Boolean> = safeData
+        .map { it[Key.IS_PERFECT_NEW_SRV3_USER] ?: false }
+
+    suspend fun setIsPerfectNewSrv3User(isNew: Boolean) {
+        context.dataStore.edit { it[Key.IS_PERFECT_NEW_SRV3_USER] = isNew }
     }
 }
