@@ -139,9 +139,9 @@ dependencies {
 
     // Firebase BOM + libraries
     implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-messaging-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
 
     // AdMob
     implementation(libs.play.services.ads)
