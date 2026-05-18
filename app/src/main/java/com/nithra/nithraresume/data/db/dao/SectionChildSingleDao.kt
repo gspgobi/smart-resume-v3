@@ -32,6 +32,9 @@ interface SectionChildSingleDao {
     @Update
     suspend fun updateChild1(entity: SectionChild1Entity)
 
+    @Query("UPDATE section_child_1 SET sc1_user_image_path = REPLACE(sc1_user_image_path, '/Photo/', '/UserImage/')")
+    suspend fun migratePhotoPathsToUserImage()
+
     @Query("DELETE FROM section_child_1 WHERE section_head_added_id = :headId")
     suspend fun deleteChild1ByHeadId(headId: Int)
 

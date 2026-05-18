@@ -40,6 +40,9 @@ class SectionChildRepository @Inject constructor(
     suspend fun deleteChild1(headId: Int) =
         singleDao.deleteChild1ByHeadId(headId)
 
+    suspend fun migratePhotoPathsToUserImage() =
+        singleDao.migratePhotoPathsToUserImage()
+
     // ── Child 2 — Work Experience ─────────────────────────────────────────────
 
     fun getChild2List(headId: Int): Flow<List<SectionChild2>> =

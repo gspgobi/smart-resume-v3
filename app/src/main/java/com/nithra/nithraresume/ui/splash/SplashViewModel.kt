@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 // ── JSON data classes for exampleResumes.json ─────────────────────────────────
@@ -139,6 +140,8 @@ class SplashViewModel @Inject constructor(
             prefsManager.setCurrentAppVersionCode(currentVersionCode)
         }
 
+        migrateV2FilesIfNeeded()
+
         // Set Android ID as Firebase Analytics user property
         val androidId = Settings.Secure.getString(
             context.contentResolver, Settings.Secure.ANDROID_ID
@@ -153,6 +156,35 @@ class SplashViewModel @Inject constructor(
                 apiRepository.registerFcmToken(token, firstOrUpdate = "update")
             }
         }
+    }
+
+    private suspend fun migrateV2FilesIfNeeded() {
+        if (prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()) return
+
+        withContext(Dispatchers.IO) {
+            val base = context.getExternalFilesDir(null) ?: return@withContext
+
+            // Photo → UserImage
+            val photoDir = File(base, "Photo")
+            val userImageDir = File(base, "UserImage").also { it.mkdirs() }
+            if (photoDir.exists()) {
+                photoDir.listFiles()?.forEach { it.copyTo(File(userImageDir, it.name), overwrite = true) }
+                photoDir.deleteRecursively()
+            }
+
+            // Files → GeneratedResume
+            val filesDir = File(base, "Files")
+            val generatedDir = File(base, "GeneratedResume").also { it.mkdirs() }
+            if (filesDir.exists()) {
+                filesDir.listFiles()?.forEach { it.copyTo(File(generatedDir, it.name), overwrite = true) }
+                filesDir.deleteRecursively()
+            }
+
+            // Update stored DB paths: /Photo/ → /UserImage/ (Signature paths are unchanged)
+            sectionChildRepository.migratePhotoPathsToUserImage()
+        }
+
+        prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
     }
 
     private suspend fun createNewProfile() {
