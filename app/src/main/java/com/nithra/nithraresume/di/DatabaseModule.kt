@@ -44,7 +44,7 @@ object DatabaseModule {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     CoroutineScope(Dispatchers.IO).launch {
-                        prefsManager.setIsPerfectNewSrv3User(true)
+                        prefsManager.setV3IsPerfectNewSrv3User(true)
                     }
                 }
             })
