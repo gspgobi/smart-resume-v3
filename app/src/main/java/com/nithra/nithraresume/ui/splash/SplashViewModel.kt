@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.data.api.ApiRepository
-import com.nithra.nithraresume.data.db.SmartResumeDatabase
 import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.data.model.SectionChild3
@@ -126,18 +125,15 @@ class SplashViewModel @Inject constructor(
 
     private suspend fun performAppInit() {
         val currentVersionCode = BuildConfig.VERSION_CODE
-        val storedVersionCode = prefsManager.currentAppVersionCode.first()
+        val storedVersionCode = prefsManager.v2CurrentAppVersionCode.first()
 
         if (storedVersionCode == 0) {
-            // First ever launch — mark as a brand-new V2+ user and seed example profile
-            prefsManager.setIsPerfectNewSrv2User(true)
-            prefsManager.setAppInstalledDuringSrv2DbVersion(SmartResumeDatabase.DATABASE_VERSION)
             createExampleProfile()
             createNewProfile()
         }
 
         if (storedVersionCode != currentVersionCode) {
-            prefsManager.setCurrentAppVersionCode(currentVersionCode)
+            prefsManager.setV2CurrentAppVersionCode(currentVersionCode)
         }
 
         migrateV2FilesIfNeeded()
@@ -149,9 +145,9 @@ class SplashViewModel @Inject constructor(
         analyticsManager.setUserId(androidId)
 
         // Retry FCM token registration if it never reached the server
-        val tokenSent = prefsManager.fcmTokenSentToServer.first()
+        val tokenSent = prefsManager.v2FcmTokenSentToServer.first()
         if (!tokenSent) {
-            val token = prefsManager.fcmTokenId.first()
+            val token = prefsManager.v2FcmTokenId.first()
             if (token.isNotEmpty()) {
                 apiRepository.registerFcmToken(token, firstOrUpdate = "update")
             }

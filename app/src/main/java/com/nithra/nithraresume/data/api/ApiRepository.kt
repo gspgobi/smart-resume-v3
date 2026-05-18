@@ -40,8 +40,8 @@ class ApiRepository @Inject constructor(
                 uid          = androidId
             )
             if (response.isSuccessful) {
-                prefsManager.setFcmTokenSentToServer(true)
-                prefsManager.setFcmTokenId(token)
+                prefsManager.setV2FcmTokenSentToServer(true)
+                prefsManager.setV2FcmTokenId(token)
             }
         }
     }
