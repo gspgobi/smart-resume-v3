@@ -45,6 +45,7 @@ object DatabaseModule {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     CoroutineScope(Dispatchers.IO).launch {
                         prefsManager.setV3IsPerfectNewSrv3User(true)
+                        prefsManager.setV3AppInstalledDuringSrv3DbVersion(SmartResumeDatabase.DATABASE_VERSION)
                     }
                 }
             })
