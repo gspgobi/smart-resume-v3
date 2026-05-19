@@ -83,7 +83,7 @@ fun SignatureCanvas(
                 captureController.heightPx = size.height
             }
             .pointerInput(Unit) {
-                captureController.strokePx = 6.dp.toPx()
+                captureController.strokePx = 3.dp.toPx()
                 awaitEachGesture {
                     val down = awaitFirstDown()
                     currentPath.reset()
@@ -108,7 +108,7 @@ fun SignatureCanvas(
     ) {
         @Suppress("UNUSED_VARIABLE")
         val v = revision
-        val style = Stroke(width = 6.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
+        val style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
         for (path in captureController.completedPaths) {
             drawPath(path, color = Color.DarkGray, style = style)
         }
