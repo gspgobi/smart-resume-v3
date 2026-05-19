@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Image
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -62,6 +61,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -455,11 +455,11 @@ private fun UserImageSection(
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
-                Icon(
-                    Icons.Default.Image,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(48.dp)
+                Text(
+                    text = "No user image found",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -656,9 +656,9 @@ private fun SectionDividerPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "User Image Section - Empty")
+@Preview(showBackground = true, name = "User Image Section - No Image")
 @Composable
-private fun UserImageSectionEmptyPreview() {
+private fun UserImageSectionNoImagePreview() {
     SmartResumeTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
