@@ -1,6 +1,7 @@
 package com.nithra.nithraresume.ui.splash
 
 import android.content.Context
+import android.os.Environment
 import android.provider.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,7 @@ import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.PrefsManager
+import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -160,26 +162,39 @@ class SplashViewModel @Inject constructor(
         if (prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()) return
 
         withContext(Dispatchers.IO) {
-            val base = context.getExternalFilesDir(null) ?: return@withContext
+            val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
+            val v3Base = context.getExternalFilesDir(null) ?: return@withContext
 
             // Photo → UserImage
-            val photoDir = File(base, "Photo")
-            val userImageDir = File(base, "UserImage").also { it.mkdirs() }
-            if (photoDir.exists()) {
-                photoDir.listFiles()?.forEach { it.copyTo(File(userImageDir, it.name), overwrite = true) }
-                photoDir.deleteRecursively()
+            val photoSrc = File(v1Base, "Photo")
+            val userImageDst = File(v3Base, SrDir.USER_IMAGE).also { it.mkdirs() }
+            if (photoSrc.exists()) {
+                photoSrc.listFiles()?.forEach { it.copyTo(File(userImageDst, it.name), overwrite = true) }
+                photoSrc.deleteRecursively()
+            }
+
+            // Signature → Signature
+            val signatureSrc = File(v1Base, "Signature")
+            val signatureDst = File(v3Base, SrDir.SIGNATURE).also { it.mkdirs() }
+            if (signatureSrc.exists()) {
+                signatureSrc.listFiles()?.forEach { it.copyTo(File(signatureDst, it.name), overwrite = true) }
+                signatureSrc.deleteRecursively()
             }
 
             // Files → GeneratedResume
-            val filesDir = File(base, "Files")
-            val generatedDir = File(base, "GeneratedResume").also { it.mkdirs() }
-            if (filesDir.exists()) {
-                filesDir.listFiles()?.forEach { it.copyTo(File(generatedDir, it.name), overwrite = true) }
-                filesDir.deleteRecursively()
+            val filesSrc = File(v1Base, "Files")
+            val generatedDst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
+            if (filesSrc.exists()) {
+                filesSrc.listFiles()?.forEach { it.copyTo(File(generatedDst, it.name), overwrite = true) }
+                filesSrc.deleteRecursively()
             }
 
-            // Update stored DB paths: /Photo/ → /UserImage/ (Signature paths are unchanged)
-            sectionChildRepository.migratePhotoPathsToUserImage()
+            // Clean up the entire v1 base directory
+            v1Base.deleteRecursively()
+
+            // Update DB paths from v1 absolute paths to v3 absolute paths
+            sectionChildRepository.migrateV2UserImagePaths(userImageDst.absolutePath)
+            sectionChildRepository.migrateV2SignatureImagePaths(signatureDst.absolutePath)
         }
 
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
