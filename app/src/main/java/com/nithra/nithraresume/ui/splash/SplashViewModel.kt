@@ -169,7 +169,11 @@ class SplashViewModel @Inject constructor(
             val photoSrc = File(v1Base, "Photo")
             val userImageDst = File(v3Base, SrDir.USER_IMAGE).also { it.mkdirs() }
             if (photoSrc.exists()) {
-                photoSrc.listFiles()?.forEach { it.copyTo(File(userImageDst, it.name), overwrite = true) }
+                val copied = photoSrc.listFiles()
+                if (!copied.isNullOrEmpty()) {
+                    copied.forEach { it.copyTo(File(userImageDst, it.name), overwrite = true) }
+                    sectionChildRepository.migrateV2UserImagePaths(userImageDst.absolutePath)
+                }
                 photoSrc.deleteRecursively()
             }
 
@@ -177,7 +181,11 @@ class SplashViewModel @Inject constructor(
             val signatureSrc = File(v1Base, "Signature")
             val signatureDst = File(v3Base, SrDir.SIGNATURE).also { it.mkdirs() }
             if (signatureSrc.exists()) {
-                signatureSrc.listFiles()?.forEach { it.copyTo(File(signatureDst, it.name), overwrite = true) }
+                val copied = signatureSrc.listFiles()
+                if (!copied.isNullOrEmpty()) {
+                    copied.forEach { it.copyTo(File(signatureDst, it.name), overwrite = true) }
+                    sectionChildRepository.migrateV2SignatureImagePaths(signatureDst.absolutePath)
+                }
                 signatureSrc.deleteRecursively()
             }
 
@@ -191,10 +199,6 @@ class SplashViewModel @Inject constructor(
 
             // Clean up the entire v1 base directory
             v1Base.deleteRecursively()
-
-            // Update DB paths from v1 absolute paths to v3 absolute paths
-            sectionChildRepository.migrateV2UserImagePaths(userImageDst.absolutePath)
-            sectionChildRepository.migrateV2SignatureImagePaths(signatureDst.absolutePath)
         }
 
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
