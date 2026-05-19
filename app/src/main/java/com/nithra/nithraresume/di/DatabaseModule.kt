@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.nithra.nithraresume.data.db.MIGRATION_1_2
 import com.nithra.nithraresume.data.db.SmartResumeDatabase
 import com.nithra.nithraresume.utils.PrefsManager
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +41,7 @@ object DatabaseModule {
             SmartResumeDatabase::class.java,
             SmartResumeDatabase.DATABASE_NAME
         )
+            .addMigrations(MIGRATION_1_2)
             .addCallback(SmartResumeDatabase.seedCallback)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
