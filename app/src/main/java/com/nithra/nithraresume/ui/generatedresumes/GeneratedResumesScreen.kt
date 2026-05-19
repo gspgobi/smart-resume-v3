@@ -147,7 +147,7 @@ private fun GeneratedResumeCard(
             ) {
                 Text(
                     text = file.nameWithoutExtension,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 3,
@@ -156,7 +156,7 @@ private fun GeneratedResumeCard(
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = "${formatFileSize(file.length())}  •  ${formatDate(file.lastModified())}",
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -219,7 +219,7 @@ private fun formatFileSize(bytes: Long): String {
 }
 
 private fun formatDate(millis: Long): String =
-    SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault()).format(Date(millis))
+    SimpleDateFormat("EEE, dd MMM yyyy, hh:mm a", Locale.getDefault()).format(Date(millis))
 
 private fun openPdf(context: Context, file: File) {
     runCatching {
