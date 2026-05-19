@@ -129,7 +129,7 @@ class SplashViewModel @Inject constructor(
         val currentVersionCode = BuildConfig.VERSION_CODE
         val storedVersionCode = prefsManager.v2CurrentAppVersionCode.first()
 
-        if (storedVersionCode == 0) {
+        if (prefsManager.v2IsPerfectNewSrv2User.first().not()) {
             createExampleProfile()
             createNewProfile()
         }
