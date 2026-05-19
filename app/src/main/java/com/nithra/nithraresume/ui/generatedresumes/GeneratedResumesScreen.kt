@@ -147,7 +147,7 @@ private fun GeneratedResumeCard(
             ) {
                 Text(
                     text = file.nameWithoutExtension,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 3,
