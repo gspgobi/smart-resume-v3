@@ -3,6 +3,7 @@ package com.nithra.nithraresume.data.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+
 import com.nithra.nithraresume.data.db.dao.FcmDataDao
 import com.nithra.nithraresume.data.db.dao.ResumeFormatBaseDao
 import com.nithra.nithraresume.data.db.dao.SectionChildListDao
@@ -28,6 +29,8 @@ import com.nithra.nithraresume.data.db.entity.SectionHeadGroupBaseEntity
 import com.nithra.nithraresume.data.db.entity.SectionHeadSampleDataEntity
 import com.nithra.nithraresume.data.db.entity.UserProfileEntity
 
+private const val DB_VERSION = 2
+
 @Database(
     entities = [
         ResumeFormatBaseEntity::class,
@@ -46,7 +49,7 @@ import com.nithra.nithraresume.data.db.entity.UserProfileEntity
         SectionChild8Entity::class,
         FcmDataEntity::class,
     ],
-    version = 1,
+    version = DB_VERSION,
     exportSchema = false
 )
 abstract class SmartResumeDatabase : RoomDatabase() {
@@ -62,7 +65,7 @@ abstract class SmartResumeDatabase : RoomDatabase() {
     abstract fun fcmDataDao(): FcmDataDao
 
     companion object {
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = DB_VERSION
         const val DATABASE_NAME = "smart_resume_v2.db"
 
         /**
