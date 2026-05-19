@@ -7,6 +7,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -263,7 +264,7 @@ fun SectionChild4Screen(
                     .fillMaxWidth()
                     .height(200.dp)
                     .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                    .background(Color.White, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (sigPath != null) {
@@ -449,7 +450,7 @@ private fun SectionChild4EmptyPreview() {
                         .fillMaxWidth()
                         .height(200.dp)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                        .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("No signature added", style = MaterialTheme.typography.bodyMedium,
@@ -535,7 +536,7 @@ private fun SectionChild4WithSignaturePreview() {
                         .fillMaxWidth()
                         .height(200.dp)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                        .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("~ Signature ~", style = MaterialTheme.typography.bodyMedium,
