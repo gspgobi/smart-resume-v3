@@ -124,6 +124,8 @@ class SplashViewModel @Inject constructor(
     }
 
     private suspend fun performAppInit() {
+        prefsManager.dumpPrefs()
+
         val currentVersionCode = BuildConfig.VERSION_CODE
         val storedVersionCode = prefsManager.v2CurrentAppVersionCode.first()
 

@@ -1,6 +1,7 @@
 package com.nithra.nithraresume.utils
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -12,9 +13,11 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.migrations.SharedPreferencesMigration
 import androidx.datastore.preferences.preferencesDataStore
+import com.nithra.nithraresume.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -164,5 +167,12 @@ class PrefsManager @Inject constructor(
 
     suspend fun setV3AllV2FilesMigratedToV3FilesStructure() {
         context.dataStore.edit { it[Key.V3_ALL_V2_FILES_MIGRATED_TO_V3_FILES_STRUCTURE] = true }
+    }
+
+    suspend fun dumpPrefs() {
+        if (BuildConfig.DEBUG.not()) return
+        context.dataStore.data.first().asMap().forEach { (key, value) ->
+            Log.d("PrefsDebug", "${key.name} = $value")
+        }
     }
 }
