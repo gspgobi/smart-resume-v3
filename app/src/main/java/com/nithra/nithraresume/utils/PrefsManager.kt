@@ -6,8 +6,11 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.migrations.SharedPreferencesMigration
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -17,8 +20,29 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val Context.dataStore: DataStore<Preferences>
-    by preferencesDataStore(name = "smart_resume_prefs")
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+    name = "smart_resume_prefs",
+    produceMigrations = { context ->
+        listOf(
+            SharedPreferencesMigration(
+                context = context,
+                sharedPreferencesName = "com.nithra.nithraresume_preferences"
+            ) { sharedPrefs, currentPrefs ->
+                currentPrefs.toMutablePreferences().apply {
+                    for ((key, value) in sharedPrefs.getAll()) {
+                        when (value) {
+                            is Boolean -> this[booleanPreferencesKey(key)] = value
+                            is Int     -> this[intPreferencesKey(key)]     = value
+                            is String  -> this[stringPreferencesKey(key)]  = value
+                            is Float   -> this[floatPreferencesKey(key)]   = value
+                            is Long    -> this[longPreferencesKey(key)]    = value
+                        }
+                    }
+                }.toPreferences()
+            }
+        )
+    }
+)
 
 @Singleton
 class PrefsManager @Inject constructor(
