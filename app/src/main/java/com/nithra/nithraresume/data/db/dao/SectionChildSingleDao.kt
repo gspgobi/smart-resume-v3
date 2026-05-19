@@ -32,8 +32,11 @@ interface SectionChildSingleDao {
     @Update
     suspend fun updateChild1(entity: SectionChild1Entity)
 
-    @Query("UPDATE section_child_1 SET sc1_user_image_path = REPLACE(sc1_user_image_path, '/Photo/', '/UserImage/')")
-    suspend fun migratePhotoPathsToUserImage()
+    @Query("UPDATE section_child_1 SET sc1_user_image_path = :newDir || '/' || SUBSTR(sc1_user_image_path, INSTR(sc1_user_image_path, '/Photo/') + 7) WHERE sc1_user_image_path LIKE '%/Nithra/SmartResume/Photo/%'")
+    suspend fun migrateV2UserImagePaths(newDir: String)
+
+    @Query("UPDATE section_child_4 SET sc4_signature_image_path = :newDir || '/' || SUBSTR(sc4_signature_image_path, INSTR(sc4_signature_image_path, '/Signature/') + 11) WHERE sc4_signature_image_path LIKE '%/Nithra/SmartResume/Signature/%'")
+    suspend fun migrateV2SignatureImagePaths(newDir: String)
 
     @Query("DELETE FROM section_child_1 WHERE section_head_added_id = :headId")
     suspend fun deleteChild1ByHeadId(headId: Int)
