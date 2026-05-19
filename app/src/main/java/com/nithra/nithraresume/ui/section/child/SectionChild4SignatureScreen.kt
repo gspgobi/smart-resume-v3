@@ -99,6 +99,11 @@ fun SectionChild4SignatureScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "Sign inside the box",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -166,6 +171,11 @@ private fun SectionChild4SignatureEmptyPreview() {
                 verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Text(
+                    text = "Sign inside the box",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
