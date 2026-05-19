@@ -47,13 +47,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
+import com.nithra.nithraresume.utils.FileUtils
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import java.io.File
-import java.text.DecimalFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -155,7 +152,7 @@ private fun GeneratedResumeCard(
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    text = "${formatFileSize(file.length())}  •  ${formatDate(file.lastModified())}",
+                    text = "${FileUtils.formatFileSize(file.length())}  •  ${FileUtils.formatFileModified(file.lastModified())}",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -208,18 +205,6 @@ private fun EmptyGeneratedResumes(
         }
     }
 }
-
-private fun formatFileSize(bytes: Long): String {
-    val df = DecimalFormat("#.##")
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> "${df.format(bytes / 1024.0)} KB"
-        else -> "${df.format(bytes / (1024.0 * 1024.0))} MB"
-    }
-}
-
-private fun formatDate(millis: Long): String =
-    SimpleDateFormat("EEE, dd MMM yyyy, hh:mm a", Locale.getDefault()).format(Date(millis))
 
 private fun openPdf(context: Context, file: File) {
     runCatching {
