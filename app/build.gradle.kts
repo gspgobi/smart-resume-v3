@@ -15,12 +15,12 @@ if (keystoreFile.exists()) keystoreFile.inputStream().use { keystoreProps.load(i
 
 android {
     namespace = "com.nithra.nithraresume"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.nithra.nithraresume"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 72
         versionName = "4.2.0"
 
@@ -42,6 +42,7 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
