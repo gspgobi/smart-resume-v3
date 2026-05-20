@@ -597,7 +597,7 @@ class ResumePdfBuilder(private val context: Context) {
         table.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
             colspan     = 2
-            fixedHeight = 24f
+            fixedHeight = 12f
         })
 
         val sigImg = if (sc4.signatureImagePath.isNotEmpty() && sc4.isSignatureImageEnable)
@@ -605,36 +605,29 @@ class ResumePdfBuilder(private val context: Context) {
         sigImg?.scaleAbsolute(80f, 40f)
         val name = sc1?.name?.takeIf { it.isNotEmpty() }
 
-        // Row 1: date (LEFT) | signature image (RIGHT)
-        table.addCell(PdfPCell(Phrase(sc4.date, fonts.subFont)).apply {
-            horizontalAlignment = Element.ALIGN_LEFT
-            verticalAlignment = Element.ALIGN_BOTTOM
+        // Single row: date+place stacked (LEFT) | signature+name stacked (RIGHT)
+        table.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
             paddingTop = 2f
+            addElement(Paragraph(sc4.date, fonts.subFont))
+            addElement(Paragraph(sc4.place, fonts.subFont).apply { spacingBefore = 1f })
         })
-        if (sigImg != null) {
-            table.addCell(PdfPCell(sigImg).apply {
-                horizontalAlignment = Element.ALIGN_RIGHT
-                verticalAlignment = Element.ALIGN_BOTTOM
-                setBorder(Rectangle.NO_BORDER)
-                paddingTop = 2f
+        table.addCell(PdfPCell().apply {
+            setBorder(Rectangle.NO_BORDER)
+            paddingTop = 2f
+            if (sigImg != null) {
+                sigImg.alignment = Element.ALIGN_RIGHT
+                addElement(sigImg)
+            } else {
+                addElement(Paragraph(" ", fonts.subFont).apply {
+                    alignment = Element.ALIGN_RIGHT
+                    spacingAfter = 32f
+                })
+            }
+            addElement(Paragraph(name ?: "", fonts.subFont).apply {
+                alignment = Element.ALIGN_RIGHT
+                spacingBefore = 2f
             })
-        } else {
-            table.addCell(PdfPCell().apply { setBorder(Rectangle.NO_BORDER) })
-        }
-
-        // Row 2: place (LEFT) | name (RIGHT)
-        table.addCell(PdfPCell(Phrase(sc4.place, fonts.subFont)).apply {
-            horizontalAlignment = Element.ALIGN_LEFT
-            verticalAlignment = Element.ALIGN_TOP
-            setBorder(Rectangle.NO_BORDER)
-            paddingTop = 1f
-        })
-        table.addCell(PdfPCell(Phrase(name ?: "", fonts.subFont)).apply {
-            horizontalAlignment = Element.ALIGN_RIGHT
-            verticalAlignment = Element.ALIGN_TOP
-            setBorder(Rectangle.NO_BORDER)
-            paddingTop = 1f
         })
         p.add(table)
     }
