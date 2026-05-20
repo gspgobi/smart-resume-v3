@@ -20,6 +20,9 @@ interface UserProfileDao {
     @Query("SELECT * FROM user_profile WHERE user_profile_id = :id")
     suspend fun getById(id: Int): UserProfileEntity?
 
+    @Query("SELECT * FROM user_profile WHERE user_profile_id = :id")
+    fun getByIdFlow(id: Int): Flow<UserProfileEntity?>
+
     @Query("SELECT COUNT(*) FROM user_profile")
     suspend fun getCount(): Int
 

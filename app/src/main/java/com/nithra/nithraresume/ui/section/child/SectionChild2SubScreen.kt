@@ -201,7 +201,7 @@ fun SectionChild2SubScreen(
             OutlinedTextField(
                 value = subtitle,
                 onValueChange = { subtitle = it },
-                label = { Text("Subtitle (optional)") },
+                label = { Text("Subtitle") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -302,7 +302,7 @@ private fun SectionChild2SubNewPreview() {
                     label = { Text("Company Name") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Work Period") },
@@ -368,7 +368,7 @@ private fun SectionChild2SubEditPreview() {
                     label = { Text("Company Name") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "Android Platform Team", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "Jan 2021 – Present", onValueChange = {},
                     label = { Text("Work Period") },

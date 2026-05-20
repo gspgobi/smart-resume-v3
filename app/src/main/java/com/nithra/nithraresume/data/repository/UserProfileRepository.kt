@@ -23,6 +23,9 @@ class UserProfileRepository @Inject constructor(
     suspend fun getById(id: Int): UserProfile? =
         dao.getById(id)?.toModel()
 
+    fun getByIdFlow(id: Int): Flow<UserProfile?> =
+        dao.getByIdFlow(id).map { it?.toModel() }
+
     /** Returns the new row id. Enforces max-20-profile limit at call site. */
     suspend fun insert(profile: UserProfile): Long =
         dao.insert(profile.toEntity())

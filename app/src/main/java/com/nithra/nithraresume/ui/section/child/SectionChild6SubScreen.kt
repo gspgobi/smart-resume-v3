@@ -68,6 +68,8 @@ fun SectionChild6SubScreen(
     var origContentDetail by rememberSaveable { mutableStateOf("") }
 
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var contentTitleError by rememberSaveable { mutableStateOf(false) }
+    var contentDetailError by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -93,6 +95,15 @@ fun SectionChild6SubScreen(
         contentTitle != origContentTitle || contentDetail != origContentDetail
     )
 
+    fun attemptSave() {
+        contentTitleError = contentTitle.isBlank()
+        contentDetailError = contentDetail.isBlank()
+        if (!contentTitleError && !contentDetailError) {
+            focusManager.clearFocus()
+            viewModel.save(contentTitle, contentDetail)
+        }
+    }
+
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
@@ -107,10 +118,7 @@ fun SectionChild6SubScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(contentTitle, contentDetail)
-                    }) {
+                    IconButton(onClick = { attemptSave() }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -159,17 +167,21 @@ fun SectionChild6SubScreen(
         ) {
             OutlinedTextField(
                 value = contentTitle,
-                onValueChange = { contentTitle = it },
+                onValueChange = { contentTitle = it; contentTitleError = false },
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = contentTitleError,
+                supportingText = if (contentTitleError) { { Text("Title is required") } } else null
             )
             OutlinedTextField(
                 value = contentDetail,
-                onValueChange = { contentDetail = it },
+                onValueChange = { contentDetail = it; contentDetailError = false },
                 label = { Text("Detail") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 8, maxLines = 20
+                minLines = 8, maxLines = 20,
+                isError = contentDetailError,
+                supportingText = if (contentDetailError) { { Text("Detail is required") } } else null
             )
         }
     }
@@ -182,8 +194,7 @@ fun SectionChild6SubScreen(
             confirmButton = {
                 Button(onClick = {
                     showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(contentTitle, contentDetail)
+                    attemptSave()
                 }) { Text("Save") }
             },
             dismissButton = {
@@ -200,48 +211,6 @@ fun SectionChild6SubScreen(
 }
 
 // ── Previews ──────────────────────────────────────────────────────────────────
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC6Sub - Loading")
-@Composable
-private fun SectionChild6SubLoadingPreview() {
-    SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("New Entry") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.Check, contentDescription = "Save",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "SC6Sub - New Entry")

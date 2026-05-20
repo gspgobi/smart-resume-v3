@@ -74,6 +74,8 @@ fun SectionChild7SubScreen(
     var origBulletType by rememberSaveable { mutableStateOf(BULLET_NONE) }
 
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var contentTitleError by rememberSaveable { mutableStateOf(false) }
+    var contentSubtitleError by rememberSaveable { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -102,6 +104,15 @@ fun SectionChild7SubScreen(
         contentDetail != origContentDetail || bulletType != origBulletType
     )
 
+    fun attemptSave() {
+        contentTitleError = contentTitle.isBlank()
+        contentSubtitleError = contentSubtitle.isBlank()
+        if (!contentTitleError && !contentSubtitleError) {
+            focusManager.clearFocus()
+            viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
+        }
+    }
+
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
     Scaffold(
@@ -116,10 +127,7 @@ fun SectionChild7SubScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
-                    }) {
+                    IconButton(onClick = { attemptSave() }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -169,17 +177,21 @@ fun SectionChild7SubScreen(
         ) {
             OutlinedTextField(
                 value = contentTitle,
-                onValueChange = { contentTitle = it },
+                onValueChange = { contentTitle = it; contentTitleError = false },
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = contentTitleError,
+                supportingText = if (contentTitleError) { { Text("Title is required") } } else null
             )
             OutlinedTextField(
                 value = contentSubtitle,
-                onValueChange = { contentSubtitle = it },
-                label = { Text("Subtitle (optional)") },
+                onValueChange = { contentSubtitle = it; contentSubtitleError = false },
+                label = { Text("Subtitle") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = contentSubtitleError,
+                supportingText = if (contentSubtitleError) { { Text("Subtitle is required") } } else null
             )
             OutlinedTextField(
                 value = contentDetail,
@@ -205,8 +217,7 @@ fun SectionChild7SubScreen(
             confirmButton = {
                 Button(onClick = {
                     showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(contentTitle, contentSubtitle, contentDetail, bulletType)
+                    attemptSave()
                 }) { Text("Save") }
             },
             dismissButton = {
@@ -223,48 +234,6 @@ fun SectionChild7SubScreen(
 }
 
 // ── Previews ──────────────────────────────────────────────────────────────────
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC7Sub - Loading")
-@Composable
-private fun SectionChild7SubLoadingPreview() {
-    SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("New Entry") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.Check, contentDescription = "Save",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "SC7Sub - New Entry")
@@ -311,7 +280,7 @@ private fun SectionChild7SubNewEntryPreview() {
                     label = { Text("Title") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "", onValueChange = {},
                     label = { Text("Detail") },
@@ -372,7 +341,7 @@ private fun SectionChild7SubEditEntryPreview() {
                     label = { Text("Title") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = "Tech Corp • 2020 – Present", onValueChange = {},
-                    label = { Text("Subtitle (optional)") },
+                    label = { Text("Subtitle") },
                     modifier = Modifier.fillMaxWidth(), singleLine = true)
                 OutlinedTextField(value = sampleDetail, onValueChange = {},
                     label = { Text("Detail") },

@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Image
 import androidx.activity.compose.BackHandler
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -62,6 +61,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -116,6 +116,11 @@ fun SectionChild1Screen(
     var origNationality by rememberSaveable { mutableStateOf("") }
 
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
+    var titleError by rememberSaveable { mutableStateOf(false) }
+    var nameError by rememberSaveable { mutableStateOf(false) }
+    var addressError by rememberSaveable { mutableStateOf(false) }
+    var emailError by rememberSaveable { mutableStateOf(false) }
+    var phoneError by rememberSaveable { mutableStateOf(false) }
 
     // Populate fields once both sha and child1 are loaded to avoid a race
     // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
@@ -173,7 +178,7 @@ fun SectionChild1Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title.ifEmpty { "Contact Information" }) },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
@@ -183,9 +188,17 @@ fun SectionChild1Screen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(title, name, address, email, phone,
-                            gender, dob, dobFormat, nationality)
+                        val tErr = title.isBlank(); val nErr = name.isBlank()
+                        val aErr = address.isBlank(); val eErr = email.isBlank()
+                        val pErr = phone.isBlank()
+                        if (tErr || nErr || aErr || eErr || pErr) {
+                            titleError = tErr; nameError = nErr; addressError = aErr
+                            emailError = eErr; phoneError = pErr
+                        } else {
+                            focusManager.clearFocus()
+                            viewModel.save(title, name, address, email, phone,
+                                gender, dob, dobFormat, nationality)
+                        }
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
@@ -238,10 +251,12 @@ fun SectionChild1Screen(
             // Section title
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it; titleError = false },
                 label = { Text("Section Title") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = titleError,
+                supportingText = if (titleError) { { Text("Section title is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Next
@@ -252,10 +267,12 @@ fun SectionChild1Screen(
 
             OutlinedTextField(
                 value = name,
-                onValueChange = { name = it },
+                onValueChange = { name = it; nameError = false },
                 label = { Text("Full Name") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = nameError,
+                supportingText = if (nameError) { { Text("Name is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Words,
                     imeAction = ImeAction.Next
@@ -263,10 +280,12 @@ fun SectionChild1Screen(
             )
             OutlinedTextField(
                 value = address,
-                onValueChange = { address = it },
+                onValueChange = { address = it; addressError = false },
                 label = { Text("Address") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 4, maxLines = 8,
+                isError = addressError,
+                supportingText = if (addressError) { { Text("Address is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
@@ -274,10 +293,12 @@ fun SectionChild1Screen(
             )
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { email = it; emailError = false },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = emailError,
+                supportingText = if (emailError) { { Text("Email is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
@@ -285,10 +306,12 @@ fun SectionChild1Screen(
             )
             OutlinedTextField(
                 value = phone,
-                onValueChange = { phone = it },
+                onValueChange = { phone = it; phoneError = false },
                 label = { Text("Phone") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                isError = phoneError,
+                supportingText = if (phoneError) { { Text("Phone is required") } } else null,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone,
                     imeAction = ImeAction.Next
@@ -363,9 +386,17 @@ fun SectionChild1Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
+                    val tErr = title.isBlank(); val nErr = name.isBlank()
+                    val aErr = address.isBlank(); val eErr = email.isBlank()
+                    val pErr = phone.isBlank()
                     showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                    if (tErr || nErr || aErr || eErr || pErr) {
+                        titleError = tErr; nameError = nErr; addressError = aErr
+                        emailError = eErr; phoneError = pErr
+                    } else {
+                        focusManager.clearFocus()
+                        viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                    }
                 }) { Text("Save") }
             },
             dismissButton = {
@@ -424,11 +455,11 @@ private fun UserImageSection(
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
-                Icon(
-                    Icons.Default.Image,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(48.dp)
+                Text(
+                    text = "No user image found",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
                 )
             }
         }
@@ -625,9 +656,9 @@ private fun SectionDividerPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "User Image Section - Empty")
+@Preview(showBackground = true, name = "User Image Section - No Image")
 @Composable
-private fun UserImageSectionEmptyPreview() {
+private fun UserImageSectionNoImagePreview() {
     SmartResumeTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})

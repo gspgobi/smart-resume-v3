@@ -95,6 +95,12 @@ fun UserProfileScreen(
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
     var targetProfile by remember { mutableStateOf<UserProfile?>(null) }
 
+    LaunchedEffect(Unit) {
+        if (viewModel.dummyCreated) {
+            snackbarHostState.showSnackbar("Dummy profile created!")
+        }
+    }
+
     // React to uiState changes
     LaunchedEffect(uiState) {
         when (uiState) {

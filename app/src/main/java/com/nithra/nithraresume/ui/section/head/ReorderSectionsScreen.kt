@@ -27,6 +27,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
@@ -225,5 +227,76 @@ private fun ReorderRow(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+private val previewSectionItems = listOf(
+    SectionHeadAdded(id = 1, profileId = 1, groupBaseId = 1, headBaseId = 1, sampleDataId = null, title = "Contact Information", isEnable = true, indexPosition = 0),
+    SectionHeadAdded(id = 2, profileId = 1, groupBaseId = 1, headBaseId = 2, sampleDataId = null, title = "Work Experience", isEnable = true, indexPosition = 1),
+    SectionHeadAdded(id = 3, profileId = 1, groupBaseId = 1, headBaseId = 3, sampleDataId = null, title = "Education", isEnable = true, indexPosition = 2),
+    SectionHeadAdded(id = 4, profileId = 1, groupBaseId = 1, headBaseId = 4, sampleDataId = null, title = "Skills", isEnable = false, indexPosition = 3),
+)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Reorder Sections Screen")
+@Composable
+private fun ReorderSectionsScreenPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Reorder Sections") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                previewSectionItems.forEachIndexed { index, item ->
+                    ReorderRow(item = item, isPinned = index == 0)
+                    HorizontalDivider()
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Reorder Row - Pinned")
+@Composable
+private fun ReorderRowPinnedPreview() {
+    SmartResumeTheme {
+        ReorderRow(item = previewSectionItems[0], isPinned = true)
+    }
+}
+
+@Preview(showBackground = true, name = "Reorder Row - Draggable")
+@Composable
+private fun ReorderRowDraggablePreview() {
+    SmartResumeTheme {
+        ReorderRow(item = previewSectionItems[1])
+    }
+}
+
+@Preview(showBackground = true, name = "Reorder Row - Disabled")
+@Composable
+private fun ReorderRowDisabledPreview() {
+    SmartResumeTheme {
+        ReorderRow(item = previewSectionItems[3])
     }
 }

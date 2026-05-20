@@ -38,6 +38,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -267,5 +269,31 @@ private fun openPdfFile(context: android.content.Context, file: File) {
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         context.startActivity(Intent.createChooser(intent, "Open PDF"))
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@Preview(showBackground = true, name = "Group Header - Expanded")
+@Composable
+private fun GroupHeaderExpandedPreview() {
+    SmartResumeTheme {
+        GroupHeader(title = "Engineering", isExpanded = true, itemCount = 5, onToggle = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Group Header - Collapsed")
+@Composable
+private fun GroupHeaderCollapsedPreview() {
+    SmartResumeTheme {
+        GroupHeader(title = "Management", isExpanded = false, itemCount = 3, onToggle = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Sample Resume Item")
+@Composable
+private fun SampleResumeItemPreview() {
+    SmartResumeTheme {
+        SampleResumeItem(name = "Software Engineer Resume", onAdd = {}, onPreview = {})
     }
 }
