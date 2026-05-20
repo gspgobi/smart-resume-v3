@@ -84,6 +84,7 @@ fun ViewShareScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val showGenerateAd by viewModel.showGenerateAd.collectAsStateWithLifecycle()
+    val isAdLoading by viewModel.isAdLoading.collectAsStateWithLifecycle()
     val showRateUsDialog by viewModel.showRateUsDialog.collectAsStateWithLifecycle()
     val justGenerated = viewModel.justGenerated
     val snackbarHostState = remember { SnackbarHostState() }
@@ -171,7 +172,27 @@ fun ViewShareScreen(
         bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        when (val state = uiState) {
+        if (isAdLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    CircularProgressIndicator()
+                    Text(
+                        "Loading…",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        } else when (val state = uiState) {
             is ViewShareUiState.Loading -> {
                 Box(
                     modifier = Modifier
