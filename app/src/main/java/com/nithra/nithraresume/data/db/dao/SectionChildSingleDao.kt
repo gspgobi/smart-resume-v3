@@ -32,11 +32,35 @@ interface SectionChildSingleDao {
     @Update
     suspend fun updateChild1(entity: SectionChild1Entity)
 
-    @Query("UPDATE section_child_1 SET sc1_user_image_path = :newDir || '/' || SUBSTR(sc1_user_image_path, INSTR(sc1_user_image_path, '/Photo/') + 7) WHERE sc1_user_image_path LIKE '%/Nithra/SmartResume/Photo/%'")
-    suspend fun migrateV2UserImagePaths(newDir: String)
+    @Query("SELECT COUNT(*) FROM section_child_1 WHERE sc1_user_image_path LIKE '%/Nithra/SmartResume/Photo/%'")
+    suspend fun countOldV2UserImagePaths(): Int
 
-    @Query("UPDATE section_child_4 SET sc4_signature_image_path = :newDir || '/' || SUBSTR(sc4_signature_image_path, INSTR(sc4_signature_image_path, '/Signature/') + 11) WHERE sc4_signature_image_path LIKE '%/Nithra/SmartResume/Signature/%'")
-    suspend fun migrateV2SignatureImagePaths(newDir: String)
+    @Query("SELECT sc1_user_image_path FROM section_child_1 WHERE sc1_user_image_path LIKE '%/Nithra/SmartResume/Photo/%'")
+    suspend fun getOldV2UserImagePaths(): List<String>
+
+    @Query("UPDATE section_child_1 SET sc1_user_image_path = :newPath WHERE sc1_user_image_path = :oldPath")
+    suspend fun updateV2UserImagePath(oldPath: String, newPath: String)
+
+    @Query("UPDATE section_child_1 SET sc1_user_image_path = '' WHERE sc1_user_image_path = :oldPath")
+    suspend fun clearV2UserImagePath(oldPath: String)
+
+    @Query("UPDATE section_child_1 SET sc1_user_image_path = '' WHERE sc1_user_image_path LIKE '%/Nithra/SmartResume/Photo/%'")
+    suspend fun clearOldV2UserImagePaths()
+
+    @Query("SELECT COUNT(*) FROM section_child_4 WHERE sc4_signature_image_path LIKE '%/Nithra/SmartResume/Signature/%'")
+    suspend fun countOldV2SignaturePaths(): Int
+
+    @Query("SELECT sc4_signature_image_path FROM section_child_4 WHERE sc4_signature_image_path LIKE '%/Nithra/SmartResume/Signature/%'")
+    suspend fun getOldV2SignaturePaths(): List<String>
+
+    @Query("UPDATE section_child_4 SET sc4_signature_image_path = :newPath WHERE sc4_signature_image_path = :oldPath")
+    suspend fun updateV2SignaturePath(oldPath: String, newPath: String)
+
+    @Query("UPDATE section_child_4 SET sc4_signature_image_path = '' WHERE sc4_signature_image_path = :oldPath")
+    suspend fun clearV2SignaturePath(oldPath: String)
+
+    @Query("UPDATE section_child_4 SET sc4_signature_image_path = '' WHERE sc4_signature_image_path LIKE '%/Nithra/SmartResume/Signature/%'")
+    suspend fun clearOldV2SignatureImagePaths()
 
     @Query("DELETE FROM section_child_1 WHERE section_head_added_id = :headId")
     suspend fun deleteChild1ByHeadId(headId: Int)
