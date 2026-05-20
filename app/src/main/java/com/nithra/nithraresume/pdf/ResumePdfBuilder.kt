@@ -3,6 +3,8 @@ package com.nithra.nithraresume.pdf
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
 import android.util.Log
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
@@ -994,11 +996,17 @@ class ResumePdfBuilder(private val context: Context) {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeFile(path, bounds)
         val sampleSize = computeSampleSize(bounds.outWidth, bounds.outHeight, maxDimPx)
-        val bitmap = BitmapFactory.decodeFile(path, BitmapFactory.Options().apply { inSampleSize = sampleSize })
+        val decoded = BitmapFactory.decodeFile(path, BitmapFactory.Options().apply { inSampleSize = sampleSize })
             ?: return@runCatching null
+        // Composite onto white before JPEG encoding. If the source has an alpha channel
+        // (e.g. transparent-background PNG), Android's encoder can emit a 4-channel JPEG
+        // which iText interprets as CMYK, causing full color inversion in the PDF.
+        val rgb = Bitmap.createBitmap(decoded.width, decoded.height, Bitmap.Config.ARGB_8888)
+        Canvas(rgb).apply { drawColor(Color.WHITE); drawBitmap(decoded, 0f, 0f, null) }
+        decoded.recycle()
         val out = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
-        bitmap.recycle()
+        rgb.compress(Bitmap.CompressFormat.JPEG, 85, out)
+        rgb.recycle()
         Image.getInstance(out.toByteArray())
     }.getOrNull()
 
