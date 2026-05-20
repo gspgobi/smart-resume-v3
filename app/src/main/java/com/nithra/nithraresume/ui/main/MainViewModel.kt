@@ -1,6 +1,11 @@
 package com.nithra.nithraresume.ui.main
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Environment
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -21,17 +26,24 @@ import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
+import com.nithra.nithraresume.utils.PrefsManager
+import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 // ── JSON data classes for dummyResumes.json ───────────────────────────────────
@@ -98,6 +110,16 @@ private data class DummySc8Json(
     val sc8Address: String?, val sc8Content: String?
 )
 
+// ── Migration state ────────────────────────────────────────────────────────────
+
+sealed class MigrationUiState {
+    data object Idle : MigrationUiState()
+    data object ShowRationale : MigrationUiState()
+    data class Running(val done: Int, val total: Int) : MigrationUiState()
+    data object PermissionDenied : MigrationUiState()
+    data object Finished : MigrationUiState()
+}
+
 // ── ViewModel ─────────────────────────────────────────────────────────────────
 
 @HiltViewModel
@@ -107,7 +129,8 @@ class MainViewModel @Inject constructor(
     private val apiRepository: ApiRepository,
     private val userProfileRepository: UserProfileRepository,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val prefsManager: PrefsManager
 ) : ViewModel() {
 
     /** Unread notification count — drives the bell badge in the TopAppBar. */
@@ -121,6 +144,115 @@ class MainViewModel @Inject constructor(
 
     private val _dummyProfileCreated = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val dummyProfileCreated: SharedFlow<Unit> = _dummyProfileCreated.asSharedFlow()
+
+    private val _migrationState = MutableStateFlow<MigrationUiState>(MigrationUiState.Idle)
+    val migrationState: StateFlow<MigrationUiState> = _migrationState
+
+    private var pendingPhotoCount = 0
+    private var pendingSigCount   = 0
+
+    init {
+        viewModelScope.launch {
+            val migrated = prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()
+            if (migrated) return@launch
+
+            val (photoCount, sigCount) = withContext(Dispatchers.IO) {
+                coroutineScope {
+                    val pc = async { sectionChildRepository.countOldV2UserImagePaths() }
+                    val sc = async { sectionChildRepository.countOldV2SignaturePaths() }
+                    pc.await() to sc.await()
+                }
+            }
+            if (photoCount == 0 && sigCount == 0) {
+                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                return@launch
+            }
+            pendingPhotoCount = photoCount
+            pendingSigCount   = sigCount
+
+            val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+            val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
+            if (granted) runMigration()
+            else _migrationState.value = MigrationUiState.ShowRationale
+        }
+    }
+
+    fun acknowledgeMigrationDenied() {
+        _migrationState.value = MigrationUiState.Finished
+    }
+
+    fun onPermissionResult(granted: Boolean) {
+        if (granted) {
+            viewModelScope.launch { runMigration() }
+        } else {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    coroutineScope {
+                        if (pendingPhotoCount > 0) launch { sectionChildRepository.clearOldV2UserImagePaths() }
+                        if (pendingSigCount   > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
+                    }
+                }
+                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                _migrationState.value = MigrationUiState.PermissionDenied
+            }
+        }
+    }
+
+    private suspend fun runMigration() {
+        val total = pendingPhotoCount + pendingSigCount
+        var done  = 0
+        _migrationState.value = MigrationUiState.Running(done, total)
+
+        withContext(Dispatchers.IO) {
+            val v3Base = context.getExternalFilesDir(null) ?: return@withContext
+            val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
+
+            if (pendingPhotoCount > 0) {
+                val dst = File(v3Base, SrDir.USER_IMAGE).also { it.mkdirs() }
+                sectionChildRepository.getOldV2UserImagePaths().forEach { oldPath ->
+                    val f = File(oldPath)
+                    if (f.exists() && f.length() > 0) {
+                        runCatching {
+                            val nf = File(dst, f.name)
+                            f.copyTo(nf, overwrite = true); f.delete()
+                            sectionChildRepository.updateV2UserImagePath(oldPath, nf.absolutePath)
+                        }.onFailure { sectionChildRepository.clearV2UserImagePath(oldPath) }
+                    } else sectionChildRepository.clearV2UserImagePath(oldPath)
+                    done++
+                    _migrationState.value = MigrationUiState.Running(done, total)
+                }
+                File(v1Base, "Photo").deleteRecursively()
+            }
+
+            if (pendingSigCount > 0) {
+                val dst = File(v3Base, SrDir.SIGNATURE).also { it.mkdirs() }
+                sectionChildRepository.getOldV2SignaturePaths().forEach { oldPath ->
+                    val f = File(oldPath)
+                    if (f.exists() && f.length() > 0) {
+                        runCatching {
+                            val nf = File(dst, f.name)
+                            f.copyTo(nf, overwrite = true); f.delete()
+                            sectionChildRepository.updateV2SignaturePath(oldPath, nf.absolutePath)
+                        }.onFailure { sectionChildRepository.clearV2SignaturePath(oldPath) }
+                    } else sectionChildRepository.clearV2SignaturePath(oldPath)
+                    done++
+                    _migrationState.value = MigrationUiState.Running(done, total)
+                }
+                File(v1Base, "Signature").deleteRecursively()
+            }
+
+            val filesSrc = File(v1Base, "Files")
+            if (filesSrc.exists()) {
+                val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
+                filesSrc.listFiles()?.forEach { it.copyTo(File(dst, it.name), overwrite = true) }
+                filesSrc.deleteRecursively()
+            }
+            v1Base.deleteRecursively()
+        }
+        prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+        _migrationState.value = MigrationUiState.Finished
+    }
 
     fun sendFeedback(email: String, feedback: String) {
         viewModelScope.launch {

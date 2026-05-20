@@ -1,7 +1,6 @@
 package com.nithra.nithraresume.ui.splash
 
 import android.content.Context
-import android.os.Environment
 import android.provider.Settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +25,6 @@ import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.PrefsManager
-import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +33,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import javax.inject.Inject
 
 // ── JSON data classes for exampleResumes.json ─────────────────────────────────
@@ -140,8 +137,6 @@ class SplashViewModel @Inject constructor(
             prefsManager.setV2CurrentAppVersionCode(currentVersionCode)
         }
 
-        migrateV2FilesIfNeeded()
-
         // Set Android ID as Firebase Analytics user property
         val androidId = Settings.Secure.getString(
             context.contentResolver, Settings.Secure.ANDROID_ID
@@ -158,51 +153,7 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private suspend fun migrateV2FilesIfNeeded() {
-        if (prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()) return
 
-        withContext(Dispatchers.IO) {
-            val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
-            val v3Base = context.getExternalFilesDir(null) ?: return@withContext
-
-            // Photo → UserImage
-            val photoSrc = File(v1Base, "Photo")
-            val userImageDst = File(v3Base, SrDir.USER_IMAGE).also { it.mkdirs() }
-            if (photoSrc.exists()) {
-                val copied = photoSrc.listFiles()
-                if (!copied.isNullOrEmpty()) {
-                    copied.forEach { it.copyTo(File(userImageDst, it.name), overwrite = true) }
-                    sectionChildRepository.migrateV2UserImagePaths(userImageDst.absolutePath)
-                }
-                photoSrc.deleteRecursively()
-            }
-
-            // Signature → Signature
-            val signatureSrc = File(v1Base, "Signature")
-            val signatureDst = File(v3Base, SrDir.SIGNATURE).also { it.mkdirs() }
-            if (signatureSrc.exists()) {
-                val copied = signatureSrc.listFiles()
-                if (!copied.isNullOrEmpty()) {
-                    copied.forEach { it.copyTo(File(signatureDst, it.name), overwrite = true) }
-                    sectionChildRepository.migrateV2SignatureImagePaths(signatureDst.absolutePath)
-                }
-                signatureSrc.deleteRecursively()
-            }
-
-            // Files → GeneratedResume
-            val filesSrc = File(v1Base, "Files")
-            val generatedDst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
-            if (filesSrc.exists()) {
-                filesSrc.listFiles()?.forEach { it.copyTo(File(generatedDst, it.name), overwrite = true) }
-                filesSrc.deleteRecursively()
-            }
-
-            // Clean up the entire v1 base directory
-            v1Base.deleteRecursively()
-        }
-
-        prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-    }
 
     private suspend fun createNewProfile() {
         withContext(Dispatchers.IO) {
