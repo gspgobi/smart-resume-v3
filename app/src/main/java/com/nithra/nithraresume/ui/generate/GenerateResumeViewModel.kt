@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nithra.nithraresume.data.model.ResumeFormat
 import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionChild4
 import com.nithra.nithraresume.data.model.UserProfile
@@ -54,6 +55,9 @@ class GenerateResumeViewModel @Inject constructor(
     private val _profile = MutableStateFlow<UserProfile?>(null)
     val profile: StateFlow<UserProfile?> = _profile.asStateFlow()
 
+    private val _currentFormat = MutableStateFlow<ResumeFormat?>(null)
+    val currentFormat: StateFlow<ResumeFormat?> = _currentFormat.asStateFlow()
+
     private val _sc1 = MutableStateFlow<SectionChild1?>(null)
     val sc1: StateFlow<SectionChild1?> = _sc1.asStateFlow()
 
@@ -61,6 +65,24 @@ class GenerateResumeViewModel @Inject constructor(
     val sc4: StateFlow<SectionChild4?> = _sc4.asStateFlow()
 
     fun resetState() { _uiState.value = GenerateResumeUiState.Idle }
+
+    fun setIncludeUserImage(enabled: Boolean) {
+        val c1 = _sc1.value ?: return
+        viewModelScope.launch {
+            val updated = c1.copy(isUserImageEnable = enabled)
+            sectionChildRepository.updateChild1(updated)
+            _sc1.value = updated
+        }
+    }
+
+    fun setIncludeSignature(enabled: Boolean) {
+        val c4 = _sc4.value ?: return
+        viewModelScope.launch {
+            val updated = c4.copy(isSignatureImageEnable = enabled)
+            sectionChildRepository.updateChild4(updated)
+            _sc4.value = updated
+        }
+    }
 
     fun fileExists(fileName: String): Boolean {
         val file = java.io.File(
@@ -72,8 +94,6 @@ class GenerateResumeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _profile.value = userProfileRepository.getById(profileId)
-
             val sections = sectionHeadRepository.getEnabledByProfileId(profileId)
                 .filter { it.groupBaseId == GROUP_ID_SECTIONS }
             sections.firstOrNull { it.headBaseId == 1 }?.let { sha ->
@@ -82,34 +102,29 @@ class GenerateResumeViewModel @Inject constructor(
             sections.firstOrNull { it.headBaseId == 4 }?.let { sha ->
                 _sc4.value = sectionChildRepository.getChild4Once(sha.id)
             }
-
             _uiState.value = GenerateResumeUiState.Idle
+        }
+
+        viewModelScope.launch {
+            userProfileRepository.getByIdFlow(profileId).collect { profile ->
+                _profile.value = profile
+                _currentFormat.value = profile?.let {
+                    resumeFormatRepository.getById(it.resumeFormatBaseId)
+                }
+            }
         }
     }
 
-    fun generate(fileName: String, includeUserImage: Boolean, includeSignature: Boolean) {
+    fun generate(fileName: String) {
         val currentProfile = _profile.value ?: return
         _uiState.value = GenerateResumeUiState.Generating
 
         viewModelScope.launch {
             try {
-                // Persist flags to DB first — buildPdf reads fresh values from DB
-                _sc1.value?.let { c1 ->
-                    val updated = c1.copy(isUserImageEnable = includeUserImage)
-                    sectionChildRepository.updateChild1(updated)
-                    _sc1.value = updated
-                }
-                _sc4.value?.let { c4 ->
-                    val updated = c4.copy(isSignatureImageEnable = includeSignature)
-                    sectionChildRepository.updateChild4(updated)
-                    _sc4.value = updated
-                }
-
                 val pdfFile = withContext(Dispatchers.IO) {
                     buildPdf(currentProfile, fileName)
                 }
                 userProfileRepository.updateResumeFileName(profileId, fileName)
-                _profile.value = userProfileRepository.getById(profileId)
                 _uiState.value = GenerateResumeUiState.Done(pdfFile)
             } catch (e: Exception) {
                 _uiState.value = GenerateResumeUiState.Error(e.message ?: "Failed to generate resume")

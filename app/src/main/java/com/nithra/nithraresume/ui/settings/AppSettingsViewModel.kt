@@ -15,10 +15,10 @@ class AppSettingsViewModel @Inject constructor(
     private val prefsManager: PrefsManager
 ) : ViewModel() {
 
-    val notificationsEnabled: StateFlow<Boolean> = prefsManager.notificationsEnabled
+    val notificationsEnabled: StateFlow<Boolean> = prefsManager.v1NotificationsEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
 
     fun setNotificationsEnabled(enabled: Boolean) {
-        viewModelScope.launch { prefsManager.setNotificationsEnabled(enabled) }
+        viewModelScope.launch { prefsManager.setV1NotificationsEnabled(enabled) }
     }
 }

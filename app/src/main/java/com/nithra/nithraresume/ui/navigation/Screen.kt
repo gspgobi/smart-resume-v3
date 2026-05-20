@@ -10,10 +10,15 @@ sealed class Screen(val route: String) {
 
     // ── No-argument screens ───────────────────────────────────────────────────
     data object Main          : Screen("main")
-    data object UserProfiles  : Screen("user_profiles")
-    data object SampleResumes : Screen("sample_resumes")
-    data object Notifications : Screen("notifications")
-    data object AppSettings   : Screen("app_settings")
+    data object UserProfiles : Screen("user_profiles") {
+        const val routeWithArgs = "user_profiles?dummyCreated={dummyCreated}"
+        fun createRoute(dummyCreated: Boolean = false) =
+            if (dummyCreated) "user_profiles?dummyCreated=true" else "user_profiles"
+    }
+    data object SampleResumes     : Screen("sample_resumes")
+    data object Notifications     : Screen("notifications")
+    data object AppSettings       : Screen("app_settings")
+    data object GeneratedResumes  : Screen("generated_resumes")
 
     // ── Screens that receive profileId ────────────────────────────────────────
 

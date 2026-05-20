@@ -75,6 +75,7 @@ fun SectionChild6Screen(
     var title by rememberSaveable { mutableStateOf("") }
     var origTitle by rememberSaveable { mutableStateOf("") }
     var titleInitialised by rememberSaveable { mutableStateOf(false) }
+    var titleError by rememberSaveable { mutableStateOf(false) }
     var deleteTarget by remember { mutableStateOf<SectionChild6?>(null) }
 
     LaunchedEffect(sha) {
@@ -96,7 +97,7 @@ fun SectionChild6Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title.ifEmpty { "Split Text" }) },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
@@ -105,7 +106,9 @@ fun SectionChild6Screen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { viewModel.saveTitle(title) }) {
+                    IconButton(onClick = {
+                        if (title.isBlank()) titleError = true else viewModel.saveTitle(title)
+                    }) {
                         Icon(Icons.Default.Check, contentDescription = "Save title",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
@@ -128,10 +131,12 @@ fun SectionChild6Screen(
         ) {
             item {
                 OutlinedTextField(
-                    value = title, onValueChange = { title = it },
+                    value = title, onValueChange = { title = it; titleError = false },
                     label = { Text("Section Title") },
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    singleLine = true
+                    singleLine = true,
+                    isError = titleError,
+                    supportingText = if (titleError) { { Text("Section title is required") } } else null
                 )
                 HorizontalDivider()
             }
@@ -198,9 +203,14 @@ fun SectionChild6Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
-                    showUnsavedDialog = false
-                    viewModel.saveTitle(title)
-                    navController.popBackStack()
+                    if (title.isBlank()) {
+                        showUnsavedDialog = false
+                        titleError = true
+                    } else {
+                        showUnsavedDialog = false
+                        viewModel.saveTitle(title)
+                        navController.popBackStack()
+                    }
                 }) { Text("Save") }
             },
             dismissButton = {
@@ -318,44 +328,6 @@ private val previewChild6Items = listOf(
 )
 
 // ── Previews ──────────────────────────────────────────────────────────────────
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 6 - Loading")
-@Composable
-private fun SectionChild6LoadingPreview() {
-    SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Split Text") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.Default.Check, contentDescription = "Save title",
-                                tint = MaterialTheme.colorScheme.onPrimary)
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true, name = "Section Child 6 - Empty")

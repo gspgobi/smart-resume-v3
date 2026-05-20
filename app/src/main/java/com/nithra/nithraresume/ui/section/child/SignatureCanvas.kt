@@ -7,6 +7,10 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -79,7 +83,7 @@ fun SignatureCanvas(
                 captureController.heightPx = size.height
             }
             .pointerInput(Unit) {
-                captureController.strokePx = 6.dp.toPx()
+                captureController.strokePx = 3.dp.toPx()
                 awaitEachGesture {
                     val down = awaitFirstDown()
                     currentPath.reset()
@@ -104,12 +108,26 @@ fun SignatureCanvas(
     ) {
         @Suppress("UNUSED_VARIABLE")
         val v = revision
-        val style = Stroke(width = 6.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
+        val style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
         for (path in captureController.completedPaths) {
             drawPath(path, color = Color.DarkGray, style = style)
         }
         if (!currentPath.isEmpty) {
             drawPath(currentPath, color = Color.DarkGray, style = style)
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SignatureCanvasPreview() {
+    SmartResumeTheme {
+        SignatureCanvas(
+            clearKey = 0,
+            captureController = remember { SignatureCaptureController() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        )
     }
 }

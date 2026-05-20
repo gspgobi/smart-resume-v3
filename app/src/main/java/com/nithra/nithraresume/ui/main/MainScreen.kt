@@ -1,8 +1,13 @@
 package com.nithra.nithraresume.ui.main
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,8 +41,10 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TipsAndUpdates
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
@@ -47,6 +54,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -56,6 +64,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -74,7 +83,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.nithra.nithraresume.R
 import androidx.core.content.FileProvider
@@ -97,9 +110,11 @@ import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 @Composable
 fun MainScreen(
     navController: NavController,
-    viewModel: MainViewModel = hiltViewModel()
+    viewModel: MainViewModel = hiltViewModel(),
+    onExitApp: () -> Unit = {}
 ) {
     val unreadCount by viewModel.unreadNotificationCount.collectAsStateWithLifecycle()
+    val migrationState by viewModel.migrationState.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -108,11 +123,55 @@ fun MainScreen(
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
+    val permName = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted -> viewModel.onPermissionResult(granted) }
+
+    val migrationDialogText = remember {
+        buildAnnotatedString {
+            append("The app has been updated. To move your ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("photos") }
+            append(", ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("signatures") }
+            append(", & ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("created resume PDFs") }
+            append(" to the new location, storage permission is required.")
+        }
+    }
+
     LaunchedEffect(Unit) {
         viewModel.dummyProfileCreated.collect {
-            drawerState.close()
-            snackbarHostState.showSnackbar("Dummy profile created!")
+            scope.launch { drawerState.close() }
+            navController.navigate(Screen.UserProfiles.createRoute(dummyCreated = true))
         }
+    }
+
+    LaunchedEffect(migrationState) {
+        if (migrationState is MigrationUiState.PermissionDenied) {
+            snackbarHostState.showSnackbar(
+                "Permission denied. Photos from the previous version could not be restored."
+            )
+            viewModel.acknowledgeMigrationDenied()
+        }
+    }
+
+    if (migrationState is MigrationUiState.ShowRationale) {
+        AlertDialog(
+            onDismissRequest = { viewModel.onPermissionResult(false) },
+            title = { Text("App Updated") },
+            text  = { Text(migrationDialogText) },
+            confirmButton = {
+                Button(onClick = { permissionLauncher.launch(permName) }) { Text("Allow") }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip file migration") }
+            }
+        )
     }
 
     if (showFeedbackDialog) {
@@ -124,6 +183,8 @@ fun MainScreen(
             }
         )
     }
+
+    BackHandler(enabled = !drawerState.isOpen) { onExitApp() }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -145,14 +206,7 @@ fun MainScreen(
                     }
                 },
                 appVersionName = BuildConfig.VERSION_NAME,
-                onVersionTap = { viewModel.createDummyProfile() },
-                onVersionTapProgress = { remaining ->
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            "$remaining more tap${if (remaining == 1) "" else "s"} away!"
-                        )
-                    }
-                }
+                onVersionTap = { viewModel.createDummyProfile() }
             )
         }
     ) {
@@ -227,8 +281,9 @@ fun MainScreen(
         ) { innerPadding ->
             MainContent(
                 modifier = Modifier.padding(innerPadding),
+                migrationState = migrationState,
                 onMyProfilesClick = { navController.navigate(Screen.UserProfiles.route) },
-                onViewResumesClick = { navController.navigate(Screen.UserProfiles.route) }
+                onViewResumesClick = { navController.navigate(Screen.GeneratedResumes.route) }
             )
         }
     }
@@ -239,6 +294,7 @@ fun MainScreen(
 @Composable
 private fun MainContent(
     modifier: Modifier = Modifier,
+    migrationState: MigrationUiState = MigrationUiState.Idle,
     onMyProfilesClick: () -> Unit,
     onViewResumesClick: () -> Unit
 ) {
@@ -251,6 +307,23 @@ private fun MainContent(
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        if (migrationState is MigrationUiState.Running) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "Restoring files… (${migrationState.done} / ${migrationState.total})",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(Modifier.height(4.dp))
+                LinearProgressIndicator(
+                    progress = {
+                        if (migrationState.total > 0) migrationState.done.toFloat() / migrationState.total else 0f
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
 
         HomeCard(
             icon = Icons.Default.Person,
@@ -337,8 +410,7 @@ private fun MainDrawerContent(
     unreadCount: Int,
     appVersionName: String,
     onItemClick: (DrawerItem) -> Unit,
-    onVersionTap: () -> Unit = {},
-    onVersionTapProgress: (tapsRemaining: Int) -> Unit = {}
+    onVersionTap: () -> Unit = {}
 ) {
     var tapCount by remember { mutableIntStateOf(0) }
     var firstTapTime by remember { mutableLongStateOf(0L) }
@@ -382,8 +454,6 @@ private fun MainDrawerContent(
                                 if (tapCount >= 12) {
                                     onVersionTap()
                                     tapCount = 0
-                                } else if (tapCount >= 10) {
-                                    onVersionTapProgress(12 - tapCount)
                                 }
                             }
                         }
@@ -524,6 +594,54 @@ private fun shareApp(context: Context) {
 private fun MainContentPreview() {
     SmartResumeTheme {
         MainContent(
+            onMyProfilesClick = {},
+            onViewResumesClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Migration — Permission Dialog")
+@Composable
+private fun MigrationPermissionDialogPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Card(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                shape = MaterialTheme.shapes.extraLarge,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text("App Updated", style = MaterialTheme.typography.headlineSmall)
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        text = buildAnnotatedString {
+                            append("The app has been updated. To move your ")
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("photos") }
+                            append(", ")
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("signatures") }
+                            append(", & ")
+                            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("created resume PDFs") }
+                            append(" to the new location, storage permission is required.")
+                        },
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                        TextButton(onClick = {}) { Text("Skip file migration") }
+                        Button(onClick = {}) { Text("Allow") }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Main Content — Migration Running")
+@Composable
+private fun MainContentMigrationRunningPreview() {
+    SmartResumeTheme {
+        MainContent(
+            migrationState = MigrationUiState.Running(done = 3, total = 7),
             onMyProfilesClick = {},
             onViewResumesClick = {}
         )

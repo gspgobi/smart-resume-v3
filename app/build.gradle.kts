@@ -15,12 +15,12 @@ if (keystoreFile.exists()) keystoreFile.inputStream().use { keystoreProps.load(i
 
 android {
     namespace = "com.nithra.nithraresume"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.nithra.nithraresume"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 72
         versionName = "4.2.0"
 
@@ -42,6 +42,7 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -53,15 +54,16 @@ android {
     flavorDimensions += "environment"
 
     productFlavors {
+        create("withTestAdMob") {
+            isDefault = true
+            dimension = "environment"
+            buildConfigField("Boolean", "isAdMobEnable", "true")
+            buildConfigField("Boolean", "isTestAdMobId", "true")
+        }
         create("withProdAdMob") {
             dimension = "environment"
             buildConfigField("Boolean", "isAdMobEnable", "true")
             buildConfigField("Boolean", "isTestAdMobId", "false")
-        }
-        create("withTestAdMob") {
-            dimension = "environment"
-            buildConfigField("Boolean", "isAdMobEnable", "true")
-            buildConfigField("Boolean", "isTestAdMobId", "true")
         }
         create("withoutAdMob") {
             dimension = "environment"
@@ -138,9 +140,9 @@ dependencies {
 
     // Firebase BOM + libraries
     implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-messaging-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.analytics.ktx)
 
     // AdMob
     implementation(libs.play.services.ads)

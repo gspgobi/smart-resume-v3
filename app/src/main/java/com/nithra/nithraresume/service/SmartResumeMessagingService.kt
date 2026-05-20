@@ -51,7 +51,7 @@ class SmartResumeMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         serviceScope.launch {
-            prefsManager.setFcmTokenSentToServer(false)
+            prefsManager.setV2FcmTokenSentToServer(false)
             apiRepository.registerFcmToken(token, firstOrUpdate = "first")
         }
     }
@@ -69,7 +69,7 @@ class SmartResumeMessagingService : FirebaseMessagingService() {
         val packageName     = data[FcmKey.P_NAME].orEmpty()
 
         serviceScope.launch {
-            val notificationsEnabled = prefsManager.notificationsEnabled.first()
+            val notificationsEnabled = prefsManager.v1NotificationsEnabled.first()
             val notificationId = System.currentTimeMillis().toInt()
 
             when {

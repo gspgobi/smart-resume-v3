@@ -7,6 +7,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,6 +99,7 @@ fun SectionChild4Screen(
     var origPlace by rememberSaveable { mutableStateOf("") }
 
     var initialised by rememberSaveable { mutableStateOf(false) }
+    var titleError by rememberSaveable { mutableStateOf(false) }
     var showDateFormatDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
@@ -142,7 +144,7 @@ fun SectionChild4Screen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title.ifEmpty { "Declaration" }) },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
@@ -152,9 +154,11 @@ fun SectionChild4Screen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        focusManager.clearFocus()
-                        viewModel.save(title, declarationContent, bulletType,
-                            date, dateDateFormat, place)
+                        if (title.isBlank()) { titleError = true } else {
+                            focusManager.clearFocus()
+                            viewModel.save(title, declarationContent, bulletType,
+                                date, dateDateFormat, place)
+                        }
                     }) {
                         Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
@@ -206,10 +210,12 @@ fun SectionChild4Screen(
         ) {
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = { title = it; titleError = false },
                 label = { Text("Section Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                isError = titleError,
+                supportingText = if (titleError) { { Text("Section title is required") } } else null
             )
             OutlinedTextField(
                 value = declarationContent,
@@ -258,7 +264,7 @@ fun SectionChild4Screen(
                     .fillMaxWidth()
                     .height(200.dp)
                     .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                    .background(Color.White, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (sigPath != null) {
@@ -351,9 +357,14 @@ fun SectionChild4Screen(
             text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
-                    showUnsavedDialog = false
-                    focusManager.clearFocus()
-                    viewModel.save(title, declarationContent, bulletType, date, dateDateFormat, place)
+                    if (title.isBlank()) {
+                        showUnsavedDialog = false
+                        titleError = true
+                    } else {
+                        showUnsavedDialog = false
+                        focusManager.clearFocus()
+                        viewModel.save(title, declarationContent, bulletType, date, dateDateFormat, place)
+                    }
                 }) { Text("Save") }
             },
             dismissButton = {
@@ -439,7 +450,7 @@ private fun SectionChild4EmptyPreview() {
                         .fillMaxWidth()
                         .height(200.dp)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                        .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("No signature added", style = MaterialTheme.typography.bodyMedium,
@@ -525,7 +536,7 @@ private fun SectionChild4WithSignaturePreview() {
                         .fillMaxWidth()
                         .height(200.dp)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp)),
+                        .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("~ Signature ~", style = MaterialTheme.typography.bodyMedium,

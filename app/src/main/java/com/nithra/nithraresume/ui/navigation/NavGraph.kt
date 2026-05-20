@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.nithra.nithraresume.ui.format.ResumeFormatScreen
 import com.nithra.nithraresume.ui.generate.GenerateResumeScreen
+import com.nithra.nithraresume.ui.generatedresumes.GeneratedResumesScreen
 import com.nithra.nithraresume.ui.main.MainScreen
 import com.nithra.nithraresume.ui.notification.NotificationDetailScreen
 import com.nithra.nithraresume.ui.notification.NotificationListScreen
@@ -36,7 +37,8 @@ import com.nithra.nithraresume.ui.viewshare.ViewShareScreen
 @Composable
 fun SmartResumeNavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Main.route
+    startDestination: String = Screen.Main.route,
+    onExitApp: () -> Unit = {}
 ) {
     NavHost(
         navController = navController,
@@ -46,10 +48,15 @@ fun SmartResumeNavGraph(
         // ── No-argument screens ───────────────────────────────────────────────
 
         composable(Screen.Main.route) {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, onExitApp = onExitApp)
         }
 
-        composable(Screen.UserProfiles.route) {
+        composable(
+            route = Screen.UserProfiles.routeWithArgs,
+            arguments = listOf(
+                navArgument("dummyCreated") { type = NavType.BoolType; defaultValue = false }
+            )
+        ) {
             UserProfileScreen(navController = navController)
         }
 
@@ -63,6 +70,10 @@ fun SmartResumeNavGraph(
 
         composable(Screen.AppSettings.route) {
             AppSettingsScreen(navController = navController)
+        }
+
+        composable(Screen.GeneratedResumes.route) {
+            GeneratedResumesScreen(navController = navController)
         }
 
         // ── Screens that receive profileId ────────────────────────────────────

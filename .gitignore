@@ -47,3 +47,7 @@ captures/
 
 # Kotlin
 .kotlin
+
+# Keystore files
+keystore.properties
+smart-resume-key.jks

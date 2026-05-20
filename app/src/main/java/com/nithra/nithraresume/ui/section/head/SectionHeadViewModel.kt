@@ -81,7 +81,14 @@ class SectionHeadViewModel @Inject constructor(
     fun resetUiEvent() { _uiEvent.value = SectionHeadUiEvent.Idle }
 
     init {
-        loadProfileAndFormat()
+        viewModelScope.launch {
+            userProfileRepository.getByIdFlow(profileId).collect { profile ->
+                _profile.value = profile
+                _currentFormat.value = profile?.let {
+                    resumeFormatRepository.getById(it.resumeFormatBaseId)
+                }
+            }
+        }
         viewModelScope.launch {
             sections.collectLatest { current ->
                 val all = sectionHeadRepository.getSampleDataByGroupId(GROUP_ID_SECTIONS)
@@ -92,24 +99,6 @@ class SectionHeadViewModel @Inject constructor(
             addons.collectLatest { current ->
                 val all = sectionHeadRepository.getSampleDataByGroupId(GROUP_ID_ADDONS)
                 _availableAddons.value = filterAvailable(all, current)
-            }
-        }
-    }
-
-    private fun loadProfileAndFormat() {
-        viewModelScope.launch {
-            _profile.value = userProfileRepository.getById(profileId)
-            _profile.value?.let { p ->
-                _currentFormat.value = resumeFormatRepository.getById(p.resumeFormatBaseId)
-            }
-        }
-    }
-
-    fun reloadFormat() {
-        viewModelScope.launch {
-            _profile.value = userProfileRepository.getById(profileId)
-            _profile.value?.let { p ->
-                _currentFormat.value = resumeFormatRepository.getById(p.resumeFormatBaseId)
             }
         }
     }

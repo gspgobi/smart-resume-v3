@@ -22,6 +22,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
+import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -109,6 +111,94 @@ private fun SettingsSwitchRow(
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange
+        )
+    }
+}
+
+// ── Previews ──────────────────────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true, name = "Settings Screen")
+@Composable
+private fun AppSettingsScreenPreview() {
+    SmartResumeTheme {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text("Settings") },
+                    navigationIcon = {
+                        IconButton(onClick = {}) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                SettingsSwitchRow(
+                    icon = {
+                        Icon(
+                            Icons.Default.Notifications,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    },
+                    title = "Notifications",
+                    subtitle = "Receive push notifications from Smart Resume",
+                    checked = true,
+                    onCheckedChange = {}
+                )
+                HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Settings Switch Row - On")
+@Composable
+private fun SettingsSwitchRowOnPreview() {
+    SmartResumeTheme {
+        SettingsSwitchRow(
+            icon = {
+                Icon(
+                    Icons.Default.Notifications,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            title = "Notifications",
+            subtitle = "Receive push notifications from Smart Resume",
+            checked = true,
+            onCheckedChange = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Settings Switch Row - Off")
+@Composable
+private fun SettingsSwitchRowOffPreview() {
+    SmartResumeTheme {
+        SettingsSwitchRow(
+            icon = {
+                Icon(
+                    Icons.Default.Notifications,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            },
+            title = "Notifications",
+            subtitle = "Receive push notifications from Smart Resume",
+            checked = false,
+            onCheckedChange = {}
         )
     }
 }

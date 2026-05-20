@@ -6,14 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.data.api.ApiRepository
+import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.DOT_PDF
+import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_AD
+import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
+import com.nithra.nithraresume.utils.InterstitialAdHelper
+import com.nithra.nithraresume.utils.PrefsManager
 import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import javax.inject.Inject
 
@@ -26,16 +34,64 @@ sealed interface ViewShareUiState {
 class ViewShareViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
-    private val userProfileRepository: UserProfileRepository
+    private val userProfileRepository: UserProfileRepository,
+    private val apiRepository: ApiRepository,
+    private val prefsManager: PrefsManager
 ) : ViewModel() {
 
     val profileId: Int = checkNotNull(savedStateHandle["profileId"])
     val justGenerated: Boolean = savedStateHandle.get<Boolean>("justGenerated") ?: false
 
+    val generateAdHelper = InterstitialAdHelper()
+
     private val _uiState = MutableStateFlow<ViewShareUiState>(ViewShareUiState.Loading)
     val uiState: StateFlow<ViewShareUiState> = _uiState.asStateFlow()
 
+    private val _showGenerateAd = MutableStateFlow(false)
+    val showGenerateAd: StateFlow<Boolean> = _showGenerateAd.asStateFlow()
+
+    fun resetShowGenerateAd() { _showGenerateAd.value = false }
+
+    private val _isAdLoading = MutableStateFlow(false)
+    val isAdLoading: StateFlow<Boolean> = _isAdLoading.asStateFlow()
+
+    private val _showRateUsDialog = MutableStateFlow(false)
+    val showRateUsDialog: StateFlow<Boolean> = _showRateUsDialog.asStateFlow()
+
+    fun dismissRateUsDialog() { _showRateUsDialog.value = false }
+
+    fun onRateUsAccepted() {
+        viewModelScope.launch {
+            prefsManager.setV1RateUsDone()
+            _showRateUsDialog.value = false
+        }
+    }
+
+    fun sendFeedback(email: String, feedback: String) {
+        viewModelScope.launch {
+            apiRepository.postFeedback(feedback = feedback, email = email)
+        }
+    }
+
     init {
+        if (justGenerated) {
+            viewModelScope.launch {
+                prefsManager.incrementV2ResumeGeneratedCount()
+                val count = prefsManager.v2ResumeGeneratedCount.first()
+                if (count % GENERATE_COUNT_SHOW_AD == 0) {
+                    _isAdLoading.value = true
+                    val loaded = withTimeoutOrNull(5_000L) {
+                        generateAdHelper.loadSuspend(context, AdMobManager.interstitial02Id())
+                    } ?: false
+                    _isAdLoading.value = false
+                    if (loaded) _showGenerateAd.value = true
+                }
+                if (count >= GENERATE_COUNT_SHOW_RATE_US && count % 2 == 1) {
+                    val rated = prefsManager.v1RateUsDone.first()
+                    if (!rated) _showRateUsDialog.value = true
+                }
+            }
+        }
         load()
     }
 

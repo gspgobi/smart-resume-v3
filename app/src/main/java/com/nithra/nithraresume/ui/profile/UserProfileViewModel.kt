@@ -1,5 +1,6 @@
 package com.nithra.nithraresume.ui.profile
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.model.SectionHeadAdded
@@ -30,11 +31,14 @@ sealed interface UserProfileUiState {
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val userProfileRepository: UserProfileRepository,
     private val resumeFormatRepository: ResumeFormatRepository,
     private val sectionHeadRepository: SectionHeadRepository,
     private val sectionChildRepository: SectionChildRepository
 ) : ViewModel() {
+
+    val dummyCreated: Boolean = savedStateHandle.get<Boolean>("dummyCreated") ?: false
 
     val profiles: StateFlow<List<UserProfile>> = userProfileRepository
         .getAll()
