@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import java.io.File
 import javax.inject.Inject
 
@@ -51,6 +52,9 @@ class ViewShareViewModel @Inject constructor(
 
     fun resetShowGenerateAd() { _showGenerateAd.value = false }
 
+    private val _isAdLoading = MutableStateFlow(false)
+    val isAdLoading: StateFlow<Boolean> = _isAdLoading.asStateFlow()
+
     private val _showRateUsDialog = MutableStateFlow(false)
     val showRateUsDialog: StateFlow<Boolean> = _showRateUsDialog.asStateFlow()
 
@@ -75,7 +79,11 @@ class ViewShareViewModel @Inject constructor(
                 prefsManager.incrementV2ResumeGeneratedCount()
                 val count = prefsManager.v2ResumeGeneratedCount.first()
                 if (count % GENERATE_COUNT_SHOW_AD == 0) {
-                    val loaded = generateAdHelper.loadSuspend(context, AdMobManager.interstitial02Id())
+                    _isAdLoading.value = true
+                    val loaded = withTimeoutOrNull(5_000L) {
+                        generateAdHelper.loadSuspend(context, AdMobManager.interstitial02Id())
+                    } ?: false
+                    _isAdLoading.value = false
                     if (loaded) _showGenerateAd.value = true
                 }
                 if (count >= GENERATE_COUNT_SHOW_RATE_US && count % 2 == 1) {
