@@ -40,11 +40,17 @@ class SectionChildRepository @Inject constructor(
     suspend fun deleteChild1(headId: Int) =
         singleDao.deleteChild1ByHeadId(headId)
 
-    suspend fun migrateV2UserImagePaths(newDir: String) =
-        singleDao.migrateV2UserImagePaths(newDir)
+    suspend fun countOldV2UserImagePaths() = singleDao.countOldV2UserImagePaths()
+    suspend fun getOldV2UserImagePaths() = singleDao.getOldV2UserImagePaths()
+    suspend fun updateV2UserImagePath(oldPath: String, newPath: String) = singleDao.updateV2UserImagePath(oldPath, newPath)
+    suspend fun clearV2UserImagePath(oldPath: String) = singleDao.clearV2UserImagePath(oldPath)
+    suspend fun clearOldV2UserImagePaths() = singleDao.clearOldV2UserImagePaths()
 
-    suspend fun migrateV2SignatureImagePaths(newDir: String) =
-        singleDao.migrateV2SignatureImagePaths(newDir)
+    suspend fun countOldV2SignaturePaths() = singleDao.countOldV2SignaturePaths()
+    suspend fun getOldV2SignaturePaths() = singleDao.getOldV2SignaturePaths()
+    suspend fun updateV2SignaturePath(oldPath: String, newPath: String) = singleDao.updateV2SignaturePath(oldPath, newPath)
+    suspend fun clearV2SignaturePath(oldPath: String) = singleDao.clearV2SignaturePath(oldPath)
+    suspend fun clearOldV2SignatureImagePaths() = singleDao.clearOldV2SignatureImagePaths()
 
     // ── Child 2 — Work Experience ─────────────────────────────────────────────
 
