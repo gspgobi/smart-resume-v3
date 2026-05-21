@@ -767,7 +767,7 @@ class ResumePdfBuilder(private val context: Context) {
         buildContent(contentTable)
 
         val titleCell = PdfPCell(Phrase(sectionTitle, fonts.headingFont)).apply {
-            horizontalAlignment = Element.ALIGN_RIGHT
+            horizontalAlignment = Element.ALIGN_LEFT
             verticalAlignment   = Element.ALIGN_TOP
             setBorder(Rectangle.NO_BORDER)
             paddingTop    = 2f
