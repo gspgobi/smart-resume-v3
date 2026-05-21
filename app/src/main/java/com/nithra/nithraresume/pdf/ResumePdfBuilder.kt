@@ -256,13 +256,6 @@ class ResumePdfBuilder(private val context: Context) {
                 paddingTop = 1f
             })
         }
-        table.addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
-            setBorder(Rectangle.BOTTOM)
-            borderColorBottom = BaseColor.BLACK
-            borderWidthBottom = 0.5f
-            paddingTop        = 6f
-            paddingBottom     = 0f
-        })
         p.add(table)
     }
 
