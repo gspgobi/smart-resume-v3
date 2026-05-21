@@ -773,9 +773,9 @@ class ResumePdfBuilder(private val context: Context) {
 
         sc1?.let { c1 ->
             if (c1.name.isNotEmpty())     p.add(leftPara(c1.name))
-            if (sc8.address.isNotEmpty()) p.add(leftPara(sc8.address))
             if (c1.email.isNotEmpty())    p.add(leftPara(c1.email))
             if (c1.phone.isNotEmpty())    p.add(leftPara(c1.phone))
+            if (sc8.address.isNotEmpty()) p.add(leftPara(sc8.address))
             p.add(Paragraph(" ", fonts.subFont).apply { spacingAfter = 20f })
         }
 
