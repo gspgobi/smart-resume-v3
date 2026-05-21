@@ -722,7 +722,8 @@ class ResumePdfBuilder(private val context: Context) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEachIndexed { index, item ->
                     if (index > 0) addHarvardItemSpacer(t, fonts)
-                    addBoldCell(t, joinNonEmpty(item.contentTitle, item.contentSubtitle, " — "), fonts.subBoldFont)
+                    if (item.contentTitle.isNotEmpty()) addBoldCell(t, item.contentTitle, fonts.subBoldFont)
+                    if (item.contentSubtitle.isNotEmpty()) t.addCell(noBorderCell(Phrase(item.contentSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
                     addBulletContent(t, item.contentDetail, item.contentDetailBulletType, fonts)
                 }
             }
