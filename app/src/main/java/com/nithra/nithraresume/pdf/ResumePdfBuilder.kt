@@ -558,6 +558,11 @@ class ResumePdfBuilder(private val context: Context) {
                 }
                 addBulletContent(table, concentrates, bulletType, fonts)
             }
+            ResumeFormatType.HARVARD -> {
+                val titleLine = buildHarvardEduLine(school, subtitle, degree, period)
+                addBoldCell(table, titleLine, fonts.subBoldFont)
+                addBulletContent(table, concentrates, bulletType, fonts)
+            }
             else -> {
                 if (school.isNotEmpty()) addBoldCell(table, school, fonts.subBoldFont)
                 val left = joinNonEmpty(degree, subtitle, ", ")
@@ -970,6 +975,15 @@ class ResumePdfBuilder(private val context: Context) {
         a.isNotEmpty() && b.isNotEmpty() -> "$a$separator$b"
         a.isNotEmpty() -> a
         else -> b
+    }
+
+    private fun buildHarvardEduLine(
+        school: String, subtitle: String, degree: String, period: String
+    ): String = buildString {
+        if (school.isNotEmpty()) append(school)
+        if (subtitle.isNotEmpty()) append(", $subtitle")
+        if (degree.isNotEmpty()) append(" -- $degree")
+        if (period.isNotEmpty()) append(", $period")
     }
 
     private fun buildClassicItemLine(
