@@ -450,7 +450,12 @@ class ResumePdfBuilder(private val context: Context) {
         fonts: PdfFonts, fmt: ResumeFormatType
     ) {
         when (fmt) {
-            ResumeFormatType.FUNCTIONAL, ResumeFormatType.HARVARD -> {
+            ResumeFormatType.HARVARD -> {
+                val titleLine = buildClassicItemLine(role, subtitle, company, period)
+                addBoldCell(table, titleLine, fonts.subBoldFont)
+                addBulletContent(table, content, bulletType, fonts)
+            }
+            ResumeFormatType.FUNCTIONAL -> {
                 if (company.isNotEmpty()) addBoldCell(table, company, fonts.subBoldFont)
                 val left = joinNonEmpty(role, subtitle, ", ")
                 table.addCell(PdfPCell(Phrase(left, fonts.subFont)).apply {
