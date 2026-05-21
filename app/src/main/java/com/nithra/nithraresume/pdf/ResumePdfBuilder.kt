@@ -591,24 +591,56 @@ class ResumePdfBuilder(private val context: Context) {
         sc1: SectionChild1?,
         fonts: PdfFonts, fmt: ResumeFormatType
     ) {
-        addSectionHeading(p, sectionTitle, fonts, fmt)
-
-        val table = itemTable()
-        addBulletContent(table, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
-
-        // 1 line of spacing after bullet content
-        table.addCell(PdfPCell().apply {
-            setBorder(Rectangle.NO_BORDER)
-            colspan     = 2
-            fixedHeight = 12f
-        })
-
         val sigImg = if (sc4.signatureImagePath.isNotEmpty() && sc4.isSignatureImageEnable)
             loadScaledImage(sc4.signatureImagePath, 200) else null
         sigImg?.scaleAbsolute(80f, 40f)
         val name = sc1?.name?.takeIf { it.isNotEmpty() }
 
-        // Single row: date+place stacked (LEFT) | signature+name stacked (RIGHT)
+        if (fmt == ResumeFormatType.HARVARD) {
+            buildHarvardSection(p, sectionTitle, fonts) { t ->
+                addBulletContent(t, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
+            }
+            val footerTable = itemTable()
+            footerTable.addCell(PdfPCell().apply {
+                setBorder(Rectangle.NO_BORDER)
+                colspan     = 2
+                fixedHeight = 8f
+            })
+            footerTable.addCell(PdfPCell().apply {
+                setBorder(Rectangle.NO_BORDER)
+                paddingTop = 2f
+                addElement(Paragraph(sc4.date, fonts.subFont))
+                addElement(Paragraph(sc4.place, fonts.subFont).apply { spacingBefore = 1f })
+            })
+            footerTable.addCell(PdfPCell().apply {
+                setBorder(Rectangle.NO_BORDER)
+                paddingTop = 2f
+                if (sigImg != null) {
+                    sigImg.alignment = Element.ALIGN_RIGHT
+                    addElement(sigImg)
+                } else {
+                    addElement(Paragraph(" ", fonts.subFont).apply {
+                        alignment = Element.ALIGN_RIGHT
+                        spacingAfter = 32f
+                    })
+                }
+                addElement(Paragraph(name ?: "", fonts.subFont).apply {
+                    alignment = Element.ALIGN_RIGHT
+                    spacingBefore = 2f
+                })
+            })
+            p.add(footerTable)
+            return
+        }
+
+        addSectionHeading(p, sectionTitle, fonts, fmt)
+        val table = itemTable()
+        addBulletContent(table, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
+        table.addCell(PdfPCell().apply {
+            setBorder(Rectangle.NO_BORDER)
+            colspan     = 2
+            fixedHeight = 8f
+        })
         table.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
             paddingTop = 2f
