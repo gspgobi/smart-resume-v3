@@ -674,6 +674,12 @@ class ResumePdfBuilder(private val context: Context) {
         sc5: SectionChild5,
         fonts: PdfFonts, fmt: ResumeFormatType
     ) {
+        if (fmt == ResumeFormatType.HARVARD) {
+            buildHarvardSection(p, sectionTitle, fonts) { t ->
+                addBulletContent(t, sc5.content, sc5.contentBulletType, fonts)
+            }
+            return
+        }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         val table = itemTable()
         addBulletContent(table, sc5.content, sc5.contentBulletType, fonts)
