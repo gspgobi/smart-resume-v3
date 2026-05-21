@@ -424,7 +424,7 @@ class ResumePdfBuilder(private val context: Context) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEachIndexed { index, item ->
-                    if (index > 0) addHarvardItemSpacer(t, fonts)
+                    if (index > 0) addHarvardItemSpacer(t)
                     addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
                         item.workPeriod, item.accomplishments, item.accomplishmentsBulletType, fonts, fmt)
                 }
@@ -510,7 +510,7 @@ class ResumePdfBuilder(private val context: Context) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEachIndexed { index, item ->
-                    if (index > 0) addHarvardItemSpacer(t, fonts)
+                    if (index > 0) addHarvardItemSpacer(t)
                     addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
                         item.studyPeriod, item.concentrates, item.concentratesBulletType, fonts, fmt)
                 }
@@ -721,7 +721,7 @@ class ResumePdfBuilder(private val context: Context) {
         if (fmt == ResumeFormatType.HARVARD) {
             buildHarvardSection(p, sectionTitle, fonts) { t ->
                 items.forEachIndexed { index, item ->
-                    if (index > 0) addHarvardItemSpacer(t, fonts)
+                    if (index > 0) addHarvardItemSpacer(t)
                     if (item.contentTitle.isNotEmpty()) addBoldCell(t, item.contentTitle, fonts.subBoldFont)
                     if (item.contentSubtitle.isNotEmpty()) t.addCell(noBorderCell(Phrase(item.contentSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
                     addBulletContent(t, item.contentDetail, item.contentDetailBulletType, fonts)
@@ -797,12 +797,11 @@ class ResumePdfBuilder(private val context: Context) {
 
     // ── Harvard layout helper ──────────────────────────────────────────────────
 
-    private fun addHarvardItemSpacer(table: PdfPTable, fonts: PdfFonts) {
-        table.addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
+    private fun addHarvardItemSpacer(table: PdfPTable) {
+        table.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
-            colspan       = 2
-            paddingTop    = 4f
-            paddingBottom = 0f
+            colspan     = 2
+            fixedHeight = 8f
         })
     }
 
