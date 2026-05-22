@@ -258,8 +258,8 @@ class ResumePdfBuilder(private val context: Context) {
     }
 
     private fun sc1Modern(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts, photo: Image?) {
-        val contactParts = listOf(sc1.phone, sc1.email, sc1.address).filter { it.isNotEmpty() }
-        val rowCount = 1 + if (contactParts.isNotEmpty()) 1 else 0
+        val inlineParts = listOf(sc1.phone, sc1.email).filter { it.isNotEmpty() }
+        val rowCount = 1 + (if (inlineParts.isNotEmpty()) 1 else 0) + (if (sc1.address.isNotEmpty()) 1 else 0)
 
         if (photo != null) {
             photo.scaleAbsolute(60f, 60f)
@@ -278,8 +278,15 @@ class ResumePdfBuilder(private val context: Context) {
                 setBorder(Rectangle.NO_BORDER)
                 rowspan = rowCount
             })
-            if (contactParts.isNotEmpty()) {
-                table.addCell(PdfPCell(Phrase(contactParts.joinToString("  |  "), fonts.subFont)).apply {
+            if (inlineParts.isNotEmpty()) {
+                table.addCell(PdfPCell(Phrase(inlineParts.joinToString("  |  "), fonts.subFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.NO_BORDER)
+                    paddingTop = 1f
+                })
+            }
+            if (sc1.address.isNotEmpty()) {
+                table.addCell(PdfPCell(Phrase(sc1.address, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
                     paddingTop = 1f
@@ -296,8 +303,15 @@ class ResumePdfBuilder(private val context: Context) {
                 setBorder(Rectangle.NO_BORDER)
                 paddingBottom = 2f
             })
-            if (contactParts.isNotEmpty()) {
-                table.addCell(PdfPCell(Phrase(contactParts.joinToString("  |  "), fonts.subFont)).apply {
+            if (inlineParts.isNotEmpty()) {
+                table.addCell(PdfPCell(Phrase(inlineParts.joinToString("  |  "), fonts.subFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.NO_BORDER)
+                    paddingTop = 1f
+                })
+            }
+            if (sc1.address.isNotEmpty()) {
+                table.addCell(PdfPCell(Phrase(sc1.address, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
                     paddingTop = 1f
