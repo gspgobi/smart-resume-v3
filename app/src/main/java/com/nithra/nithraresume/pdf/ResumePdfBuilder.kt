@@ -221,7 +221,6 @@ class ResumePdfBuilder(private val context: Context) {
                     paddingTop = 1f
                 })
             }
-            addRuleCell(table, colspan = 2, font = fonts.subFont)
             p.add(table)
         } else {
             val table = PdfPTable(1).apply { widthPercentage = 100f }
@@ -237,7 +236,6 @@ class ResumePdfBuilder(private val context: Context) {
                     paddingTop = 1f
                 })
             }
-            addRuleCell(table, colspan = 1, font = fonts.subFont)
             p.add(table)
         }
     }
