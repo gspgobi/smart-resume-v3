@@ -129,7 +129,7 @@ fun GeneratedResumesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Generated Resumes") },
+                title = { Text("View Saved Resumes") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
