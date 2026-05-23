@@ -327,14 +327,14 @@ private fun MainContent(
 
         HomeCard(
             icon = Icons.Default.Person,
-            title = "My Profiles",
+            title = "My Resume Profiles",
             subtitle = "Create and manage your resume profiles",
             onClick = onMyProfilesClick
         )
 
         HomeCard(
             icon = Icons.Default.Description,
-            title = "View Resumes",
+            title = "View Saved Resumes",
             subtitle = "View and share your generated resumes",
             onClick = onViewResumesClick
         )
