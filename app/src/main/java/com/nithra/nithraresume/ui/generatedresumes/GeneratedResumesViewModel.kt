@@ -27,4 +27,17 @@ class GeneratedResumesViewModel @Inject constructor(
             ?.sortedByDescending { it.lastModified() }
             ?: emptyList()
     }
+
+    fun delete(file: File) {
+        runCatching { file.delete() }
+        scan()
+    }
+
+    fun rename(file: File, newName: String): Boolean {
+        val trimmed = newName.trim().removeSuffix(".pdf")
+        if (trimmed.isBlank()) return false
+        val dest = File(file.parentFile, "$trimmed.pdf")
+        if (dest.exists()) return false
+        return runCatching { file.renameTo(dest) }.getOrDefault(false).also { if (it) scan() }
+    }
 }
