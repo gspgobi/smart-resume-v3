@@ -17,24 +17,37 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.DriveFileRenameOutline
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -62,7 +75,56 @@ fun GeneratedResumesScreen(
     val context = LocalContext.current
     val listState = rememberLazyListState()
 
+    var fileToDelete by remember { mutableStateOf<File?>(null) }
+    var fileToRename by remember { mutableStateOf<File?>(null) }
+    var renameText   by remember { mutableStateOf("") }
+
     LaunchedEffect(Unit) { viewModel.scan() }
+
+    fileToDelete?.let { file ->
+        AlertDialog(
+            onDismissRequest = { fileToDelete = null },
+            title = { Text("Delete Resume") },
+            text  = { Text("Delete \"${file.nameWithoutExtension}\"? This cannot be undone.") },
+            confirmButton = {
+                TextButton(onClick = { viewModel.delete(file); fileToDelete = null }) {
+                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { fileToDelete = null }) { Text("Cancel") }
+            }
+        )
+    }
+
+    fileToRename?.let { file ->
+        val focusRequester = remember { FocusRequester() }
+        AlertDialog(
+            onDismissRequest = { fileToRename = null },
+            title = { Text("Rename Resume") },
+            text  = {
+                OutlinedTextField(
+                    value = renameText,
+                    onValueChange = { renameText = it },
+                    label = { Text("File name") },
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester)
+                )
+                LaunchedEffect(Unit) { focusRequester.requestFocus() }
+            },
+            confirmButton = {
+                TextButton(
+                    enabled = renameText.isNotBlank(),
+                    onClick = { viewModel.rename(file, renameText); fileToRename = null }
+                ) { Text("Rename") }
+            },
+            dismissButton = {
+                TextButton(onClick = { fileToRename = null }) { Text("Cancel") }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -103,8 +165,10 @@ fun GeneratedResumesScreen(
                 items(files, key = { it.name }) { file ->
                     GeneratedResumeCard(
                         file = file,
-                        onOpen = { openPdf(context, file) },
-                        onShare = { sharePdf(context, file) }
+                        onOpen   = { openPdf(context, file) },
+                        onShare  = { sharePdf(context, file) },
+                        onRename = { fileToRename = file; renameText = file.nameWithoutExtension },
+                        onDelete = { fileToDelete = file }
                     )
                 }
             }
@@ -116,8 +180,12 @@ fun GeneratedResumesScreen(
 private fun GeneratedResumeCard(
     file: File,
     onOpen: () -> Unit,
-    onShare: () -> Unit
+    onShare: () -> Unit,
+    onRename: () -> Unit,
+    onDelete: () -> Unit
 ) {
+    var menuExpanded by remember { mutableStateOf(false) }
+
     Card(
         onClick = onOpen,
         modifier = Modifier.fillMaxWidth(),
@@ -127,16 +195,9 @@ private fun GeneratedResumeCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = 8.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Default.Description,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(36.dp)
-            )
-
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -163,6 +224,28 @@ private fun GeneratedResumeCard(
                     contentDescription = "Share",
                     tint = MaterialTheme.colorScheme.primary
                 )
+            }
+            IconButton(onClick = { menuExpanded = true }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = "More options",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false }
+                ) {
+                    DropdownMenuItem(
+                        text = { Text("Rename") },
+                        leadingIcon = { Icon(Icons.Default.DriveFileRenameOutline, contentDescription = null) },
+                        onClick = { menuExpanded = false; onRename() }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
+                        leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
+                        onClick = { menuExpanded = false; onDelete() }
+                    )
+                }
             }
         }
     }
@@ -270,7 +353,7 @@ private fun GeneratedResumesScreenPreview() {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(previewFiles, key = { it.name }) { file ->
-                    GeneratedResumeCard(file = file, onOpen = {}, onShare = {})
+                    GeneratedResumeCard(file = file, onOpen = {}, onShare = {}, onRename = {}, onDelete = {})
                 }
             }
         }
@@ -291,8 +374,7 @@ private fun GeneratedResumeCardPreview() {
     SmartResumeTheme {
         GeneratedResumeCard(
             file = File("/fake/path/Software Engineer.pdf"),
-            onOpen = {},
-            onShare = {}
+            onOpen = {}, onShare = {}, onRename = {}, onDelete = {}
         )
     }
 }
