@@ -65,7 +65,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -76,6 +75,7 @@ import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_PROFILES
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -503,7 +503,7 @@ private val previewProfiles = listOf(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Profile List")
+@AppPreview
 @Composable
 private fun UserProfileScreenListPreview() {
     SmartResumeTheme {
@@ -583,7 +583,7 @@ private fun UserProfileScreenListPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Empty State")
+@AppPreview
 @Composable
 private fun UserProfileScreenEmptyPreview() {
     SmartResumeTheme {
@@ -662,7 +662,7 @@ private fun UserProfileScreenEmptyPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Profile Item")
+@AppPreview
 @Composable
 private fun ProfileItemPreview() {
     SmartResumeTheme {
@@ -675,7 +675,7 @@ private fun ProfileItemPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Create Profile Dialog")
+@AppPreview
 @Composable
 private fun CreateProfileDialogPreview() {
     SmartResumeTheme {
@@ -690,7 +690,7 @@ private fun CreateProfileDialogPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Rename Profile Dialog")
+@AppPreview
 @Composable
 private fun RenameProfileDialogPreview() {
     SmartResumeTheme {

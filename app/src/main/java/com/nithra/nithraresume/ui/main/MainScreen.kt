@@ -102,8 +102,9 @@ import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
+import com.nithra.nithraresume.ui.preview.AppDrawerPreview
+import com.nithra.nithraresume.ui.preview.AppPreview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -589,7 +590,7 @@ private fun shareApp(context: Context) {
 
 // ── Previews ──────────────────────────────────────────────────────────────────
 
-@Preview(showBackground = true, name = "Main Content")
+@AppPreview
 @Composable
 private fun MainContentPreview() {
     SmartResumeTheme {
@@ -600,7 +601,7 @@ private fun MainContentPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Migration — Permission Dialog")
+@AppPreview
 @Composable
 private fun MigrationPermissionDialogPreview() {
     SmartResumeTheme {
@@ -636,7 +637,7 @@ private fun MigrationPermissionDialogPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Main Content — Migration Running")
+@AppPreview
 @Composable
 private fun MainContentMigrationRunningPreview() {
     SmartResumeTheme {
@@ -648,7 +649,7 @@ private fun MainContentMigrationRunningPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Home Card")
+@AppPreview
 @Composable
 private fun HomeCardPreview() {
     SmartResumeTheme {
@@ -661,7 +662,7 @@ private fun HomeCardPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Drawer — with badge", widthDp = 360)
+@AppDrawerPreview
 @Composable
 private fun MainDrawerContentWithBadgePreview() {
     SmartResumeTheme {
@@ -673,7 +674,7 @@ private fun MainDrawerContentWithBadgePreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Drawer — no badge", widthDp = 360)
+@AppDrawerPreview
 @Composable
 private fun MainDrawerContentNoBadgePreview() {
     SmartResumeTheme {

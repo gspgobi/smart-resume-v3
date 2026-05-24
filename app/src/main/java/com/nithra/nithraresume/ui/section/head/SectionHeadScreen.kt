@@ -62,7 +62,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -76,6 +75,7 @@ import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import kotlinx.coroutines.launch
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -643,7 +643,7 @@ private val previewAvailableAddons = listOf(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Head Screen")
+@AppPreview
 @Composable
 private fun SectionHeadScreenPreview() {
     SmartResumeTheme {
@@ -734,7 +734,7 @@ private fun SectionHeadScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Resume Format Row")
+@AppPreview
 @Composable
 private fun ResumeFormatRowPreview() {
     SmartResumeTheme {
@@ -742,7 +742,7 @@ private fun ResumeFormatRowPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Group Header - No Edit")
+@AppPreview
 @Composable
 private fun GroupHeaderPreview() {
     SmartResumeTheme {
@@ -750,7 +750,7 @@ private fun GroupHeaderPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Group Header - With Edit")
+@AppPreview
 @Composable
 private fun GroupHeaderWithEditPreview() {
     SmartResumeTheme {
@@ -758,7 +758,7 @@ private fun GroupHeaderWithEditPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Add Item Row")
+@AppPreview
 @Composable
 private fun AddItemRowPreview() {
     SmartResumeTheme {
@@ -770,7 +770,7 @@ private fun AddItemRowPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Item - Contact Info")
+@AppPreview
 @Composable
 private fun SectionItemContactInfoPreview() {
     SmartResumeTheme {
@@ -782,7 +782,7 @@ private fun SectionItemContactInfoPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Item - Enabled")
+@AppPreview
 @Composable
 private fun SectionItemEnabledPreview() {
     SmartResumeTheme {
@@ -794,7 +794,7 @@ private fun SectionItemEnabledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Item - Disabled")
+@AppPreview
 @Composable
 private fun SectionItemDisabledPreview() {
     SmartResumeTheme {
@@ -806,7 +806,7 @@ private fun SectionItemDisabledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Action Buttons")
+@AppPreview
 @Composable
 private fun ActionButtonsPreview() {
     SmartResumeTheme {
@@ -814,7 +814,7 @@ private fun ActionButtonsPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Add Section Sheet")
+@AppPreview
 @Composable
 private fun AddSectionSheetPreview() {
     SmartResumeTheme {
@@ -826,7 +826,7 @@ private fun AddSectionSheetPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Add Section Sheet - Empty")
+@AppPreview
 @Composable
 private fun AddSectionSheetEmptyPreview() {
     SmartResumeTheme {
@@ -834,7 +834,7 @@ private fun AddSectionSheetEmptyPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Delete Section Dialog")
+@AppPreview
 @Composable
 private fun DeleteSectionDialogPreview() {
     SmartResumeTheme {

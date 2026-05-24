@@ -25,7 +25,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -48,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -209,7 +209,7 @@ private val previewChildItems = listOf(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Reorder Child Screen")
+@AppPreview
 @Composable
 private fun ReorderChildScreenPreview() {
     SmartResumeTheme {
@@ -246,7 +246,7 @@ private fun ReorderChildScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Reorder Child Row")
+@AppPreview
 @Composable
 private fun ReorderChildRowPreview() {
     SmartResumeTheme {
@@ -254,7 +254,7 @@ private fun ReorderChildRowPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Reorder Child Row - Empty")
+@AppPreview
 @Composable
 private fun ReorderChildRowEmptyPreview() {
     SmartResumeTheme {

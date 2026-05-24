@@ -21,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +33,7 @@ import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,7 +121,7 @@ fun DateFormatPickerDialog(
     }
 }
 
-@Preview(showBackground = true)
+@AppPreview
 @Composable
 private fun DateFormatPickerDialogPreview() {
     SmartResumeTheme {

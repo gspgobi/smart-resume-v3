@@ -60,7 +60,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -76,6 +75,7 @@ import com.nithra.nithraresume.utils.FONT_SIZE_MAX
 import com.nithra.nithraresume.utils.FONT_SIZE_MIN
 import com.nithra.nithraresume.utils.FONT_TIMES_NEW_ROMAN
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -470,7 +470,7 @@ private val previewFormats = listOf(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Resume Format Screen")
+@AppPreview
 @Composable
 private fun ResumeFormatScreenPreview() {
     SmartResumeTheme {
@@ -571,7 +571,7 @@ private fun ResumeFormatScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Unsaved Changes Dialog")
+@AppPreview
 @Composable
 private fun UnsavedChangesDialogPreview() {
     SmartResumeTheme {
@@ -592,7 +592,7 @@ private fun UnsavedChangesDialogPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Format List Item - Unselected")
+@AppPreview
 @Composable
 private fun FormatListItemUnselectedPreview() {
     SmartResumeTheme {
@@ -605,7 +605,7 @@ private fun FormatListItemUnselectedPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Format List Item - Selected")
+@AppPreview
 @Composable
 private fun FormatListItemSelectedPreview() {
     SmartResumeTheme {
@@ -618,7 +618,7 @@ private fun FormatListItemSelectedPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Font Size Slider")
+@AppPreview
 @Composable
 private fun FontSizeSliderPreview() {
     SmartResumeTheme {

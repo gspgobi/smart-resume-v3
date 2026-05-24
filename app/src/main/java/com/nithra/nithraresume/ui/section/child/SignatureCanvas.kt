@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -26,6 +25,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 class SignatureCaptureController {
     internal val completedPaths = mutableStateListOf<Path>()
@@ -118,7 +118,7 @@ fun SignatureCanvas(
     }
 }
 
-@Preview(showBackground = true)
+@AppPreview
 @Composable
 private fun SignatureCanvasPreview() {
     SmartResumeTheme {
