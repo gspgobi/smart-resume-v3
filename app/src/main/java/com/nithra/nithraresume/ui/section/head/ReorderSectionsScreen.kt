@@ -27,7 +27,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -52,6 +51,7 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -240,7 +240,7 @@ private val previewSectionItems = listOf(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Reorder Sections Screen")
+@AppPreview
 @Composable
 private fun ReorderSectionsScreenPreview() {
     SmartResumeTheme {
@@ -277,7 +277,7 @@ private fun ReorderSectionsScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Reorder Row - Pinned")
+@AppPreview
 @Composable
 private fun ReorderRowPinnedPreview() {
     SmartResumeTheme {
@@ -285,7 +285,7 @@ private fun ReorderRowPinnedPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Reorder Row - Draggable")
+@AppPreview
 @Composable
 private fun ReorderRowDraggablePreview() {
     SmartResumeTheme {
@@ -293,7 +293,7 @@ private fun ReorderRowDraggablePreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Reorder Row - Disabled")
+@AppPreview
 @Composable
 private fun ReorderRowDisabledPreview() {
     SmartResumeTheme {

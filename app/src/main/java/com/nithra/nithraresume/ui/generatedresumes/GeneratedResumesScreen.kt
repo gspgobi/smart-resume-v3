@@ -52,7 +52,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,6 +63,7 @@ import com.nithra.nithraresume.utils.FileUtils
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import java.io.File
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -317,7 +317,7 @@ private fun sharePdf(context: Context, file: File) {
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Generated Resumes Screen - With Files")
+@AppPreview
 @Composable
 private fun GeneratedResumesScreenPreview() {
     val previewFiles = listOf(
@@ -360,7 +360,7 @@ private fun GeneratedResumesScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Empty State")
+@AppPreview
 @Composable
 private fun EmptyGeneratedResumesPreview() {
     SmartResumeTheme {
@@ -368,7 +368,7 @@ private fun EmptyGeneratedResumesPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Resume Card")
+@AppPreview
 @Composable
 private fun GeneratedResumeCardPreview() {
     SmartResumeTheme {

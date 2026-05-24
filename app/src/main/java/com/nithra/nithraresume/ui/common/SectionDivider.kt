@@ -6,9 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @Composable
 fun SectionDivider(label: String) {
@@ -21,7 +21,7 @@ fun SectionDivider(label: String) {
     )
 }
 
-@Preview(showBackground = true)
+@AppPreview
 @Composable
 private fun SectionDividerPreview() {
     SmartResumeTheme {

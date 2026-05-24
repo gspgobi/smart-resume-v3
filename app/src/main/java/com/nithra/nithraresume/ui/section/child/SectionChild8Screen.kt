@@ -43,7 +43,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,6 +52,7 @@ import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -265,7 +265,7 @@ fun SectionChild8Screen(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC8 - Empty")
+@AppPreview
 @Composable
 private fun SectionChild8EmptyPreview() {
     SmartResumeTheme {
@@ -332,7 +332,7 @@ private fun SectionChild8EmptyPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC8 - Filled")
+@AppPreview
 @Composable
 private fun SectionChild8FilledPreview() {
     val sampleAddress = "Hiring Manager\nTech Corp Inc.\n123 Innovation Drive\nSan Francisco, CA 94105"

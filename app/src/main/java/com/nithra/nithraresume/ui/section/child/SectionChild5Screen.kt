@@ -43,7 +43,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,6 +52,7 @@ import com.nithra.nithraresume.ui.common.ObjAccompBottomSheet
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.BULLET_NONE
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -244,7 +244,7 @@ fun SectionChild5Screen(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC5 - Empty")
+@AppPreview
 @Composable
 private fun SectionChild5EmptyPreview() {
     SmartResumeTheme {
@@ -305,7 +305,7 @@ private fun SectionChild5EmptyPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC5 - Filled")
+@AppPreview
 @Composable
 private fun SectionChild5FilledPreview() {
     val sampleContent = "Motivated software engineer with 5+ years of experience building scalable Android applications.\nPassionate about clean architecture and delivering high-quality user experiences.\nSeeking a senior role to drive impactful product development."

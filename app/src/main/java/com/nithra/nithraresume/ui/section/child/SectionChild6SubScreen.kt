@@ -42,13 +42,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -213,7 +213,7 @@ fun SectionChild6SubScreen(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC6Sub - New Entry")
+@AppPreview
 @Composable
 private fun SectionChild6SubNewEntryPreview() {
     SmartResumeTheme {
@@ -265,7 +265,7 @@ private fun SectionChild6SubNewEntryPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "SC6Sub - Edit Entry")
+@AppPreview
 @Composable
 private fun SectionChild6SubEditEntryPreview() {
     val sampleDetail = "Developed and maintained scalable RESTful APIs using Spring Boot.\nCollaborated with cross-functional teams to deliver features on schedule.\nImproved application performance by 30% through query optimization."
