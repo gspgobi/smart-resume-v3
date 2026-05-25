@@ -136,7 +136,6 @@ fun SectionHeadScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
                 .verticalScrollbar(listState),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 
             // ── Resume format row ─────────────────────────────────────────────
@@ -556,26 +555,28 @@ private fun AddSectionSheet(
     items: List<SectionHeadSampleData>,
     onItemClick: (SectionHeadSampleData) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-        )
-        HorizontalDivider()
-        if (items.isEmpty()) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        item(key = "sheet_title") {
             Text(
-                text = "All sections already added",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(16.dp)
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
             )
+            HorizontalDivider()
+        }
+        if (items.isEmpty()) {
+            item(key = "empty") {
+                Text(
+                    text = "All sections already added",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         } else {
-            items.forEach { sample ->
-                val isHeader = sample.id == -1
-                if (isHeader) {
-                    // Group header
+            items(items, key = { "${it.id}_${it.title}" }) { sample ->
+                if (sample.id == -1) {
                     Text(
                         text = sample.title,
                         style = MaterialTheme.typography.labelMedium,
@@ -610,7 +611,9 @@ private fun AddSectionSheet(
                 }
             }
         }
-        Spacer(Modifier.height(24.dp))
+        item(key = "footer_spacer") {
+            Spacer(Modifier.height(24.dp))
+        }
     }
 }
 
@@ -669,8 +672,7 @@ private fun SectionHeadScreenPreview() {
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(0.dp)
-            ) {
+                ) {
                 item {
                     ResumeFormatRow(formatTitle = "Classic", onClick = {})
                     HorizontalDivider()
