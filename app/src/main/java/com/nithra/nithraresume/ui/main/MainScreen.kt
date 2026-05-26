@@ -99,7 +99,6 @@ import com.nithra.nithraresume.ui.common.FeedbackDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
-import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
@@ -117,8 +116,8 @@ fun MainScreen(
 ) {
     val unreadCount by viewModel.unreadNotificationCount.collectAsStateWithLifecycle()
     val migrationState by viewModel.migrationState.collectAsStateWithLifecycle()
-    val rateUsDone by viewModel.rateUsDone.collectAsStateWithLifecycle()
-    val resumeGeneratedCount by viewModel.resumeGeneratedCount.collectAsStateWithLifecycle()
+    val showDoYouLoveAppDialog by viewModel.showDoYouLoveAppDialog.collectAsStateWithLifecycle()
+    val showRateUs5StarsDialog by viewModel.showRateUs5StarsDialog.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -126,8 +125,6 @@ fun MainScreen(
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var exitAfterFeedback by remember { mutableStateOf(false) }
-    var showDoYouLoveAppDialog by remember { mutableStateOf(false) }
-    var showRateUs5StarsDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
     val permName = remember {
@@ -155,6 +152,16 @@ fun MainScreen(
         viewModel.dummyProfileCreated.collect {
             scope.launch { drawerState.close() }
             navController.navigate(Screen.UserProfiles.createRoute(dummyCreated = true))
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.rateUsEvent.collect { event ->
+            when (event) {
+                RateUsEvent.TriggerExit          -> onExitApp()
+                RateUsEvent.OpenPlayStore        -> openPlayStore(context)
+                RateUsEvent.ShowFeedbackThenExit -> { showFeedbackDialog = true; exitAfterFeedback = true }
+            }
         }
     }
 
@@ -199,59 +206,36 @@ fun MainScreen(
 
     if (showDoYouLoveAppDialog) {
         AlertDialog(
-            onDismissRequest = { showDoYouLoveAppDialog = false; onExitApp() },
+            onDismissRequest = { viewModel.onDoYouLoveAppDismissed() },
             title = { Text("Do you love our app?") },
             text  = { Text("Thanks for using what we built - we're proud of it! Are you enjoying it so far?") },
             confirmButton = {
-                TextButton(onClick = {
-                    showDoYouLoveAppDialog = false
-                    showRateUs5StarsDialog = true
-                }) { Text("Yeah, I love it!") }
+                TextButton(onClick = { viewModel.onLoveItClicked() }) { Text("Yeah, I love it!") }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    showDoYouLoveAppDialog = false
-                    showFeedbackDialog = true
-                    exitAfterFeedback = true
-                }) { Text("It could be better") }
+                TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text("It could be better") }
             }
         )
     }
 
     if (showRateUs5StarsDialog) {
         AlertDialog(
-            onDismissRequest = { showRateUs5StarsDialog = false; onExitApp() },
+            onDismissRequest = { viewModel.onMaybeLater() },
             title = { Text("Rate us on Play Store") },
             text  = { Text("We're glad you're enjoying using our app!\n\nWould you mind giving us a 5 ⭐⭐⭐⭐⭐ rating for this free app? It really helps us out!\n\nThanks for your support. 😊") },
             confirmButton = {
-                TextButton(onClick = {
-                    showRateUs5StarsDialog = false
-                    viewModel.markRateUsDone()
-                    openPlayStore(context)
-                }) { Text("Sure, take me there") }
+                TextButton(onClick = { viewModel.onSureTakeMeThere() }) { Text("Sure, take me there") }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = {
-                        showRateUs5StarsDialog = false
-                        onExitApp()
-                    }) { Text("Maybe later") }
-                    TextButton(onClick = {
-                        showRateUs5StarsDialog = false
-                        viewModel.markRateUsDone()
-                        onExitApp()
-                    }) { Text("No, thanks") }
+                    TextButton(onClick = { viewModel.onMaybeLater() }) { Text("Maybe later") }
+                    TextButton(onClick = { viewModel.onNoThanks() }) { Text("No, thanks") }
                 }
             }
         )
     }
 
-    BackHandler(enabled = !drawerState.isOpen) {
-        val showRateUs = !rateUsDone
-            && resumeGeneratedCount >= GENERATE_COUNT_SHOW_RATE_US
-            && resumeGeneratedCount % 2 == 0
-        if (showRateUs) showDoYouLoveAppDialog = true else onExitApp()
-    }
+    BackHandler(enabled = !drawerState.isOpen) { viewModel.onExitRequested() }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -749,5 +733,64 @@ private fun MainDrawerContentNoBadgePreview() {
             appVersionName = BuildConfig.VERSION_NAME,
             onItemClick = {}
         )
+    }
+}
+
+@AppPreview
+@Composable
+private fun DoYouLoveAppDialogPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Card(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                shape = MaterialTheme.shapes.extraLarge,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text("Do you love our app?", style = MaterialTheme.typography.headlineSmall)
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        "Thanks for using what we built - we're proud of it! Are you enjoying it so far?",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        TextButton(onClick = {}) { Text("It could be better") }
+                        TextButton(onClick = {}) { Text("Yeah, I love it!") }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@AppPreview
+@Composable
+private fun RateUs5StarsDialogPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Card(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                shape = MaterialTheme.shapes.extraLarge,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text("Rate us on Play Store", style = MaterialTheme.typography.headlineSmall)
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        "We're glad you're enjoying using our app!\n\nWould you mind giving us a 5 ⭐⭐⭐⭐⭐ rating for this free app? It really helps us out!\n\nThanks for your support. 😊",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Row {
+                            TextButton(onClick = {}) { Text("Maybe later") }
+                            TextButton(onClick = {}) { Text("No, thanks") }
+                        }
+                        TextButton(onClick = {}) { Text("Sure, take me there") }
+                    }
+                }
+            }
+        }
     }
 }
