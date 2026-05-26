@@ -142,6 +142,16 @@ class MainViewModel @Inject constructor(
             initialValue = 0
         )
 
+    val rateUsDone: StateFlow<Boolean> = prefsManager.v1RateUsDone
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    val resumeGeneratedCount: StateFlow<Int> = prefsManager.v2ResumeGeneratedCount
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+
+    fun markRateUsDone() {
+        viewModelScope.launch { prefsManager.setV1RateUsDone() }
+    }
+
     private val _dummyProfileCreated = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val dummyProfileCreated: SharedFlow<Unit> = _dummyProfileCreated.asSharedFlow()
 
