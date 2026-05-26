@@ -905,12 +905,26 @@ class ResumePdfBuilder(private val context: Context) {
                     addCell(titleCell)
                 })
             }
-            ResumeFormatType.FUNCTIONAL, ResumeFormatType.SIMPLE -> {
+            ResumeFormatType.FUNCTIONAL -> {
                 val cell = PdfPCell(Phrase(title, fonts.headingFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.BOTTOM)
                     borderColorBottom = BaseColor.BLACK
                     borderWidthBottom = 0.5f
+                    paddingTop    = 2f
+                    paddingBottom = 4f
+                }
+                p.add(PdfPTable(1).apply {
+                    widthPercentage = 100f
+                    spacingBefore   = 10f
+                    spacingAfter    = 2f
+                    addCell(cell)
+                })
+            }
+            ResumeFormatType.SIMPLE -> {
+                val cell = PdfPCell(Phrase(title, fonts.headingFont)).apply {
+                    horizontalAlignment = Element.ALIGN_LEFT
+                    setBorder(Rectangle.NO_BORDER)
                     paddingTop    = 2f
                     paddingBottom = 4f
                 }
