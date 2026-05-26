@@ -628,16 +628,16 @@ class ResumePdfBuilder(private val context: Context) {
                 setBorder(Rectangle.NO_BORDER)
                 paddingTop = 2f
                 if (sigImg != null) {
-                    sigImg.alignment = Element.ALIGN_RIGHT
+                    sigImg.alignment = Element.ALIGN_CENTER
                     addElement(sigImg)
                 } else {
                     addElement(Paragraph(" ", fonts.subFont).apply {
-                        alignment = Element.ALIGN_RIGHT
+                        alignment = Element.ALIGN_CENTER
                         spacingAfter = 32f
                     })
                 }
                 addElement(Paragraph(name ?: "", fonts.subFont).apply {
-                    alignment = Element.ALIGN_RIGHT
+                    alignment = Element.ALIGN_CENTER
                     spacingBefore = 2f
                 })
             })
@@ -663,16 +663,16 @@ class ResumePdfBuilder(private val context: Context) {
             setBorder(Rectangle.NO_BORDER)
             paddingTop = 2f
             if (sigImg != null) {
-                sigImg.alignment = Element.ALIGN_RIGHT
+                sigImg.alignment = Element.ALIGN_CENTER
                 addElement(sigImg)
             } else {
                 addElement(Paragraph(" ", fonts.subFont).apply {
-                    alignment = Element.ALIGN_RIGHT
+                    alignment = Element.ALIGN_CENTER
                     spacingAfter = 32f
                 })
             }
             addElement(Paragraph(name ?: "", fonts.subFont).apply {
-                alignment = Element.ALIGN_RIGHT
+                alignment = Element.ALIGN_CENTER
                 spacingBefore = 2f
             })
         })
