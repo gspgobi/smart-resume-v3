@@ -331,15 +331,19 @@ fun ViewShareScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    OutlinedButton(
-                        onClick = {
-                            navController.navigate(
-                                Screen.GenerateResume.createRoute(viewModel.profileId)
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(if (pdfFile != null) "Regenerate" else "Generate Resume")
+                    val onGenerate = {
+                        navController.navigate(
+                            Screen.GenerateResume.createRoute(viewModel.profileId)
+                        )
+                    }
+                    if (pdfFile != null) {
+                        OutlinedButton(onClick = onGenerate, modifier = Modifier.fillMaxWidth()) {
+                            Text("Regenerate")
+                        }
+                    } else {
+                        Button(onClick = onGenerate, modifier = Modifier.fillMaxWidth()) {
+                            Text("Generate Resume")
+                        }
                     }
                 }
             }
