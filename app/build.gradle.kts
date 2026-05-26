@@ -54,18 +54,18 @@ android {
     flavorDimensions += "environment"
 
     productFlavors {
-        create("withTestAdMob") {
+        create("TestAdMob") {
             isDefault = true
             dimension = "environment"
             buildConfigField("Boolean", "isAdMobEnable", "true")
             buildConfigField("Boolean", "isTestAdMobId", "true")
         }
-        create("withProdAdMob") {
+        create("ProdAdMob") {
             dimension = "environment"
             buildConfigField("Boolean", "isAdMobEnable", "true")
             buildConfigField("Boolean", "isTestAdMobId", "false")
         }
-        create("withoutAdMob") {
+        create("NoAdMob") {
             dimension = "environment"
             buildConfigField("Boolean", "isAdMobEnable", "false")
             buildConfigField("Boolean", "isTestAdMobId", "true")
