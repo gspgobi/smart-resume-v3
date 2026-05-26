@@ -121,8 +121,8 @@ class PrefsManager @Inject constructor(
     val v1RateUsDone: Flow<Boolean> = safeData
         .map { it[Key.V1_RATE_US_DONE] ?: false }
 
-    suspend fun setV1RateUsDone() {
-        context.dataStore.edit { it[Key.V1_RATE_US_DONE] = true }
+    suspend fun setV1RateUsDone(isRateUsDone: Boolean = true) {
+        context.dataStore.edit { it[Key.V1_RATE_US_DONE] = isRateUsDone }
     }
 
     // ── App version tracking ──────────────────────────────────────────────────
