@@ -471,12 +471,19 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
+        if (fmt == ResumeFormatType.GRAYSCALE) {
+            val itemTables = items.map { item ->
+                itemTable().also { t ->
+                    addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
+                        item.workPeriod, item.accomplishments, item.accomplishmentsBulletType, fonts, fmt)
+                }
+            }
+            buildGrayscaleSection(p, sectionTitle, fonts, itemTables)
+            return
+        }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEachIndexed { index, item ->
-            val t = itemTable().also {
-                it.spacingBefore = 4f
-                it.spacingAfter  = 4f
-            }
+            val t = itemTable().also { it.spacingBefore = 4f; it.spacingAfter = 4f }
             addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
                 item.workPeriod, item.accomplishments, item.accomplishmentsBulletType, fonts, fmt)
             p.add(t)
@@ -557,12 +564,19 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
+        if (fmt == ResumeFormatType.GRAYSCALE) {
+            val itemTables = items.map { item ->
+                itemTable().also { t ->
+                    addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
+                        item.studyPeriod, item.concentrates, item.concentratesBulletType, fonts, fmt)
+                }
+            }
+            buildGrayscaleSection(p, sectionTitle, fonts, itemTables)
+            return
+        }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEachIndexed { index, item ->
-            val t = itemTable().also {
-                it.spacingBefore = 4f
-                it.spacingAfter  = 4f
-            }
+            val t = itemTable().also { it.spacingBefore = 4f; it.spacingAfter = 4f }
             addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
                 item.studyPeriod, item.concentrates, item.concentratesBulletType, fonts, fmt)
             p.add(t)
@@ -673,21 +687,20 @@ class ResumePdfBuilder(private val context: Context) {
             return
         }
 
-        addSectionHeading(p, sectionTitle, fonts, fmt)
-        val table = itemTable()
-        addBulletContent(table, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
-        table.addCell(PdfPCell().apply {
+        val content = itemTable()
+        addBulletContent(content, sc4.declarationContent, sc4.declarationContentBulletType, fonts)
+        content.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
             colspan     = 2
             fixedHeight = 8f
         })
-        table.addCell(PdfPCell().apply {
+        content.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
             paddingTop = 2f
             addElement(Paragraph(sc4.date, fonts.subFont))
             addElement(Paragraph(sc4.place, fonts.subFont).apply { spacingBefore = 1f })
         })
-        table.addCell(PdfPCell().apply {
+        content.addCell(PdfPCell().apply {
             setBorder(Rectangle.NO_BORDER)
             paddingTop = 2f
             if (sigImg != null) {
@@ -704,7 +717,12 @@ class ResumePdfBuilder(private val context: Context) {
                 spacingBefore = 2f
             })
         })
-        p.add(table)
+        if (fmt == ResumeFormatType.GRAYSCALE) {
+            buildGrayscaleSection(p, sectionTitle, fonts, listOf(content))
+        } else {
+            addSectionHeading(p, sectionTitle, fonts, fmt)
+            p.add(content)
+        }
     }
 
     // ── SC5 – Paragraph ────────────────────────────────────────────────────────
@@ -720,10 +738,14 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
-        addSectionHeading(p, sectionTitle, fonts, fmt)
-        val table = itemTable()
-        addBulletContent(table, sc5.content, sc5.contentBulletType, fonts)
-        p.add(table)
+        val content = itemTable()
+        addBulletContent(content, sc5.content, sc5.contentBulletType, fonts)
+        if (fmt == ResumeFormatType.GRAYSCALE) {
+            buildGrayscaleSection(p, sectionTitle, fonts, listOf(content))
+        } else {
+            addSectionHeading(p, sectionTitle, fonts, fmt)
+            p.add(content)
+        }
     }
 
     // ── SC6 – Split Text ───────────────────────────────────────────────────────
@@ -745,11 +767,18 @@ class ResumePdfBuilder(private val context: Context) {
             buildHarvardSection(p, sectionTitle, fonts, splitTable()) { t -> fillSplitTable(t) }
             return
         }
+        if (fmt == ResumeFormatType.GRAYSCALE) {
+            if (items.isEmpty()) return
+            val content = splitTable()
+            fillSplitTable(content)
+            buildGrayscaleSection(p, sectionTitle, fonts, listOf(content))
+            return
+        }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         if (items.isEmpty()) return
-        val table = splitTable()
-        fillSplitTable(table)
-        p.add(table)
+        val content = splitTable()
+        fillSplitTable(content)
+        p.add(content)
     }
 
     // ── SC7 – Multiple Item Text ───────────────────────────────────────────────
@@ -769,12 +798,20 @@ class ResumePdfBuilder(private val context: Context) {
             }
             return
         }
+        if (fmt == ResumeFormatType.GRAYSCALE) {
+            val itemTables = items.map { item ->
+                itemTable().also { t ->
+                    if (item.contentTitle.isNotEmpty())    addBoldCell(t, item.contentTitle, fonts.subBoldFont)
+                    if (item.contentSubtitle.isNotEmpty()) t.addCell(noBorderCell(Phrase(item.contentSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
+                    addBulletContent(t, item.contentDetail, item.contentDetailBulletType, fonts)
+                }
+            }
+            buildGrayscaleSection(p, sectionTitle, fonts, itemTables)
+            return
+        }
         addSectionHeading(p, sectionTitle, fonts, fmt)
         items.forEachIndexed { index, item ->
-            val t = itemTable().also {
-                it.spacingBefore = 4f
-                it.spacingAfter  = 4f
-            }
+            val t = itemTable().also { it.spacingBefore = 4f; it.spacingAfter = 4f }
             if (item.contentTitle.isNotEmpty())    addBoldCell(t, item.contentTitle, fonts.subBoldFont)
             if (item.contentSubtitle.isNotEmpty()) t.addCell(noBorderCell(Phrase(item.contentSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
             addBulletContent(t, item.contentDetail, item.contentDetailBulletType, fonts)
@@ -995,6 +1032,38 @@ class ResumePdfBuilder(private val context: Context) {
 
     private fun itemTable(): PdfPTable =
         PdfPTable(floatArrayOf(10f, 5f)).apply { widthPercentage = 100f }
+
+    private fun buildGrayscaleSection(
+        p: Paragraph, sectionTitle: String, fonts: PdfFonts, items: List<PdfPTable>
+    ) {
+        p.add(PdfPTable(floatArrayOf(0.4f, 10f)).apply {
+            widthPercentage = 100f
+            spacingBefore   = 10f
+            spacingAfter    = 4f
+            // Single gray bar spanning title + all items as one continuous block
+            addCell(PdfPCell(Phrase("", fonts.subFont)).apply {
+                setBorder(Rectangle.NO_BORDER)
+                backgroundColor = colorGray
+                rowspan = 1 + items.size
+            })
+            // Title row (col 1)
+            addCell(PdfPCell(Phrase(sectionTitle, fonts.headingFont)).apply {
+                setBorder(Rectangle.NO_BORDER)
+                paddingLeft   = 8f
+                paddingTop    = 2f
+                paddingBottom = 4f
+            })
+            // Item rows (col 0 is spanned; only col 1 cells needed)
+            items.forEachIndexed { index, itemTable ->
+                addCell(PdfPCell(itemTable).apply {
+                    setBorder(Rectangle.NO_BORDER)
+                    setPadding(0f)
+                    paddingLeft = 8f
+                    if (index > 0) paddingTop = 6f
+                })
+            }
+        })
+    }
 
     private fun addBulletContent(
         table: PdfPTable, content: String, bulletType: String, fonts: PdfFonts
