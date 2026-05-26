@@ -496,7 +496,7 @@ class ResumePdfBuilder(private val context: Context) {
             }
             ResumeFormatType.FUNCTIONAL -> {
                 if (company.isNotEmpty()) addBoldCell(table, company, fonts.subBoldFont)
-                val left = joinNonEmpty(role, subtitle, ", ")
+                val left = joinNonEmpty(role, subtitle)
                 table.addCell(PdfPCell(Phrase(left, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
@@ -527,7 +527,7 @@ class ResumePdfBuilder(private val context: Context) {
                         paddingBottom = 1f
                     })
                 }
-                val roleSubtitle = joinNonEmpty(role, subtitle, ", ")
+                val roleSubtitle = joinNonEmpty(role, subtitle)
                 if (roleSubtitle.isNotEmpty()) {
                     table.addCell(noBorderCell(Phrase(roleSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
                 }
@@ -594,7 +594,7 @@ class ResumePdfBuilder(private val context: Context) {
                         paddingBottom = 1f
                     })
                 }
-                val degreeSubtitle = joinNonEmpty(degree, subtitle, ", ")
+                val degreeSubtitle = joinNonEmpty(degree, subtitle)
                 if (degreeSubtitle.isNotEmpty()) {
                     table.addCell(noBorderCell(Phrase(degreeSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
                 }
@@ -607,7 +607,7 @@ class ResumePdfBuilder(private val context: Context) {
             }
             ResumeFormatType.FUNCTIONAL -> {
                 if (school.isNotEmpty()) addBoldCell(table, school, fonts.subBoldFont)
-                val left = joinNonEmpty(degree, subtitle, ", ")
+                val left = joinNonEmpty(degree, subtitle)
                 table.addCell(PdfPCell(Phrase(left, fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
@@ -1091,8 +1091,8 @@ class ResumePdfBuilder(private val context: Context) {
             this.colspan = colspan
         }
 
-    private fun joinNonEmpty(a: String, b: String, separator: String): String = when {
-        a.isNotEmpty() && b.isNotEmpty() -> "$a$separator$b"
+    private fun joinNonEmpty(a: String, b: String): String = when {
+        a.isNotEmpty() && b.isNotEmpty() -> "$a, $b"
         a.isNotEmpty() -> a
         else -> b
     }
