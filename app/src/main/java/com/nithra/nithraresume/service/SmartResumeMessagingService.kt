@@ -52,6 +52,7 @@ class SmartResumeMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         serviceScope.launch {
             prefsManager.setV2FcmTokenSentToServer(false)
+            prefsManager.setV2FcmTokenId(token)
             apiRepository.registerFcmToken(token, firstOrUpdate = "first")
         }
     }
