@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.asAndroidPath
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
@@ -85,16 +86,24 @@ fun SignatureCanvas(
             .pointerInput(Unit) {
                 captureController.strokePx = 3.dp.toPx()
                 awaitEachGesture {
+                    val w = captureController.widthPx.toFloat()
+                    val h = captureController.heightPx.toFloat()
                     val down = awaitFirstDown()
                     currentPath.reset()
-                    currentPath.moveTo(down.position.x, down.position.y)
+                    currentPath.moveTo(
+                        down.position.x.coerceIn(0f, w),
+                        down.position.y.coerceIn(0f, h)
+                    )
                     revision++
                     while (true) {
                         val event = awaitPointerEvent()
                         if (event.changes.none { it.pressed }) break
                         event.changes.forEach { change ->
                             if (change.pressed) {
-                                currentPath.lineTo(change.position.x, change.position.y)
+                                currentPath.lineTo(
+                                    change.position.x.coerceIn(0f, w),
+                                    change.position.y.coerceIn(0f, h)
+                                )
                                 revision++
                                 change.consume()
                             }
@@ -109,11 +118,13 @@ fun SignatureCanvas(
         @Suppress("UNUSED_VARIABLE")
         val v = revision
         val style = Stroke(width = 3.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
-        for (path in captureController.completedPaths) {
-            drawPath(path, color = Color.DarkGray, style = style)
-        }
-        if (!currentPath.isEmpty) {
-            drawPath(currentPath, color = Color.DarkGray, style = style)
+        clipRect(0f, 0f, size.width, size.height) {
+            for (path in captureController.completedPaths) {
+                drawPath(path, color = Color.DarkGray, style = style)
+            }
+            if (!currentPath.isEmpty) {
+                drawPath(currentPath, color = Color.DarkGray, style = style)
+            }
         }
     }
 }
