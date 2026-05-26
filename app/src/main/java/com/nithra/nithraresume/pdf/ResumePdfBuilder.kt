@@ -392,44 +392,56 @@ class ResumePdfBuilder(private val context: Context) {
 
         if (photo != null) {
             photo.scaleAbsolute(60f, 60f)
+            val rowCount = 1 + contactLines.size
             val table = PdfPTable(floatArrayOf(11f, 2f)).apply {
                 widthPercentage = 100f
-                spacingAfter    = 4f
+                spacingAfter    = 6f
             }
             table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
-                horizontalAlignment = Element.ALIGN_CENTER
+                horizontalAlignment = Element.ALIGN_LEFT
                 setBorder(Rectangle.NO_BORDER)
-                paddingBottom = 2f
+                paddingLeft   = 8f
+                paddingTop    = 10f
+                paddingBottom = 4f
             })
             table.addCell(PdfPCell(photo).apply {
                 horizontalAlignment = Element.ALIGN_RIGHT
                 verticalAlignment   = Element.ALIGN_MIDDLE
                 setBorder(Rectangle.NO_BORDER)
-                rowspan = 1 + contactLines.size
+                rowspan       = rowCount
+                paddingRight  = 6f
+                paddingTop    = 6f
+                paddingBottom = 6f
             })
-            contactLines.forEach { line ->
+            contactLines.forEachIndexed { idx, line ->
                 table.addCell(PdfPCell(Phrase(line, fonts.subFont)).apply {
-                    horizontalAlignment = Element.ALIGN_CENTER
+                    horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
-                    paddingTop = 1f
+                    paddingLeft   = 8f
+                    paddingTop    = 2f
+                    paddingBottom = if (idx == contactLines.lastIndex) 10f else 2f
                 })
             }
             p.add(table)
         } else {
             val table = PdfPTable(1).apply {
                 widthPercentage = 100f
-                spacingAfter    = 4f
+                spacingAfter    = 6f
             }
             table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
-                horizontalAlignment = Element.ALIGN_CENTER
+                horizontalAlignment = Element.ALIGN_LEFT
                 setBorder(Rectangle.NO_BORDER)
-                paddingBottom = 2f
+                paddingLeft   = 8f
+                paddingTop    = 10f
+                paddingBottom = 4f
             })
-            contactLines.forEach { line ->
+            contactLines.forEachIndexed { idx, line ->
                 table.addCell(PdfPCell(Phrase(line, fonts.subFont)).apply {
-                    horizontalAlignment = Element.ALIGN_CENTER
+                    horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
-                    paddingTop = 1f
+                    paddingLeft   = 8f
+                    paddingTop    = 2f
+                    paddingBottom = if (idx == contactLines.lastIndex) 10f else 2f
                 })
             }
             p.add(table)
