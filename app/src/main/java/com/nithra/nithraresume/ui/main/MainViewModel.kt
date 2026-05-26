@@ -26,6 +26,7 @@ import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
+import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
 import com.nithra.nithraresume.utils.PrefsManager
 import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -110,6 +111,14 @@ private data class DummySc8Json(
     val sc8Address: String?, val sc8Content: String?
 )
 
+// ── Rate us exit event ─────────────────────────────────────────────────────────
+
+sealed class RateUsEvent {
+    data object TriggerExit          : RateUsEvent()
+    data object OpenPlayStore        : RateUsEvent()
+    data object ShowFeedbackThenExit : RateUsEvent()
+}
+
 // ── Migration state ────────────────────────────────────────────────────────────
 
 sealed class MigrationUiState {
@@ -142,14 +151,64 @@ class MainViewModel @Inject constructor(
             initialValue = 0
         )
 
-    val rateUsDone: StateFlow<Boolean> = prefsManager.v1RateUsDone
+    private val rateUsDone: StateFlow<Boolean> = prefsManager.v1RateUsDone
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
-    val resumeGeneratedCount: StateFlow<Int> = prefsManager.v2ResumeGeneratedCount
+    private val resumeGeneratedCount: StateFlow<Int> = prefsManager.v2ResumeGeneratedCount
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
 
-    fun markRateUsDone() {
+    private fun markRateUsDone() {
         viewModelScope.launch { prefsManager.setV1RateUsDone() }
+    }
+
+    private val _showDoYouLoveAppDialog = MutableStateFlow(false)
+    val showDoYouLoveAppDialog: StateFlow<Boolean> = _showDoYouLoveAppDialog
+
+    private val _showRateUs5StarsDialog = MutableStateFlow(false)
+    val showRateUs5StarsDialog: StateFlow<Boolean> = _showRateUs5StarsDialog
+
+    private val _rateUsEvent = MutableSharedFlow<RateUsEvent>(extraBufferCapacity = 1)
+    val rateUsEvent: SharedFlow<RateUsEvent> = _rateUsEvent.asSharedFlow()
+
+    fun onExitRequested() {
+        val count = resumeGeneratedCount.value
+        if (!rateUsDone.value && count >= GENERATE_COUNT_SHOW_RATE_US && count % 2 == 0) {
+            _showDoYouLoveAppDialog.value = true
+        } else {
+            viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.TriggerExit) }
+        }
+    }
+
+    fun onLoveItClicked() {
+        _showDoYouLoveAppDialog.value = false
+        _showRateUs5StarsDialog.value = true
+    }
+
+    fun onCouldBeBetterClicked() {
+        _showDoYouLoveAppDialog.value = false
+        viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.ShowFeedbackThenExit) }
+    }
+
+    fun onDoYouLoveAppDismissed() {
+        _showDoYouLoveAppDialog.value = false
+        viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.TriggerExit) }
+    }
+
+    fun onSureTakeMeThere() {
+        _showRateUs5StarsDialog.value = false
+        markRateUsDone()
+        viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.OpenPlayStore) }
+    }
+
+    fun onNoThanks() {
+        _showRateUs5StarsDialog.value = false
+        markRateUsDone()
+        viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.TriggerExit) }
+    }
+
+    fun onMaybeLater() {
+        _showRateUs5StarsDialog.value = false
+        viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.TriggerExit) }
     }
 
     private val _dummyProfileCreated = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
