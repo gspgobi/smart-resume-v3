@@ -207,7 +207,7 @@ class ResumePdfBuilder(private val context: Context) {
                 horizontalAlignment = Element.ALIGN_LEFT
                 verticalAlignment   = Element.ALIGN_MIDDLE
                 setBorder(Rectangle.NO_BORDER)
-                rowspan = 1 + contactValues.size  // name + contact rows; rule uses colspan=2 below
+                rowspan = 1 + contactValues.size
             })
             table.addCell(PdfPCell(Phrase(sc1.name, fonts.nameFont)).apply {
                 horizontalAlignment = Element.ALIGN_RIGHT
@@ -446,13 +446,6 @@ class ResumePdfBuilder(private val context: Context) {
             }
             p.add(table)
         }
-    }
-
-    private fun sc1Centered(p: Paragraph, sc1: SectionChild1, fonts: PdfFonts) {
-        val table = PdfPTable(1).apply { widthPercentage = 100f }
-        addNameCell(table, sc1.name, fonts.nameFont, Element.ALIGN_CENTER)
-        addContactRows(table, sc1, fonts, Element.ALIGN_CENTER)
-        p.add(table)
     }
 
     // ── SC2 – Work Experience ──────────────────────────────────────────────────
@@ -1091,26 +1084,6 @@ class ResumePdfBuilder(private val context: Context) {
                 addElement(para)
             })
         }
-    }
-
-    private fun addContactRows(table: PdfPTable, sc1: SectionChild1, fonts: PdfFonts, alignment: Int) {
-        listOf(sc1.address, sc1.phone, sc1.email).filter { it.isNotEmpty() }.forEach { value ->
-            table.addCell(PdfPCell(Phrase(value, fonts.addressFont)).apply {
-                horizontalAlignment = alignment
-                setBorder(Rectangle.NO_BORDER)
-            })
-        }
-    }
-
-    private fun addNameCell(table: PdfPTable, name: String, font: Font, alignment: Int) {
-        table.addCell(PdfPCell(Phrase(name, font)).apply {
-            horizontalAlignment = alignment
-            setBorder(Rectangle.NO_BORDER)
-        })
-    }
-
-    private fun addRuleCell(table: PdfPTable, colspan: Int, font: Font) {
-        table.addCell(ruleTopCell(font, colspan).apply { paddingBottom = 2f })
     }
 
     private fun ruleTopCell(font: Font, colspan: Int): PdfPCell =
