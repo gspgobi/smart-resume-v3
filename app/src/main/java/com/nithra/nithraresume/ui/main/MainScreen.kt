@@ -207,13 +207,13 @@ fun MainScreen(
     if (showDoYouLoveAppDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.onDoYouLoveAppDismissed() },
-            title = { Text("Do you love our app?") },
-            text  = { Text("Are you enjoying Smart Resume Builder? We'd love to hear how it's working for you!") },
+            title = { Text("Enjoying Smart Resume Builder?") },
+            text  = { Text("We'd love to hear how it's working for you — your feedback helps us keep improving!") },
             confirmButton = {
-                TextButton(onClick = { viewModel.onLoveItClicked() }) { Text("Yeah, I love it!") }
+                TextButton(onClick = { viewModel.onLoveItClicked() }) { Text("Love it! ❤️") }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text("It could be better") }
+                TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text("Could be better") }
             }
         )
     }
@@ -221,15 +221,15 @@ fun MainScreen(
     if (showRateUs5StarsDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.onMaybeLater() },
-            title = { Text("Rate us on Play Store") },
-            text  = { Text("A 5-star ⭐⭐⭐⭐⭐ rating helps us reach more users and keeps this app free.\n\nWould you take a moment to rate us on the Play Store? It means a lot! 🙏") },
+            title = { Text("Glad you love it! 🎉") },
+            text  = { Text("A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!") },
             confirmButton = {
-                TextButton(onClick = { viewModel.onSureTakeMeThere() }) { Text("Sure, take me there") }
+                TextButton(onClick = { viewModel.onSureTakeMeThere() }) { Text("Rate Now") }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { viewModel.onMaybeLater() }) { Text("Maybe later") }
-                    TextButton(onClick = { viewModel.onNoThanks() }) { Text("No, thanks") }
+                    TextButton(onClick = { viewModel.onMaybeLater() }) { Text("Later") }
+                    TextButton(onClick = { viewModel.onNoThanks() }) { Text("No thanks") }
                 }
             }
         )
@@ -747,16 +747,16 @@ private fun DoYouLoveAppDialogPreview() {
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    Text("Do you love our app?", style = MaterialTheme.typography.headlineSmall)
+                    Text("Enjoying Smart Resume Builder?", style = MaterialTheme.typography.headlineSmall)
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        "Are you enjoying Smart Resume Builder? We'd love to hear how it's working for you!",
+                        "We'd love to hear how it's working for you — your feedback helps us keep improving!",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(Modifier.height(24.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        TextButton(onClick = {}) { Text("It could be better") }
-                        TextButton(onClick = {}) { Text("Yeah, I love it!") }
+                        TextButton(onClick = {}) { Text("Could be better") }
+                        Button(onClick = {}) { Text("Love it! ❤️") }
                     }
                 }
             }
@@ -775,19 +775,19 @@ private fun RateUs5StarsDialogPreview() {
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
-                    Text("Rate us on Play Store", style = MaterialTheme.typography.headlineSmall)
+                    Text("Glad you love it! 🎉", style = MaterialTheme.typography.headlineSmall)
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        "A 5-star ⭐⭐⭐⭐⭐ rating helps us reach more users and keeps this app free.\n\nWould you take a moment to rate us on the Play Store? It means a lot! 🙏",
+                        "A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(Modifier.height(24.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Row {
-                            TextButton(onClick = {}) { Text("Maybe later") }
-                            TextButton(onClick = {}) { Text("No, thanks") }
+                            TextButton(onClick = {}) { Text("Later") }
+                            TextButton(onClick = {}) { Text("No thanks") }
                         }
-                        TextButton(onClick = {}) { Text("Sure, take me there") }
+                        Button(onClick = {}) { Text("Rate Now") }
                     }
                 }
             }
