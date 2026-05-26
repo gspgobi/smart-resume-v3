@@ -99,6 +99,7 @@ import com.nithra.nithraresume.ui.common.FeedbackDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
+import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
@@ -116,12 +117,17 @@ fun MainScreen(
 ) {
     val unreadCount by viewModel.unreadNotificationCount.collectAsStateWithLifecycle()
     val migrationState by viewModel.migrationState.collectAsStateWithLifecycle()
+    val rateUsDone by viewModel.rateUsDone.collectAsStateWithLifecycle()
+    val resumeGeneratedCount by viewModel.resumeGeneratedCount.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
+    var exitAfterFeedback by remember { mutableStateOf(false) }
+    var showDoYouLoveAppDialog by remember { mutableStateOf(false) }
+    var showRateUs5StarsDialog by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
     val permName = remember {
@@ -177,7 +183,13 @@ fun MainScreen(
 
     if (showFeedbackDialog) {
         FeedbackDialog(
-            onDismiss = { showFeedbackDialog = false },
+            onDismiss = {
+                showFeedbackDialog = false
+                if (exitAfterFeedback) {
+                    exitAfterFeedback = false
+                    onExitApp()
+                }
+            },
             onSend = { email, feedback ->
                 viewModel.sendFeedback(email, feedback)
                 scope.launch { snackbarHostState.showSnackbar("Thank you for your feedback!") }
@@ -185,7 +197,61 @@ fun MainScreen(
         )
     }
 
-    BackHandler(enabled = !drawerState.isOpen) { onExitApp() }
+    if (showDoYouLoveAppDialog) {
+        AlertDialog(
+            onDismissRequest = { showDoYouLoveAppDialog = false; onExitApp() },
+            title = { Text("Do you love our app?") },
+            text  = { Text("Thanks for using what we built - we're proud of it! Are you enjoying it so far?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDoYouLoveAppDialog = false
+                    showRateUs5StarsDialog = true
+                }) { Text("Yeah, I love it!") }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDoYouLoveAppDialog = false
+                    showFeedbackDialog = true
+                    exitAfterFeedback = true
+                }) { Text("It could be better") }
+            }
+        )
+    }
+
+    if (showRateUs5StarsDialog) {
+        AlertDialog(
+            onDismissRequest = { showRateUs5StarsDialog = false; onExitApp() },
+            title = { Text("Rate us on Play Store") },
+            text  = { Text("We're glad you're enjoying using our app!\n\nWould you mind giving us a 5 ⭐⭐⭐⭐⭐ rating for this free app? It really helps us out!\n\nThanks for your support. 😊") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showRateUs5StarsDialog = false
+                    viewModel.markRateUsDone()
+                    openPlayStore(context)
+                }) { Text("Sure, take me there") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = {
+                        showRateUs5StarsDialog = false
+                        onExitApp()
+                    }) { Text("Maybe later") }
+                    TextButton(onClick = {
+                        showRateUs5StarsDialog = false
+                        viewModel.markRateUsDone()
+                        onExitApp()
+                    }) { Text("No, thanks") }
+                }
+            }
+        )
+    }
+
+    BackHandler(enabled = !drawerState.isOpen) {
+        val showRateUs = !rateUsDone
+            && resumeGeneratedCount >= GENERATE_COUNT_SHOW_RATE_US
+            && resumeGeneratedCount % 2 == 0
+        if (showRateUs) showDoYouLoveAppDialog = true else onExitApp()
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
