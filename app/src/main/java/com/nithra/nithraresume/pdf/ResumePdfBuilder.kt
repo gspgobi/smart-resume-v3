@@ -474,7 +474,7 @@ class ResumePdfBuilder(private val context: Context) {
             return
         }
         addSectionHeading(p, sectionTitle, fonts, fmt)
-        items.forEachIndexed { index, item ->
+        items.forEach { item ->
             val t = itemTable().also { it.spacingBefore = 4f; it.spacingAfter = 4f }
             addWorkItemRows(t, item.workRole, item.companyName, item.subtitle,
                 item.workPeriod, item.accomplishments, item.accomplishmentsBulletType, fonts, fmt)
@@ -563,7 +563,7 @@ class ResumePdfBuilder(private val context: Context) {
             return
         }
         addSectionHeading(p, sectionTitle, fonts, fmt)
-        items.forEachIndexed { index, item ->
+        items.forEach { item ->
             val t = itemTable().also { it.spacingBefore = 4f; it.spacingAfter = 4f }
             addEducationItemRows(t, item.studyDegree, item.schoolName, item.subtitle,
                 item.studyPeriod, item.concentrates, item.concentratesBulletType, fonts, fmt)
@@ -798,7 +798,7 @@ class ResumePdfBuilder(private val context: Context) {
             return
         }
         addSectionHeading(p, sectionTitle, fonts, fmt)
-        items.forEachIndexed { index, item ->
+        items.forEach { item ->
             val t = itemTable().also { it.spacingBefore = 4f; it.spacingAfter = 4f }
             if (item.contentTitle.isNotEmpty())    addBoldCell(t, item.contentTitle, fonts.subBoldFont)
             if (item.contentSubtitle.isNotEmpty()) t.addCell(noBorderCell(Phrase(item.contentSubtitle, fonts.subFont), Element.ALIGN_LEFT, 2))
@@ -1053,7 +1053,7 @@ class ResumePdfBuilder(private val context: Context) {
             if (line.isBlank()) return@forEach
             val para = if (hasBullet) {
                 Paragraph("• $line", fonts.subFont).apply {
-                    setFirstLineIndent(-12f)
+                    firstLineIndent = -12f
                     indentationLeft = 12f
                 }
             } else {
@@ -1062,11 +1062,10 @@ class ResumePdfBuilder(private val context: Context) {
             para.setLeading(2f, 1.4f)
             table.addCell(PdfPCell().apply {
                 setBorder(Rectangle.NO_BORDER)
-                colspan      = 2
-                paddingTop   = 1f
-                paddingLeft  = 0f
+                colspan = 2
+                setPadding(0f)
+                paddingTop    = 1f
                 paddingBottom = 1f
-                paddingRight = 0f
                 addElement(para)
             })
         }
