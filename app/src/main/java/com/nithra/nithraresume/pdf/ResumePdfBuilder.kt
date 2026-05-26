@@ -534,10 +534,6 @@ class ResumePdfBuilder(private val context: Context) {
                 }
                 addBulletContent(table, content, bulletType, fonts)
             }
-            else -> {
-                addBoldCell(table, buildClassicItemLine(role, subtitle, company, period), fonts.subBoldFont)
-                addBulletContent(table, content, bulletType, fonts)
-            }
         }
     }
 
@@ -610,7 +606,7 @@ class ResumePdfBuilder(private val context: Context) {
                 addBoldCell(table, titleLine, fonts.subBoldFont)
                 addBulletContent(table, concentrates, bulletType, fonts)
             }
-            else -> {
+            ResumeFormatType.FUNCTIONAL -> {
                 if (school.isNotEmpty()) addBoldCell(table, school, fonts.subBoldFont)
                 val left = joinNonEmpty(degree, subtitle, ", ")
                 table.addCell(PdfPCell(Phrase(left, fonts.subFont)).apply {
@@ -1007,15 +1003,6 @@ class ResumePdfBuilder(private val context: Context) {
                     spacingBefore   = 10f
                     spacingAfter    = 2f
                     addCell(cell)
-                })
-            }
-            else -> {
-                val cell = noBorderCell(Phrase(title, fonts.headingFont), Element.ALIGN_LEFT, 2)
-                    .also { it.setLeading(2f, 1.5f) }
-                p.add(PdfPTable(floatArrayOf(10f, 5f)).apply {
-                    widthPercentage = 100f
-                    addCell(cell)
-                    addCell(ruleTopCell(fonts.subFont, colspan = 2))
                 })
             }
         }
