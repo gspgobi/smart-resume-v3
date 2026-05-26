@@ -152,10 +152,10 @@ class MainViewModel @Inject constructor(
         )
 
     private val rateUsDone: StateFlow<Boolean> = prefsManager.v1RateUsDone
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private val resumeGeneratedCount: StateFlow<Int> = prefsManager.v2ResumeGeneratedCount
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), 0)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, 0)
 
     private fun markRateUsDone() {
         viewModelScope.launch { prefsManager.setV1RateUsDone() }
