@@ -208,7 +208,7 @@ fun MainScreen(
         AlertDialog(
             onDismissRequest = { viewModel.onDoYouLoveAppDismissed() },
             title = { Text("Do you love our app?") },
-            text  = { Text("Thanks for using what we built - we're proud of it! Are you enjoying it so far?") },
+            text  = { Text("Are you enjoying Smart Resume Builder? We'd love to hear how it's working for you!") },
             confirmButton = {
                 TextButton(onClick = { viewModel.onLoveItClicked() }) { Text("Yeah, I love it!") }
             },
@@ -222,7 +222,7 @@ fun MainScreen(
         AlertDialog(
             onDismissRequest = { viewModel.onMaybeLater() },
             title = { Text("Rate us on Play Store") },
-            text  = { Text("We're glad you're enjoying using our app!\n\nWould you mind giving us a 5 ⭐⭐⭐⭐⭐ rating for this free app? It really helps us out!\n\nThanks for your support. 😊") },
+            text  = { Text("A 5-star ⭐⭐⭐⭐⭐ rating helps us reach more users and keeps this app free.\n\nWould you take a moment to rate us on the Play Store? It means a lot! 🙏") },
             confirmButton = {
                 TextButton(onClick = { viewModel.onSureTakeMeThere() }) { Text("Sure, take me there") }
             },
@@ -750,7 +750,7 @@ private fun DoYouLoveAppDialogPreview() {
                     Text("Do you love our app?", style = MaterialTheme.typography.headlineSmall)
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        "Thanks for using what we built - we're proud of it! Are you enjoying it so far?",
+                        "Are you enjoying Smart Resume Builder? We'd love to hear how it's working for you!",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(Modifier.height(24.dp))
@@ -778,7 +778,7 @@ private fun RateUs5StarsDialogPreview() {
                     Text("Rate us on Play Store", style = MaterialTheme.typography.headlineSmall)
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        "We're glad you're enjoying using our app!\n\nWould you mind giving us a 5 ⭐⭐⭐⭐⭐ rating for this free app? It really helps us out!\n\nThanks for your support. 😊",
+                        "A 5-star ⭐⭐⭐⭐⭐ rating helps us reach more users and keeps this app free.\n\nWould you take a moment to rate us on the Play Store? It means a lot! 🙏",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(Modifier.height(24.dp))
