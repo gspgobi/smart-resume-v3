@@ -2,6 +2,7 @@ package com.nithra.nithraresume.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.data.api.ApiService
 import dagger.Module
 import dagger.Provides
@@ -29,7 +30,8 @@ object NetworkModule {
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                    else HttpLoggingInterceptor.Level.NONE
         }
 
     @Provides
