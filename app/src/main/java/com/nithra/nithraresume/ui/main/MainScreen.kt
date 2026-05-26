@@ -210,7 +210,7 @@ fun MainScreen(
             title = { Text("Enjoying Smart Resume Builder?") },
             text  = { Text("We'd love to hear how it's working for you — your feedback helps us keep improving!") },
             confirmButton = {
-                TextButton(onClick = { viewModel.onLoveItClicked() }) { Text("Love it! ❤️") }
+                Button(onClick = { viewModel.onLoveItClicked() }) { Text("Love it! ❤️") }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text("Could be better") }
@@ -224,7 +224,7 @@ fun MainScreen(
             title = { Text("Glad you love it! 🎉") },
             text  = { Text("A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!") },
             confirmButton = {
-                TextButton(onClick = { viewModel.onSureTakeMeThere() }) { Text("Rate Now") }
+                Button(onClick = { viewModel.onSureTakeMeThere() }) { Text("Rate Now") }
             },
             dismissButton = {
                 Row {
