@@ -193,7 +193,7 @@ class ResumePdfBuilder(private val context: Context) {
         // Phone + email share one line; address gets its own line below
         val inline = listOf(sc1.phone, sc1.email).filter { it.isNotEmpty() }
         if (inline.isNotEmpty()) lines.add(inline.joinToString("  |  "))
-        if (sc1.address.isNotEmpty()) lines.add(sc1.address)
+        if (sc1.address.isNotEmpty()) lines.add(sc1.address.replace("\n", ""))
         return lines
     }
 
@@ -286,7 +286,7 @@ class ResumePdfBuilder(private val context: Context) {
                 })
             }
             if (sc1.address.isNotEmpty()) {
-                table.addCell(PdfPCell(Phrase(sc1.address, fonts.subFont)).apply {
+                table.addCell(PdfPCell(Phrase(sc1.address.replace("\n", ""), fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
                     paddingTop = 1f
@@ -311,7 +311,7 @@ class ResumePdfBuilder(private val context: Context) {
                 })
             }
             if (sc1.address.isNotEmpty()) {
-                table.addCell(PdfPCell(Phrase(sc1.address, fonts.subFont)).apply {
+                table.addCell(PdfPCell(Phrase(sc1.address.replace("\n", ""), fonts.subFont)).apply {
                     horizontalAlignment = Element.ALIGN_LEFT
                     setBorder(Rectangle.NO_BORDER)
                     paddingTop = 1f
