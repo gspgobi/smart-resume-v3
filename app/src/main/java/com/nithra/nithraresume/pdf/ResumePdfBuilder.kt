@@ -869,7 +869,7 @@ class ResumePdfBuilder(private val context: Context) {
                 })
             }
             ResumeFormatType.MODERN -> {
-                val cell = noBorderCell(Phrase(title, fonts.headingModernFont), Element.ALIGN_LEFT, 2)
+                val cell = noBorderCell(Phrase(title, fonts.headingFont), Element.ALIGN_LEFT, 2)
                     .also {
                         it.setLeading(2f, 1.5f)
                         it.paddingTop    = 2f
@@ -880,7 +880,7 @@ class ResumePdfBuilder(private val context: Context) {
                     spacingBefore   = 10f
                     spacingAfter    = 2f
                     addCell(cell)
-                    addCell(ruleTopCell(fonts.headingModernFont, colspan = 2))
+                    addCell(ruleTopCell(fonts.headingFont, colspan = 2))
                 })
             }
             ResumeFormatType.GRAYSCALE -> {
