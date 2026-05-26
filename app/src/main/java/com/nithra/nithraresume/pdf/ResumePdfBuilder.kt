@@ -41,7 +41,6 @@ class ResumePdfBuilder(private val context: Context) {
 
     private companion object { const val TAG = "ResumePdfBuilder" }
 
-    private val colorBlue    = BaseColor(51, 102, 153)
     private val colorGray    = BaseColor(192, 192, 192)
     private val colorPeachBg = BaseColor(247, 242, 223)
 
@@ -1147,22 +1146,19 @@ class ResumePdfBuilder(private val context: Context) {
     private data class PdfFonts(
         val nameFont: Font,
         val headingFont: Font,
-        val headingModernFont: Font,
         val subFont: Font,
         val subBoldFont: Font,
         val addressFont: Font
     )
 
     private fun buildFonts(baseFont: BaseFont, fontSize: Int): PdfFonts {
-        fun font(size: Float, style: Int, color: BaseColor? = null) =
-            if (color != null) Font(baseFont, size, style, color) else Font(baseFont, size, style)
+        fun font(size: Float, style: Int) = Font(baseFont, size, style)
         return PdfFonts(
-            nameFont          = font((fontSize + 12).toFloat(), Font.BOLD),
-            headingFont       = font((fontSize + 1).toFloat(),  Font.BOLD),
-            headingModernFont = font((fontSize + 1).toFloat(),  Font.BOLD, colorBlue),
-            subFont           = font(fontSize.toFloat(),         Font.NORMAL),
-            subBoldFont       = font(fontSize.toFloat(),         Font.BOLD),
-            addressFont       = font((fontSize - 2).coerceAtLeast(6).toFloat(), Font.ITALIC)
+            nameFont    = font((fontSize + 12).toFloat(), Font.BOLD),
+            headingFont = font((fontSize + 1).toFloat(),  Font.BOLD),
+            subFont     = font(fontSize.toFloat(),         Font.NORMAL),
+            subBoldFont = font(fontSize.toFloat(),         Font.BOLD),
+            addressFont = font((fontSize - 2).coerceAtLeast(6).toFloat(), Font.ITALIC)
         )
     }
 
