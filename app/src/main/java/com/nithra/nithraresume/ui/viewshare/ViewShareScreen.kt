@@ -484,7 +484,7 @@ private fun ViewShareNoPdfPreview() {
                         )
                     }
                 }
-                OutlinedButton(
+                Button(
                     onClick = {},
                     modifier = Modifier.fillMaxWidth()
                 ) {
