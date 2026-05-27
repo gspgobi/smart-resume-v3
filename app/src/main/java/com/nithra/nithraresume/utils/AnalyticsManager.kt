@@ -18,8 +18,9 @@ class AnalyticsManager @Inject constructor(
     private fun logEvent(name: String, bundle: Bundle?) {
         analytics.logEvent(name, bundle)
         if (BuildConfig.DEBUG) {
-            val keys = bundle?.keySet()?.joinToString() ?: ""
-            Log.d("Analytics", "event=$name keys=[$keys]")
+            @Suppress("DEPRECATION")
+            val params = bundle?.keySet()?.joinToString { "$it=${bundle.get(it)}" } ?: ""
+            Log.d("Analytics", "event=$name params=[$params]")
         }
     }
 
