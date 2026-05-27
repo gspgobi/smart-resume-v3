@@ -135,6 +135,7 @@ fun SectionChild6SubScreen(
                             onClick = {
                                 showOverflowMenu = false
                                 contentTitle = ""; contentDetail = ""
+                                viewModel.onClearAll()
                             }
                         )
                     }

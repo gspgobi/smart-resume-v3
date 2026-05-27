@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.data.api.ApiRepository
 import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionChild2
@@ -24,6 +25,7 @@ import com.nithra.nithraresume.data.repository.FcmRepository
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
@@ -139,7 +141,8 @@ class MainViewModel @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
     private val sectionHeadRepository: SectionHeadRepository,
     private val sectionChildRepository: SectionChildRepository,
-    private val prefsManager: PrefsManager
+    private val prefsManager: PrefsManager,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     /** Unread notification count — drives the bell badge in the TopAppBar. */
@@ -180,11 +183,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun onLoveItClicked() {
+        analyticsManager.logRateUsLoveIt()
         _showDoYouLoveAppDialog.value = false
         _showRateUs5StarsDialog.value = true
     }
 
     fun onCouldBeBetterClicked() {
+        analyticsManager.logRateUsCouldBeBetter()
         _showDoYouLoveAppDialog.value = false
         viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.ShowFeedbackThenExit) }
     }
@@ -195,18 +200,21 @@ class MainViewModel @Inject constructor(
     }
 
     fun onSureTakeMeThere() {
+        analyticsManager.logRateUsRateNow()
         _showRateUs5StarsDialog.value = false
         markRateUsDone()
         viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.OpenPlayStore) }
     }
 
     fun onNoThanks() {
+        analyticsManager.logRateUsNoThanks()
         _showRateUs5StarsDialog.value = false
         markRateUsDone()
         viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.TriggerExit) }
     }
 
     fun onMaybeLater() {
+        analyticsManager.logRateUsLater()
         _showRateUs5StarsDialog.value = false
         viewModelScope.launch { _rateUsEvent.emit(RateUsEvent.TriggerExit) }
     }
@@ -263,6 +271,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
                 prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                analyticsManager.logFileMigratePermissionDenied()
                 _migrationState.value = MigrationUiState.PermissionDenied
             }
         }
@@ -271,6 +280,7 @@ class MainViewModel @Inject constructor(
     private suspend fun runMigration() {
         val total = pendingPhotoCount + pendingSigCount
         var done  = 0
+        analyticsManager.logFileMigrateStarted()
         _migrationState.value = MigrationUiState.Running(done, total)
 
         withContext(Dispatchers.IO) {
@@ -320,10 +330,34 @@ class MainViewModel @Inject constructor(
             v1Base.deleteRecursively()
         }
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+        analyticsManager.logFileMigrateFinished()
         _migrationState.value = MigrationUiState.Finished
     }
 
+    fun onScreenOpened() {
+        viewModelScope.launch {
+            val isV3NewInstall = prefsManager.v3IsPerfectNewSrv3User.first()
+            val isV2NewInstall = prefsManager.v2IsPerfectNewSrv2User.first()
+            analyticsManager.setUserInstallType(isV3NewInstall, isV2NewInstall)
+            analyticsManager.logHomeScreenViewed(
+                isNewUser   = !isV2NewInstall,
+                versionCode = BuildConfig.VERSION_CODE,
+                versionName = BuildConfig.VERSION_NAME
+            )
+        }
+    }
+
+    fun onNavSampleResumesClicked() { analyticsManager.logNavSampleResumes() }
+    fun onNavNotificationsClicked() { analyticsManager.logNavNotifications() }
+    fun onNavResumeTipsClicked()    { analyticsManager.logNavResumeTips() }
+    fun onNavAppSettingsClicked()   { analyticsManager.logNavAppSettings() }
+    fun onNavFeedbackClicked()      { analyticsManager.logNavFeedback() }
+    fun onNavPrivacyPolicyClicked() { analyticsManager.logNavPrivacyPolicy() }
+    fun onNavRateUsClicked()        { analyticsManager.logNavRateUs() }
+    fun onNavInviteFriendsClicked() { analyticsManager.logNavInviteFriends() }
+
     fun sendFeedback(email: String, feedback: String) {
+        analyticsManager.logFeedbackSubmitted()
         viewModelScope.launch {
             apiRepository.postFeedback(feedback = feedback, email = email)
         }

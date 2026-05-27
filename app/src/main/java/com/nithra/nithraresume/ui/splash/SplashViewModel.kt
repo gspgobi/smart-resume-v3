@@ -133,6 +133,9 @@ class SplashViewModel @Inject constructor(
             createNewProfile()
         }
 
+        if (storedVersionCode == 0) {
+            analyticsManager.logFirstLaunch()
+        }
         if (storedVersionCode != currentVersionCode) {
             prefsManager.setV2CurrentAppVersionCode(currentVersionCode)
         }

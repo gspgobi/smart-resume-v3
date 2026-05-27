@@ -2,6 +2,7 @@ package com.nithra.nithraresume.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.PrefsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,13 +13,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppSettingsViewModel @Inject constructor(
-    private val prefsManager: PrefsManager
+    private val prefsManager: PrefsManager,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val notificationsEnabled: StateFlow<Boolean> = prefsManager.v1NotificationsEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
 
     fun setNotificationsEnabled(enabled: Boolean) {
-        viewModelScope.launch { prefsManager.setV1NotificationsEnabled(enabled) }
+        viewModelScope.launch {
+            prefsManager.setV1NotificationsEnabled(enabled)
+            analyticsManager.logAsNotifSwitch(enabled)
+        }
     }
 }

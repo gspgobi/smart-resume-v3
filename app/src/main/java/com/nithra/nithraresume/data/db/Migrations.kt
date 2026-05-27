@@ -17,8 +17,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  * Every table is recreated using the rename-create-copy-drop pattern.  fcm_data may or may not
  * have existed in the v2 build, so its existence is checked at runtime.
  */
+@Volatile var migrationRan1to2: Boolean = false
+
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
+        migrationRan1to2 = true
 
         // ── resume_format_base ────────────────────────────────────────────────
         db.execSQL("ALTER TABLE `resume_format_base` RENAME TO `resume_format_base_old`")

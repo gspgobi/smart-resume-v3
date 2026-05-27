@@ -7,6 +7,7 @@ import com.nithra.nithraresume.data.model.ResumeFormat
 import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.data.repository.ResumeFormatRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,7 +28,8 @@ sealed interface ResumeFormatUiState {
 class ResumeFormatViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val userProfileRepository: UserProfileRepository,
-    private val resumeFormatRepository: ResumeFormatRepository
+    private val resumeFormatRepository: ResumeFormatRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val profileId: Int = checkNotNull(savedStateHandle["profileId"])
@@ -62,10 +64,13 @@ class ResumeFormatViewModel @Inject constructor(
                 userProfileRepository.updateFormatSettings(
                     profileId, formatId, fontStyle, fontSize, backgroundColor
                 )
+                analyticsManager.logRfFormatSelect(formatId)
                 _uiState.value = ResumeFormatUiState.Saved
             } catch (e: Exception) {
                 _uiState.value = ResumeFormatUiState.Error(e.message ?: "Save failed")
             }
         }
     }
+
+    fun onPreviewClicked(formatId: Int) { analyticsManager.logRfFormatPreview(formatId) }
 }

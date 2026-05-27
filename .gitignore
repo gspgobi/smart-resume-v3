@@ -51,3 +51,5 @@ captures/
 # Keystore files
 keystore.properties
 smart-resume-key.jks
+# Google services Release configuration file
+app/src/release/google-services.json

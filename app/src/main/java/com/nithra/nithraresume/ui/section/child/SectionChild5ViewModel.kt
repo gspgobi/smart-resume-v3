@@ -7,6 +7,7 @@ import com.nithra.nithraresume.data.model.SectionChild5
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,8 @@ sealed interface Child5UiState {
 class SectionChild5ViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val sectionHeadAddedId: Int = checkNotNull(savedStateHandle["sectionHeadAddedId"])
@@ -40,6 +42,7 @@ class SectionChild5ViewModel @Inject constructor(
     val child5: StateFlow<SectionChild5?> = _child5.asStateFlow()
 
     fun resetState() { _uiState.value = Child5UiState.Ready }
+    fun onClearAll() { analyticsManager.logSc5ClearAll() }
 
     init {
         viewModelScope.launch {
@@ -69,6 +72,7 @@ class SectionChild5ViewModel @Inject constructor(
                     )
                 }
                 _sha.value = sectionHeadRepository.getAddedById(sectionHeadAddedId)
+                analyticsManager.logSc5Save()
                 _uiState.value = Child5UiState.Saved
             } catch (e: Exception) {
                 _uiState.value = Child5UiState.Error(e.message ?: "Save failed")

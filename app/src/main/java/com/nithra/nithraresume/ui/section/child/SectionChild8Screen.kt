@@ -147,6 +147,7 @@ fun SectionChild8Screen(
                                 showOverflowMenu = false
                                 focusManager.clearFocus()
                                 date = ""; address = ""; content = ""
+                                viewModel.onClearAll()
                             }
                         )
                     }

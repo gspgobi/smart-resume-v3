@@ -178,6 +178,7 @@ fun SectionChild4Screen(
                                 focusManager.clearFocus()
                                 declarationContent = ""; bulletType = BULLET_NONE
                                 date = ""; place = ""
+                                viewModel.onClearAll()
                             }
                         )
                     }
