@@ -113,6 +113,7 @@ class SectionChild1ViewModel @Inject constructor(
     }
 
     fun resetState() { _uiState.value = Child1UiState.Ready }
+    fun onClearAll() { analyticsManager.logSc1ClearAll() }
 
     // ── Image ─────────────────────────────────────────────────────────────────
 

@@ -54,6 +54,7 @@ class SectionChild4ViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     fun resetState() { _uiState.value = Child4UiState.Ready }
+    fun onClearAll() { analyticsManager.logSc4ClearAll() }
 
     init {
         viewModelScope.launch {
