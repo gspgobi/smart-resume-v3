@@ -336,9 +336,11 @@ class MainViewModel @Inject constructor(
 
     fun onScreenOpened() {
         viewModelScope.launch {
-            val isNewUser = !prefsManager.v2IsPerfectNewSrv2User.first()
+            val isV3NewInstall = prefsManager.v3IsPerfectNewSrv3User.first()
+            val isV2NewInstall = prefsManager.v2IsPerfectNewSrv2User.first()
+            analyticsManager.setUserInstallType(isV3NewInstall, isV2NewInstall)
             analyticsManager.logHomeScreenViewed(
-                isNewUser   = isNewUser,
+                isNewUser   = !isV2NewInstall,
                 versionCode = BuildConfig.VERSION_CODE,
                 versionName = BuildConfig.VERSION_NAME
             )

@@ -15,6 +15,13 @@ class AnalyticsManager @Inject constructor(
 ) {
     private val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
+    private fun setUserProperty(name: String, value: String) {
+        analytics.setUserProperty(name, value)
+        if (BuildConfig.DEBUG) {
+            Log.d("Analytics", "user_property $name=$value")
+        }
+    }
+
     private fun logEvent(name: String, bundle: Bundle?) {
         analytics.logEvent(name, bundle)
         if (BuildConfig.DEBUG) {
@@ -166,7 +173,16 @@ class AnalyticsManager @Inject constructor(
     fun setUserId(androidId: String) {
         if (androidId.isEmpty()) return
         analytics.setUserId(androidId)
-        analytics.setUserProperty("android_id", androidId)
+        setUserProperty("android_id", androidId)
+    }
+
+    fun setUserInstallType(isV3NewInstall: Boolean, isV2NewInstall: Boolean) {
+        val type = when {
+            isV3NewInstall -> "srv3"
+            isV2NewInstall -> "srv2"
+            else           -> "srv1"
+        }
+        setUserProperty("user_install_type", type)
     }
 
     // ── Screen view ───────────────────────────────────────────────────────────
