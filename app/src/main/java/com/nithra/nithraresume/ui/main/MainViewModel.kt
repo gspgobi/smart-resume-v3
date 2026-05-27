@@ -271,6 +271,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
                 prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                analyticsManager.logFileMigratePermissionDenied()
                 _migrationState.value = MigrationUiState.PermissionDenied
             }
         }
@@ -279,6 +280,7 @@ class MainViewModel @Inject constructor(
     private suspend fun runMigration() {
         val total = pendingPhotoCount + pendingSigCount
         var done  = 0
+        analyticsManager.logFileMigrateStarted()
         _migrationState.value = MigrationUiState.Running(done, total)
 
         withContext(Dispatchers.IO) {
@@ -328,6 +330,7 @@ class MainViewModel @Inject constructor(
             v1Base.deleteRecursively()
         }
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+        analyticsManager.logFileMigrateFinished()
         _migrationState.value = MigrationUiState.Finished
     }
 
