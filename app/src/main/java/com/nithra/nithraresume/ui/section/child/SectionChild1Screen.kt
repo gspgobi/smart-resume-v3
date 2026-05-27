@@ -218,6 +218,7 @@ fun SectionChild1Screen(
                                 focusManager.clearFocus()
                                 name = ""; address = ""; email = ""; phone = ""
                                 gender = ""; dob = ""; nationality = ""
+                                viewModel.onClearAll()
                             }
                         )
                     }

@@ -154,6 +154,7 @@ fun SectionChild3SubScreen(
                                 showOverflowMenu = false
                                 studyDegree = ""; schoolName = ""; subtitle = ""
                                 studyPeriod = ""; concentrates = ""; bulletType = BULLET_NONE
+                                viewModel.onClearAll()
                             }
                         )
                     }

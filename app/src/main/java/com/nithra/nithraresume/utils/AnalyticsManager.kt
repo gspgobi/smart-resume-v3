@@ -117,6 +117,16 @@ class AnalyticsManager @Inject constructor(
         // ── Section Child 8 (SC8) ─────────────────────────────────────────────
         private const val EVENT_SC8_SAVE             = "sc8_save_interacted"
 
+        // ── Clear All ─────────────────────────────────────────────────────────
+        private const val EVENT_SC1_CLEAR_ALL        = "sc1_clear_all_interacted"
+        private const val EVENT_SC2SUB_CLEAR_ALL     = "sc2sub_clear_all_interacted"
+        private const val EVENT_SC3SUB_CLEAR_ALL     = "sc3sub_clear_all_interacted"
+        private const val EVENT_SC4_CLEAR_ALL        = "sc4_clear_all_interacted"
+        private const val EVENT_SC5_CLEAR_ALL        = "sc5_clear_all_interacted"
+        private const val EVENT_SC6SUB_CLEAR_ALL     = "sc6sub_clear_all_interacted"
+        private const val EVENT_SC7SUB_CLEAR_ALL     = "sc7sub_clear_all_interacted"
+        private const val EVENT_SC8_CLEAR_ALL        = "sc8_clear_all_interacted"
+
         // ── Param keys ────────────────────────────────────────────────────────
         private const val PARAM_SCREEN_NAME          = "screen_name"
         private const val PARAM_IS_NEW_USER          = "is_new_user"
@@ -331,5 +341,16 @@ class AnalyticsManager @Inject constructor(
 
     // ── Section Child 8 ───────────────────────────────────────────────────────
 
-    fun logSc8Save() = analytics.logEvent(EVENT_SC8_SAVE, null)
+    fun logSc8Save()      = analytics.logEvent(EVENT_SC8_SAVE, null)
+    fun logSc8ClearAll()  = analytics.logEvent(EVENT_SC8_CLEAR_ALL, null)
+
+    // ── Clear All ─────────────────────────────────────────────────────────────
+
+    fun logSc1ClearAll()    = analytics.logEvent(EVENT_SC1_CLEAR_ALL, null)
+    fun logSc2SubClearAll() = analytics.logEvent(EVENT_SC2SUB_CLEAR_ALL, null)
+    fun logSc3SubClearAll() = analytics.logEvent(EVENT_SC3SUB_CLEAR_ALL, null)
+    fun logSc4ClearAll()    = analytics.logEvent(EVENT_SC4_CLEAR_ALL, null)
+    fun logSc5ClearAll()    = analytics.logEvent(EVENT_SC5_CLEAR_ALL, null)
+    fun logSc6SubClearAll() = analytics.logEvent(EVENT_SC6SUB_CLEAR_ALL, null)
+    fun logSc7SubClearAll() = analytics.logEvent(EVENT_SC7SUB_CLEAR_ALL, null)
 }

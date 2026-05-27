@@ -156,6 +156,7 @@ fun SectionChild5Screen(
                                 showOverflowMenu = false
                                 focusManager.clearFocus()
                                 content = ""; bulletType = BULLET_NONE
+                                viewModel.onClearAll()
                             }
                         )
                     }

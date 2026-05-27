@@ -38,6 +38,7 @@ class SectionChild3SubViewModel @Inject constructor(
     val item: StateFlow<SectionChild3?> = _item.asStateFlow()
 
     fun resetState() { _uiState.value = Child3SubUiState.Ready }
+    fun onClearAll() { analyticsManager.logSc3SubClearAll() }
 
     init {
         viewModelScope.launch {
