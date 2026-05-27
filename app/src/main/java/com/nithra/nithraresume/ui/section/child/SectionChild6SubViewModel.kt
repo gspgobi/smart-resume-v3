@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.model.SectionChild6
 import com.nithra.nithraresume.data.repository.SectionChildRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +23,8 @@ sealed interface Child6SubUiState {
 @HiltViewModel
 class SectionChild6SubViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val sectionHeadAddedId: Int = checkNotNull(savedStateHandle["sectionHeadAddedId"])
@@ -63,6 +65,7 @@ class SectionChild6SubViewModel @Inject constructor(
                         )
                     )
                 }
+                analyticsManager.logSc6SubSave()
                 _uiState.value = Child6SubUiState.Saved
             } catch (e: Exception) {
                 _uiState.value = Child6SubUiState.Error(e.message ?: "Save failed")

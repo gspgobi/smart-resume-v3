@@ -9,6 +9,7 @@ import com.nithra.nithraresume.data.model.SectionChild4
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.SrDir
 import com.nithra.nithraresume.utils.SrImagePrefix
 import com.nithra.nithraresume.utils.SrImageSuffix
@@ -36,7 +37,8 @@ class SectionChild4ViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val sectionHeadAddedId: Int = checkNotNull(savedStateHandle["sectionHeadAddedId"])
@@ -100,6 +102,7 @@ class SectionChild4ViewModel @Inject constructor(
                     )
                 }
                 _sha.value = sectionHeadRepository.getAddedById(sectionHeadAddedId)
+                analyticsManager.logSc4Save()
                 _uiState.value = Child4UiState.Saved
             } catch (e: Exception) {
                 _uiState.value = Child4UiState.Error(e.message ?: "Save failed")
@@ -123,6 +126,7 @@ class SectionChild4ViewModel @Inject constructor(
                         isSignatureImageEnable = true
                     )
                 )
+                analyticsManager.logSc4NewSignature()
             } catch (e: Exception) {
                 _uiState.value = Child4UiState.Error("Failed to save signature")
             }
@@ -136,6 +140,7 @@ class SectionChild4ViewModel @Inject constructor(
             sectionChildRepository.updateChild4(
                 existing.copy(signatureImagePath = "", isSignatureImageEnable = false)
             )
+            analyticsManager.logSc4DeleteSignature()
         }
     }
 

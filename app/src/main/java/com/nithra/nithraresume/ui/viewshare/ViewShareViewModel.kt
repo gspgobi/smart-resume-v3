@@ -8,6 +8,7 @@ import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.data.repository.UserProfileRepository
 import com.nithra.nithraresume.data.api.ApiRepository
 import com.nithra.nithraresume.utils.AdMobManager
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.DOT_PDF
 import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_AD
 import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
@@ -36,7 +37,8 @@ class ViewShareViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userProfileRepository: UserProfileRepository,
     private val apiRepository: ApiRepository,
-    private val prefsManager: PrefsManager
+    private val prefsManager: PrefsManager,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val profileId: Int = checkNotNull(savedStateHandle["profileId"])
@@ -94,6 +96,11 @@ class ViewShareViewModel @Inject constructor(
         }
         load()
     }
+
+    fun onViewFile()   { analyticsManager.logVsFileView() }
+    fun onShareFile()  { analyticsManager.logVsFileShare() }
+    fun onRenameFile() { analyticsManager.logVsFileRename() }
+    fun onDeleteFile() { analyticsManager.logVsFileDelete() }
 
     fun reload() { load() }
 

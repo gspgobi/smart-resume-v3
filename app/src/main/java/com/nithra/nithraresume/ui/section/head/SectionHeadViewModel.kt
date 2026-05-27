@@ -11,6 +11,7 @@ import com.nithra.nithraresume.data.repository.ResumeFormatRepository
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import com.nithra.nithraresume.utils.SHSD_GROUP_CUSTOM
@@ -37,7 +38,8 @@ class SectionHeadViewModel @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
     private val resumeFormatRepository: ResumeFormatRepository,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val profileId: Int = checkNotNull(savedStateHandle["profileId"])
@@ -146,6 +148,8 @@ class SectionHeadViewModel @Inject constructor(
                         indexPosition = nextPosition
                     )
                 )
+                if (sample.sectionHeadGroupBaseId == GROUP_ID_SECTIONS) analyticsManager.logShaAddNewSection()
+                else analyticsManager.logShaAddNewAddon()
             } catch (e: Exception) {
                 _uiEvent.value = SectionHeadUiEvent.Error(e.message ?: "Failed to add section")
             }
@@ -156,7 +160,10 @@ class SectionHeadViewModel @Inject constructor(
 
     fun toggleEnable(sha: SectionHeadAdded) {
         viewModelScope.launch {
-            sectionHeadRepository.updateAddedIsEnable(sha.id, !sha.isEnable)
+            val newEnabled = !sha.isEnable
+            sectionHeadRepository.updateAddedIsEnable(sha.id, newEnabled)
+            if (sha.groupBaseId == GROUP_ID_SECTIONS) analyticsManager.logShaEnableDisableSection(newEnabled)
+            else analyticsManager.logShaEnableDisableAddon(newEnabled)
         }
     }
 
@@ -174,11 +181,17 @@ class SectionHeadViewModel @Inject constructor(
                         sectionHeadRepository.updateAddedPosition(item.id, item.indexPosition - 1)
                     }
                 sectionHeadRepository.deleteAdded(sha)
+                if (sha.groupBaseId == GROUP_ID_SECTIONS) analyticsManager.logShaDeleteSection(sha.headBaseId)
+                else analyticsManager.logShaDeleteAddon(sha.headBaseId)
             } catch (e: Exception) {
                 _uiEvent.value = SectionHeadUiEvent.Error(e.message ?: "Failed to delete section")
             }
         }
     }
+
+    fun onResumeFormatClicked()   { analyticsManager.logShaResumeFormat() }
+    fun onGenerateResumeClicked() { analyticsManager.logShaGenerateResume() }
+    fun onViewShareClicked()      { analyticsManager.logShaViewShare() }
 
     private suspend fun deleteChildData(sectionHeadAddedId: Int) = coroutineScope {
         launch { sectionChildRepository.deleteChild1(sectionHeadAddedId) }
