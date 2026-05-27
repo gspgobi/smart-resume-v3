@@ -71,7 +71,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.ui.common.SectionDivider
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
@@ -80,6 +79,7 @@ import com.nithra.nithraresume.utils.ALL_GENDERS
 import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -487,7 +487,7 @@ private fun UserImageSection(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 1 - Empty")
+@AppPreview
 @Composable
 private fun SectionChild1EmptyPreview() {
     SmartResumeTheme {
@@ -565,7 +565,7 @@ private fun SectionChild1EmptyPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 1 - Filled")
+@AppPreview
 @Composable
 private fun SectionChild1FilledPreview() {
     SmartResumeTheme {
@@ -643,7 +643,7 @@ private fun SectionChild1FilledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Divider")
+@AppPreview
 @Composable
 private fun SectionDividerPreview() {
     SmartResumeTheme {
@@ -656,7 +656,7 @@ private fun SectionDividerPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "User Image Section - No Image")
+@AppPreview
 @Composable
 private fun UserImageSectionNoImagePreview() {
     SmartResumeTheme {

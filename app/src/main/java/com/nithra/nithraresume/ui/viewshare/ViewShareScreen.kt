@@ -51,7 +51,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -75,6 +74,7 @@ import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.FileUtils
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -331,15 +331,19 @@ fun ViewShareScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    OutlinedButton(
-                        onClick = {
-                            navController.navigate(
-                                Screen.GenerateResume.createRoute(viewModel.profileId)
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(if (pdfFile != null) "Regenerate" else "Generate Resume")
+                    val onGenerate = {
+                        navController.navigate(
+                            Screen.GenerateResume.createRoute(viewModel.profileId)
+                        )
+                    }
+                    if (pdfFile != null) {
+                        OutlinedButton(onClick = onGenerate, modifier = Modifier.fillMaxWidth()) {
+                            Text("Regenerate")
+                        }
+                    } else {
+                        Button(onClick = onGenerate, modifier = Modifier.fillMaxWidth()) {
+                            Text("Generate Resume")
+                        }
                     }
                 }
             }
@@ -415,7 +419,7 @@ private fun sharePdf(context: android.content.Context, file: File) {
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "View Share - No PDF")
+@AppPreview
 @Composable
 private fun ViewShareNoPdfPreview() {
     SmartResumeTheme {
@@ -480,7 +484,7 @@ private fun ViewShareNoPdfPreview() {
                         )
                     }
                 }
-                OutlinedButton(
+                Button(
                     onClick = {},
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -492,7 +496,7 @@ private fun ViewShareNoPdfPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "View Share - With PDF")
+@AppPreview
 @Composable
 private fun ViewShareWithPdfPreview() {
     SmartResumeTheme {

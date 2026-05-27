@@ -22,7 +22,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,7 +118,7 @@ private fun SettingsSwitchRow(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Settings Screen")
+@AppPreview
 @Composable
 private fun AppSettingsScreenPreview() {
     SmartResumeTheme {
@@ -163,7 +163,7 @@ private fun AppSettingsScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Settings Switch Row - On")
+@AppPreview
 @Composable
 private fun SettingsSwitchRowOnPreview() {
     SmartResumeTheme {
@@ -183,7 +183,7 @@ private fun SettingsSwitchRowOnPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Settings Switch Row - Off")
+@AppPreview
 @Composable
 private fun SettingsSwitchRowOffPreview() {
     SmartResumeTheme {

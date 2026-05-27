@@ -58,12 +58,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -362,7 +362,7 @@ private val previewChild2Items = listOf(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 2 - Empty")
+@AppPreview
 @Composable
 private fun SectionChild2EmptyPreview() {
     SmartResumeTheme {
@@ -426,7 +426,7 @@ private fun SectionChild2EmptyPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 2 - With Items")
+@AppPreview
 @Composable
 private fun SectionChild2FilledPreview() {
     SmartResumeTheme {
@@ -493,7 +493,7 @@ private fun SectionChild2FilledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Child2 List Item")
+@AppPreview
 @Composable
 private fun Child2ListItemPreview() {
     SmartResumeTheme {
@@ -512,13 +512,13 @@ private fun Child2ListItemPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Child2 Group Header - No Edit")
+@AppPreview
 @Composable
 private fun Child2GroupHeaderNoEditPreview() {
     SmartResumeTheme { Child2GroupHeader(title = "Entries") }
 }
 
-@Preview(showBackground = true, name = "Child2 Group Header - With Edit")
+@AppPreview
 @Composable
 private fun Child2GroupHeaderWithEditPreview() {
     SmartResumeTheme { Child2GroupHeader(title = "Entries", onEditClick = {}) }

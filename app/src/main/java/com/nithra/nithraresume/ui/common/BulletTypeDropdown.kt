@@ -13,7 +13,6 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nithra.nithraresume.utils.ALL_BULLET_TYPES
 import com.nithra.nithraresume.utils.BULLET_NONE
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,7 +126,7 @@ fun BulletTypeDropdown(
     }
 }
 
-@Preview(showBackground = true, name = "Bullet Dropdown - Default")
+@AppPreview
 @Composable
 private fun BulletTypeDropdownDefaultPreview() {
     SmartResumeTheme {
@@ -138,7 +138,7 @@ private fun BulletTypeDropdownDefaultPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Bullet Dropdown - With Label")
+@AppPreview
 @Composable
 private fun BulletTypeDropdownWithLabelPreview() {
     SmartResumeTheme {

@@ -48,7 +48,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,6 +56,7 @@ import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -139,23 +139,12 @@ fun GenerateResumeScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         when {
-            isGenerating -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.size(56.dp))
-                        Text("Generating your resume…", style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-            }
+            isGenerating -> GeneratingContent(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(innerPadding)
+            )
             isLoading -> {
                 Box(
                     modifier = Modifier
@@ -335,6 +324,19 @@ fun GenerateResumeScreen(
 }
 
 @Composable
+private fun GeneratingContent(modifier: Modifier = Modifier) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            CircularProgressIndicator(modifier = Modifier.size(56.dp))
+            Text("Generating your resume…", style = MaterialTheme.typography.bodyLarge)
+        }
+    }
+}
+
+@Composable
 private fun GenerateWithRow(
     label: String,
     hint: String,
@@ -412,73 +414,56 @@ private fun SettingsInfoRow(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "GenerateResume - Generating")
+@Composable
+private fun PreviewGenerateScaffold(
+    backEnabled: Boolean = true,
+    content: @Composable (PaddingValues) -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Generate Resume") },
+                navigationIcon = {
+                    IconButton(onClick = {}, enabled = backEnabled) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        },
+        content = content
+    )
+}
+
+@AppPreview
 @Composable
 private fun GenerateResumeGeneratingPreview() {
     SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Generate Resume") },
-                    navigationIcon = {
-                        IconButton(onClick = {}, enabled = false) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
-            Box(
+        PreviewGenerateScaffold(backEnabled = false) { padding ->
+            GeneratingContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.size(56.dp))
-                    Text("Generating your resume…", style = MaterialTheme.typography.bodyLarge)
-                }
-            }
+                    .padding(padding)
+            )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "GenerateResume - Ready")
+@AppPreview
 @Composable
 private fun GenerateResumeReadyPreview() {
     SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Generate Resume") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
+        PreviewGenerateScaffold { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(innerPadding)
+                    .padding(padding)
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -506,9 +491,7 @@ private fun GenerateResumeReadyPreview() {
                 }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
-                    )
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column {
                         SettingsInfoRow("Resume Format", "Classic", showChevron = true)
@@ -520,9 +503,7 @@ private fun GenerateResumeReadyPreview() {
                         SettingsInfoRow("Background", "White")
                     }
                 }
-                Button(
-                    onClick = {}, modifier = Modifier.fillMaxWidth().height(52.dp)
-                ) {
+                Button(onClick = {}, modifier = Modifier.fillMaxWidth().height(52.dp)) {
                     Text("Generate Resume", style = MaterialTheme.typography.titleMedium)
                 }
             }
@@ -530,33 +511,16 @@ private fun GenerateResumeReadyPreview() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "GenerateResume - Ready with Photo & Signature")
+@AppPreview
 @Composable
 private fun GenerateResumeReadyWithOptionsPreview() {
     SmartResumeTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Generate Resume") },
-                    navigationIcon = {
-                        IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        ) { innerPadding ->
+        PreviewGenerateScaffold { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(innerPadding)
+                    .padding(padding)
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -584,9 +548,7 @@ private fun GenerateResumeReadyWithOptionsPreview() {
                 }
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
-                    )
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column {
                         SettingsInfoRow("Resume Format", "Modern", showChevron = true)
@@ -602,27 +564,15 @@ private fun GenerateResumeReadyWithOptionsPreview() {
                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant
-                    )
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column {
-                        GenerateWithRow(
-                            label = "User Photo",
-                            hint = "Photo added",
-                            checked = true, enabled = true, onCheckedChange = {}
-                        )
+                        GenerateWithRow("User Photo", "Photo added", checked = true, enabled = true, onCheckedChange = {})
                         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                        GenerateWithRow(
-                            label = "Signature",
-                            hint = "No signature added — add one in Declaration section",
-                            checked = false, enabled = false, onCheckedChange = {}
-                        )
+                        GenerateWithRow("Signature", "No signature added — add one in Declaration section", checked = false, enabled = false, onCheckedChange = {})
                     }
                 }
-                Button(
-                    onClick = {}, modifier = Modifier.fillMaxWidth().height(52.dp)
-                ) {
+                Button(onClick = {}, modifier = Modifier.fillMaxWidth().height(52.dp)) {
                     Text("Generate Resume", style = MaterialTheme.typography.titleMedium)
                 }
             }

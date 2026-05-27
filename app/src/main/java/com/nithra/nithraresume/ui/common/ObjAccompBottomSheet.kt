@@ -21,7 +21,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +39,7 @@ import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 // ── JSON data classes ─────────────────────────────────────────────────────────
 
@@ -142,7 +142,7 @@ fun ObjAccompBottomSheet(
 
 // ── Asset loader ──────────────────────────────────────────────────────────────
 
-@Preview(showBackground = true)
+@AppPreview
 @Composable
 private fun ObjAccompBottomSheetPreview() {
     SmartResumeTheme {
