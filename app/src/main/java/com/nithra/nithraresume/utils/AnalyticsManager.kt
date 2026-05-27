@@ -117,6 +117,12 @@ class AnalyticsManager @Inject constructor(
         // ── Section Child 8 (SC8) ─────────────────────────────────────────────
         private const val EVENT_SC8_SAVE             = "sc8_save_interacted"
 
+        // ── Migration (SRV2 → SRV3) ───────────────────────────────────────────
+        private const val EVENT_FILE_MIGRATE_STARTED          = "srv2_to_srv3_file_migrate_started"
+        private const val EVENT_FILE_MIGRATE_FINISHED         = "srv2_to_srv3_file_migrate_finished"
+        private const val EVENT_FILE_MIGRATE_PERMISSION_DENIED = "srv2_to_srv3_file_migrate_permission_denied"
+        private const val EVENT_DB_MIGRATE_1_TO_2_FINISHED    = "srv2_to_srv3_db_migrate_finished"
+
         // ── Clear All ─────────────────────────────────────────────────────────
         private const val EVENT_SC1_CLEAR_ALL        = "sc1_clear_all_interacted"
         private const val EVENT_SC2SUB_CLEAR_ALL     = "sc2sub_clear_all_interacted"
@@ -343,6 +349,13 @@ class AnalyticsManager @Inject constructor(
 
     fun logSc8Save()      = analytics.logEvent(EVENT_SC8_SAVE, null)
     fun logSc8ClearAll()  = analytics.logEvent(EVENT_SC8_CLEAR_ALL, null)
+
+    // ── Migration ─────────────────────────────────────────────────────────────
+
+    fun logFileMigrateStarted()          = analytics.logEvent(EVENT_FILE_MIGRATE_STARTED, null)
+    fun logFileMigrateFinished()         = analytics.logEvent(EVENT_FILE_MIGRATE_FINISHED, null)
+    fun logFileMigratePermissionDenied() = analytics.logEvent(EVENT_FILE_MIGRATE_PERMISSION_DENIED, null)
+    fun logDbMigrate1to2Finished()       = analytics.logEvent(EVENT_DB_MIGRATE_1_TO_2_FINISHED, null)
 
     // ── Clear All ─────────────────────────────────────────────────────────────
 
