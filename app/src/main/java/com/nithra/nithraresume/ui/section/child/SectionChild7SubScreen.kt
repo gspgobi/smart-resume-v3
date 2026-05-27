@@ -145,6 +145,7 @@ fun SectionChild7SubScreen(
                                 showOverflowMenu = false
                                 contentTitle = ""; contentSubtitle = ""
                                 contentDetail = ""; bulletType = BULLET_NONE
+                                viewModel.onClearAll()
                             }
                         )
                     }

@@ -150,6 +150,7 @@ fun SectionChild2SubScreen(
                                 showOverflowMenu = false
                                 workRole = ""; companyName = ""; subtitle = ""
                                 workPeriod = ""; accomplishments = ""; bulletType = BULLET_NONE
+                                viewModel.onClearAll()
                             }
                         )
                     }

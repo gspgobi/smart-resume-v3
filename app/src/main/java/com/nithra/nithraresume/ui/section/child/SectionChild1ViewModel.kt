@@ -9,6 +9,7 @@ import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.SrDir
 import com.nithra.nithraresume.utils.SrImagePrefix
 import com.nithra.nithraresume.utils.SrImageSuffix
@@ -33,7 +34,8 @@ class SectionChild1ViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val sectionHeadAddedId: Int = checkNotNull(savedStateHandle["sectionHeadAddedId"])
@@ -102,6 +104,7 @@ class SectionChild1ViewModel @Inject constructor(
 
                 // Reload sha to reflect updated title
                 _sha.value = sectionHeadRepository.getAddedById(sectionHeadAddedId)
+                analyticsManager.logSc1Save()
                 _uiState.value = Child1UiState.Saved
             } catch (e: Exception) {
                 _uiState.value = Child1UiState.Error(e.message ?: "Save failed")
@@ -110,6 +113,7 @@ class SectionChild1ViewModel @Inject constructor(
     }
 
     fun resetState() { _uiState.value = Child1UiState.Ready }
+    fun onClearAll() { analyticsManager.logSc1ClearAll() }
 
     // ── Image ─────────────────────────────────────────────────────────────────
 
@@ -128,6 +132,7 @@ class SectionChild1ViewModel @Inject constructor(
                 )
                 sectionChildRepository.updateChild1(updated)
                 _child1.value = updated
+                analyticsManager.logSc1BrowseImage()
             } catch (e: Exception) {
                 _uiState.value = Child1UiState.Error("Failed to save image")
             }
@@ -141,6 +146,7 @@ class SectionChild1ViewModel @Inject constructor(
             val updated = existing.copy(userImagePath = "", isUserImageEnable = false)
             sectionChildRepository.updateChild1(updated)
             _child1.value = updated
+            analyticsManager.logSc1DeleteImage()
         }
     }
 

@@ -9,6 +9,7 @@ import com.nithra.nithraresume.data.repository.ResumeFormatRepository
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.MAX_PROFILES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,7 +36,8 @@ class UserProfileViewModel @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
     private val resumeFormatRepository: ResumeFormatRepository,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val dummyCreated: Boolean = savedStateHandle.get<Boolean>("dummyCreated") ?: false
@@ -114,6 +116,7 @@ class UserProfileViewModel @Inject constructor(
                         )
                     )
                 }
+                analyticsManager.logProfileCreated(isFromSample = false)
                 _uiState.value = UserProfileUiState.ProfileCreated
             } catch (e: Exception) {
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to create profile")
@@ -128,6 +131,7 @@ class UserProfileViewModel @Inject constructor(
             _uiState.value = UserProfileUiState.Loading
             try {
                 userProfileRepository.update(profile.copy(name = newName, resumeFileName = newName))
+                analyticsManager.logUpRenameProfile()
                 _uiState.value = UserProfileUiState.ProfileRenamed
             } catch (e: Exception) {
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to rename profile")
@@ -154,12 +158,15 @@ class UserProfileViewModel @Inject constructor(
                     }
 
                 userProfileRepository.delete(profile)
+                analyticsManager.logUpDeleteProfile()
                 _uiState.value = UserProfileUiState.ProfileDeleted
             } catch (e: Exception) {
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to delete profile")
             }
         }
     }
+
+    fun onSampleResumesClicked() { analyticsManager.logUpSampleResumes() }
 
     private suspend fun deleteAllChildrenForHead(sectionHeadAddedId: Int) {
         // Call all 8 delete-by-head methods; no-op for tables that don't hold this ID

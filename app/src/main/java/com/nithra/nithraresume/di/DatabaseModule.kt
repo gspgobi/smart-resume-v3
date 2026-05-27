@@ -6,6 +6,8 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.nithra.nithraresume.data.db.MIGRATION_1_2
 import com.nithra.nithraresume.data.db.SmartResumeDatabase
+import com.nithra.nithraresume.data.db.migrationRan1to2
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.PrefsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +36,8 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context,
-        prefsManager: PrefsManager
+        prefsManager: PrefsManager,
+        analyticsManager: AnalyticsManager
     ): SmartResumeDatabase =
         Room.databaseBuilder(
             context,
@@ -48,6 +51,12 @@ object DatabaseModule {
                     CoroutineScope(Dispatchers.IO).launch {
                         prefsManager.setV3IsPerfectNewSrv3User(true)
                         prefsManager.setV3AppInstalledDuringSrv3DbVersion(SmartResumeDatabase.DATABASE_VERSION)
+                    }
+                }
+                override fun onOpen(db: SupportSQLiteDatabase) {
+                    if (migrationRan1to2) {
+                        migrationRan1to2 = false
+                        analyticsManager.logDbMigrate1to2Finished()
                     }
                 }
             })
