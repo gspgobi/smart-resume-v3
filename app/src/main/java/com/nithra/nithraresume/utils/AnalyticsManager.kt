@@ -178,9 +178,9 @@ class AnalyticsManager @Inject constructor(
 
     fun setUserInstallType(isV3NewInstall: Boolean, isV2NewInstall: Boolean) {
         val type = when {
-            isV3NewInstall -> "srv3"
-            isV2NewInstall -> "srv2"
-            else           -> "srv1"
+            isV3NewInstall -> "srv3_install"
+            isV2NewInstall -> "srv2_install"
+            else           -> "srv1_install"
         }
         setUserProperty("user_install_type", type)
     }
