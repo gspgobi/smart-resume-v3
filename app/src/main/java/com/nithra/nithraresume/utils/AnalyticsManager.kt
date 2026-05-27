@@ -2,7 +2,9 @@ package com.nithra.nithraresume.utils
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.nithra.nithraresume.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,6 +14,14 @@ class AnalyticsManager @Inject constructor(
     @ApplicationContext context: Context
 ) {
     private val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
+
+    private fun logEvent(name: String, bundle: Bundle?) {
+        analytics.logEvent(name, bundle)
+        if (BuildConfig.DEBUG) {
+            val keys = bundle?.keySet()?.joinToString() ?: ""
+            Log.d("Analytics", "event=$name keys=[$keys]")
+        }
+    }
 
     companion object {
         // ── Common ─────────────────────────────────────────────────────────────
@@ -120,7 +130,7 @@ class AnalyticsManager @Inject constructor(
         // ── Migration (SRV2 → SRV3) ───────────────────────────────────────────
         private const val EVENT_FILE_MIGRATE_STARTED          = "srv2_to_srv3_file_migrate_started"
         private const val EVENT_FILE_MIGRATE_FINISHED         = "srv2_to_srv3_file_migrate_finished"
-        private const val EVENT_FILE_MIGRATE_PERMISSION_DENIED = "srv2_to_srv3_file_migrate_permission_denied"
+        private const val EVENT_FILE_MIGRATE_PERMISSION_DENIED = "srv2_to_srv3_file_migrate_perm_denied"
         private const val EVENT_DB_MIGRATE_1_TO_2_FINISHED    = "srv2_to_srv3_db_migrate_finished"
 
         // ── Clear All ─────────────────────────────────────────────────────────
@@ -161,17 +171,17 @@ class AnalyticsManager @Inject constructor(
     // ── Screen view ───────────────────────────────────────────────────────────
 
     fun logScreenView(screenName: String) {
-        analytics.logEvent(EVENT_SCREEN_VIEW, Bundle().apply {
+        logEvent(EVENT_SCREEN_VIEW, Bundle().apply {
             putString(PARAM_SCREEN_NAME, screenName)
         })
     }
 
     // ── Home / Launch ─────────────────────────────────────────────────────────
 
-    fun logFirstLaunch() = analytics.logEvent(EVENT_FIRST_LAUNCH, null)
+    fun logFirstLaunch() = logEvent(EVENT_FIRST_LAUNCH, null)
 
     fun logHomeScreenViewed(isNewUser: Boolean, versionCode: Int, versionName: String) {
-        analytics.logEvent(EVENT_HOME_SCREEN_VIEWED, Bundle().apply {
+        logEvent(EVENT_HOME_SCREEN_VIEWED, Bundle().apply {
             putBoolean(PARAM_IS_NEW_USER, isNewUser)
             putInt(PARAM_APP_VERSION_CODE, versionCode)
             putString(PARAM_APP_VERSION_NAME, versionName)
@@ -180,31 +190,31 @@ class AnalyticsManager @Inject constructor(
 
     // ── Navigation drawer ─────────────────────────────────────────────────────
 
-    fun logNavSampleResumes()  = analytics.logEvent(EVENT_NAV_SAMPLE_RESUMES, null)
-    fun logNavNotifications()  = analytics.logEvent(EVENT_NAV_NOTIFICATIONS, null)
-    fun logNavResumeTips()     = analytics.logEvent(EVENT_NAV_RESUME_TIPS, null)
-    fun logNavAppSettings()    = analytics.logEvent(EVENT_NAV_APP_SETTINGS, null)
-    fun logNavFeedback()       = analytics.logEvent(EVENT_NAV_FEEDBACK, null)
-    fun logNavPrivacyPolicy()  = analytics.logEvent(EVENT_NAV_PRIVACY_POLICY, null)
-    fun logNavRateUs()         = analytics.logEvent(EVENT_NAV_RATE_US, null)
-    fun logNavInviteFriends()  = analytics.logEvent(EVENT_NAV_INVITE_FRIENDS, null)
+    fun logNavSampleResumes()  = logEvent(EVENT_NAV_SAMPLE_RESUMES, null)
+    fun logNavNotifications()  = logEvent(EVENT_NAV_NOTIFICATIONS, null)
+    fun logNavResumeTips()     = logEvent(EVENT_NAV_RESUME_TIPS, null)
+    fun logNavAppSettings()    = logEvent(EVENT_NAV_APP_SETTINGS, null)
+    fun logNavFeedback()       = logEvent(EVENT_NAV_FEEDBACK, null)
+    fun logNavPrivacyPolicy()  = logEvent(EVENT_NAV_PRIVACY_POLICY, null)
+    fun logNavRateUs()         = logEvent(EVENT_NAV_RATE_US, null)
+    fun logNavInviteFriends()  = logEvent(EVENT_NAV_INVITE_FRIENDS, null)
 
     // ── Rate Us ───────────────────────────────────────────────────────────────
 
-    fun logRateUsLoveIt()        = analytics.logEvent(EVENT_RATE_US_LOVE_IT, null)
-    fun logRateUsCouldBeBetter() = analytics.logEvent(EVENT_RATE_US_COULD_BETTER, null)
-    fun logRateUsRateNow()       = analytics.logEvent(EVENT_RATE_US_RATE_NOW, null)
-    fun logRateUsLater()         = analytics.logEvent(EVENT_RATE_US_LATER, null)
-    fun logRateUsNoThanks()      = analytics.logEvent(EVENT_RATE_US_NO_THANKS, null)
+    fun logRateUsLoveIt()        = logEvent(EVENT_RATE_US_LOVE_IT, null)
+    fun logRateUsCouldBeBetter() = logEvent(EVENT_RATE_US_COULD_BETTER, null)
+    fun logRateUsRateNow()       = logEvent(EVENT_RATE_US_RATE_NOW, null)
+    fun logRateUsLater()         = logEvent(EVENT_RATE_US_LATER, null)
+    fun logRateUsNoThanks()      = logEvent(EVENT_RATE_US_NO_THANKS, null)
 
     // ── Feedback ──────────────────────────────────────────────────────────────
 
-    fun logFeedbackSubmitted() = analytics.logEvent(EVENT_FEEDBACK_SUBMITTED, null)
+    fun logFeedbackSubmitted() = logEvent(EVENT_FEEDBACK_SUBMITTED, null)
 
     // ── Resume generation ─────────────────────────────────────────────────────
 
     fun logResumeGenerated(formatId: Int, fontStyle: String, fontSize: Int, bgColor: String, fileName: String) {
-        analytics.logEvent(EVENT_RESUME_GENERATED, Bundle().apply {
+        logEvent(EVENT_RESUME_GENERATED, Bundle().apply {
             putInt(PARAM_RESUME_FORMAT_ID, formatId)
             putString(PARAM_FONT_STYLE, fontStyle)
             putInt(PARAM_FONT_SIZE, fontSize)
@@ -213,71 +223,71 @@ class AnalyticsManager @Inject constructor(
         })
     }
 
-    fun logResumeGenerationFailed() = analytics.logEvent(EVENT_RESUME_FAILED, null)
-    fun logGrResetToDefault()       = analytics.logEvent(EVENT_GR_RESET_TO_DEFAULT, null)
+    fun logResumeGenerationFailed() = logEvent(EVENT_RESUME_FAILED, null)
+    fun logGrResetToDefault()       = logEvent(EVENT_GR_RESET_TO_DEFAULT, null)
 
     // ── Profile ───────────────────────────────────────────────────────────────
 
     fun logProfileCreated(isFromSample: Boolean) {
-        analytics.logEvent(EVENT_PROFILE_CREATED, Bundle().apply {
+        logEvent(EVENT_PROFILE_CREATED, Bundle().apply {
             putBoolean(PARAM_IS_FROM_SAMPLE, isFromSample)
         })
     }
 
-    fun logUpRenameProfile()   = analytics.logEvent(EVENT_UP_RENAME_PROFILE, null)
-    fun logUpDeleteProfile()   = analytics.logEvent(EVENT_UP_DELETE_PROFILE, null)
-    fun logUpSampleResumes()   = analytics.logEvent(EVENT_UP_SAMPLE_RESUMES, null)
+    fun logUpRenameProfile()   = logEvent(EVENT_UP_RENAME_PROFILE, null)
+    fun logUpDeleteProfile()   = logEvent(EVENT_UP_DELETE_PROFILE, null)
+    fun logUpSampleResumes()   = logEvent(EVENT_UP_SAMPLE_RESUMES, null)
 
     // ── Section Head ──────────────────────────────────────────────────────────
 
-    fun logShaAddNewSection()  = analytics.logEvent(EVENT_SHA_ADD_NEW_SECTION, null)
-    fun logShaAddNewAddon()    = analytics.logEvent(EVENT_SHA_ADD_NEW_ADDON, null)
+    fun logShaAddNewSection()  = logEvent(EVENT_SHA_ADD_NEW_SECTION, null)
+    fun logShaAddNewAddon()    = logEvent(EVENT_SHA_ADD_NEW_ADDON, null)
 
     fun logShaDeleteSection(sectionHeadBaseId: Int) {
-        analytics.logEvent(EVENT_SHA_DELETE_SECTION, Bundle().apply {
+        logEvent(EVENT_SHA_DELETE_SECTION, Bundle().apply {
             putInt(PARAM_SECTION_HEAD_BASE_ID, sectionHeadBaseId)
         })
     }
 
     fun logShaDeleteAddon(sectionHeadBaseId: Int) {
-        analytics.logEvent(EVENT_SHA_DELETE_ADDON, Bundle().apply {
+        logEvent(EVENT_SHA_DELETE_ADDON, Bundle().apply {
             putInt(PARAM_SECTION_HEAD_BASE_ID, sectionHeadBaseId)
         })
     }
 
     fun logShaEnableDisableSection(enabled: Boolean) {
-        analytics.logEvent(EVENT_SHA_ENABLE_DISABLE_SECTION, Bundle().apply {
+        logEvent(EVENT_SHA_ENABLE_DISABLE_SECTION, Bundle().apply {
             putString(PARAM_ENABLE_OR_DISABLE, if (enabled) "Enable" else "Disable")
         })
     }
 
     fun logShaEnableDisableAddon(enabled: Boolean) {
-        analytics.logEvent(EVENT_SHA_ENABLE_DISABLE_ADDON, Bundle().apply {
+        logEvent(EVENT_SHA_ENABLE_DISABLE_ADDON, Bundle().apply {
             putString(PARAM_ENABLE_OR_DISABLE, if (enabled) "Enable" else "Disable")
         })
     }
 
-    fun logShaResumeFormat()   = analytics.logEvent(EVENT_SHA_RESUME_FORMAT, null)
-    fun logShaGenerateResume() = analytics.logEvent(EVENT_SHA_GENERATE_RESUME, null)
-    fun logShaViewShare()      = analytics.logEvent(EVENT_SHA_VIEW_SHARE, null)
+    fun logShaResumeFormat()   = logEvent(EVENT_SHA_RESUME_FORMAT, null)
+    fun logShaGenerateResume() = logEvent(EVENT_SHA_GENERATE_RESUME, null)
+    fun logShaViewShare()      = logEvent(EVENT_SHA_VIEW_SHARE, null)
 
     // ── View / Share ──────────────────────────────────────────────────────────
 
-    fun logVsFileView()   = analytics.logEvent(EVENT_VS_FILE_VIEW, null)
-    fun logVsFileShare()  = analytics.logEvent(EVENT_VS_FILE_SHARE, null)
-    fun logVsFileRename() = analytics.logEvent(EVENT_VS_FILE_RENAME, null)
-    fun logVsFileDelete() = analytics.logEvent(EVENT_VS_FILE_DELETE, null)
+    fun logVsFileView()   = logEvent(EVENT_VS_FILE_VIEW, null)
+    fun logVsFileShare()  = logEvent(EVENT_VS_FILE_SHARE, null)
+    fun logVsFileRename() = logEvent(EVENT_VS_FILE_RENAME, null)
+    fun logVsFileDelete() = logEvent(EVENT_VS_FILE_DELETE, null)
 
     // ── Resume Format ─────────────────────────────────────────────────────────
 
     fun logRfFormatSelect(formatBaseId: Int) {
-        analytics.logEvent(EVENT_RF_FORMAT_SELECT, Bundle().apply {
+        logEvent(EVENT_RF_FORMAT_SELECT, Bundle().apply {
             putInt(PARAM_RESUME_FORMAT_ID, formatBaseId)
         })
     }
 
     fun logRfFormatPreview(formatPreviewId: Int) {
-        analytics.logEvent(EVENT_RF_FORMAT_PREVIEW, Bundle().apply {
+        logEvent(EVENT_RF_FORMAT_PREVIEW, Bundle().apply {
             putInt(PARAM_RESUME_FORMAT_ID, formatPreviewId)
         })
     }
@@ -285,85 +295,85 @@ class AnalyticsManager @Inject constructor(
     // ── Sample Resumes ────────────────────────────────────────────────────────
 
     fun logSrSamplePreview(sampleProfileId: Int) {
-        analytics.logEvent(EVENT_SR_SAMPLE_PREVIEW, Bundle().apply {
+        logEvent(EVENT_SR_SAMPLE_PREVIEW, Bundle().apply {
             putInt(PARAM_SAMPLE_PROFILE_ID, sampleProfileId)
         })
     }
 
     // ── Notification List ─────────────────────────────────────────────────────
 
-    fun logNlNotificationSelect()    = analytics.logEvent(EVENT_NL_NOTIFICATION_SELECT, null)
-    fun logNlNotificationDelete()    = analytics.logEvent(EVENT_NL_NOTIFICATION_DELETE, null)
-    fun logNlNotificationDeleteAll() = analytics.logEvent(EVENT_NL_NOTIFICATION_DELETE_ALL, null)
+    fun logNlNotificationSelect()    = logEvent(EVENT_NL_NOTIFICATION_SELECT, null)
+    fun logNlNotificationDelete()    = logEvent(EVENT_NL_NOTIFICATION_DELETE, null)
+    fun logNlNotificationDeleteAll() = logEvent(EVENT_NL_NOTIFICATION_DELETE_ALL, null)
 
     // ── App Settings ──────────────────────────────────────────────────────────
 
     fun logAsNotifSwitch(enabled: Boolean) {
-        analytics.logEvent(EVENT_AS_NOTIF_SWITCH, Bundle().apply {
+        logEvent(EVENT_AS_NOTIF_SWITCH, Bundle().apply {
             putBoolean(PARAM_IS_NOTIFICATION_ENABLE, enabled)
         })
     }
 
     // ── Section Child 1 ───────────────────────────────────────────────────────
 
-    fun logSc1BrowseImage() = analytics.logEvent(EVENT_SC1_BROWSE_IMAGE, null)
-    fun logSc1DeleteImage() = analytics.logEvent(EVENT_SC1_DELETE_IMAGE, null)
-    fun logSc1Save()        = analytics.logEvent(EVENT_SC1_SAVE, null)
+    fun logSc1BrowseImage() = logEvent(EVENT_SC1_BROWSE_IMAGE, null)
+    fun logSc1DeleteImage() = logEvent(EVENT_SC1_DELETE_IMAGE, null)
+    fun logSc1Save()        = logEvent(EVENT_SC1_SAVE, null)
 
     // ── Section Child 2 ───────────────────────────────────────────────────────
 
-    fun logSc2DeleteDetail() = analytics.logEvent(EVENT_SC2_DELETE_DETAIL, null)
-    fun logSc2SaveTitle()    = analytics.logEvent(EVENT_SC2_SAVE_TITLE, null)
-    fun logSc2SubSave()      = analytics.logEvent(EVENT_SC2SUB_SAVE, null)
+    fun logSc2DeleteDetail() = logEvent(EVENT_SC2_DELETE_DETAIL, null)
+    fun logSc2SaveTitle()    = logEvent(EVENT_SC2_SAVE_TITLE, null)
+    fun logSc2SubSave()      = logEvent(EVENT_SC2SUB_SAVE, null)
 
     // ── Section Child 3 ───────────────────────────────────────────────────────
 
-    fun logSc3DeleteDetail() = analytics.logEvent(EVENT_SC3_DELETE_DETAIL, null)
-    fun logSc3SaveTitle()    = analytics.logEvent(EVENT_SC3_SAVE_TITLE, null)
-    fun logSc3SubSave()      = analytics.logEvent(EVENT_SC3SUB_SAVE, null)
+    fun logSc3DeleteDetail() = logEvent(EVENT_SC3_DELETE_DETAIL, null)
+    fun logSc3SaveTitle()    = logEvent(EVENT_SC3_SAVE_TITLE, null)
+    fun logSc3SubSave()      = logEvent(EVENT_SC3SUB_SAVE, null)
 
     // ── Section Child 4 ───────────────────────────────────────────────────────
 
-    fun logSc4Save()            = analytics.logEvent(EVENT_SC4_SAVE, null)
-    fun logSc4NewSignature()    = analytics.logEvent(EVENT_SC4_NEW_SIGNATURE, null)
-    fun logSc4DeleteSignature() = analytics.logEvent(EVENT_SC4_DELETE_SIGNATURE, null)
-    fun logSc4SigSave()         = analytics.logEvent(EVENT_SC4SIG_SAVE, null)
+    fun logSc4Save()            = logEvent(EVENT_SC4_SAVE, null)
+    fun logSc4NewSignature()    = logEvent(EVENT_SC4_NEW_SIGNATURE, null)
+    fun logSc4DeleteSignature() = logEvent(EVENT_SC4_DELETE_SIGNATURE, null)
+    fun logSc4SigSave()         = logEvent(EVENT_SC4SIG_SAVE, null)
 
     // ── Section Child 5 ───────────────────────────────────────────────────────
 
-    fun logSc5Save() = analytics.logEvent(EVENT_SC5_SAVE, null)
+    fun logSc5Save() = logEvent(EVENT_SC5_SAVE, null)
 
     // ── Section Child 6 ───────────────────────────────────────────────────────
 
-    fun logSc6DeleteDetail() = analytics.logEvent(EVENT_SC6_DELETE_DETAIL, null)
-    fun logSc6SaveTitle()    = analytics.logEvent(EVENT_SC6_SAVE_TITLE, null)
-    fun logSc6SubSave()      = analytics.logEvent(EVENT_SC6SUB_SAVE, null)
+    fun logSc6DeleteDetail() = logEvent(EVENT_SC6_DELETE_DETAIL, null)
+    fun logSc6SaveTitle()    = logEvent(EVENT_SC6_SAVE_TITLE, null)
+    fun logSc6SubSave()      = logEvent(EVENT_SC6SUB_SAVE, null)
 
     // ── Section Child 7 ───────────────────────────────────────────────────────
 
-    fun logSc7DeleteDetail() = analytics.logEvent(EVENT_SC7_DELETE_DETAIL, null)
-    fun logSc7SaveTitle()    = analytics.logEvent(EVENT_SC7_SAVE_TITLE, null)
-    fun logSc7SubSave()      = analytics.logEvent(EVENT_SC7SUB_SAVE, null)
+    fun logSc7DeleteDetail() = logEvent(EVENT_SC7_DELETE_DETAIL, null)
+    fun logSc7SaveTitle()    = logEvent(EVENT_SC7_SAVE_TITLE, null)
+    fun logSc7SubSave()      = logEvent(EVENT_SC7SUB_SAVE, null)
 
     // ── Section Child 8 ───────────────────────────────────────────────────────
 
-    fun logSc8Save()      = analytics.logEvent(EVENT_SC8_SAVE, null)
-    fun logSc8ClearAll()  = analytics.logEvent(EVENT_SC8_CLEAR_ALL, null)
+    fun logSc8Save()      = logEvent(EVENT_SC8_SAVE, null)
+    fun logSc8ClearAll()  = logEvent(EVENT_SC8_CLEAR_ALL, null)
 
     // ── Migration ─────────────────────────────────────────────────────────────
 
-    fun logFileMigrateStarted()          = analytics.logEvent(EVENT_FILE_MIGRATE_STARTED, null)
-    fun logFileMigrateFinished()         = analytics.logEvent(EVENT_FILE_MIGRATE_FINISHED, null)
-    fun logFileMigratePermissionDenied() = analytics.logEvent(EVENT_FILE_MIGRATE_PERMISSION_DENIED, null)
-    fun logDbMigrate1to2Finished()       = analytics.logEvent(EVENT_DB_MIGRATE_1_TO_2_FINISHED, null)
+    fun logFileMigrateStarted()          = logEvent(EVENT_FILE_MIGRATE_STARTED, null)
+    fun logFileMigrateFinished()         = logEvent(EVENT_FILE_MIGRATE_FINISHED, null)
+    fun logFileMigratePermissionDenied() = logEvent(EVENT_FILE_MIGRATE_PERMISSION_DENIED, null)
+    fun logDbMigrate1to2Finished()       = logEvent(EVENT_DB_MIGRATE_1_TO_2_FINISHED, null)
 
     // ── Clear All ─────────────────────────────────────────────────────────────
 
-    fun logSc1ClearAll()    = analytics.logEvent(EVENT_SC1_CLEAR_ALL, null)
-    fun logSc2SubClearAll() = analytics.logEvent(EVENT_SC2SUB_CLEAR_ALL, null)
-    fun logSc3SubClearAll() = analytics.logEvent(EVENT_SC3SUB_CLEAR_ALL, null)
-    fun logSc4ClearAll()    = analytics.logEvent(EVENT_SC4_CLEAR_ALL, null)
-    fun logSc5ClearAll()    = analytics.logEvent(EVENT_SC5_CLEAR_ALL, null)
-    fun logSc6SubClearAll() = analytics.logEvent(EVENT_SC6SUB_CLEAR_ALL, null)
-    fun logSc7SubClearAll() = analytics.logEvent(EVENT_SC7SUB_CLEAR_ALL, null)
+    fun logSc1ClearAll()    = logEvent(EVENT_SC1_CLEAR_ALL, null)
+    fun logSc2SubClearAll() = logEvent(EVENT_SC2SUB_CLEAR_ALL, null)
+    fun logSc3SubClearAll() = logEvent(EVENT_SC3SUB_CLEAR_ALL, null)
+    fun logSc4ClearAll()    = logEvent(EVENT_SC4_CLEAR_ALL, null)
+    fun logSc5ClearAll()    = logEvent(EVENT_SC5_CLEAR_ALL, null)
+    fun logSc6SubClearAll() = logEvent(EVENT_SC6SUB_CLEAR_ALL, null)
+    fun logSc7SubClearAll() = logEvent(EVENT_SC7SUB_CLEAR_ALL, null)
 }
