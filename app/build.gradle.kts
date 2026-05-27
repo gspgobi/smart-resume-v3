@@ -86,13 +86,14 @@ android {
             excludes += "META-INF/LICENSE.md"
         }
     }
-    applicationVariants.all {
-        @Suppress("DEPRECATION")
-        val variant = this as com.android.build.gradle.api.ApplicationVariant
-        outputs.all {
-            if (this is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-                outputFileName = "smart-resume-${variant.flavorName}-${variant.buildType.name}-${variant.versionCode}-${variant.versionName}.apk"
-            }
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            output.outputFileName.set(
+                "smart-resume-${variant.flavorName}-${variant.buildType}-${output.versionCode.getOrElse(0)}-${output.versionName.getOrElse("")}.apk"
+            )
         }
     }
 }
