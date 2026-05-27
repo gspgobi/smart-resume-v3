@@ -41,7 +41,6 @@ class ApiRepository @Inject constructor(
             )
             if (response.isSuccessful) {
                 prefsManager.setV2FcmTokenSentToServer(true)
-                prefsManager.setV2FcmTokenId(token)
             }
         }
     }

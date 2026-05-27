@@ -102,8 +102,9 @@ import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
+import com.nithra.nithraresume.ui.preview.AppDrawerPreview
+import com.nithra.nithraresume.ui.preview.AppPreview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,12 +116,15 @@ fun MainScreen(
 ) {
     val unreadCount by viewModel.unreadNotificationCount.collectAsStateWithLifecycle()
     val migrationState by viewModel.migrationState.collectAsStateWithLifecycle()
+    val showDoYouLoveAppDialog by viewModel.showDoYouLoveAppDialog.collectAsStateWithLifecycle()
+    val showRateUs5StarsDialog by viewModel.showRateUs5StarsDialog.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
+    var exitAfterFeedback by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
     val permName = remember {
@@ -151,6 +155,16 @@ fun MainScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.rateUsEvent.collect { event ->
+            when (event) {
+                RateUsEvent.TriggerExit          -> onExitApp()
+                RateUsEvent.OpenPlayStore        -> openPlayStore(context)
+                RateUsEvent.ShowFeedbackThenExit -> { showFeedbackDialog = true; exitAfterFeedback = true }
+            }
+        }
+    }
+
     LaunchedEffect(migrationState) {
         if (migrationState is MigrationUiState.PermissionDenied) {
             snackbarHostState.showSnackbar(
@@ -176,7 +190,13 @@ fun MainScreen(
 
     if (showFeedbackDialog) {
         FeedbackDialog(
-            onDismiss = { showFeedbackDialog = false },
+            onDismiss = {
+                showFeedbackDialog = false
+                if (exitAfterFeedback) {
+                    exitAfterFeedback = false
+                    onExitApp()
+                }
+            },
             onSend = { email, feedback ->
                 viewModel.sendFeedback(email, feedback)
                 scope.launch { snackbarHostState.showSnackbar("Thank you for your feedback!") }
@@ -184,7 +204,38 @@ fun MainScreen(
         )
     }
 
-    BackHandler(enabled = !drawerState.isOpen) { onExitApp() }
+    if (showDoYouLoveAppDialog) {
+        AlertDialog(
+            onDismissRequest = { viewModel.onDoYouLoveAppDismissed() },
+            title = { Text("Enjoying Smart Resume Builder?") },
+            text  = { Text("We'd love to hear how it's working for you — your feedback helps us keep improving!") },
+            confirmButton = {
+                Button(onClick = { viewModel.onLoveItClicked() }) { Text("Love it! ❤️") }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text("Could be better") }
+            }
+        )
+    }
+
+    if (showRateUs5StarsDialog) {
+        AlertDialog(
+            onDismissRequest = { viewModel.onMaybeLater() },
+            title = { Text("Glad you love it! 🎉") },
+            text  = { Text("A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!") },
+            confirmButton = {
+                Button(onClick = { viewModel.onSureTakeMeThere() }) { Text("Rate Now") }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { viewModel.onMaybeLater() }) { Text("Later") }
+                    TextButton(onClick = { viewModel.onNoThanks() }) { Text("No thanks") }
+                }
+            }
+        )
+    }
+
+    BackHandler(enabled = !drawerState.isOpen) { viewModel.onExitRequested() }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -327,14 +378,14 @@ private fun MainContent(
 
         HomeCard(
             icon = Icons.Default.Person,
-            title = "My Profiles",
+            title = "My Resume Profiles",
             subtitle = "Create and manage your resume profiles",
             onClick = onMyProfilesClick
         )
 
         HomeCard(
             icon = Icons.Default.Description,
-            title = "View Resumes",
+            title = "View Saved Resumes",
             subtitle = "View and share your generated resumes",
             onClick = onViewResumesClick
         )
@@ -589,7 +640,7 @@ private fun shareApp(context: Context) {
 
 // ── Previews ──────────────────────────────────────────────────────────────────
 
-@Preview(showBackground = true, name = "Main Content")
+@AppPreview
 @Composable
 private fun MainContentPreview() {
     SmartResumeTheme {
@@ -600,7 +651,7 @@ private fun MainContentPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Migration — Permission Dialog")
+@AppPreview
 @Composable
 private fun MigrationPermissionDialogPreview() {
     SmartResumeTheme {
@@ -636,7 +687,7 @@ private fun MigrationPermissionDialogPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Main Content — Migration Running")
+@AppPreview
 @Composable
 private fun MainContentMigrationRunningPreview() {
     SmartResumeTheme {
@@ -648,7 +699,7 @@ private fun MainContentMigrationRunningPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Home Card")
+@AppPreview
 @Composable
 private fun HomeCardPreview() {
     SmartResumeTheme {
@@ -661,7 +712,7 @@ private fun HomeCardPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Drawer — with badge", widthDp = 360)
+@AppDrawerPreview
 @Composable
 private fun MainDrawerContentWithBadgePreview() {
     SmartResumeTheme {
@@ -673,7 +724,7 @@ private fun MainDrawerContentWithBadgePreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Drawer — no badge", widthDp = 360)
+@AppDrawerPreview
 @Composable
 private fun MainDrawerContentNoBadgePreview() {
     SmartResumeTheme {
@@ -682,5 +733,64 @@ private fun MainDrawerContentNoBadgePreview() {
             appVersionName = BuildConfig.VERSION_NAME,
             onItemClick = {}
         )
+    }
+}
+
+@AppPreview
+@Composable
+private fun DoYouLoveAppDialogPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Card(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                shape = MaterialTheme.shapes.extraLarge,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text("Enjoying Smart Resume Builder?", style = MaterialTheme.typography.headlineSmall)
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        "We'd love to hear how it's working for you — your feedback helps us keep improving!",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        TextButton(onClick = {}) { Text("Could be better") }
+                        Button(onClick = {}) { Text("Love it! ❤️") }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@AppPreview
+@Composable
+private fun RateUs5StarsDialogPreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Card(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                shape = MaterialTheme.shapes.extraLarge,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
+            ) {
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text("Glad you love it! 🎉", style = MaterialTheme.typography.headlineSmall)
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        "A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(Modifier.height(24.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Row {
+                            TextButton(onClick = {}) { Text("Later") }
+                            TextButton(onClick = {}) { Text("No thanks") }
+                        }
+                        Button(onClick = {}) { Text("Rate Now") }
+                    }
+                }
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -103,22 +104,6 @@ class SectionHeadViewModel @Inject constructor(
         }
     }
 
-    // ── Add section dialog ────────────────────────────────────────────────────
-
-    fun loadAvailableSections(currentSections: List<SectionHeadAdded>) {
-        viewModelScope.launch {
-            val allSamples = sectionHeadRepository.getSampleDataByGroupId(GROUP_ID_SECTIONS)
-            _availableSections.value = filterAvailable(allSamples, currentSections)
-        }
-    }
-
-    fun loadAvailableAddons(currentAddons: List<SectionHeadAdded>) {
-        viewModelScope.launch {
-            val allSamples = sectionHeadRepository.getSampleDataByGroupId(GROUP_ID_ADDONS)
-            _availableAddons.value = filterAvailable(allSamples, currentAddons)
-        }
-    }
-
     /**
      * Returns SHSD items not yet added, plus all Custom items (can be added multiple times).
      * Group-header sentinel rows (id = -1) are inserted before each group name change.
@@ -195,14 +180,14 @@ class SectionHeadViewModel @Inject constructor(
         }
     }
 
-    private suspend fun deleteChildData(sectionHeadAddedId: Int) {
-        sectionChildRepository.deleteChild1(sectionHeadAddedId)
-        sectionChildRepository.deleteChild2ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild3ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild4(sectionHeadAddedId)
-        sectionChildRepository.deleteChild5(sectionHeadAddedId)
-        sectionChildRepository.deleteChild6ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild7ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild8(sectionHeadAddedId)
+    private suspend fun deleteChildData(sectionHeadAddedId: Int) = coroutineScope {
+        launch { sectionChildRepository.deleteChild1(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild2ByHeadId(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild3ByHeadId(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild4(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild5(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild6ByHeadId(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild7ByHeadId(sectionHeadAddedId) }
+        launch { sectionChildRepository.deleteChild8(sectionHeadAddedId) }
     }
 }

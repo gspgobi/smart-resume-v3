@@ -62,7 +62,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -76,6 +75,7 @@ import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import kotlinx.coroutines.launch
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -136,7 +136,6 @@ fun SectionHeadScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
                 .verticalScrollbar(listState),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
 
             // ── Resume format row ─────────────────────────────────────────────
@@ -556,26 +555,28 @@ private fun AddSectionSheet(
     items: List<SectionHeadSampleData>,
     onItemClick: (SectionHeadSampleData) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-        )
-        HorizontalDivider()
-        if (items.isEmpty()) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        item(key = "sheet_title") {
             Text(
-                text = "All sections already added",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(16.dp)
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
             )
+            HorizontalDivider()
+        }
+        if (items.isEmpty()) {
+            item(key = "empty") {
+                Text(
+                    text = "All sections already added",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         } else {
-            items.forEach { sample ->
-                val isHeader = sample.id == -1
-                if (isHeader) {
-                    // Group header
+            items(items, key = { "${it.id}_${it.title}" }) { sample ->
+                if (sample.id == -1) {
                     Text(
                         text = sample.title,
                         style = MaterialTheme.typography.labelMedium,
@@ -610,7 +611,9 @@ private fun AddSectionSheet(
                 }
             }
         }
-        Spacer(Modifier.height(24.dp))
+        item(key = "footer_spacer") {
+            Spacer(Modifier.height(24.dp))
+        }
     }
 }
 
@@ -643,7 +646,7 @@ private val previewAvailableAddons = listOf(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Head Screen")
+@AppPreview
 @Composable
 private fun SectionHeadScreenPreview() {
     SmartResumeTheme {
@@ -669,8 +672,7 @@ private fun SectionHeadScreenPreview() {
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
                     .padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(0.dp)
-            ) {
+                ) {
                 item {
                     ResumeFormatRow(formatTitle = "Classic", onClick = {})
                     HorizontalDivider()
@@ -734,7 +736,7 @@ private fun SectionHeadScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Resume Format Row")
+@AppPreview
 @Composable
 private fun ResumeFormatRowPreview() {
     SmartResumeTheme {
@@ -742,7 +744,7 @@ private fun ResumeFormatRowPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Group Header - No Edit")
+@AppPreview
 @Composable
 private fun GroupHeaderPreview() {
     SmartResumeTheme {
@@ -750,7 +752,7 @@ private fun GroupHeaderPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Group Header - With Edit")
+@AppPreview
 @Composable
 private fun GroupHeaderWithEditPreview() {
     SmartResumeTheme {
@@ -758,7 +760,7 @@ private fun GroupHeaderWithEditPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Add Item Row")
+@AppPreview
 @Composable
 private fun AddItemRowPreview() {
     SmartResumeTheme {
@@ -770,7 +772,7 @@ private fun AddItemRowPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Item - Contact Info")
+@AppPreview
 @Composable
 private fun SectionItemContactInfoPreview() {
     SmartResumeTheme {
@@ -782,7 +784,7 @@ private fun SectionItemContactInfoPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Item - Enabled")
+@AppPreview
 @Composable
 private fun SectionItemEnabledPreview() {
     SmartResumeTheme {
@@ -794,7 +796,7 @@ private fun SectionItemEnabledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Section Item - Disabled")
+@AppPreview
 @Composable
 private fun SectionItemDisabledPreview() {
     SmartResumeTheme {
@@ -806,7 +808,7 @@ private fun SectionItemDisabledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Action Buttons")
+@AppPreview
 @Composable
 private fun ActionButtonsPreview() {
     SmartResumeTheme {
@@ -814,7 +816,7 @@ private fun ActionButtonsPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Add Section Sheet")
+@AppPreview
 @Composable
 private fun AddSectionSheetPreview() {
     SmartResumeTheme {
@@ -826,7 +828,7 @@ private fun AddSectionSheetPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Add Section Sheet - Empty")
+@AppPreview
 @Composable
 private fun AddSectionSheetEmptyPreview() {
     SmartResumeTheme {
@@ -834,7 +836,7 @@ private fun AddSectionSheetEmptyPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Delete Section Dialog")
+@AppPreview
 @Composable
 private fun DeleteSectionDialogPreview() {
     SmartResumeTheme {

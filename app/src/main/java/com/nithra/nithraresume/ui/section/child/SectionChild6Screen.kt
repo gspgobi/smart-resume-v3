@@ -50,7 +50,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -60,6 +59,7 @@ import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -330,7 +330,7 @@ private val previewChild6Items = listOf(
 // ── Previews ──────────────────────────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 6 - Empty")
+@AppPreview
 @Composable
 private fun SectionChild6EmptyPreview() {
     SmartResumeTheme {
@@ -394,7 +394,7 @@ private fun SectionChild6EmptyPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Section Child 6 - With Items")
+@AppPreview
 @Composable
 private fun SectionChild6FilledPreview() {
     SmartResumeTheme {
@@ -461,7 +461,7 @@ private fun SectionChild6FilledPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Child6 List Item")
+@AppPreview
 @Composable
 private fun Child6ListItemPreview() {
     SmartResumeTheme {
@@ -473,13 +473,13 @@ private fun Child6ListItemPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Child6 Group Header - No Edit")
+@AppPreview
 @Composable
 private fun Child6GroupHeaderNoEditPreview() {
     SmartResumeTheme { Child6GroupHeader(title = "Entries") }
 }
 
-@Preview(showBackground = true, name = "Child6 Group Header - With Edit")
+@AppPreview
 @Composable
 private fun Child6GroupHeaderWithEditPreview() {
     SmartResumeTheme { Child6GroupHeader(title = "Entries", onEditClick = {}) }

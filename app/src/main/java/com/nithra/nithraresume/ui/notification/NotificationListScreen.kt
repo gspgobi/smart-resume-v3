@@ -32,7 +32,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +47,7 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.FcmData
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
@@ -229,7 +229,7 @@ private val previewNotifications = listOf(
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, name = "Notification List - Empty")
+@AppPreview
 @Composable
 private fun NotificationListEmptyPreview() {
     SmartResumeTheme {
@@ -274,7 +274,7 @@ private fun NotificationListEmptyPreview() {
 }
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
-@Preview(showBackground = true, name = "Notification List - With Items")
+@AppPreview
 @Composable
 private fun NotificationListWithItemsPreview() {
     SmartResumeTheme {
@@ -312,7 +312,7 @@ private fun NotificationListWithItemsPreview() {
 }
 
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
-@Preview(showBackground = true, name = "Notification Item - Unread")
+@AppPreview
 @Composable
 private fun NotificationListItemUnreadPreview() {
     SmartResumeTheme {
@@ -321,7 +321,7 @@ private fun NotificationListItemUnreadPreview() {
 }
 
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
-@Preview(showBackground = true, name = "Notification Item - Read")
+@AppPreview
 @Composable
 private fun NotificationListItemReadPreview() {
     SmartResumeTheme {

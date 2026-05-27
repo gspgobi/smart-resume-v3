@@ -38,7 +38,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
@@ -56,6 +55,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
+import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -274,7 +274,7 @@ private fun openPdfFile(context: android.content.Context, file: File) {
 
 // ── Previews ──────────────────────────────────────────────────────────────────
 
-@Preview(showBackground = true, name = "Group Header - Expanded")
+@AppPreview
 @Composable
 private fun GroupHeaderExpandedPreview() {
     SmartResumeTheme {
@@ -282,7 +282,7 @@ private fun GroupHeaderExpandedPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Group Header - Collapsed")
+@AppPreview
 @Composable
 private fun GroupHeaderCollapsedPreview() {
     SmartResumeTheme {
@@ -290,7 +290,7 @@ private fun GroupHeaderCollapsedPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Sample Resume Item")
+@AppPreview
 @Composable
 private fun SampleResumeItemPreview() {
     SmartResumeTheme {
