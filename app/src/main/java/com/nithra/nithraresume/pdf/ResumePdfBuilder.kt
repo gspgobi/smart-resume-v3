@@ -1015,7 +1015,7 @@ class ResumePdfBuilder(private val context: Context) {
     private fun buildGrayscaleSection(
         p: Paragraph, sectionTitle: String, fonts: PdfFonts, items: List<PdfPTable>
     ) {
-        p.add(PdfPTable(floatArrayOf(0.4f, 10f)).apply {
+        p.add(PdfPTable(floatArrayOf(0.2f, 10f)).apply {
             widthPercentage = 100f
             spacingBefore   = 10f
             spacingAfter    = 4f
