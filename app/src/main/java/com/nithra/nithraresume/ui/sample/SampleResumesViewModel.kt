@@ -17,6 +17,7 @@ import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
 import com.nithra.nithraresume.utils.DOT_PDF
@@ -125,7 +126,8 @@ class SampleResumesViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userProfileRepository: UserProfileRepository,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SampleResumesUiState>(SampleResumesUiState.Loading)
@@ -274,11 +276,13 @@ class SampleResumesViewModel @Inject constructor(
                     }
                 }
             }
+            analyticsManager.logProfileCreated(isFromSample = true)
             _uiState.value = SampleResumesUiState.Added
         }
     }
 
     fun openPreview(sampleProfileId: Int) {
+        analyticsManager.logSrSamplePreview(sampleProfileId)
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 val assetName = "$SAMPLE_RESUME_PREVIEW_ASSET_PREFIX$sampleProfileId$DOT_PDF"

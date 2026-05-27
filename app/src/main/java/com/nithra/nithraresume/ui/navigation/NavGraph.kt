@@ -1,12 +1,15 @@
 package com.nithra.nithraresume.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.ui.format.ResumeFormatScreen
 import com.nithra.nithraresume.ui.generate.GenerateResumeScreen
 import com.nithra.nithraresume.ui.generatedresumes.GeneratedResumesScreen
@@ -38,8 +41,21 @@ import com.nithra.nithraresume.ui.viewshare.ViewShareScreen
 fun SmartResumeNavGraph(
     navController: NavHostController = rememberNavController(),
     startDestination: String = Screen.Main.route,
-    onExitApp: () -> Unit = {}
+    onExitApp: () -> Unit = {},
+    analyticsManager: AnalyticsManager
 ) {
+    DisposableEffect(navController) {
+        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
+            val raw = destination.route ?: return@OnDestinationChangedListener
+            val screen = raw
+                .replace(Regex("/\\{[^}]+\\}"), "")
+                .replace(Regex("\\?.*"), "")
+            analyticsManager.logScreenView(screen)
+        }
+        navController.addOnDestinationChangedListener(listener)
+        onDispose { navController.removeOnDestinationChangedListener(listener) }
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination

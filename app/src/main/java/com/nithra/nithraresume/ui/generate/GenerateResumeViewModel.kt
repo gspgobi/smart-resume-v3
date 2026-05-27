@@ -14,6 +14,7 @@ import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
 import com.nithra.nithraresume.pdf.ResumePdfBuilder
 import com.nithra.nithraresume.pdf.ResumePdfData
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.DOT_PDF
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
@@ -44,7 +45,8 @@ class GenerateResumeViewModel @Inject constructor(
     private val userProfileRepository: UserProfileRepository,
     private val resumeFormatRepository: ResumeFormatRepository,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val profileId: Int = checkNotNull(savedStateHandle["profileId"])
@@ -125,8 +127,16 @@ class GenerateResumeViewModel @Inject constructor(
                     buildPdf(currentProfile, fileName)
                 }
                 userProfileRepository.updateResumeFileName(profileId, fileName)
+                analyticsManager.logResumeGenerated(
+                    formatId  = _currentFormat.value?.id ?: 0,
+                    fontStyle = _currentFormat.value?.fontStyle.orEmpty(),
+                    fontSize  = _currentFormat.value?.fontSize ?: 0,
+                    bgColor   = _currentFormat.value?.backgroundColor.orEmpty(),
+                    fileName  = fileName
+                )
                 _uiState.value = GenerateResumeUiState.Done(pdfFile)
             } catch (e: Exception) {
+                analyticsManager.logResumeGenerationFailed()
                 _uiState.value = GenerateResumeUiState.Error(e.message ?: "Failed to generate resume")
             }
         }

@@ -148,6 +148,8 @@ fun MainScreen(
         }
     }
 
+    LaunchedEffect(Unit) { viewModel.onScreenOpened() }
+
     LaunchedEffect(Unit) {
         viewModel.dummyProfileCreated.collect {
             scope.launch { drawerState.close() }
@@ -246,14 +248,14 @@ fun MainScreen(
                     scope.launch { drawerState.close() }
                     when (item) {
                         DrawerItem.Home           -> { /* already here */ }
-                        DrawerItem.SampleResumes  -> navController.navigate(Screen.SampleResumes.route)
-                        DrawerItem.Notifications  -> navController.navigate(Screen.Notifications.route)
-                        DrawerItem.ResumeTips     -> openResumeTipsPdf(context)
-                        DrawerItem.Settings       -> navController.navigate(Screen.AppSettings.route)
-                        DrawerItem.Feedback       -> showFeedbackDialog = true
-                        DrawerItem.PrivacyPolicy  -> openPrivacyPolicy(context)
-                        DrawerItem.RateUs         -> openPlayStore(context)
-                        DrawerItem.InviteFriends  -> shareApp(context)
+                        DrawerItem.SampleResumes  -> { viewModel.onNavSampleResumesClicked(); navController.navigate(Screen.SampleResumes.route) }
+                        DrawerItem.Notifications  -> { viewModel.onNavNotificationsClicked(); navController.navigate(Screen.Notifications.route) }
+                        DrawerItem.ResumeTips     -> { viewModel.onNavResumeTipsClicked(); openResumeTipsPdf(context) }
+                        DrawerItem.Settings       -> { viewModel.onNavAppSettingsClicked(); navController.navigate(Screen.AppSettings.route) }
+                        DrawerItem.Feedback       -> { viewModel.onNavFeedbackClicked(); showFeedbackDialog = true }
+                        DrawerItem.PrivacyPolicy  -> { viewModel.onNavPrivacyPolicyClicked(); openPrivacyPolicy(context) }
+                        DrawerItem.RateUs         -> { viewModel.onNavRateUsClicked(); openPlayStore(context) }
+                        DrawerItem.InviteFriends  -> { viewModel.onNavInviteFriendsClicked(); shareApp(context) }
                     }
                 },
                 appVersionName = BuildConfig.VERSION_NAME,

@@ -7,6 +7,7 @@ import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class SectionChild2ViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val sectionHeadRepository: SectionHeadRepository,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val sectionHeadAddedId: Int = checkNotNull(savedStateHandle["sectionHeadAddedId"])
@@ -48,6 +50,7 @@ class SectionChild2ViewModel @Inject constructor(
         viewModelScope.launch {
             sectionHeadRepository.updateAddedTitle(sectionHeadAddedId, title)
             _sha.value = sectionHeadRepository.getAddedById(sectionHeadAddedId)
+            analyticsManager.logSc2SaveTitle()
         }
     }
 
@@ -59,6 +62,7 @@ class SectionChild2ViewModel @Inject constructor(
                 allItems.filter { it.indexPosition > item.indexPosition }
                     .forEach { sectionChildRepository.updateChild2Position(it.id, it.indexPosition - 1) }
                 sectionChildRepository.deleteChild2(item)
+                analyticsManager.logSc2DeleteDetail()
             } catch (e: Exception) {
                 _snackbar.value = "Failed to delete item"
             }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.model.SectionChild4
 import com.nithra.nithraresume.data.repository.SectionChildRepository
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.SrDir
 import com.nithra.nithraresume.utils.SrImagePrefix
 import com.nithra.nithraresume.utils.SrImageSuffix
@@ -30,7 +31,8 @@ sealed interface Child4SignatureUiState {
 class SectionChild4SignatureViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     @ApplicationContext private val context: Context,
-    private val sectionChildRepository: SectionChildRepository
+    private val sectionChildRepository: SectionChildRepository,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     val sectionHeadAddedId: Int = checkNotNull(savedStateHandle["sectionHeadAddedId"])
@@ -63,6 +65,7 @@ class SectionChild4SignatureViewModel @Inject constructor(
                         isSignatureImageEnable = true
                     )
                 )
+                analyticsManager.logSc4SigSave()
                 _uiState.value = Child4SignatureUiState.Saved
             } catch (e: Exception) {
                 _uiState.value = Child4SignatureUiState.Error("Failed to save signature")

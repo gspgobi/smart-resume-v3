@@ -30,11 +30,15 @@ import com.nithra.nithraresume.ui.navigation.SmartResumeNavGraph
 import com.nithra.nithraresume.ui.splash.SplashViewModel
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.AdMobManager
+import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.InterstitialAdHelper
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var analyticsManager: AnalyticsManager
 
     private val splashViewModel: SplashViewModel by viewModels()
 
@@ -79,7 +83,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    SmartResumeNavGraph(navController = navController, onExitApp = ::onExitApp)
+                    SmartResumeNavGraph(navController = navController, onExitApp = ::onExitApp, analyticsManager = analyticsManager)
 
                     if (showExitOverlay) {
                         AppExitOverlay()
