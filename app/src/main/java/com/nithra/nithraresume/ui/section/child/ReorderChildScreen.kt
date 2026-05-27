@@ -118,50 +118,52 @@ fun ReorderChildScreen(
                                 }
                             }
                     ) {
-                        ReorderChildRow(
-                            item = item,
-                            dragHandleModifier = Modifier.pointerInput(item.id) {
-                                detectDragGestures(
-                                    onDragStart = { _ ->
-                                        draggingItemId = item.id
-                                        dragOffsetY    = 0f
-                                    },
-                                    onDrag = { change, dragAmount ->
-                                        change.consume()
-                                        dragOffsetY += dragAmount.y
-                                        val curIdx = mutableItems.indexOfFirst { it.id == draggingItemId }
-                                        if (curIdx < 0) return@detectDragGestures
-                                        if (curIdx > 0) {
-                                            val h = itemHeightsPx[mutableItems[curIdx - 1].id]
-                                                ?: return@detectDragGestures
-                                            if (dragOffsetY < -(h / 2f)) {
-                                                mutableItems.add(curIdx - 1, mutableItems.removeAt(curIdx))
-                                                dragOffsetY += h
+                        Column {
+                            ReorderChildRow(
+                                item = item,
+                                dragHandleModifier = Modifier.pointerInput(item.id) {
+                                    detectDragGestures(
+                                        onDragStart = { _ ->
+                                            draggingItemId = item.id
+                                            dragOffsetY    = 0f
+                                        },
+                                        onDrag = { change, dragAmount ->
+                                            change.consume()
+                                            dragOffsetY += dragAmount.y
+                                            val curIdx = mutableItems.indexOfFirst { it.id == draggingItemId }
+                                            if (curIdx < 0) return@detectDragGestures
+                                            if (curIdx > 0) {
+                                                val h = itemHeightsPx[mutableItems[curIdx - 1].id]
+                                                    ?: return@detectDragGestures
+                                                if (dragOffsetY < -(h / 2f)) {
+                                                    mutableItems.add(curIdx - 1, mutableItems.removeAt(curIdx))
+                                                    dragOffsetY += h
+                                                }
                                             }
-                                        }
-                                        val newIdx = mutableItems.indexOfFirst { it.id == draggingItemId }
-                                        if (newIdx in 0 until mutableItems.size - 1) {
-                                            val h = itemHeightsPx[mutableItems[newIdx + 1].id]
-                                                ?: return@detectDragGestures
-                                            if (dragOffsetY > h / 2f) {
-                                                mutableItems.add(newIdx + 1, mutableItems.removeAt(newIdx))
-                                                dragOffsetY -= h
+                                            val newIdx = mutableItems.indexOfFirst { it.id == draggingItemId }
+                                            if (newIdx in 0 until mutableItems.size - 1) {
+                                                val h = itemHeightsPx[mutableItems[newIdx + 1].id]
+                                                    ?: return@detectDragGestures
+                                                if (dragOffsetY > h / 2f) {
+                                                    mutableItems.add(newIdx + 1, mutableItems.removeAt(newIdx))
+                                                    dragOffsetY -= h
+                                                }
                                             }
+                                        },
+                                        onDragEnd = {
+                                            viewModel.persistOrder(mutableItems.toList())
+                                            draggingItemId = -1
+                                            dragOffsetY    = 0f
+                                        },
+                                        onDragCancel = {
+                                            draggingItemId = -1
+                                            dragOffsetY    = 0f
                                         }
-                                    },
-                                    onDragEnd = {
-                                        viewModel.persistOrder(mutableItems.toList())
-                                        draggingItemId = -1
-                                        dragOffsetY    = 0f
-                                    },
-                                    onDragCancel = {
-                                        draggingItemId = -1
-                                        dragOffsetY    = 0f
-                                    }
-                                )
-                            }
-                        )
-                        HorizontalDivider()
+                                    )
+                                }
+                            )
+                            HorizontalDivider()
+                        }
                     }
                 }
             }
