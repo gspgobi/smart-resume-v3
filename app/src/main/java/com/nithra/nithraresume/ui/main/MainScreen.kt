@@ -5,9 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.play.core.review.ReviewManagerFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -120,7 +123,11 @@ fun MainScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val snackbarHostState = remember { SnackbarHostState() }
+    val rateApp: () -> Unit = {
+        activity?.let { launchInAppReview(it) { openPlayStore(context) } } ?: openPlayStore(context)
+    }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var exitAfterFeedback by remember { mutableStateOf(false) }
@@ -160,7 +167,7 @@ fun MainScreen(
         viewModel.rateUsEvent.collect { event ->
             when (event) {
                 RateUsEvent.TriggerExit          -> onExitApp()
-                RateUsEvent.OpenPlayStore        -> openPlayStore(context)
+                RateUsEvent.OpenPlayStore        -> rateApp()
                 RateUsEvent.ShowFeedbackThenExit -> { showFeedbackDialog = true; exitAfterFeedback = true }
             }
         }
@@ -253,7 +260,7 @@ fun MainScreen(
                         DrawerItem.Settings       -> { viewModel.onNavAppSettingsClicked(); navController.navigate(Screen.AppSettings.route) }
                         DrawerItem.Feedback       -> { viewModel.onNavFeedbackClicked(); showFeedbackDialog = true }
                         DrawerItem.PrivacyPolicy  -> { viewModel.onNavPrivacyPolicyClicked(); openPrivacyPolicy(context) }
-                        DrawerItem.RateUs         -> { viewModel.onNavRateUsClicked(); openPlayStore(context) }
+                        DrawerItem.RateUs         -> { viewModel.onNavRateUsClicked(); rateApp() }
                         DrawerItem.InviteFriends  -> { viewModel.onNavInviteFriendsClicked(); shareApp(context) }
                     }
                 },
@@ -307,7 +314,7 @@ fun MainScreen(
                                 leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
-                                    openPlayStore(context)
+                                    rateApp()
                                 }
                             )
                             DropdownMenuItem(
@@ -612,6 +619,17 @@ private fun openPrivacyPolicy(context: Context) {
     val intent = Intent(Intent.ACTION_VIEW,
         "https://www.nithra.mobi/privacy/smart_resume_privacy_policy.html".toUri())
     runCatching { context.startActivity(intent) }
+}
+
+private fun launchInAppReview(activity: ComponentActivity, fallback: () -> Unit) {
+    val manager = ReviewManagerFactory.create(activity)
+    manager.requestReviewFlow().addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            manager.launchReviewFlow(activity, task.result)
+        } else {
+            fallback()
+        }
+    }
 }
 
 private fun openPlayStore(context: Context) {
