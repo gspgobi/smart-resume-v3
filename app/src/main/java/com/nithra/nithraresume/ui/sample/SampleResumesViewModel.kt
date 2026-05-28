@@ -44,7 +44,7 @@ sealed interface SampleResumesUiState {
     data object Loading : SampleResumesUiState
     data class Ready(val groups: List<SampleGroup>) : SampleResumesUiState
     data object Adding : SampleResumesUiState
-    data object Added : SampleResumesUiState
+    data class Added(val profileName: String) : SampleResumesUiState
     data class PreviewReady(val file: File, val groups: List<SampleGroup>) : SampleResumesUiState
     data class Error(val message: String, val groups: List<SampleGroup>) : SampleResumesUiState
 }
@@ -282,7 +282,7 @@ class SampleResumesViewModel @Inject constructor(
                 }
             }
             analyticsManager.logProfileCreated(isFromSample = true)
-            _uiState.value = SampleResumesUiState.Added
+            _uiState.value = SampleResumesUiState.Added(profile.upName.orEmpty())
         }
     }
 
@@ -306,6 +306,10 @@ class SampleResumesViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun onAddHandled() {
+        _uiState.value = SampleResumesUiState.Ready(cachedGroups)
     }
 
     fun onPreviewHandled() {
