@@ -29,6 +29,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Home
@@ -341,7 +342,8 @@ fun MainScreen(
                 modifier = Modifier.padding(innerPadding),
                 migrationState = migrationState,
                 onMyProfilesClick = { navController.navigate(Screen.UserProfiles.route) },
-                onViewResumesClick = { navController.navigate(Screen.GeneratedResumes.route) }
+                onViewResumesClick = { navController.navigate(Screen.GeneratedResumes.route) },
+                onSampleResumesClick = { navController.navigate(Screen.SampleResumes.route) }
             )
         }
     }
@@ -354,7 +356,8 @@ private fun MainContent(
     modifier: Modifier = Modifier,
     migrationState: MigrationUiState = MigrationUiState.Idle,
     onMyProfilesClick: () -> Unit,
-    onViewResumesClick: () -> Unit
+    onViewResumesClick: () -> Unit,
+    onSampleResumesClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -395,6 +398,13 @@ private fun MainContent(
             title = "View Saved Resumes",
             subtitle = "View and share your generated resumes",
             onClick = onViewResumesClick
+        )
+
+        HomeCard(
+            icon = Icons.Default.AutoStories,
+            title = "Browse Sample Resumes",
+            subtitle = "Explore ready-made resumes for every career",
+            onClick = onSampleResumesClick
         )
 
     }
@@ -664,7 +674,8 @@ private fun MainContentPreview() {
     SmartResumeTheme {
         MainContent(
             onMyProfilesClick = {},
-            onViewResumesClick = {}
+            onViewResumesClick = {},
+            onSampleResumesClick = {}
         )
     }
 }
@@ -712,7 +723,8 @@ private fun MainContentMigrationRunningPreview() {
         MainContent(
             migrationState = MigrationUiState.Running(done = 3, total = 7),
             onMyProfilesClick = {},
-            onViewResumesClick = {}
+            onViewResumesClick = {},
+            onSampleResumesClick = {}
         )
     }
 }
