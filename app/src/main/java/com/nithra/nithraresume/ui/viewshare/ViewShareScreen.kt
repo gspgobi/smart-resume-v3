@@ -72,7 +72,6 @@ import com.nithra.nithraresume.ui.common.FeedbackDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.FileUtils
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
 import com.nithra.nithraresume.ui.preview.AppPreview
 
@@ -169,7 +168,6 @@ fun ViewShareScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         if (isAdLoading) {

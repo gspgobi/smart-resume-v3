@@ -62,7 +62,6 @@ import com.nithra.nithraresume.data.model.SectionChild2
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_CHILD_ITEMS
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -125,7 +124,6 @@ fun SectionChild2Screen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(

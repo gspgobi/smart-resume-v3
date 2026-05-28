@@ -55,7 +55,6 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -135,7 +134,6 @@ fun GenerateResumeScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         when {

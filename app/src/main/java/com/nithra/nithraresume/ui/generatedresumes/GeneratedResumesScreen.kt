@@ -60,7 +60,6 @@ import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.FileUtils
-import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import java.io.File
 import com.nithra.nithraresume.ui.preview.AppPreview
@@ -142,7 +141,6 @@ fun GeneratedResumesScreen(
                 )
             )
         },
-        bottomBar = { MediumRectangleAdBottomBar() }
     ) { innerPadding ->
         if (files.isEmpty()) {
             EmptyGeneratedResumes(

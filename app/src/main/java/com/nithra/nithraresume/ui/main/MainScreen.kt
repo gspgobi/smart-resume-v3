@@ -99,7 +99,6 @@ import com.nithra.nithraresume.ui.common.FeedbackDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
-import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
 import androidx.core.net.toUri
@@ -329,7 +328,6 @@ fun MainScreen(
                     )
                 )
             },
-            bottomBar = { MediumRectangleAdBottomBar() },
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             MainContent(
