@@ -157,6 +157,9 @@ dependencies {
     // AdMob
     implementation(libs.play.services.ads)
 
+    // In-App Review
+    implementation(libs.play.review)
+
     // Gson
     implementation(libs.gson)
 

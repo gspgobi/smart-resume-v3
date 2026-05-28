@@ -18,6 +18,7 @@ gson = "2.14.0"
 composeBom = "2026.05.01"
 firebaseBom = "34.13.0"
 admob = "25.3.0"
+playReview = "2.0.2"
 datastore = "1.2.1"
 googleServices = "4.4.4"
 firebaseCrashlytics = "3.0.7"
@@ -85,6 +86,9 @@ firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
 # AdMob
 play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "admob" }
+
+# In-App Review
+play-review = { module = "com.google.android.play:review-ktx", version.ref = "playReview" }
 
 # Gson
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
