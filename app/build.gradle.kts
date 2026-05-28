@@ -160,6 +160,9 @@ dependencies {
     // In-App Review
     implementation(libs.play.review)
 
+    // In-App Update
+    implementation(libs.play.app.update)
+
     // Gson
     implementation(libs.gson)
 
