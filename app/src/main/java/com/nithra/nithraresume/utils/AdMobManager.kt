@@ -27,20 +27,20 @@ object AdMobManager {
 
     // ── Ad unit IDs ───────────────────────────────────────────────────────────
 
-    private const val BANNER_01_ID       = "ca-app-pub-2103132550188369/3770766466"
-    private const val INTERSTITIAL_01_ID = "ca-app-pub-2103132550188369/8212945487"
-    private const val INTERSTITIAL_02_ID = "ca-app-pub-2103132550188369/3378942277"
+    private const val BANNER_01_ALL_SCREEN_ID = "ca-app-pub-2103132550188369/7414599931"
+    private const val INTERSTITIAL_01_HOME_EXIT_ID = "ca-app-pub-2103132550188369/9813532560"
+    private const val INTERSTITIAL_02_GENERATE_RESUME_ID = "ca-app-pub-2103132550188369/4855199449"
 
-    private const val TEST_BANNER_ID       = "ca-app-pub-3940256099942544/6300978111"
+    private const val TEST_BANNER_ID = "ca-app-pub-3940256099942544/6300978111"
     private const val TEST_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/1033173712"
 
     // ── Public accessors ──────────────────────────────────────────────────────
 
     val isEnabled: Boolean get() = BuildConfig.isAdMobEnable
 
-    fun banner01Id(): String = if (BuildConfig.isTestAdMobId) TEST_BANNER_ID else BANNER_01_ID
-    fun interstitial01Id(): String = if (BuildConfig.isTestAdMobId) TEST_INTERSTITIAL_ID else INTERSTITIAL_01_ID
-    fun interstitial02Id(): String = if (BuildConfig.isTestAdMobId) TEST_INTERSTITIAL_ID else INTERSTITIAL_02_ID
+    fun banner01Id(): String = if (BuildConfig.isTestAdMobId) TEST_BANNER_ID else BANNER_01_ALL_SCREEN_ID
+    fun interstitial01Id(): String = if (BuildConfig.isTestAdMobId) TEST_INTERSTITIAL_ID else INTERSTITIAL_01_HOME_EXIT_ID
+    fun interstitial02Id(): String = if (BuildConfig.isTestAdMobId) TEST_INTERSTITIAL_ID else INTERSTITIAL_02_GENERATE_RESUME_ID
 
     fun buildAdRequest(): AdRequest = AdRequest.Builder().build()
 
