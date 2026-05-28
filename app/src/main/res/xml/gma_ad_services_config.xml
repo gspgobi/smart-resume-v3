@@ -1,0 +1,6 @@
+<ad-services-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <attribution-reporting allowAllToRegisterSources="true" allowAllToRegisterTriggers="true" />
+    <custom-audiences allowAllCustomAudiencesAccess="true" />
+    <topics allowAllTopicsAccess="true" />
+    <protected-app-signals allowAllProtectedSignalsAccess="true" />
+</ad-services-config>
