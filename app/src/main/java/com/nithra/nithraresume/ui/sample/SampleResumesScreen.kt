@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -53,6 +54,7 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.nithra.nithraresume.ui.navigation.Screen
 import java.io.File
 import com.nithra.nithraresume.ui.preview.AppPreview
 
@@ -74,9 +76,6 @@ fun SampleResumesScreen(
     // Handle side-effect states
     LaunchedEffect(uiState) {
         when (val state = uiState) {
-            is SampleResumesUiState.Added -> {
-                navController.popBackStack()
-            }
             is SampleResumesUiState.PreviewReady -> {
                 openPdfFile(context, state.file)
                 viewModel.onPreviewHandled()
@@ -90,12 +89,12 @@ fun SampleResumesScreen(
     }
 
     val groups = when (val s = uiState) {
-        is SampleResumesUiState.Ready      -> s.groups
-        is SampleResumesUiState.Adding     -> emptyList()
-        is SampleResumesUiState.Added      -> emptyList()
+        is SampleResumesUiState.Ready        -> s.groups
+        is SampleResumesUiState.Adding       -> emptyList()
+        is SampleResumesUiState.Added        -> emptyList()
         is SampleResumesUiState.PreviewReady -> s.groups
-        is SampleResumesUiState.Error      -> s.groups
-        else                               -> emptyList()
+        is SampleResumesUiState.Error        -> s.groups
+        else                                 -> emptyList()
     }
 
     Scaffold(
@@ -177,6 +176,31 @@ fun SampleResumesScreen(
             },
             dismissButton = {
                 TextButton(onClick = { confirmAddId = null }) { Text("Cancel") }
+            }
+        )
+    }
+
+    // Success dialog
+    (uiState as? SampleResumesUiState.Added)?.let { added ->
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onAddHandled()
+                navController.popBackStack()
+            },
+            title = { Text("Profile Added") },
+            text = { Text("\"${added.profileName}\" added successfully to resume profiles.") },
+            confirmButton = {
+                Button(onClick = {
+                    viewModel.onAddHandled()
+                    navController.popBackStack()
+                    navController.navigate(Screen.UserProfiles.route)
+                }) { Text("Go to Profile") }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    viewModel.onAddHandled()
+                    navController.popBackStack()
+                }) { Text("Dismiss") }
             }
         )
     }
