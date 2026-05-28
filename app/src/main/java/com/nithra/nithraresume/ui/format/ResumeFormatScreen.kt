@@ -74,7 +74,6 @@ import com.nithra.nithraresume.utils.FONT_SIZE_DEFAULT
 import com.nithra.nithraresume.utils.FONT_SIZE_MAX
 import com.nithra.nithraresume.utils.FONT_SIZE_MIN
 import com.nithra.nithraresume.utils.FONT_TIMES_NEW_ROMAN
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -154,7 +153,6 @@ fun ResumeFormatScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         if (showUnsavedDialog) {

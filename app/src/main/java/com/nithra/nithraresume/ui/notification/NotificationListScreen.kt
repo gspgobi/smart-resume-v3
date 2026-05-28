@@ -46,7 +46,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.FcmData
 import com.nithra.nithraresume.ui.navigation.Screen
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
@@ -84,7 +83,6 @@ fun NotificationListScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() }
     ) { innerPadding ->
         if (notifications.isEmpty()) {
             Box(

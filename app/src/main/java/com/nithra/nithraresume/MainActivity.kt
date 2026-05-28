@@ -14,12 +14,20 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.nithra.nithraresume.utils.SharedAdViewModel
+import com.nithra.nithraresume.utils.SharedBannerAdView
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
@@ -74,20 +82,29 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SmartResumeTheme {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    val navController = rememberNavController()
+                val sharedAdViewModel: SharedAdViewModel = hiltViewModel()
+                Column(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .consumeWindowInsets(WindowInsets.navigationBars)
+                    ) {
+                        val navController = rememberNavController()
 
-                    if (fcmDataId > 0) {
-                        LaunchedEffect(fcmDataId) {
-                            navController.navigate(Screen.NotificationDetail.createRoute(fcmDataId))
+                        if (fcmDataId > 0) {
+                            LaunchedEffect(fcmDataId) {
+                                navController.navigate(Screen.NotificationDetail.createRoute(fcmDataId))
+                            }
+                        }
+
+                        SmartResumeNavGraph(navController = navController, onExitApp = ::onExitApp, analyticsManager = analyticsManager)
+
+                        if (showExitOverlay) {
+                            AppExitOverlay()
                         }
                     }
-
-                    SmartResumeNavGraph(navController = navController, onExitApp = ::onExitApp, analyticsManager = analyticsManager)
-
-                    if (showExitOverlay) {
-                        AppExitOverlay()
-                    }
+                    SharedBannerAdView(viewModel = sharedAdViewModel)
                 }
             }
         }

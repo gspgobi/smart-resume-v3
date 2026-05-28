@@ -73,7 +73,6 @@ import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.MAX_PROFILES
-import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
@@ -157,7 +156,6 @@ fun UserProfileScreen(
                     tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
-        bottomBar = { MediumRectangleAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(
