@@ -498,7 +498,7 @@ private fun MainDrawerContent(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "Version $appVersionName",
+                        text = "version $appVersionName",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                         modifier = Modifier.clickable {
