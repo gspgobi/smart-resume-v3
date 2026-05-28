@@ -126,7 +126,7 @@ fun MainScreen(
     val activity = LocalActivity.current
     val snackbarHostState = remember { SnackbarHostState() }
     val rateApp: () -> Unit = {
-        activity?.let { launchInAppReview(it) { openPlayStore(context) } } ?: openPlayStore(context)
+        activity?.let { launchInAppReview(it as ComponentActivity) { openPlayStore(context) } } ?: openPlayStore(context)
     }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
@@ -443,7 +443,7 @@ private fun HomeCard(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(Modifier.height(2.dp))
                 Text(
