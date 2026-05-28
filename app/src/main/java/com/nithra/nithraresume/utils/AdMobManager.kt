@@ -28,7 +28,6 @@ object AdMobManager {
     // ── Ad unit IDs ───────────────────────────────────────────────────────────
 
     private const val BANNER_01_ID       = "ca-app-pub-2103132550188369/3770766466"
-    private const val BANNER_02_ID       = "ca-app-pub-2103132550188369/6974664243"
     private const val INTERSTITIAL_01_ID = "ca-app-pub-2103132550188369/8212945487"
     private const val INTERSTITIAL_02_ID = "ca-app-pub-2103132550188369/3378942277"
 
@@ -40,7 +39,6 @@ object AdMobManager {
     val isEnabled: Boolean get() = BuildConfig.isAdMobEnable
 
     fun banner01Id(): String = if (BuildConfig.isTestAdMobId) TEST_BANNER_ID else BANNER_01_ID
-    fun banner02Id(): String = if (BuildConfig.isTestAdMobId) TEST_BANNER_ID else BANNER_02_ID
     fun interstitial01Id(): String = if (BuildConfig.isTestAdMobId) TEST_INTERSTITIAL_ID else INTERSTITIAL_01_ID
     fun interstitial02Id(): String = if (BuildConfig.isTestAdMobId) TEST_INTERSTITIAL_ID else INTERSTITIAL_02_ID
 
