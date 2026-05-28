@@ -183,10 +183,7 @@ fun SampleResumesScreen(
     // Success dialog
     (uiState as? SampleResumesUiState.Added)?.let { added ->
         AlertDialog(
-            onDismissRequest = {
-                viewModel.onAddHandled()
-                navController.popBackStack()
-            },
+            onDismissRequest = { viewModel.onAddHandled() },
             title = { Text("Profile Added") },
             text = { Text("\"${added.profileName}\" added successfully to resume profiles.") },
             confirmButton = {
@@ -197,10 +194,7 @@ fun SampleResumesScreen(
                 }) { Text("Go to Profile") }
             },
             dismissButton = {
-                TextButton(onClick = {
-                    viewModel.onAddHandled()
-                    navController.popBackStack()
-                }) { Text("Dismiss") }
+                TextButton(onClick = { viewModel.onAddHandled() }) { Text("Dismiss") }
             }
         )
     }
