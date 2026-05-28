@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -260,7 +260,7 @@ fun SectionChild4Screen(
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
+                    .width(160.dp)
                     .aspectRatio(2f)
                     .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                     .background(Color.White, RoundedCornerShape(8.dp)),
@@ -446,8 +446,8 @@ private fun SectionChild4EmptyPreview() {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth()
-                        .height(200.dp)
+                        .width(160.dp)
+                        .aspectRatio(2f)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
@@ -532,8 +532,8 @@ private fun SectionChild4WithSignaturePreview() {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth()
-                        .height(200.dp)
+                        .width(160.dp)
+                        .aspectRatio(2f)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
