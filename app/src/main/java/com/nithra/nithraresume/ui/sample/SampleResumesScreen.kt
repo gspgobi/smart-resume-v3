@@ -150,6 +150,7 @@ fun SampleResumesScreen(
                             items(group.items, key = { "item_${it.sampleProfileId}" }) { item ->
                                 SampleResumeItem(
                                     name = item.name,
+                                    hasPreview = item.hasPreview,
                                     onAdd = { confirmAddId = item.sampleProfileId },
                                     onPreview = { viewModel.openPreview(item.sampleProfileId) }
                                 )
@@ -221,6 +222,7 @@ private fun GroupHeader(
 @Composable
 private fun SampleResumeItem(
     name: String,
+    hasPreview: Boolean,
     onAdd: () -> Unit,
     onPreview: () -> Unit
 ) {
@@ -235,17 +237,19 @@ private fun SampleResumeItem(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.weight(1f)
         )
-        IconButton(
-            onClick = onPreview,
-            modifier = Modifier.size(40.dp)
-        ) {
-            Icon(
-                Icons.Default.Visibility,
-                contentDescription = "Preview",
-                tint = MaterialTheme.colorScheme.primary
-            )
+        if (hasPreview) {
+            IconButton(
+                onClick = onPreview,
+                modifier = Modifier.size(40.dp)
+            ) {
+                Icon(
+                    Icons.Default.Visibility,
+                    contentDescription = "Preview",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+            Spacer(modifier = Modifier.width(4.dp))
         }
-        Spacer(modifier = Modifier.width(4.dp))
         IconButton(
             onClick = onAdd,
             modifier = Modifier.size(40.dp)
@@ -290,8 +294,16 @@ private fun GroupHeaderCollapsedPreview() {
 
 @AppPreview
 @Composable
-private fun SampleResumeItemPreview() {
+private fun SampleResumeItemWithPreviewPreview() {
     SmartResumeTheme {
-        SampleResumeItem(name = "Software Engineer Resume", onAdd = {}, onPreview = {})
+        SampleResumeItem(name = "Software Engineer Resume", hasPreview = true, onAdd = {}, onPreview = {})
+    }
+}
+
+@AppPreview
+@Composable
+private fun SampleResumeItemNoPreviewPreview() {
+    SmartResumeTheme {
+        SampleResumeItem(name = "AI / ML Engineer", hasPreview = false, onAdd = {}, onPreview = {})
     }
 }
