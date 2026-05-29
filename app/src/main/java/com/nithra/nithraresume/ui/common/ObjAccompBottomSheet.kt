@@ -79,7 +79,7 @@ fun ObjAccompBottomSheet(
     ) {
         Text(
             text = "Objectives / Suggestions",
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
