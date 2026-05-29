@@ -462,13 +462,20 @@ private fun UserImageSection(
                 )
             }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = onBrowseClick) {
-                Text(if (hasImage) "Change Photo" else "Browse Photo")
-            }
-            if (hasImage) {
+        if (hasImage) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = onBrowseClick,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Change Photo")
+                }
                 OutlinedButton(
                     onClick = onDeleteClick,
+                    modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )
@@ -478,6 +485,13 @@ private fun UserImageSection(
                     Spacer(Modifier.width(4.dp))
                     Text("Delete")
                 }
+            }
+        } else {
+            Button(
+                onClick = onBrowseClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Browse Photo")
             }
         }
     }
@@ -661,6 +675,16 @@ private fun UserImageSectionNoImagePreview() {
     SmartResumeTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
+        }
+    }
+}
+
+@AppPreview
+@Composable
+private fun UserImageSectionWithImagePreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            UserImageSection(imagePath = "/tmp/profile.jpg", onBrowseClick = {}, onDeleteClick = {})
         }
     }
 }
