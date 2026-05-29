@@ -10,9 +10,9 @@
 -keep class com.itextpdf.** { *; }
 -dontwarn com.itextpdf.**
 
-# Gson data classes for parsing JSON (SplashViewModel and SampleResumesViewModel)
--keep class com.nithra.nithraresume.ui.splash.Example* { *; }
--keepclassmembers class com.nithra.nithraresume.ui.splash.Example* {
+# Gson data classes for parsing JSON (MainViewModel, SampleResumesViewModel)
+-keep class com.nithra.nithraresume.ui.main.Example* { *; }
+-keepclassmembers class com.nithra.nithraresume.ui.main.Example* {
     <fields>;
     <init>(...);
 }
