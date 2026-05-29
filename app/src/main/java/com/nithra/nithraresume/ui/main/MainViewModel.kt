@@ -302,8 +302,6 @@ class MainViewModel @Inject constructor(
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
-                runCatching { File(v1Base, "Photo").deleteRecursively() }
-                    .onFailure { android.util.Log.w("FileMigration", "Failed to delete Photo dir", it) }
             }
 
             if (pendingSigCount > 0) {
@@ -320,19 +318,13 @@ class MainViewModel @Inject constructor(
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
-                runCatching { File(v1Base, "Signature").deleteRecursively() }
-                    .onFailure { android.util.Log.w("FileMigration", "Failed to delete Signature dir", it) }
             }
 
             val filesSrc = File(v1Base, "Files")
             if (filesSrc.exists()) {
                 val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
                 filesSrc.listFiles()?.forEach { it.copyTo(File(dst, it.name), overwrite = true) }
-                runCatching { filesSrc.deleteRecursively() }
-                    .onFailure { android.util.Log.w("FileMigration", "Failed to delete Files dir", it) }
             }
-            runCatching { v1Base.deleteRecursively() }
-                .onFailure { android.util.Log.w("FileMigration", "Failed to delete v1Base dir", it) }
         }
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
         analyticsManager.logFileMigrateFinished()
