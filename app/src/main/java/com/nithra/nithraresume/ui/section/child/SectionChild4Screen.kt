@@ -1,10 +1,6 @@
 package com.nithra.nithraresume.ui.section.child
 
-import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.ui.graphics.Color
@@ -103,10 +99,6 @@ fun SectionChild4Screen(
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
     var showDeleteSigDialog by remember { mutableStateOf(false) }
-
-    val imagePicker = rememberLauncherForActivityResult(PickVisualMedia()) { uri: Uri? ->
-        if (uri != null) viewModel.saveSignatureFromUri(uri)
-    }
 
     LaunchedEffect(uiState) {
         if (!initialised && uiState is Child4UiState.Ready) {
@@ -282,25 +274,14 @@ fun SectionChild4Screen(
                 }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Button(
-                    onClick = {
-                        navController.navigate(
-                            Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
-                        )
-                    },
-                    modifier = Modifier.weight(1f)
-                ) { Text("New Signature") }
-                OutlinedButton(
-                    onClick = {
-                        imagePicker.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-                    },
-                    modifier = Modifier.weight(1f)
-                ) { Text("Browse Gallery") }
-            }
+            Button(
+                onClick = {
+                    navController.navigate(
+                        Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) { Text("New Signature") }
 
             if (sigPath != null) {
                 OutlinedButton(
@@ -455,11 +436,7 @@ private fun SectionChild4EmptyPreview() {
                     Text("No signature added", style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
-                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Browse Gallery") }
-                }
+                Button(onClick = {}, modifier = Modifier.fillMaxWidth()) { Text("New Signature") }
             }
         }
     }
@@ -541,11 +518,7 @@ private fun SectionChild4WithSignaturePreview() {
                     Text("~ Signature ~", style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
-                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Browse Gallery") }
-                }
+                Button(onClick = {}, modifier = Modifier.fillMaxWidth()) { Text("New Signature") }
                 OutlinedButton(
                     onClick = {},
                     modifier = Modifier.fillMaxWidth(),
