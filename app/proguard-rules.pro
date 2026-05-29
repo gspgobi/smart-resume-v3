@@ -9,3 +9,9 @@
 # inside Image.getInstance(). R8 renaming those classes causes NoSuchMethodException at runtime.
 -keep class com.itextpdf.** { *; }
 -dontwarn com.itextpdf.**
+
+# Gson data classes used in SplashViewModel for parsing example resumes JSON
+-keep class com.nithra.nithraresume.ui.splash.SplashViewModel$* { *; }
+-keepclassmembers class com.nithra.nithraresume.ui.splash.SplashViewModel$* {
+    <fields>;
+}
