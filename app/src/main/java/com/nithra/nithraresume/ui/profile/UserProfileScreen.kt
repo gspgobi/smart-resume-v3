@@ -170,6 +170,7 @@ fun UserProfileScreen(
             if (profiles.isEmpty()) {
                 item(key = "empty_state") {
                     EmptyProfilesPlaceholder()
+                    HorizontalDivider()
                 }
             } else {
                 items(profiles, key = { it.id }) { profile ->
