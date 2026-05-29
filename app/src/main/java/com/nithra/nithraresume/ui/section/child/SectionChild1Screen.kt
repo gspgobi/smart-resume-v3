@@ -437,10 +437,13 @@ private fun UserImageSection(
     val imageFile = remember(imagePath) { if (imagePath.isNotEmpty()) File(imagePath) else null }
     val hasImage = imageFile?.exists() == true
 
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Box(
-            modifier = Modifier
-                .size(120.dp)
+            modifier = Modifier.size(120.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant),
