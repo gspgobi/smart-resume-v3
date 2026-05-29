@@ -120,7 +120,22 @@ class SectionChild4ViewModel @Inject constructor(
                     ?.let { runCatching { File(it).delete() } }
                 val imageFile = signatureFile()
                 context.contentResolver.openInputStream(uri)?.use { input ->
-                    imageFile.outputStream().use { output -> input.copyTo(output) }
+                    // Decode image to ensure proper color space (fixes gallery image inversion)
+                    val bitmap = android.graphics.BitmapFactory.decodeStream(input,
+                        null, android.graphics.BitmapFactory.Options().apply {
+                            inPreferredConfig = android.graphics.Bitmap.Config.ARGB_8888
+                        })
+                    if (bitmap != null) {
+                        // Convert to ARGB_8888 to ensure consistent color space
+                        val argb = if (bitmap.config != android.graphics.Bitmap.Config.ARGB_8888)
+                            bitmap.copy(android.graphics.Bitmap.Config.ARGB_8888, false) else bitmap
+                        // Compress to JPEG with white background composite
+                        val baos = java.io.ByteArrayOutputStream()
+                        argb.compress(android.graphics.Bitmap.CompressFormat.JPEG, 90, baos)
+                        imageFile.outputStream().use { output -> output.write(baos.toByteArray()) }
+                        bitmap.recycle()
+                        if (argb != bitmap) argb.recycle()
+                    }
                 }
                 sectionChildRepository.updateChild4(
                     existing.copy(
