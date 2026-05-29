@@ -11,7 +11,8 @@
 -dontwarn com.itextpdf.**
 
 # Gson data classes used in SplashViewModel for parsing example resumes JSON
--keep class com.nithra.nithraresume.ui.splash.SplashViewModel$* { *; }
--keepclassmembers class com.nithra.nithraresume.ui.splash.SplashViewModel$* {
+-keep class com.nithra.nithraresume.ui.splash.Example* { *; }
+-keepclassmembers class com.nithra.nithraresume.ui.splash.Example* {
     <fields>;
+    <init>(...);
 }
