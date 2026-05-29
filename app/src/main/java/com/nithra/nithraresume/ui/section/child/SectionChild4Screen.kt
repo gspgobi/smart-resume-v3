@@ -274,23 +274,36 @@ fun SectionChild4Screen(
                 }
             }
 
-            Button(
-                onClick = {
-                    navController.navigate(
-                        Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
-                    )
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) { Text("New Signature") }
-
             if (sigPath != null) {
-                OutlinedButton(
-                    onClick = { showDeleteSigDialog = true },
+                Row(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    )
-                ) { Text("Delete Signature") }
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            navController.navigate(
+                                Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
+                            )
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) { Text("New Signature") }
+                    OutlinedButton(
+                        onClick = { showDeleteSigDialog = true },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) { Text("Delete Signature") }
+                }
+            } else {
+                Button(
+                    onClick = {
+                        navController.navigate(
+                            Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("New Signature") }
             }
         }
     }
@@ -518,14 +531,17 @@ private fun SectionChild4WithSignaturePreview() {
                     Text("~ Signature ~", style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Button(onClick = {}, modifier = Modifier.fillMaxWidth()) { Text("New Signature") }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    )
-                ) { Text("Delete Signature") }
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
+                    OutlinedButton(
+                        onClick = {},
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) { Text("Delete Signature") }
+                }
             }
         }
     }
