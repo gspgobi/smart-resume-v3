@@ -56,7 +56,8 @@ class PrefsManager @Inject constructor(
 
     private object Key {
         // Notifications
-        val V1_NOTIFICATIONS_ENABLED = booleanPreferencesKey("v1_notification_on_off_check_box")
+        val V1_NOTIFICATIONS_ENABLED = booleanPreferencesKey("noti_chk")
+        val V1_FIRST_CHECK = booleanPreferencesKey("Firstcheck")
 
         // FCM
         val V2_FCM_TOKEN_SENT_TO_SERVER = booleanPreferencesKey("v2_fcm_instance_token_sent_to_server")
@@ -89,6 +90,13 @@ class PrefsManager @Inject constructor(
 
     suspend fun setV1NotificationsEnabled(enabled: Boolean) {
         context.dataStore.edit { it[Key.V1_NOTIFICATIONS_ENABLED] = enabled }
+    }
+
+    val v1FirstCheck: Flow<Boolean> = safeData
+        .map { it[Key.V1_FIRST_CHECK] ?: false }
+
+    suspend fun setV1FirstCheck(isFirstCheck: Boolean = true) {
+        context.dataStore.edit { it[Key.V1_FIRST_CHECK] = isFirstCheck }
     }
 
     // ── FCM ───────────────────────────────────────────────────────────────────
