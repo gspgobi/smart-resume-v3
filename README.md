@@ -71,9 +71,30 @@ com.nithra.nithraresume/
 ## Database
 
 - **DB name:** `smart_resume_v2.db` (identical to V2 — existing user data survives upgrade)
-- **DB version:** 1 (no migration needed)
+- **DB version:** 2
+- **Migration 1→2:** Rewrites all 15 tables to fix PK `NOT NULL` and `BOOLEAN`→`INTEGER` type constraints
 - **Tables:** 15 (resume formats, section heads, 8 section child types, user profiles, FCM data)
+- **DAOs:** 9 (split into `SectionChildSingleDao` for types 1,4,5,8 and `SectionChildListDao` for types 2,3,6,7)
 - **Seed data:** 6 resume formats, 2 section groups, 19 section templates
+
+---
+
+## Section Type System
+
+Each resume section (`SectionHeadAdded`) has a `section_head_base_id` (1–8) that determines its data table and edit screen:
+
+| ID | Type | Child Table | Screen |
+|---|---|---|---|
+| 1 | Contact Information | `section_child_1` | SectionChild1Screen |
+| 2 | Work Experience | `section_child_2` | SectionChild2Screen + Sub |
+| 3 | Education | `section_child_3` | SectionChild3Screen + Sub |
+| 4 | Declaration + Signature | `section_child_4` | SectionChild4Screen + SignatureScreen |
+| 5 | Paragraph / Bulleted Text | `section_child_5` | SectionChild5Screen |
+| 6 | Split Text | `section_child_6` | SectionChild6Screen + Sub |
+| 7 | Multiple Item Text | `section_child_7` | SectionChild7Screen + Sub |
+| 8 | Cover Letter (Add-on) | `section_child_8` | SectionChild8Screen |
+
+Types 1, 4, 5, 8 are **single-row** (one record per section); types 2, 3, 6, 7 are **list-based** (multiple records with reordering and sub-edit screens).
 
 ---
 
@@ -98,9 +119,10 @@ com.nithra.nithraresume/
 |---|---|
 | Package name | `com.nithra.nithraresume` |
 | minSdk | 24 |
-| targetSdk / compileSdk | 36 |
+| targetSdk / compileSdk | 37 |
 | Language | Kotlin only |
 | Build system | Gradle with Kotlin DSL |
+| Product flavors | TestAdMob (default), ProdAdMob, NoAdMob |
 | Max profiles | 20 |
 | Max sections per profile | 20 |
 | Max items per list section | 10 |
