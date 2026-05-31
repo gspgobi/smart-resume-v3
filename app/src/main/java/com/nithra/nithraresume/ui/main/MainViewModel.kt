@@ -1,8 +1,12 @@
 package com.nithra.nithraresume.ui.main
 
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Environment
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -249,8 +253,20 @@ class MainViewModel @Inject constructor(
             pendingSigCount   = sigCount
 
             if (photoCount > 0 || sigCount > 0) {
-                _migrationState.value = MigrationUiState.ShowRationale
-                runMigration()
+                val granted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    // API 33+: READ_EXTERNAL_STORAGE not available, migration limited to photos/signatures in DB
+                    true
+                } else {
+                    // API 24-32: Need READ_EXTERNAL_STORAGE for V2 files access
+                    ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                }
+
+                if (granted) {
+                    _migrationState.value = MigrationUiState.ShowRationale
+                    runMigration()
+                } else {
+                    _migrationState.value = MigrationUiState.ShowRationale
+                }
             } else {
                 prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
             }
@@ -259,6 +275,17 @@ class MainViewModel @Inject constructor(
 
     fun onMigrationDismissed() {
         _migrationState.value = MigrationUiState.Idle
+    }
+
+    fun onPermissionResult(granted: Boolean) {
+        if (granted) {
+            viewModelScope.launch { runMigration() }
+        } else {
+            viewModelScope.launch {
+                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                _migrationState.value = MigrationUiState.Finished
+            }
+        }
     }
 
     private suspend fun runMigration() {
