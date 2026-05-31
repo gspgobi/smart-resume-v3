@@ -131,12 +131,19 @@ Types 1, 4, 5, 8 are **single-row** (one record per section); types 2, 3, 6, 7 a
 
 ## V2 → V3 Data Continuity
 
-Because the package name, database name, and all column names are identical to V2:
+**Database:** Room opens the existing SQLite database transparently on upgrade — no migration scripts needed.
 
-- Room opens the existing SQLite database transparently on first launch after upgrade
-- No migration scripts are needed
-- Generated PDFs stored at `getExternalFilesDir()` paths are preserved
-- Profile photos and signature image paths stored in DB columns are unchanged
+**Files:** On first launch after upgrade, the app automatically migrates:
+- Profile photos from `Nithra/SmartResume/Photo/` → app-scoped storage
+- Signature images from `Nithra/SmartResume/Signature/` → app-scoped storage  
+- Generated resume PDFs from `Nithra/SmartResume/Files/` → app-scoped storage
+
+All file paths in the database are updated automatically. Users see a "Restoring Your Files" dialog while migration completes (usually under 5 seconds).
+
+**Why app-scoped storage?**
+- No storage permissions required (better privacy)
+- Automatic backup via Android's backup system
+- Files deleted when app is uninstalled
 
 ---
 
