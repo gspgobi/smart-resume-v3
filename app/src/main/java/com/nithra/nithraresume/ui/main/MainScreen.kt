@@ -1,11 +1,15 @@
 package com.nithra.nithraresume.ui.main
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.play.core.review.ReviewManagerFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -130,6 +134,10 @@ fun MainScreen(
     var exitAfterFeedback by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted -> viewModel.onPermissionResult(granted) }
+
     LaunchedEffect(Unit) { viewModel.onScreenOpened() }
 
     LaunchedEffect(Unit) {
@@ -150,16 +158,34 @@ fun MainScreen(
     }
 
     if (migrationState is MigrationUiState.ShowRationale) {
-        AlertDialog(
-            onDismissRequest = { viewModel.onMigrationDismissed() },
-            title = { Text("Restoring Your Files") },
-            text = {
-                Text("Migrating photos, signatures, and resume PDFs to the new storage location...")
-            },
-            confirmButton = {
-                TextButton(onClick = { viewModel.onMigrationDismissed() }) { Text("OK") }
-            }
-        )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            AlertDialog(
+                onDismissRequest = { viewModel.onPermissionResult(false) },
+                title = { Text("Restore Your Files?") },
+                text = {
+                    Text("To restore photos, signatures, and PDFs from your previous version, storage access is needed.")
+                },
+                confirmButton = {
+                    Button(onClick = { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }) {
+                        Text("Allow")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip") }
+                }
+            )
+        } else {
+            AlertDialog(
+                onDismissRequest = { viewModel.onMigrationDismissed() },
+                title = { Text("Restoring Your Files") },
+                text = {
+                    Text("Migrating photos and signatures to the new storage location...")
+                },
+                confirmButton = {
+                    TextButton(onClick = { viewModel.onMigrationDismissed() }) { Text("OK") }
+                }
+            )
+        }
     }
 
     if (showFeedbackDialog) {
