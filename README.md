@@ -142,6 +142,66 @@ Because the package name, database name, and all column names are identical to V
 
 ## Build & Run
 
-1. Add `google-services.json` to `app/`
-2. Open in Android Studio Hedgehog or later
-3. Sync Gradle and run on a device / emulator (API 24+)
+### Setup
+1. **Firebase:** Add `google-services.json` to `app/` directory
+2. **Signing:** Create `keystore.properties` at project root with:
+   ```properties
+   storeFile=path/to/keystore.jks
+   storePassword=your-password
+   keyAlias=your-alias
+   keyPassword=your-key-password
+   ```
+3. Open in Android Studio Hedgehog or later
+4. Sync Gradle
+
+### Build Commands
+
+```bash
+# Debug build (TestAdMob, default)
+./gradlew assembleTestAdMobDebug
+
+# Release builds
+./gradlew assembleTestAdMobRelease   # Test IDs
+./gradlew assembleProdAdMobRelease   # Production (no test IDs)
+./gradlew assembleNoAdMobRelease     # No ads
+
+# All variants
+./gradlew assemble
+
+# Bundle (AAB) for Play Store
+./gradlew bundleTestAdMobRelease
+
+# Tests
+./gradlew test                                          # Unit tests
+./gradlew connectedAndroidTest                          # Instrumented tests
+./gradlew testTestAdMobDebugUnitTest --tests "com..*"   # Single test class
+
+# Clean
+./gradlew clean
+```
+
+### APK Naming
+
+Output: `smart-resume-{flavor}-{buildType}-{versionCode}-{versionName}.apk`
+
+Example: `smart-resume-TestAdMob-debug-72-4.2.0.apk`
+
+### Product Flavors
+
+| Flavor | AdMob | Test IDs | Use Case |
+|---|---|---|---|
+| **TestAdMob** | ✓ | ✓ | Development & testing |
+| **ProdAdMob** | ✓ | ✗ | Production (Play Store) |
+| **NoAdMob** | ✗ | ✓ | Ad-free variant |
+
+Control at runtime via `BuildConfig.isAdMobEnable` and `BuildConfig.isTestAdMobId`.
+
+### Run on Device
+
+```bash
+# Install debug APK
+./gradlew installTestAdMobDebug
+
+# Build and run
+./gradlew runTestAdMobDebug
+```
