@@ -125,7 +125,6 @@ sealed class MigrationUiState {
     data object Idle : MigrationUiState()
     data object ShowRationale : MigrationUiState()
     data class Running(val done: Int, val total: Int) : MigrationUiState()
-    data object PermissionDenied : MigrationUiState()
     data object Finished : MigrationUiState()
 }
 
