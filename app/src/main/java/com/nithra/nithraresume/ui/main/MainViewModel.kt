@@ -1,12 +1,8 @@
 package com.nithra.nithraresume.ui.main
 
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Environment
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -250,41 +246,20 @@ class MainViewModel @Inject constructor(
                     pc.await() to sc.await()
                 }
             }
-            if (photoCount == 0 && sigCount == 0) {
-                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-                return@launch
-            }
             pendingPhotoCount = photoCount
             pendingSigCount   = sigCount
 
-            val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
-            val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
-            if (granted) runMigration()
-            else _migrationState.value = MigrationUiState.ShowRationale
-        }
-    }
-
-    fun acknowledgeMigrationDenied() {
-        _migrationState.value = MigrationUiState.Finished
-    }
-
-    fun onPermissionResult(granted: Boolean) {
-        if (granted) {
-            viewModelScope.launch { runMigration() }
-        } else {
-            viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    coroutineScope {
-                        if (pendingPhotoCount > 0) launch { sectionChildRepository.clearOldV2UserImagePaths() }
-                        if (pendingSigCount   > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
-                    }
-                }
+            if (photoCount > 0 || sigCount > 0) {
+                _migrationState.value = MigrationUiState.ShowRationale
+                runMigration()
+            } else {
                 prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-                analyticsManager.logFileMigratePermissionDenied()
-                _migrationState.value = MigrationUiState.PermissionDenied
             }
         }
+    }
+
+    fun onMigrationDismissed() {
+        _migrationState.value = MigrationUiState.Idle
     }
 
     private suspend fun runMigration() {

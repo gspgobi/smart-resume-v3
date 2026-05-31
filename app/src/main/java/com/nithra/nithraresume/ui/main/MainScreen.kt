@@ -149,24 +149,15 @@ fun MainScreen(
         }
     }
 
-    LaunchedEffect(migrationState) {
-        if (migrationState is MigrationUiState.PermissionDenied) {
-            snackbarHostState.showSnackbar(
-                "Permission denied. Photos from the previous version could not be restored."
-            )
-            viewModel.acknowledgeMigrationDenied()
-        }
-    }
-
     if (migrationState is MigrationUiState.ShowRationale) {
         AlertDialog(
-            onDismissRequest = { viewModel.onPermissionResult(false) },
-            title = { Text("App Updated") },
+            onDismissRequest = { viewModel.onMigrationDismissed() },
+            title = { Text("Restoring Your Files") },
             text = {
-                Text("Re-add photos and signatures to your profiles. Previously created resume PDFs are in the app.")
+                Text("Migrating photos, signatures, and resume PDFs to the new storage location...")
             },
             confirmButton = {
-                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("OK") }
+                TextButton(onClick = { viewModel.onMigrationDismissed() }) { Text("OK") }
             }
         )
     }
