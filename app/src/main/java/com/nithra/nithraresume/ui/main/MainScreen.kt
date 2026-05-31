@@ -1,15 +1,11 @@
 package com.nithra.nithraresume.ui.main
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.play.core.review.ReviewManagerFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -134,27 +130,6 @@ fun MainScreen(
     var exitAfterFeedback by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
-    val permName = remember {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted -> viewModel.onPermissionResult(granted) }
-
-    val migrationDialogText = remember {
-        buildAnnotatedString {
-            append("The app has been updated. To move your ")
-            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("photos") }
-            append(", ")
-            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("signatures") }
-            append(", & ")
-            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("created resume PDFs") }
-            append(" to the new location, storage permission is required.")
-        }
-    }
-
     LaunchedEffect(Unit) { viewModel.onScreenOpened() }
 
     LaunchedEffect(Unit) {
@@ -187,12 +162,11 @@ fun MainScreen(
         AlertDialog(
             onDismissRequest = { viewModel.onPermissionResult(false) },
             title = { Text("App Updated") },
-            text  = { Text(migrationDialogText) },
-            confirmButton = {
-                Button(onClick = { permissionLauncher.launch(permName) }) { Text("Allow") }
+            text = {
+                Text("Re-add photos and signatures to your profiles. Previously created resume PDFs are in the app.")
             },
-            dismissButton = {
-                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip file migration") }
+            confirmButton = {
+                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("OK") }
             }
         )
     }
