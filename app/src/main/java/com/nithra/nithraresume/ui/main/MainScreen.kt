@@ -158,34 +158,27 @@ fun MainScreen(
     }
 
     if (migrationState is MigrationUiState.ShowRationale) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            AlertDialog(
-                onDismissRequest = { viewModel.onPermissionResult(false) },
-                title = { Text("Restore Your Files?") },
-                text = {
-                    Text("To restore photos, signatures, and PDFs from your previous version, storage access is needed.")
-                },
-                confirmButton = {
-                    Button(onClick = { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }) {
-                        Text("Allow")
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip") }
-                }
-            )
+        val permissionName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_IMAGES
         } else {
-            AlertDialog(
-                onDismissRequest = { viewModel.onMigrationDismissed() },
-                title = { Text("Restoring Your Files") },
-                text = {
-                    Text("Migrating photos and signatures to the new storage location...")
-                },
-                confirmButton = {
-                    TextButton(onClick = { viewModel.onMigrationDismissed() }) { Text("OK") }
-                }
-            )
+            Manifest.permission.READ_EXTERNAL_STORAGE
         }
+
+        AlertDialog(
+            onDismissRequest = { viewModel.onPermissionResult(false) },
+            title = { Text("Restore Your Files?") },
+            text = {
+                Text("To restore photos, signatures, and PDFs from your previous version, storage access is needed.")
+            },
+            confirmButton = {
+                Button(onClick = { permissionLauncher.launch(permissionName) }) {
+                    Text("Allow")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip") }
+            }
+        )
     }
 
     if (showFeedbackDialog) {
