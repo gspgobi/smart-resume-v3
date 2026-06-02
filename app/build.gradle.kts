@@ -145,6 +145,7 @@ dependencies {
 
     // Image loading
     implementation(libs.coil.compose)
+    implementation(libs.android.image.cropper)
 
     // PDF generation
     implementation(libs.itextpdf)

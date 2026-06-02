@@ -24,6 +24,7 @@ datastore = "1.2.1"
 googleServices = "4.4.4"
 firebaseCrashlytics = "3.0.7"
 itextpdf = "5.5.13.5"
+androidImageCropper = "4.6.0"
 splashscreen = "1.2.0"
 junit = "4.13.2"
 junitExt = "1.3.0"
@@ -78,6 +79,9 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" 
 
 # PDF
 itextpdf = { module = "com.itextpdf:itextpdf", version.ref = "itextpdf" }
+
+# Image cropper
+android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 
 # Firebase BOM
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
