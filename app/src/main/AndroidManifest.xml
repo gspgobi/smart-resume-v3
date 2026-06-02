@@ -48,6 +48,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Wrapper around CropImageActivity: sets status bar color and action bar theme -->
+        <activity
+            android:name=".ui.section.child.CropImageActivityWrapper"
+            android:theme="@style/Theme.SmartResumeBuilder.CropImage"
+            android:exported="false" />
+
         <!-- FileProvider for sharing PDFs -->
         <provider
             android:name="androidx.core.content.FileProvider"
