@@ -1,9 +1,8 @@
 package com.nithra.nithraresume.ui.section.child
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -163,11 +162,9 @@ fun SectionChild1Screen(
         }
     }
 
-    // Image picker launcher
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        uri?.let { viewModel.saveImage(it) }
+    // Image crop launcher — shows camera/gallery source picker, then crop
+    val cropImage = rememberLauncherForActivityResult(SmartResumeCropContract()) { result ->
+        if (result.isSuccessful) result.uriContent?.let { viewModel.saveImage(it) }
     }
 
     // Date picker dialog state
@@ -366,8 +363,20 @@ fun SectionChild1Screen(
             UserImageSection(
                 imagePath = child1?.userImagePath ?: "",
                 onBrowseClick = {
-                    imagePicker.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    @Suppress("DEPRECATION")
+                    cropImage.launch(
+                        CropImageContractOptions(
+                            uri = null,
+                            cropImageOptions = CropImageOptions(
+                                aspectRatioX = 1,
+                                aspectRatioY = 1,
+                                fixAspectRatio = true,
+                                outputRequestWidth = 512,
+                                outputRequestHeight = 512,
+                                imageSourceIncludeCamera = false,
+                                imageSourceIncludeGallery = true
+                            )
+                        )
                     )
                 },
                 onDeleteClick = { viewModel.deleteImage() }
