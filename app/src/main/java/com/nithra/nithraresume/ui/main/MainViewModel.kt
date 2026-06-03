@@ -390,7 +390,7 @@ class MainViewModel @Inject constructor(
                 val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
                 // Get PDF filenames from UserProfile.resumeFileName (without extension)
                 val resumeFileNames = withContext(Dispatchers.IO) {
-                    apiRepository.getAllUserProfiles()
+                    userProfileRepository.getAllOnce()
                         .mapNotNull { it.resumeFileName }
                         .distinct()
                 }
