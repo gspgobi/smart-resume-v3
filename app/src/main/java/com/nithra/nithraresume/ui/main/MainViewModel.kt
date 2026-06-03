@@ -388,16 +388,17 @@ class MainViewModel @Inject constructor(
             Log.w(TAG, "runMigration: PDFs src=${filesSrc.absolutePath} exists=${filesSrc.exists()}")
             if (filesSrc.exists()) {
                 val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
-                // Get PDF filenames from UserProfile.resumeFileName in database
+                // Get PDF filenames from UserProfile.resumeFileName (without extension)
                 val resumeFileNames = withContext(Dispatchers.IO) {
                     apiRepository.getAllUserProfiles()
                         .mapNotNull { it.resumeFileName }
                         .distinct()
                 }
-                Log.w(TAG, "runMigration: PDFs found=${resumeFileNames.size} from UserProfiles")
-                resumeFileNames.forEach { fileName ->
+                Log.w(TAG, "runMigration: resume names=${resumeFileNames.size} from UserProfiles")
+                resumeFileNames.forEach { baseName ->
+                    val fileName = "$baseName.pdf"
                     val src = File(filesSrc, fileName)
-                    Log.w(TAG, "runMigration: PDF $fileName exists=${src.exists()} size=${src.length()}")
+                    Log.w(TAG, "runMigration: PDF $fileName exists=${src.exists()}")
                     if (src.exists() && src.isFile) {
                         runCatching {
                             src.copyTo(File(dst, fileName), overwrite = true)
