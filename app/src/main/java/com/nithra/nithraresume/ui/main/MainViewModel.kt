@@ -4,6 +4,7 @@ package com.nithra.nithraresume.ui.main
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.util.Log
@@ -401,10 +402,23 @@ class MainViewModel @Inject constructor(
                     Log.w(TAG, "runMigration: PDF $fileName exists=${src.exists()}")
                     if (src.exists() && src.isFile) {
                         runCatching {
+                            // Try direct file copy first
                             src.copyTo(File(dst, fileName), overwrite = true)
                             Log.w(TAG, "runMigration: PDF COPIED $fileName")
                         }.onFailure { e ->
-                            Log.e(TAG, "runMigration: PDF COPY FAILED $fileName: ${e.message}")
+                            // If file copy fails (permission denied), try via ContentResolver
+                            Log.w(TAG, "runMigration: direct copy failed, trying ContentResolver: ${e.message}")
+                            runCatching {
+                                val srcUri = Uri.fromFile(src)
+                                context.contentResolver.openInputStream(srcUri)?.use { inputStream ->
+                                    File(dst, fileName).outputStream().use { outputStream ->
+                                        inputStream.copyTo(outputStream)
+                                    }
+                                }
+                                Log.w(TAG, "runMigration: PDF COPIED $fileName (via ContentResolver)")
+                            }.onFailure { e2 ->
+                                Log.e(TAG, "runMigration: PDF COPY FAILED $fileName: ${e2.message}")
+                            }
                         }
                     }
                 }
