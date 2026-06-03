@@ -2,12 +2,10 @@ package com.nithra.nithraresume.ui.main
 
 
 import android.Manifest
-import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
@@ -390,46 +388,24 @@ class MainViewModel @Inject constructor(
             Log.w(TAG, "runMigration: PDFs src=${filesSrc.absolutePath} exists=${filesSrc.exists()}")
             if (filesSrc.exists()) {
                 val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
-                // Query MediaStore for PDFs indexed in the legacy directory, then stream via ContentResolver
-                @Suppress("DEPRECATION")
-                val collection = MediaStore.Files.getContentUri("external")
-                @Suppress("DEPRECATION")
-                val projection = arrayOf(
-                    MediaStore.Files.FileColumns._ID,
-                    MediaStore.Files.FileColumns.DISPLAY_NAME
-                )
-                @Suppress("DEPRECATION")
-                val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} = ? AND " +
-                        "${MediaStore.Files.FileColumns.DATA} LIKE ?"
-                val selectionArgs = arrayOf("application/pdf", "%/Nithra/SmartResume/Files/%")
-
-                try {
-                    context.contentResolver.query(collection, projection, selection, selectionArgs, null)?.use { cursor ->
-                        Log.w(TAG, "runMigration: PDFs found=${cursor.count} via MediaStore")
-                        @Suppress("DEPRECATION")
-                        val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
-                        @Suppress("DEPRECATION")
-                        val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
-
-                        while (cursor.moveToNext()) {
-                            val id = cursor.getLong(idColumn)
-                            val fileName = cursor.getString(nameColumn)
-                            val fileUri = ContentUris.withAppendedId(collection, id)
-
-                            runCatching {
-                                context.contentResolver.openInputStream(fileUri)?.use { inputStream ->
-                                    File(dst, fileName).outputStream().use { outputStream ->
-                                        inputStream.copyTo(outputStream)
-                                    }
-                                }
-                                Log.w(TAG, "runMigration: PDF COPIED $fileName")
-                            }.onFailure { e ->
-                                Log.e(TAG, "runMigration: PDF COPY FAILED $fileName: ${e.message}")
-                            }
+                // Get PDF filenames from UserProfile.resumeFileName in database
+                val resumeFileNames = withContext(Dispatchers.IO) {
+                    apiRepository.getAllUserProfiles()
+                        .mapNotNull { it.resumeFileName }
+                        .distinct()
+                }
+                Log.w(TAG, "runMigration: PDFs found=${resumeFileNames.size} from UserProfiles")
+                resumeFileNames.forEach { fileName ->
+                    val src = File(filesSrc, fileName)
+                    Log.w(TAG, "runMigration: PDF $fileName exists=${src.exists()} size=${src.length()}")
+                    if (src.exists() && src.isFile) {
+                        runCatching {
+                            src.copyTo(File(dst, fileName), overwrite = true)
+                            Log.w(TAG, "runMigration: PDF COPIED $fileName")
+                        }.onFailure { e ->
+                            Log.e(TAG, "runMigration: PDF COPY FAILED $fileName: ${e.message}")
                         }
                     }
-                } catch (e: Exception) {
-                    Log.e(TAG, "runMigration: MediaStore PDF migration failed: ${e.message}")
                 }
             }
         }
