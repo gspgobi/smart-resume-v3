@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
@@ -140,7 +139,7 @@ fun MainScreen(
 
     LaunchedEffect(Unit) { viewModel.onScreenOpened() }
 
-    LaunchedEffect(Unit) {
+LaunchedEffect(Unit) {
         viewModel.dummyProfileCreated.collect {
             scope.launch { drawerState.close() }
             navController.navigate(Screen.UserProfiles.createRoute(dummyCreated = true))
@@ -158,14 +157,10 @@ fun MainScreen(
     }
 
     if (migrationState is MigrationUiState.ShowRationale) {
-        val permissionName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Manifest.permission.READ_MEDIA_IMAGES
-        } else {
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        }
+        val permissionName = Manifest.permission.READ_EXTERNAL_STORAGE
 
         AlertDialog(
-            onDismissRequest = { viewModel.onPermissionResult(false) },
+            onDismissRequest = {},
             title = { Text("Restore Your Files?") },
             text = {
                 Text("To restore photos, signatures, and PDFs from your previous version, storage access is needed.")
@@ -176,7 +171,7 @@ fun MainScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip") }
+                TextButton(onClick = { viewModel.onMigrationSkipped() }) { Text("Skip") }
             }
         )
     }
