@@ -2,13 +2,16 @@ package com.nithra.nithraresume.ui.main
 
 
 import android.Manifest
+import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -128,6 +131,7 @@ sealed class RateUsEvent {
 sealed class MigrationUiState {
     data object Idle : MigrationUiState()
     data object ShowRationale : MigrationUiState()
+    data object ShowSafFolderPicker : MigrationUiState()
     data class Running(val done: Int, val total: Int) : MigrationUiState()
     data object PermissionDenied : MigrationUiState()
     data object Finished : MigrationUiState()
@@ -230,6 +234,45 @@ class MainViewModel @Inject constructor(
 
     private var pendingPhotoCount = 0
     private var pendingSigCount   = 0
+    private var pendingPdfCount = 0
+    private val discoveredMediaStorePdfs = mutableListOf<Pair<Uri, String>>()
+
+    private fun countOldV1PdfsAndPopulateList(): Int {
+        discoveredMediaStorePdfs.clear()
+        val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
+        val filesSrc = File(v1Base, "Files")
+
+        // Try direct File approach first
+        if (filesSrc.exists()) {
+            val count = filesSrc.walk().count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
+            if (count > 0) return count
+        }
+
+        // Fallback: Query MediaStore database
+        @Suppress("DEPRECATION")
+        val collection = MediaStore.Files.getContentUri("external")
+        @Suppress("DEPRECATION")
+        val projection = arrayOf(MediaStore.Files.FileColumns._ID, MediaStore.Files.FileColumns.DISPLAY_NAME)
+        @Suppress("DEPRECATION")
+        val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} = ? AND ${MediaStore.Files.FileColumns.DATA} LIKE ?"
+        val selectionArgs = arrayOf("application/pdf", "%/Nithra/SmartResume/Files/%")
+
+        runCatching {
+            context.contentResolver.query(collection, projection, selection, selectionArgs, null)?.use { cursor ->
+                @Suppress("DEPRECATION")
+                val idCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+                @Suppress("DEPRECATION")
+                val nameCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(idCol)
+                    val name = cursor.getString(nameCol)
+                    val uri = ContentUris.withAppendedId(collection, id)
+                    discoveredMediaStorePdfs.add(uri to name)
+                }
+            }
+        }
+        return discoveredMediaStorePdfs.size
+    }
 
     init {
         viewModelScope.launch {
@@ -247,14 +290,7 @@ class MainViewModel @Inject constructor(
                 coroutineScope {
                     val pc = async { sectionChildRepository.countOldV2UserImagePaths() }
                     val sc = async { sectionChildRepository.countOldV2SignaturePaths() }
-                    val pdfFileCount = async {
-                        val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
-                        val filesSrc = File(v1Base, "Files")
-                        if (filesSrc.exists()) {
-                            filesSrc.walk()
-                                .count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
-                        } else 0
-                    }
+                    val pdfFileCount = async { countOldV1PdfsAndPopulateList() }
                     Triple(pc.await(), sc.await(), pdfFileCount.await())
                 }
             }
@@ -263,13 +299,20 @@ class MainViewModel @Inject constructor(
                 return@launch
             }
             pendingPhotoCount = photoCount
-            pendingSigCount   = sigCount
+            pendingSigCount = sigCount
+            pendingPdfCount = pdfCount
 
-            val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
-            val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
-            if (granted) runMigration()
-            else _migrationState.value = MigrationUiState.ShowRationale
+            // If we have photos/signatures or PDFs were found via MediaStore, request permission
+            if (pendingPhotoCount > 0 || pendingSigCount > 0 || discoveredMediaStorePdfs.isNotEmpty()) {
+                val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+                val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
+                if (granted) runMigration(null)
+                else _migrationState.value = MigrationUiState.ShowRationale
+            } else if (pendingPdfCount > 0) {
+                // PDFs exist but couldn't be found via File or MediaStore — show SAF picker
+                _migrationState.value = MigrationUiState.ShowSafFolderPicker
+            }
         }
     }
 
@@ -279,31 +322,33 @@ class MainViewModel @Inject constructor(
 
     fun onPermissionResult(granted: Boolean) {
         if (granted) {
-            viewModelScope.launch { runMigration() }
+            viewModelScope.launch { runMigration(null) }
         } else {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     coroutineScope {
                         if (pendingPhotoCount > 0) launch { sectionChildRepository.clearOldV2UserImagePaths() }
-                        if (pendingSigCount   > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
+                        if (pendingSigCount > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
                     }
                 }
-                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-                analyticsManager.logFileMigratePermissionDenied()
-                _migrationState.value = MigrationUiState.PermissionDenied
+                // If hidden PDFs still exist and weren't found, show SAF picker
+                if (pendingPdfCount > 0 && discoveredMediaStorePdfs.isEmpty()) {
+                    _migrationState.value = MigrationUiState.ShowSafFolderPicker
+                } else {
+                    prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                    analyticsManager.logFileMigratePermissionDenied()
+                    _migrationState.value = MigrationUiState.PermissionDenied
+                }
             }
         }
     }
 
-    private suspend fun runMigration() {
-        val pdfCount = withContext(Dispatchers.IO) {
-            val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
-            val filesSrc = File(v1Base, "Files")
-            if (filesSrc.exists()) {
-                filesSrc.walk().count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
-            } else 0
-        }
-        val total = pendingPhotoCount + pendingSigCount + pdfCount
+    fun onSafFolderSelected(treeUri: Uri) {
+        viewModelScope.launch { runMigration(treeUri) }
+    }
+
+    private suspend fun runMigration(safTreeUri: Uri?) {
+        val total = pendingPhotoCount + pendingSigCount + pendingPdfCount
         var done  = 0
         analyticsManager.logFileMigrateStarted()
         _migrationState.value = MigrationUiState.Running(done, total)
@@ -344,10 +389,55 @@ class MainViewModel @Inject constructor(
                 }
             }
 
-            val filesSrc = File(v1Base, "Files")
-            if (filesSrc.exists()) {
-                val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
-                filesSrc.listFiles()?.forEach { it.copyTo(File(dst, it.name), overwrite = true) }
+            val dstPdfFolder = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
+
+            // STRATEGY A: MediaStore List Migration (Silent Background)
+            if (discoveredMediaStorePdfs.isNotEmpty()) {
+                discoveredMediaStorePdfs.forEach { (uri, name) ->
+                    runCatching {
+                        context.contentResolver.openInputStream(uri)?.use { input ->
+                            File(dstPdfFolder, name).outputStream().use { output ->
+                                input.copyTo(output)
+                            }
+                        }
+                    }
+                    done++
+                    _migrationState.value = MigrationUiState.Running(done, total)
+                }
+            }
+            // STRATEGY B: SAF Tree Picker Migration (User Intent Fallback)
+            else if (safTreeUri != null) {
+                val documentFolder = DocumentFile.fromTreeUri(context, safTreeUri)
+                documentFolder?.listFiles()?.forEach { docFile ->
+                    if (docFile.isFile && docFile.name?.endsWith(".pdf", ignoreCase = true) == true) {
+                        runCatching {
+                            context.contentResolver.openInputStream(docFile.uri)?.use { input ->
+                                File(dstPdfFolder, docFile.name!!).outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
+                            }
+                            docFile.delete()
+                        }
+                    }
+                }
+                done = total
+                _migrationState.value = MigrationUiState.Running(done, total)
+            }
+            // STRATEGY C: Legacy Local Direct File Loop
+            else {
+                val filesSrc = File(v1Base, "Files")
+                if (filesSrc.exists()) {
+                    filesSrc.walk()
+                        .filter { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
+                        .forEach { file ->
+                            runCatching {
+                                file.copyTo(File(dstPdfFolder, file.name), overwrite = true)
+                                file.delete()
+                            }
+                            done++
+                            _migrationState.value = MigrationUiState.Running(done, total)
+                        }
+                }
             }
         }
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
