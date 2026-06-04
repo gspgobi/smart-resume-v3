@@ -5,7 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission
         android:name="android.permission.READ_MEDIA_IMAGES"
         android:minSdkVersion="33" />
@@ -24,7 +29,8 @@
         android:usesCleartextTraffic="false"
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
-        tools:ignore="ScopedStorage">
+        tools:ignore="ScopedStorage"
+        tools:targetApi="30">
 
         <!-- AdMob App ID -->
         <meta-data
@@ -40,7 +46,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.SmartResumeBuilder.Splash">
             <intent-filter>
