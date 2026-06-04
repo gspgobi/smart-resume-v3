@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
@@ -133,13 +134,30 @@ fun MainScreen(
     var exitAfterFeedback by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
+    val permName = remember {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted -> viewModel.onPermissionResult(granted) }
 
+    val migrationDialogText = remember {
+        buildAnnotatedString {
+            append("The app has been updated. To move your ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("photos") }
+            append(", ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("signatures") }
+            append(", & ")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) { append("created resume PDFs") }
+            append(" to the new location, storage permission is required.")
+        }
+    }
+
     LaunchedEffect(Unit) { viewModel.onScreenOpened() }
 
-LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) {
         viewModel.dummyProfileCreated.collect {
             scope.launch { drawerState.close() }
             navController.navigate(Screen.UserProfiles.createRoute(dummyCreated = true))
@@ -156,22 +174,25 @@ LaunchedEffect(Unit) {
         }
     }
 
-    if (migrationState is MigrationUiState.ShowRationale) {
-        val permissionName = Manifest.permission.READ_EXTERNAL_STORAGE
+    LaunchedEffect(migrationState) {
+        if (migrationState is MigrationUiState.PermissionDenied) {
+            snackbarHostState.showSnackbar(
+                "Permission denied. Photos from the previous version could not be restored."
+            )
+            viewModel.acknowledgeMigrationDenied()
+        }
+    }
 
+    if (migrationState is MigrationUiState.ShowRationale) {
         AlertDialog(
-            onDismissRequest = {},
-            title = { Text("Restore Your Files?") },
-            text = {
-                Text("To restore photos, signatures, and PDFs from your previous version, storage access is needed.")
-            },
+            onDismissRequest = { viewModel.onPermissionResult(false) },
+            title = { Text("App Updated") },
+            text  = { Text(migrationDialogText) },
             confirmButton = {
-                Button(onClick = { permissionLauncher.launch(permissionName) }) {
-                    Text("Allow")
-                }
+                Button(onClick = { permissionLauncher.launch(permName) }) { Text("Allow") }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onMigrationSkipped() }) { Text("Skip") }
+                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip file migration") }
             }
         )
     }
@@ -269,7 +290,7 @@ LaunchedEffect(Unit) {
                             ) {
                                 Icon(
                                     imageVector = if (unreadCount > 0) Icons.Default.Notifications
-                                                  else Icons.Default.NotificationsNone,
+                                    else Icons.Default.NotificationsNone,
                                     contentDescription = "Notifications"
                                 )
                             }
@@ -640,7 +661,7 @@ private fun shareApp(context: Context) {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT,
             "Create a professional resume easily with Smart Resume!\n" +
-            "https://play.google.com/store/apps/details?id=${context.packageName}")
+                    "https://play.google.com/store/apps/details?id=${context.packageName}")
     }
     context.startActivity(Intent.createChooser(intent, "Invite Friends"))
 }
