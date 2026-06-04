@@ -53,10 +53,6 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
-private const val TAG = "V2Migration"
-
-// ── JSON data classes for dummyResumes.json ───────────────────────────────────
-
 private data class DummyResumesJson(val userProfileArrayList: List<DummyProfileJson>?)
 private data class DummyProfileJson(
     val upName: String?,
@@ -133,6 +129,7 @@ sealed class MigrationUiState {
     data object Idle : MigrationUiState()
     data object ShowRationale : MigrationUiState()
     data class Running(val done: Int, val total: Int) : MigrationUiState()
+    data object PermissionDenied : MigrationUiState()
     data object Finished : MigrationUiState()
 }
 
@@ -243,115 +240,92 @@ class MainViewModel @Inject constructor(
                 prefsManager.setV1FirstCheck(true)
             }
 
-            val (photoCount, sigCount) = withContext(Dispatchers.IO) {
+            val migrated = prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()
+            if (migrated) return@launch
+
+            val (photoCount, sigCount, pdfCount) = withContext(Dispatchers.IO) {
                 coroutineScope {
                     val pc = async { sectionChildRepository.countOldV2UserImagePaths() }
                     val sc = async { sectionChildRepository.countOldV2SignaturePaths() }
-                    pc.await() to sc.await()
+                    val pdfFileCount = async {
+                        val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
+                        val filesSrc = File(v1Base, "Files")
+                        if (filesSrc.exists()) {
+                            filesSrc.walk()
+                                .filter { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
+                                .count()
+                        } else 0
+                    }
+                    Triple(pc.await(), sc.await(), pdfFileCount.await())
                 }
+            }
+            if (photoCount == 0 && sigCount == 0 && pdfCount == 0) {
+                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                return@launch
             }
             pendingPhotoCount = photoCount
             pendingSigCount   = sigCount
-            Log.w(TAG, "init: oldPhotoPaths=$photoCount oldSigPaths=$sigCount")
 
-            // If the migration flag is already set AND no old paths remain, we're done.
-            // If old paths still exist despite the flag, it was set prematurely — fall through.
-            val migrated = prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()
-            Log.w(TAG, "init: migratedFlag=$migrated")
-            if (migrated && photoCount == 0 && sigCount == 0) {
-                Log.w(TAG, "init: migration already complete, skipping")
-                return@launch
-            }
-
-            if (photoCount > 0 || sigCount > 0) {
-                if (migrated) Log.w(TAG, "init: flag was set prematurely — old paths still exist, retrying migration")
-                _migrationState.value = MigrationUiState.ShowRationale
-
-                val granted = ContextCompat.checkSelfPermission(
-                    context, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-                Log.w(TAG, "init: permission=READ_EXTERNAL_STORAGE granted=$granted")
-                if (granted) {
-                    runMigration()
-                } else {
-                    Log.w(TAG, "init: permission not granted, showing rationale dialog")
-                }
-            } else {
-                Log.w(TAG, "init: no old V2 paths found, marking migration complete")
-                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-            }
+            val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+            val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
+            if (granted) runMigration()
+            else _migrationState.value = MigrationUiState.ShowRationale
         }
     }
 
-    fun onMigrationDismissed() {
-        _migrationState.value = MigrationUiState.Idle
+    fun acknowledgeMigrationDenied() {
+        _migrationState.value = MigrationUiState.Finished
     }
 
     fun onPermissionResult(granted: Boolean) {
-        Log.w(TAG, "onPermissionResult: granted=$granted")
         if (granted) {
             viewModelScope.launch { runMigration() }
         } else {
-            // System denied — don't permanently mark as done; retry on next launch or resume.
-            Log.w(TAG, "onPermissionResult: denied, resetting to Idle for retry")
-            _migrationState.value = MigrationUiState.Idle
-        }
-    }
-
-    fun onMigrationSkipped() {
-        Log.w(TAG, "onMigrationSkipped: user explicitly skipped, clearing old paths and marking done")
-        viewModelScope.launch {
-            // Clear old V2 paths from DB so the init sanity check sees zero paths
-            // on subsequent launches and doesn't re-show the rationale.
-            withContext(Dispatchers.IO) {
-                sectionChildRepository.clearOldV2UserImagePaths()
-                sectionChildRepository.clearOldV2SignatureImagePaths()
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    coroutineScope {
+                        if (pendingPhotoCount > 0) launch { sectionChildRepository.clearOldV2UserImagePaths() }
+                        if (pendingSigCount   > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
+                    }
+                }
+                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                analyticsManager.logFileMigratePermissionDenied()
+                _migrationState.value = MigrationUiState.PermissionDenied
             }
-            prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-            _migrationState.value = MigrationUiState.Idle
         }
     }
 
     private suspend fun runMigration() {
-        val total = pendingPhotoCount + pendingSigCount
+        val pdfCount = withContext(Dispatchers.IO) {
+            val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
+            val filesSrc = File(v1Base, "Files")
+            if (filesSrc.exists()) {
+                filesSrc.walk()
+                    .filter { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
+                    .count()
+            } else 0
+        }
+        val total = pendingPhotoCount + pendingSigCount + pdfCount
         var done  = 0
-        Log.w(TAG, "runMigration: START photos=$pendingPhotoCount sigs=$pendingSigCount total=$total")
         analyticsManager.logFileMigrateStarted()
         _migrationState.value = MigrationUiState.Running(done, total)
 
         withContext(Dispatchers.IO) {
-            val v3Base = context.getExternalFilesDir(null)
-            if (v3Base == null) {
-                Log.e(TAG, "runMigration: getExternalFilesDir returned null, aborting")
-                return@withContext
-            }
+            val v3Base = context.getExternalFilesDir(null) ?: return@withContext
             val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
-            Log.w(TAG, "runMigration: v3Base=${v3Base.absolutePath}")
-            Log.w(TAG, "runMigration: v1Base=${v1Base.absolutePath} exists=${v1Base.exists()}")
 
             if (pendingPhotoCount > 0) {
                 val dst = File(v3Base, SrDir.USER_IMAGE).also { it.mkdirs() }
-                Log.w(TAG, "runMigration: photo dst=${dst.absolutePath}")
                 sectionChildRepository.getOldV2UserImagePaths().forEach { oldPath ->
                     val f = File(oldPath)
-                    Log.w(TAG, "runMigration: photo oldPath=$oldPath exists=${f.exists()} size=${f.length()}")
                     if (f.exists() && f.length() > 0) {
                         runCatching {
                             val nf = File(dst, f.name)
-                            f.copyTo(nf, overwrite = true)
+                            f.copyTo(nf, overwrite = true); f.delete()
                             sectionChildRepository.updateV2UserImagePath(oldPath, nf.absolutePath)
-                            Log.w(TAG, "runMigration: photo COPIED → ${nf.absolutePath}")
-                            runCatching { f.delete() }.onFailure {
-                                Log.w(TAG, "runMigration: photo delete failed (ok) for $oldPath")
-                            }
-                        }.onFailure { e ->
-                            Log.e(TAG, "runMigration: photo COPY FAILED for $oldPath: ${e.message}")
-                            sectionChildRepository.clearV2UserImagePath(oldPath)
-                        }
-                    } else {
-                        Log.w(TAG, "runMigration: photo NOT FOUND or empty, clearing path: $oldPath")
-                        sectionChildRepository.clearV2UserImagePath(oldPath)
-                    }
+                        }.onFailure { sectionChildRepository.clearV2UserImagePath(oldPath) }
+                    } else sectionChildRepository.clearV2UserImagePath(oldPath)
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
@@ -359,72 +333,26 @@ class MainViewModel @Inject constructor(
 
             if (pendingSigCount > 0) {
                 val dst = File(v3Base, SrDir.SIGNATURE).also { it.mkdirs() }
-                Log.w(TAG, "runMigration: signature dst=${dst.absolutePath}")
                 sectionChildRepository.getOldV2SignaturePaths().forEach { oldPath ->
                     val f = File(oldPath)
-                    Log.w(TAG, "runMigration: sig oldPath=$oldPath exists=${f.exists()} size=${f.length()}")
                     if (f.exists() && f.length() > 0) {
                         runCatching {
                             val nf = File(dst, f.name)
-                            f.copyTo(nf, overwrite = true)
+                            f.copyTo(nf, overwrite = true); f.delete()
                             sectionChildRepository.updateV2SignaturePath(oldPath, nf.absolutePath)
-                            Log.w(TAG, "runMigration: sig COPIED → ${nf.absolutePath}")
-                            runCatching { f.delete() }.onFailure {
-                                Log.w(TAG, "runMigration: sig delete failed (ok) for $oldPath")
-                            }
-                        }.onFailure { e ->
-                            Log.e(TAG, "runMigration: sig COPY FAILED for $oldPath: ${e.message}")
-                            sectionChildRepository.clearV2SignaturePath(oldPath)
-                        }
-                    } else {
-                        Log.w(TAG, "runMigration: sig NOT FOUND or empty, clearing path: $oldPath")
-                        sectionChildRepository.clearV2SignaturePath(oldPath)
-                    }
+                        }.onFailure { sectionChildRepository.clearV2SignaturePath(oldPath) }
+                    } else sectionChildRepository.clearV2SignaturePath(oldPath)
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
             }
 
             val filesSrc = File(v1Base, "Files")
-            Log.w(TAG, "runMigration: PDFs src=${filesSrc.absolutePath} exists=${filesSrc.exists()}")
             if (filesSrc.exists()) {
                 val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
-                // Get PDF filenames from UserProfile.resumeFileName (without extension)
-                val resumeFileNames = withContext(Dispatchers.IO) {
-                    userProfileRepository.getAllOnce()
-                        .mapNotNull { it.resumeFileName }
-                        .distinct()
-                }
-                Log.w(TAG, "runMigration: resume names=${resumeFileNames.size} from UserProfiles")
-                resumeFileNames.forEach { baseName ->
-                    val fileName = "$baseName.pdf"
-                    val src = File(filesSrc, fileName)
-                    Log.w(TAG, "runMigration: PDF $fileName exists=${src.exists()}")
-                    if (src.exists() && src.isFile) {
-                        runCatching {
-                            // Try direct file copy first
-                            src.copyTo(File(dst, fileName), overwrite = true)
-                            Log.w(TAG, "runMigration: PDF COPIED $fileName")
-                        }.onFailure { e ->
-                            // If file copy fails (permission denied), try via ContentResolver
-                            Log.w(TAG, "runMigration: direct copy failed, trying ContentResolver: ${e.message}")
-                            runCatching {
-                                val srcUri = Uri.fromFile(src)
-                                context.contentResolver.openInputStream(srcUri)?.use { inputStream ->
-                                    File(dst, fileName).outputStream().use { outputStream ->
-                                        inputStream.copyTo(outputStream)
-                                    }
-                                }
-                                Log.w(TAG, "runMigration: PDF COPIED $fileName (via ContentResolver)")
-                            }.onFailure { e2 ->
-                                Log.e(TAG, "runMigration: PDF COPY FAILED $fileName: ${e2.message}")
-                            }
-                        }
-                    }
-                }
+                filesSrc.listFiles()?.forEach { it.copyTo(File(dst, it.name), overwrite = true) }
             }
         }
-        Log.w(TAG, "runMigration: DONE, marking flag as complete")
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
         analyticsManager.logFileMigrateFinished()
         _migrationState.value = MigrationUiState.Finished
@@ -566,7 +494,7 @@ class MainViewModel @Inject constructor(
 
             val existingProfiles = userProfileRepository.getAllOnce()
             val nextPosition = if (existingProfiles.isEmpty()) 0
-                               else existingProfiles.maxOf { it.indexPosition } + 1
+            else existingProfiles.maxOf { it.indexPosition } + 1
 
             val profileId = userProfileRepository.insert(
                 UserProfile(
