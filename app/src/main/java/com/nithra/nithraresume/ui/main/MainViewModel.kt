@@ -252,8 +252,7 @@ class MainViewModel @Inject constructor(
                         val filesSrc = File(v1Base, "Files")
                         if (filesSrc.exists()) {
                             filesSrc.walk()
-                                .filter { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
-                                .count()
+                                .count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
                         } else 0
                     }
                     Triple(pc.await(), sc.await(), pdfFileCount.await())
@@ -301,9 +300,7 @@ class MainViewModel @Inject constructor(
             val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
             val filesSrc = File(v1Base, "Files")
             if (filesSrc.exists()) {
-                filesSrc.walk()
-                    .filter { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
-                    .count()
+                filesSrc.walk().count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
             } else 0
         }
         val total = pendingPhotoCount + pendingSigCount + pdfCount
