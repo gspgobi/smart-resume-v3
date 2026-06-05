@@ -1,10 +1,6 @@
 package com.nithra.nithraresume.ui.section.child
 
-import android.net.Uri
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.ui.graphics.Color
@@ -13,8 +9,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -60,7 +56,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.ui.common.SectionDivider
@@ -69,7 +65,6 @@ import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.BULLET_NONE
 import com.nithra.nithraresume.utils.DateTimeUtils
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -104,10 +99,6 @@ fun SectionChild4Screen(
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
     var showDeleteSigDialog by remember { mutableStateOf(false) }
-
-    val imagePicker = rememberLauncherForActivityResult(PickVisualMedia()) { uri: Uri? ->
-        if (uri != null) viewModel.saveSignatureFromUri(uri)
-    }
 
     LaunchedEffect(uiState) {
         if (!initialised && uiState is Child4UiState.Ready) {
@@ -190,7 +181,6 @@ fun SectionChild4Screen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         if (uiState is Child4UiState.Loading) {
@@ -262,8 +252,8 @@ fun SectionChild4Screen(
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-                    .height(200.dp)
+                    .width(160.dp)
+                    .aspectRatio(2f)
                     .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                     .background(Color.White, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
@@ -284,34 +274,36 @@ fun SectionChild4Screen(
                 }
             }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            if (sigPath != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Button(
+                        onClick = {
+                            navController.navigate(
+                                Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
+                            )
+                        },
+                        modifier = Modifier.weight(1f)
+                    ) { Text("New Signature") }
+                    OutlinedButton(
+                        onClick = { showDeleteSigDialog = true },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) { Text("Delete Signature") }
+                }
+            } else {
                 Button(
                     onClick = {
                         navController.navigate(
                             Screen.SectionChild4Signature.createRoute(viewModel.sectionHeadAddedId)
                         )
                     },
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.fillMaxWidth()
                 ) { Text("New Signature") }
-                OutlinedButton(
-                    onClick = {
-                        imagePicker.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
-                    },
-                    modifier = Modifier.weight(1f)
-                ) { Text("Browse Gallery") }
-            }
-
-            if (sigPath != null) {
-                OutlinedButton(
-                    onClick = { showDeleteSigDialog = true },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    )
-                ) { Text("Delete Signature") }
             }
         }
     }
@@ -448,8 +440,8 @@ private fun SectionChild4EmptyPreview() {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth()
-                        .height(200.dp)
+                        .width(160.dp)
+                        .aspectRatio(2f)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
@@ -457,11 +449,7 @@ private fun SectionChild4EmptyPreview() {
                     Text("No signature added", style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
-                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Browse Gallery") }
-                }
+                Button(onClick = {}, modifier = Modifier.fillMaxWidth()) { Text("New Signature") }
             }
         }
     }
@@ -534,8 +522,8 @@ private fun SectionChild4WithSignaturePreview() {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .fillMaxWidth()
-                        .height(200.dp)
+                        .width(160.dp)
+                        .aspectRatio(2f)
                         .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                         .background(Color.White, RoundedCornerShape(8.dp)),
                     contentAlignment = Alignment.Center
@@ -546,15 +534,14 @@ private fun SectionChild4WithSignaturePreview() {
                 Row(modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(onClick = {}, modifier = Modifier.weight(1f)) { Text("New Signature") }
-                    OutlinedButton(onClick = {}, modifier = Modifier.weight(1f)) { Text("Browse Gallery") }
+                    OutlinedButton(
+                        onClick = {},
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) { Text("Delete Signature") }
                 }
-                OutlinedButton(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    )
-                ) { Text("Delete Signature") }
             }
         }
     }

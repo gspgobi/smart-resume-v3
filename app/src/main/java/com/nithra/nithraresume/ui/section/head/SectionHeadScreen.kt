@@ -31,8 +31,6 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -72,7 +70,6 @@ import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.GROUP_ID_ADDONS
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.utils.verticalScrollbar
 import kotlinx.coroutines.launch
 import com.nithra.nithraresume.ui.preview.AppPreview
@@ -126,7 +123,6 @@ fun SectionHeadScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         LazyColumn(
@@ -516,33 +512,29 @@ private fun ActionButtons(
     onGenerate: () -> Unit,
     onViewShare: () -> Unit
 ) {
-    Card(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Button(
-                onClick = onGenerate,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(Icons.Default.PlayArrow, contentDescription = null,
-                    modifier = Modifier.size(18.dp))
-                Spacer(Modifier.size(8.dp))
-                Text("Generate Resume")
-            }
-            Spacer(Modifier.height(8.dp))
-            OutlinedButton(
-                onClick = onViewShare,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(Icons.Default.Visibility, contentDescription = null,
-                    modifier = Modifier.size(18.dp))
-                Spacer(Modifier.size(8.dp))
-                Text("View & Share")
-            }
+        Button(
+            onClick = onGenerate,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Default.PlayArrow, contentDescription = null,
+                modifier = Modifier.size(18.dp))
+            Spacer(Modifier.size(8.dp))
+            Text("Generate Resume")
+        }
+        OutlinedButton(
+            onClick = onViewShare,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(Icons.Default.Visibility, contentDescription = null,
+                modifier = Modifier.size(18.dp))
+            Spacer(Modifier.size(8.dp))
+            Text("View & Share")
         }
     }
 }

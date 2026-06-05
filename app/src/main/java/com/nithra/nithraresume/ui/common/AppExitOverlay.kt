@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nithra.nithraresume.R
 import com.nithra.nithraresume.ui.preview.AppFullScreenPreview
-
 @Composable
 fun AppExitOverlay() {
     Box(
@@ -48,18 +47,17 @@ fun AppExitOverlay() {
                 lineHeight = 26.sp,
                 modifier = Modifier.padding(8.dp)
             )
-        }
 
-        Text(
-            text = "Press back to exit",
-            fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
+            Text(
+                text = "Press back to exit",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 120.dp)
+            )
+        }
     }
 }
 

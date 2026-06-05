@@ -1015,7 +1015,7 @@ class ResumePdfBuilder(private val context: Context) {
     private fun buildGrayscaleSection(
         p: Paragraph, sectionTitle: String, fonts: PdfFonts, items: List<PdfPTable>
     ) {
-        p.add(PdfPTable(floatArrayOf(0.4f, 10f)).apply {
+        p.add(PdfPTable(floatArrayOf(0.2f, 10f)).apply {
             widthPercentage = 100f
             spacingBefore   = 10f
             spacingAfter    = 4f
@@ -1120,14 +1120,21 @@ class ResumePdfBuilder(private val context: Context) {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeFile(path, bounds)
         val sampleSize = computeSampleSize(bounds.outWidth, bounds.outHeight, maxDimPx)
-        val decoded = BitmapFactory.decodeFile(path, BitmapFactory.Options().apply { inSampleSize = sampleSize })
+        val decoded = BitmapFactory.decodeFile(path, BitmapFactory.Options().apply {
+            inSampleSize = sampleSize
+            inPreferredConfig = Bitmap.Config.ARGB_8888
+        })
             ?: return@runCatching null
         // Composite onto white before JPEG encoding. If the source has an alpha channel
         // (e.g. transparent-background PNG), Android's encoder can emit a 4-channel JPEG
         // which iText interprets as CMYK, causing full color inversion in the PDF.
-        val rgb = Bitmap.createBitmap(decoded.width, decoded.height, Bitmap.Config.ARGB_8888)
-        Canvas(rgb).apply { drawColor(Color.WHITE); drawBitmap(decoded, 0f, 0f, null) }
+        // Convert to ARGB_8888 to ensure consistent color space (fixes gallery image inversion).
+        val argb = if (decoded.config != Bitmap.Config.ARGB_8888)
+            decoded.copy(Bitmap.Config.ARGB_8888, false) else decoded
+        val rgb = Bitmap.createBitmap(argb.width, argb.height, Bitmap.Config.ARGB_8888)
+        Canvas(rgb).apply { drawColor(Color.WHITE); drawBitmap(argb, 0f, 0f, null) }
         decoded.recycle()
+        if (argb != decoded) argb.recycle()
         val out = ByteArrayOutputStream()
         rgb.compress(Bitmap.CompressFormat.JPEG, 85, out)
         rgb.recycle()

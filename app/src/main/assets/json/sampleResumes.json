@@ -1854,6 +1854,3239 @@
           }
         }
       ]
+    },
+    {
+      "profileId": -11,
+      "upName": "AI / ML Engineer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 13,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "AI / ML Engineer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Ethan Clarke",
+            "sc1Address": "47, Maple Street,\nSan Francisco, CA 94102",
+            "sc1Email": "ethan.clarke@gmail.com",
+            "sc1Phone": "(415)-782-3390",
+            "sc1Gender": "Male",
+            "sc1Dob": "12-03-99",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Aspiring AI/ML Engineer seeking a challenging role to apply my knowledge in machine learning, deep learning, and natural language processing to build intelligent systems that solve real-world problems.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in Python, TensorFlow, PyTorch, and scikit-learn for building and deploying machine learning models.\nHands-on experience with deep learning architectures including CNNs, RNNs, LSTMs, and Transformer-based models.\nFamiliar with NLP techniques such as tokenization, word embeddings, BERT fine-tuning, and prompt engineering for LLMs.\nKnowledge of data preprocessing, feature engineering, model evaluation, and hyperparameter tuning.\nExperience with cloud ML platforms including Google Colab, AWS SageMaker, and Hugging Face.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Tech. Computer Science & Engineering (AI Specialization)",
+              "sc3SchoolName": "Stanford University, California",
+              "sc3Subtitle": "Graduated with a 3.85 GPA.",
+              "sc3StudyPeriod": "May-22",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Sentiment Analysis Using BERT",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Fine-tuned a pre-trained BERT model on a custom dataset of 50,000 customer reviews to classify sentiment as positive, negative, or neutral.\nAchieved 94.2% accuracy on the test set, outperforming baseline TF-IDF + Logistic Regression model by 11%.\nDeployed the model as a REST API using FastAPI and Docker, hosted on AWS EC2 with auto-scaling enabled.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "Real-Time Object Detection System",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Built a real-time object detection pipeline using YOLOv8 trained on a custom annotated dataset of 10,000 images.\nOptimized model inference latency to under 30ms using TensorRT quantization, enabling deployment on edge devices.\nIntegrated the system into a live CCTV feed for automated anomaly alerting in a campus security proof-of-concept.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nTech Innovations Inc,\n101 AI Boulevard,\nSan Francisco, CA 94105",
+            "sc8Content": "Dear Hiring Manager,\n\nI am excited to apply for the AI/ML Engineer position at your organization. With a strong foundation in machine learning, deep learning, and NLP, I am confident in my ability to contribute meaningfully to your team's AI initiatives from day one.\n\nI would welcome the opportunity to discuss how my skills align with your needs.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Data Scientist",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 14,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Data Scientist",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Sarah Mitchell",
+            "sc1Address": "18, Lakeview Drive,\nSeattle, WA 98101",
+            "sc1Email": "sarah.mitchell@gmail.com",
+            "sc1Phone": "(206)-541-8820",
+            "sc1Gender": "Female",
+            "sc1Dob": "08-07-95",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Results-driven Data Scientist with 4 years of experience transforming complex datasets into actionable insights. Seeking a senior role to leverage advanced analytics, machine learning, and data storytelling to drive strategic business decisions.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Advanced proficiency in Python, R, SQL, and Spark for large-scale data analysis and predictive modelling.\nStrong expertise in machine learning algorithms including XGBoost, Random Forest, and neural networks using TensorFlow and scikit-learn.\nExperienced in data visualization with Tableau, Power BI, and Matplotlib to communicate insights to non-technical stakeholders.\nHands-on experience with A/B testing, statistical hypothesis testing, and experiment design.\nProficient in cloud data platforms including AWS Redshift, Google BigQuery, and Databricks.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Data Scientist",
+              "sc2CompanyName": "Amazon Web Services, Seattle, WA",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2022 - Present",
+              "sc2Accomplishments": "Developed a customer churn prediction model using XGBoost that reduced annual churn by 18%, saving an estimated $2.4M in recurring revenue.\nBuilt and deployed an end-to-end recommendation engine serving 500K+ daily active users, resulting in a 23% increase in cross-sell revenue.\nLed a data quality initiative that reduced pipeline failures by 40% through automated anomaly detection using Isolation Forest algorithms.\nCollaborated with product and engineering teams to design dashboards in Tableau that reduced report generation time from 3 days to 2 hours.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Junior Data Analyst",
+              "sc2CompanyName": "Tableau Software, Seattle, WA",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jul 2020 - May 2022",
+              "sc2Accomplishments": "Designed and maintained over 30 business intelligence dashboards supporting sales, marketing, and operations teams.\nConducted cohort analysis and funnel analysis that identified a 15% drop-off in the user onboarding flow, leading to a redesign that improved activation rates by 12%.\nAutomated monthly executive reporting using Python and SQL, saving 20+ hours of manual work per month.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "M.S. in Data Science",
+              "sc3SchoolName": "University of Washington, Seattle, WA",
+              "sc3Subtitle": "Graduated with a 3.90 GPA.",
+              "sc3StudyPeriod": "May-20",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            },
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 1,
+              "sc3StudyDegree": "B.Sc. in Statistics",
+              "sc3SchoolName": "University of California, Berkeley, CA",
+              "sc3Subtitle": "Graduated with a 3.72 GPA.",
+              "sc3StudyPeriod": "May-18",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nData Insights Corp,\n200 Analytics Way,\nSeattle, WA 98109",
+            "sc8Content": "Dear Hiring Manager,\n\nI am writing to express my interest in the Senior Data Scientist position. With 4 years of experience delivering measurable business impact through advanced analytics and machine learning at Amazon, I am confident I can bring the same rigour and results-driven approach to your team.\n\nI look forward to the opportunity to discuss my candidacy.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Cybersecurity Analyst",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 15,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Cybersecurity Analyst",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Ryan Torres",
+            "sc1Address": "92, Ridgewood Avenue,\nAustin, TX 78701",
+            "sc1Email": "ryan.torres@gmail.com",
+            "sc1Phone": "(512)-634-7751",
+            "sc1Gender": "Male",
+            "sc1Dob": "20-09-00",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Detail-oriented Cybersecurity graduate seeking an entry-level Analyst role to apply my expertise in threat detection, vulnerability assessment, and network security to protect organizational assets and data from evolving cyber threats.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in network security fundamentals, TCP/IP protocols, firewalls, IDS/IPS, and VPN technologies.\nHands-on experience with SIEM tools including Splunk and IBM QRadar for log analysis and threat detection.\nKnowledge of penetration testing methodologies using tools such as Metasploit, Nmap, Burp Suite, and Wireshark.\nFamiliarity with vulnerability assessment frameworks including OWASP Top 10, CVE, and NIST Cybersecurity Framework.\nCertified CompTIA Security+ and CEH (Certified Ethical Hacker).",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Sc. in Cybersecurity",
+              "sc3SchoolName": "University of Texas at Austin, TX",
+              "sc3Subtitle": "Graduated with a 3.75 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Network Intrusion Detection System",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Designed and implemented a machine-learning-based IDS using Python and scikit-learn, trained on the NSL-KDD dataset, achieving 97% accuracy in classifying normal vs. malicious traffic.\nDeployed the model in a simulated enterprise environment using virtual machines, integrating it with Splunk for real-time alerting.\nDocumented attack patterns for DoS, probe, R2L, and U2R attack categories with recommended mitigation strategies.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "Web Application Penetration Testing",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Performed a full-scope penetration test on a deliberately vulnerable web application (DVWA) identifying SQL injection, XSS, CSRF, and broken authentication vulnerabilities.\nGenerated a detailed security assessment report with risk ratings (Critical/High/Medium/Low) and remediation recommendations following the OWASP Testing Guide.\nPresented findings to faculty panel, simulating a real-world client engagement.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nSecureNet Solutions,\n500 Cyber Park,\nAustin, TX 78702",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Cybersecurity Analyst position at your company. With a strong academic background in cybersecurity and hands-on experience with SIEM tools, penetration testing, and intrusion detection, I am eager to contribute to your security operations team.\n\nI welcome the opportunity to discuss how I can add value to your organization.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "DevOps Engineer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 16,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "DevOps Engineer",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Jessica Park",
+            "sc1Address": "34, Birchwood Lane,\nChicago, IL 60601",
+            "sc1Email": "jessica.park@gmail.com",
+            "sc1Phone": "(312)-455-9923",
+            "sc1Gender": "Female",
+            "sc1Dob": "14-11-92",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Experienced DevOps Engineer with 5 years of expertise in cloud infrastructure, CI/CD automation, and containerization. Seeking a senior position to architect and optimize scalable, highly available systems that accelerate software delivery.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Expert in container orchestration using Kubernetes (EKS, GKE) and Docker for microservices deployment and management.\nProficient with CI/CD pipelines using Jenkins, GitHub Actions, GitLab CI, and ArgoCD for automated testing and deployment.\nHands-on experience with Infrastructure as Code (IaC) tools including Terraform and Ansible for cloud resource provisioning.\nStrong knowledge of AWS services including EC2, S3, RDS, Lambda, ECS, EKS, CloudWatch, and IAM.\nExperienced in monitoring and observability using Prometheus, Grafana, ELK Stack, and Datadog.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Senior DevOps Engineer",
+              "sc2CompanyName": "Spotify Technology, Chicago, IL",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Mar 2022 - Present",
+              "sc2Accomplishments": "Designed and implemented a multi-region Kubernetes architecture on AWS EKS serving 2M+ daily active users, achieving 99.98% uptime SLA.\nReduced deployment lead time from 4 hours to 12 minutes by re-architecting the CI/CD pipeline using GitHub Actions and ArgoCD with automated rollback capabilities.\nCut cloud infrastructure costs by $380K annually through rightsizing, spot instance adoption, and implementing auto-scaling policies across 200+ services.\nLed migration of 60 microservices from on-premise VMs to containerized Kubernetes workloads, completed 3 weeks ahead of schedule.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "DevOps Engineer",
+              "sc2CompanyName": "Accenture, Chicago, IL",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Aug 2019 - Feb 2022",
+              "sc2Accomplishments": "Built end-to-end CI/CD pipelines for 15 client projects using Jenkins and GitLab CI, reducing manual deployment effort by 70%.\nAutomated infrastructure provisioning for AWS environments using Terraform, reducing environment setup time from 2 days to 45 minutes.\nImplemented centralized logging and monitoring using the ELK Stack, reducing mean time to detection (MTTD) of incidents by 55%.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Tech. in Computer Science & Engineering",
+              "sc3SchoolName": "Illinois Institute of Technology, Chicago, IL",
+              "sc3Subtitle": "Graduated with a 3.60 GPA.",
+              "sc3StudyPeriod": "May-19",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nCloudScale Technologies,\n300 Innovation Drive,\nChicago, IL 60602",
+            "sc8Content": "Dear Hiring Manager,\n\nI am writing to apply for the Senior DevOps Engineer position. With 5 years of experience building cloud-native infrastructure and CI/CD pipelines at scale, I have consistently delivered reliability, speed, and cost efficiency. I am confident I can bring the same impact to your engineering organization.\n\nI would love the opportunity to connect and learn more about the role.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Full Stack Developer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 17,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Full Stack Developer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Nathan Brooks",
+            "sc1Address": "56, Oakwood Street,\nBoston, MA 02101",
+            "sc1Email": "nathan.brooks@gmail.com",
+            "sc1Phone": "(617)-382-6640",
+            "sc1Gender": "Male",
+            "sc1Dob": "05-06-01",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Passionate Full Stack Developer with strong foundations in React, Node.js, and cloud deployment seeking an entry-level role where I can contribute to building modern, scalable web applications while growing into a well-rounded software engineer.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in front-end technologies including React.js, Next.js, TypeScript, Tailwind CSS, and Redux for building responsive SPAs.\nStrong back-end development skills using Node.js, Express.js, and REST/GraphQL API design.\nExperienced with databases including PostgreSQL, MongoDB, and Redis for both relational and NoSQL use cases.\nFamiliar with cloud deployment on AWS (EC2, S3, RDS) and Vercel, with working knowledge of Docker and basic CI/CD using GitHub Actions.\nGood understanding of software engineering principles including SOLID, MVC architecture, and Agile/Scrum workflows.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Sc. in Computer Science",
+              "sc3SchoolName": "Boston University, Boston, MA",
+              "sc3Subtitle": "Graduated with a 3.80 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "JobTracker - Full Stack Job Application Platform",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Built a full-stack web application enabling users to track job applications across different stages (Applied, Interview, Offer, Rejected) with a Kanban-style board interface.\nFront end built with React.js, TypeScript, and Tailwind CSS; back end powered by Node.js, Express, and PostgreSQL with JWT-based authentication.\nDeployed on AWS (EC2 + RDS) with automated deployments via GitHub Actions; achieved 100ms average API response time under load testing.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "Real-Time Chat Application",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Developed a real-time messaging app supporting group and private chats using React.js on the front end and Node.js with Socket.IO on the back end.\nImplemented message persistence with MongoDB, user authentication with bcrypt and JWT, and online/offline presence indicators.\nSupports 200 concurrent users with sub-200ms message delivery latency; deployed on Vercel and Railway.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nBuildFast Inc,\n88 Developer Square,\nBoston, MA 02108",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Full Stack Developer position at your company. I have built several end-to-end web applications using React, Node.js, and cloud platforms, and I am excited about the opportunity to contribute to your product and grow alongside a talented engineering team.\n\nThank you for considering my application.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "UX / UI Designer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 18,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "UX / UI Designer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Ava Chen",
+            "sc1Address": "22, Willowbrook Court,\nPortland, OR 97201",
+            "sc1Email": "ava.chen@gmail.com",
+            "sc1Phone": "(503)-718-4492",
+            "sc1Gender": "Female",
+            "sc1Dob": "17-02-00",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Creative and user-focused UX/UI Designer seeking an entry-level role where I can craft intuitive digital experiences. Passionate about translating user needs into elegant interfaces through research, wireframing, and iterative design.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in Figma, Adobe XD, and Sketch for high-fidelity wireframing, prototyping, and design system creation.\nSolid understanding of UX research methods including user interviews, usability testing, card sorting, and heuristic evaluation.\nKnowledge of accessibility standards (WCAG 2.1) and responsive design principles across mobile and web platforms.\nFamiliarity with front-end basics including HTML, CSS, and Tailwind CSS to collaborate effectively with developers.\nExperienced in design thinking methodology and Agile workflows using Jira and Notion.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Des. in Interaction Design",
+              "sc3SchoolName": "Oregon State University, Corvallis, OR",
+              "sc3Subtitle": "Graduated with a 3.88 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "FoodieGo - Food Delivery App Redesign",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Conducted 12 user interviews and a competitive analysis to identify pain points in an existing food delivery app, synthesizing findings into 5 core user stories.\nDesigned a complete redesign in Figma including 40+ screens with an interactive prototype, reducing task completion time by 35% in usability testing.\nCreated a reusable component library and design tokens ensuring visual consistency across iOS and Android platforms.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "HealthPulse - Wellness Tracking Dashboard",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Designed a data-rich health monitoring web dashboard with clear visual hierarchy for displaying vitals, activity trends, and medication reminders.\nApplied WCAG 2.1 AA accessibility guidelines achieving a full pass on contrast ratios and keyboard navigation.\nPresented prototype to 3 healthcare professionals for feedback, incorporating insights across 2 iteration cycles.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nPixelCraft Studios,\n400 Design Avenue,\nPortland, OR 97204",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the UX/UI Designer position at your studio. With a degree in Interaction Design and a portfolio of research-backed, user-tested projects, I am excited to help your team create meaningful digital experiences. I believe great design is invisible — and I am committed to making that happen.\n\nThank you for your time and consideration.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Product Manager",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 19,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Product Manager",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Daniel Foster",
+            "sc1Address": "78, Greenfield Road,\nNew York, NY 10001",
+            "sc1Email": "daniel.foster@gmail.com",
+            "sc1Phone": "(212)-834-5571",
+            "sc1Gender": "Male",
+            "sc1Dob": "03-04-91",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Strategic and data-driven Product Manager with 5 years of experience launching and scaling B2B SaaS products. Seeking a senior PM role to lead cross-functional teams in delivering customer-centric solutions that drive measurable business growth.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proven track record of defining product vision, roadmap prioritization using frameworks like RICE and MoSCoW, and aligning stakeholders.\nStrong analytical skills with experience using Mixpanel, Amplitude, and Google Analytics to drive product decisions from data.\nExperienced in running A/B tests, user interviews, and Jobs-to-be-Done (JTBD) discovery sessions to validate hypotheses.\nDeep collaboration with engineering, design, marketing, and sales to deliver features on time and within scope.\nCertified Product Manager (CPM) with working knowledge of Agile, Scrum, and SAFe frameworks.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Product Manager",
+              "sc2CompanyName": "Salesforce, New York, NY",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jan 2022 - Present",
+              "sc2Accomplishments": "Owned the roadmap for the CRM Analytics module serving 15,000+ enterprise customers, increasing feature adoption by 42% within 12 months.\nLed discovery and delivery of an AI-powered deal intelligence feature, contributing to a 28% increase in sales rep productivity as measured by closed-won rates.\nDrove a major onboarding redesign initiative by synthesizing insights from 40+ customer interviews, reducing time-to-value from 14 days to 5 days.\nManaged a cross-functional squad of 12 (engineering, design, QA, data science) operating in 2-week sprints with a 96% on-time delivery rate.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Associate Product Manager",
+              "sc2CompanyName": "HubSpot, New York, NY",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Aug 2019 - Dec 2021",
+              "sc2Accomplishments": "Supported the PM for the Marketing Hub, contributing to 3 major feature launches that grew ARR by $8M in the first year.\nConducted competitive analysis across 8 competitors and produced quarterly market insight reports consumed by VP-level leadership.\nOwned the in-app notification system end-to-end, improving click-through rates by 31% through targeted segmentation and copy experiments.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "M.B.A. in Technology Management",
+              "sc3SchoolName": "New York University (Stern), New York, NY",
+              "sc3Subtitle": "Graduated with a 3.78 GPA.",
+              "sc3StudyPeriod": "May-19",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            },
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 1,
+              "sc3StudyDegree": "B.Tech. in Computer Science",
+              "sc3SchoolName": "Rutgers University, New Jersey",
+              "sc3Subtitle": "Graduated with a 3.55 GPA.",
+              "sc3StudyPeriod": "May-17",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nGrowthOS Inc,\n500 Fifth Avenue,\nNew York, NY 10110",
+            "sc8Content": "Dear Hiring Manager,\n\nI am writing to apply for the Senior Product Manager position. With 5 years of experience delivering impactful SaaS products at Salesforce and HubSpot, I have a strong track record of translating customer problems into solutions that drive measurable revenue growth. I would love to bring this expertise to your team.\n\nLooking forward to connecting.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Cloud Solutions Architect",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 20,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Cloud Solutions Architect",
+      "sampleProfileType": 3,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Marcus Webb",
+            "sc1Address": "61, Stonehaven Drive,\nDenver, CO 80201",
+            "sc1Email": "marcus.webb@gmail.com",
+            "sc1Phone": "(720)-391-6684",
+            "sc1Gender": "Male",
+            "sc1Dob": "22-08-83",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 15,
+          "shaTitle": "PROFESSIONAL SUMMARY",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "AWS Certified Solutions Architect (Professional) and Google Cloud Professional Architect with 12 years of experience designing enterprise-grade cloud infrastructure. Proven ability to lead multi-cloud migrations, architect resilient distributed systems, and reduce infrastructure costs for Fortune 500 clients across fintech, healthcare, and e-commerce industries.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Expert in designing highly available, fault-tolerant architectures on AWS, Azure, and GCP using services such as VPC, EKS, Lambda, CloudFront, and Cloud Spanner.\nDeep expertise in cloud security including IAM policies, Zero Trust architecture, data encryption at rest and in transit, and compliance frameworks (SOC 2, HIPAA, PCI DSS).\nStrong background in serverless architecture, event-driven systems, and microservices using API Gateway, EventBridge, and Pub/Sub.\nExperienced in FinOps practices, consistently delivering 20-40% cloud cost reductions through reserved instance planning and architectural optimization.\nLeadership experience managing teams of 8-15 engineers and presenting architecture decisions to C-suite stakeholders.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Principal Cloud Solutions Architect",
+              "sc2CompanyName": "Deloitte Consulting, Denver, CO",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Mar 2019 - Present",
+              "sc2Accomplishments": "Architected a multi-region AWS cloud platform for a $2B fintech client migrating from on-premise data centers, processing 8M daily transactions with 99.999% uptime.\nDesigned a HIPAA-compliant healthcare data platform on Google Cloud using Cloud Healthcare API and BigQuery, enabling real-time analytics on 400TB of patient data.\nLed a cloud cost optimization engagement for a retail client, identifying and implementing changes that reduced monthly AWS spend from $1.8M to $1.1M.\nMentored a team of 12 cloud engineers and led the cloud architecture guild with 200+ members across Deloitte's US practices.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Senior Cloud Engineer",
+              "sc2CompanyName": "Oracle Corporation, Denver, CO",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2013 - Feb 2019",
+              "sc2Accomplishments": "Designed and deployed Oracle Cloud Infrastructure (OCI) solutions for 20+ enterprise clients across North America.\nBuilt automated DR (disaster recovery) pipelines achieving RTO of 4 minutes and RPO of 30 seconds for mission-critical databases.\nContributed to Oracle's internal cloud architecture standards documentation adopted company-wide.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "M.S. in Cloud Computing & Distributed Systems",
+              "sc3SchoolName": "University of Colorado, Boulder, CO",
+              "sc3Subtitle": "Graduated with a 3.85 GPA.",
+              "sc3StudyPeriod": "May-13",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            },
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 1,
+              "sc3StudyDegree": "B.Tech. in Computer Science",
+              "sc3SchoolName": "Colorado State University, Fort Collins, CO",
+              "sc3Subtitle": "Graduated with a 3.60 GPA.",
+              "sc3StudyPeriod": "May-11",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nNexGen Cloud Partners,\n1000 Cloud Way,\nDenver, CO 80202",
+            "sc8Content": "Dear Hiring Manager,\n\nI am excited to apply for the Principal Cloud Solutions Architect position. With 12 years of experience designing enterprise cloud platforms across AWS, Azure, and GCP, and a track record of delivering complex migrations and significant cost reductions, I am well-positioned to lead your most critical cloud initiatives.\n\nI would welcome the opportunity to discuss the role further.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Digital Marketing Specialist",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 21,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Digital Marketing Specialist",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Olivia Bennett",
+            "sc1Address": "39, Rosewood Lane,\nMiami, FL 33101",
+            "sc1Email": "olivia.bennett@gmail.com",
+            "sc1Phone": "(305)-627-8843",
+            "sc1Gender": "Female",
+            "sc1Dob": "29-05-94",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Performance-driven Digital Marketing Specialist with 4 years of experience growing brand presence and revenue through SEO, paid media, and content strategy. Seeking a senior role to lead full-funnel digital campaigns for a growth-stage company.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Expertise in SEO (on-page, technical, and link building) with proven ability to grow organic traffic using tools like Ahrefs, SEMrush, and Google Search Console.\nProficient in running Google Ads, Meta Ads, LinkedIn Ads, and TikTok Ads campaigns with a focus on ROAS optimization.\nStrong content marketing skills including blog strategy, email marketing via Klaviyo and Mailchimp, and social media management.\nData-driven approach using Google Analytics 4, Looker Studio, and HubSpot CRM to measure campaign performance and inform strategy.\nGoogle Analytics Certified and Meta Blueprint Certified.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Digital Marketing Specialist",
+              "sc2CompanyName": "Shopify, Miami, FL",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Apr 2022 - Present",
+              "sc2Accomplishments": "Grew organic search traffic by 185% in 18 months through a comprehensive technical SEO audit and content cluster strategy targeting 300+ high-intent keywords.\nManaged a $450K annual paid media budget across Google and Meta, achieving an average ROAS of 4.8x and reducing cost-per-acquisition by 32%.\nLaunched an email nurture sequence for trial users that improved free-to-paid conversion rate from 8% to 14%, generating $620K in incremental ARR.\nBuilt and managed the company's TikTok presence from 0 to 85,000 followers in 10 months through organic short-form video content.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Digital Marketing Coordinator",
+              "sc2CompanyName": "Wayfair, Miami, FL",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2020 - Mar 2022",
+              "sc2Accomplishments": "Coordinated weekly promotional email campaigns to a list of 500K+ subscribers, maintaining a 28% average open rate and 4.2% click-through rate.\nAssisted in managing Google Shopping campaigns contributing to a 22% increase in e-commerce revenue during Q4.\nProduced weekly performance reports using Google Analytics and Looker Studio for the marketing leadership team.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.B.A. in Marketing",
+              "sc3SchoolName": "University of Miami, Coral Gables, FL",
+              "sc3Subtitle": "Graduated with a 3.70 GPA.",
+              "sc3StudyPeriod": "May-20",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nGrowth Hive Agency,\n200 Brickell Avenue,\nMiami, FL 33131",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Senior Digital Marketing Specialist position. With 4 years of hands-on experience growing organic traffic, managing significant paid media budgets, and building email programs that convert, I am confident I can help your team hit its growth targets. I am passionate about data-driven marketing that delivers real business results.\n\nThank you for your consideration.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Mobile App Developer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 22,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Mobile App Developer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Lucas Patel",
+            "sc1Address": "11, Sunridge Boulevard,\nAustin, TX 78702",
+            "sc1Email": "lucas.patel@gmail.com",
+            "sc1Phone": "(512)-903-2251",
+            "sc1Gender": "Male",
+            "sc1Dob": "30-10-00",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Motivated Mobile App Developer with strong skills in Flutter and Android (Kotlin) development, seeking an entry-level position to build high-performance, user-friendly mobile applications for a product-focused company.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in Flutter (Dart) for cross-platform iOS and Android development and native Android development using Kotlin and Jetpack Compose.\nFamiliar with state management solutions including Provider, BLoC, and Riverpod for scalable Flutter app architecture.\nExperience integrating REST APIs, Firebase (Auth, Firestore, FCM, Storage), and Google Maps SDK into mobile applications.\nKnowledge of mobile UI/UX best practices, Material Design 3, and Apple Human Interface Guidelines.\nPublished 2 apps on the Google Play Store with combined 5,000+ downloads.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Tech. in Computer Science & Engineering",
+              "sc3SchoolName": "University of Texas at Austin, TX",
+              "sc3Subtitle": "Graduated with a 3.78 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "SpendSmart - Personal Finance App (Flutter)",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Built a cross-platform personal finance app using Flutter with BLoC state management, enabling users to track expenses, set budgets, and visualize spending trends with animated charts.\nIntegrated Firebase Auth (Google Sign-In), Firestore for real-time data sync, and Firebase FCM for smart budget-alert notifications.\nPublished on Google Play Store with 3,200+ downloads and a 4.6-star average rating; optimized app startup time to under 1.5 seconds on mid-range devices.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "CampusConnect - College Events App (Kotlin)",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Developed a native Android app using Kotlin and Jetpack Compose that aggregates campus events, club announcements, and cafeteria menus in a single feed.\nImplemented offline-first architecture using Room database and WorkManager for background sync, ensuring functionality with poor network connectivity.\nAdopted by the university student council; reached 1,800 active users within 2 months of launch.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nAppForge Technologies,\n750 Tech Parkway,\nAustin, TX 78703",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Mobile App Developer position. I have built and published Flutter and Kotlin apps used by thousands of real users, and I am excited to bring that product-minded, quality-first approach to your team. I would love to grow as a developer while contributing to apps that make a real difference for your users.\n\nThank you for your time.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Business Analyst",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 23,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Business Analyst",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Priya Sharma",
+            "sc1Address": "14, Elmwood Circle,\nCharlotte, NC 28201",
+            "sc1Email": "priya.sharma@gmail.com",
+            "sc1Phone": "(704)-529-3381",
+            "sc1Gender": "Female",
+            "sc1Dob": "11-09-93",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Analytical and results-oriented Business Analyst with 4 years of experience bridging business needs and technology solutions. Seeking a senior BA role to drive process improvements and deliver data-backed recommendations that accelerate organisational growth.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Strong expertise in requirements elicitation through stakeholder interviews, workshops, and JAD sessions, producing clear BRDs and FRDs.\nProficient in process modelling using BPMN, UML use-case diagrams, and swimlane flowcharts in Lucidchart and Visio.\nExperience with data analysis using SQL, Excel (pivot tables, VLOOKUP), and Tableau for business intelligence reporting.\nFamiliar with Agile (Scrum/Kanban) and Waterfall SDLC methodologies; experienced in writing user stories and acceptance criteria in Jira.\nCertified Business Analysis Professional (CBAP) and Scrum Alliance Certified Scrum Product Owner (CSPO).",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Business Analyst",
+              "sc2CompanyName": "Bank of America, Charlotte, NC",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Sep 2021 - Present",
+              "sc2Accomplishments": "Led requirements gathering for a core banking system migration impacting 3.2M customer accounts, producing 180-page BRD adopted by 6 engineering squads.\nIdentified and documented 24 process gaps in the loan origination workflow, leading to a redesign that reduced approval turnaround time from 9 days to 3 days.\nBuilt Tableau dashboards tracking KPIs for 5 business units, reducing monthly reporting preparation from 3 days to 4 hours.\nFacilitated 50+ sprint reviews, retrospectives, and stakeholder demos maintaining a 98% on-time delivery rate across 3 product teams.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Junior Business Analyst",
+              "sc2CompanyName": "Cognizant, Charlotte, NC",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jul 2019 - Aug 2021",
+              "sc2Accomplishments": "Assisted senior BAs in documenting functional requirements and conducting UAT for a retail insurance client's claims management platform.\nCreated over 60 user stories with detailed acceptance criteria, contributing to a 30% reduction in post-release defects.\nManaged requirement traceability matrices to ensure 100% coverage between business requirements and test cases.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "M.S. in Information Systems",
+              "sc3SchoolName": "University of North Carolina, Chapel Hill, NC",
+              "sc3Subtitle": "Graduated with a 3.82 GPA.",
+              "sc3StudyPeriod": "May-19",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nFinServ Solutions Inc,\n200 Trade Street,\nCharlotte, NC 28202",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Senior Business Analyst position. With 4 years of experience delivering complex requirements at Bank of America, I have a proven ability to translate ambiguous business needs into clear, actionable specifications that engineering teams can execute on. I would love to bring that rigour to your organisation.\n\nThank you for your time.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Data Engineer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 24,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Data Engineer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Jordan Lee",
+            "sc1Address": "88, Pineview Drive,\nAtlanta, GA 30301",
+            "sc1Email": "jordan.lee@gmail.com",
+            "sc1Phone": "(404)-718-9920",
+            "sc1Gender": "Male",
+            "sc1Dob": "25-07-01",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Detail-oriented Data Engineering graduate with strong skills in building scalable data pipelines and cloud data warehouses. Seeking an entry-level role to design and maintain robust data infrastructure that empowers data-driven decision making.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in Python and SQL for data ingestion, transformation, and orchestration of large-scale batch and streaming pipelines.\nHands-on experience with Apache Spark, Apache Kafka, and Apache Airflow for distributed data processing and workflow automation.\nFamiliar with cloud data warehouses including Snowflake, Google BigQuery, and AWS Redshift for analytical workloads.\nKnowledge of dbt (data build tool) for modular, testable SQL transformations following ELT best practices.\nExperience with containerised environments using Docker and basic Kubernetes for pipeline deployment.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Tech. in Computer Science & Engineering",
+              "sc3SchoolName": "Georgia Institute of Technology, Atlanta, GA",
+              "sc3Subtitle": "Graduated with a 3.82 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Real-Time E-Commerce Analytics Pipeline",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Built an end-to-end streaming data pipeline ingesting 500K+ daily clickstream events using Apache Kafka and Spark Structured Streaming, loading enriched data into Snowflake.\nOrchestrated the pipeline using Apache Airflow with alerting on SLA breaches; achieved 99.5% pipeline uptime over a 3-month test period.\nDesigned dbt models to create a clean analytics layer, reducing ad-hoc SQL query time for analysts by 60%.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "Data Lakehouse on AWS",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Designed a data lakehouse architecture on AWS using S3 as the storage layer, AWS Glue for ETL, and Amazon Athena for serverless SQL querying.\nImplemented Delta Lake format for ACID transactions and time-travel queries on 2TB of historical log data.\nProvided a 10x query performance improvement over the previous unpartitioned S3 + Athena setup through partition pruning and columnar compression.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nDataFlow Systems,\n450 Peachtree Road,\nAtlanta, GA 30308",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Data Engineer position at your company. With hands-on experience building streaming pipelines and cloud data lakehouses during my studies, I am eager to design reliable, scalable data infrastructure that helps your analysts and scientists do their best work.\n\nThank you for considering my application.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Embedded Systems Engineer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 25,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Embedded Systems Engineer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Aaron Nguyen",
+            "sc1Address": "27, Circuit Lane,\nSan Jose, CA 95101",
+            "sc1Email": "aaron.nguyen@gmail.com",
+            "sc1Phone": "(408)-334-7762",
+            "sc1Gender": "Male",
+            "sc1Dob": "18-04-00",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Dedicated Embedded Systems Engineering graduate with strong foundations in firmware development, RTOS, and hardware-software integration. Seeking an entry-level role to design reliable embedded solutions for IoT, automotive, or consumer electronics applications.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in C and C++ for bare-metal and RTOS-based firmware development on ARM Cortex-M microcontrollers (STM32, NRF52).\nHands-on experience with communication protocols including UART, SPI, I2C, CAN, and BLE for peripheral and inter-device communication.\nFamiliar with FreeRTOS for task scheduling, inter-task communication, and memory management in resource-constrained environments.\nExperience with hardware debugging using oscilloscopes, logic analysers, JTAG/SWD probes, and GDB.\nKnowledge of IoT connectivity using MQTT, CoAP, and AWS IoT Core for cloud-connected embedded devices.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Sc. in Electrical & Computer Engineering",
+              "sc3SchoolName": "San Jose State University, San Jose, CA",
+              "sc3Subtitle": "Graduated with a 3.76 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "Smart Home Sensor Node (IoT)",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Designed and programmed a low-power IoT sensor node on the NRF52840 SoC measuring temperature, humidity, and CO2, transmitting data over BLE to a Raspberry Pi gateway.\nImplemented FreeRTOS tasks for sensor polling, data buffering, and BLE advertising with a sleep duty cycle achieving 6-month battery life on a 1000mAh cell.\nPublished telemetry to AWS IoT Core via MQTT; visualised real-time sensor data on a Grafana dashboard.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "Autonomous Line-Following Robot",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Developed firmware in C for an STM32-based autonomous robot using IR sensor arrays and a PID controller for smooth line tracking at speeds up to 1.2 m/s.\nIntegrated encoder feedback over SPI for closed-loop motor speed control, achieving positional accuracy within 2mm on a 5-metre test course.\nWon 2nd place in the university robotics competition among 18 competing teams.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nSilicon Edge Technologies,\n100 Innovation Park,\nSan Jose, CA 95110",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Embedded Systems Engineer position at your company. With a strong background in firmware development, RTOS programming, and IoT hardware integration, I am excited about the opportunity to contribute to your embedded product roadmap and develop mission-critical firmware from day one.\n\nThank you for your consideration.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "HR Business Partner",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 26,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "HR Business Partner",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Amanda Rivera",
+            "sc1Address": "55, Harborview Road,\nPhoenix, AZ 85001",
+            "sc1Email": "amanda.rivera@gmail.com",
+            "sc1Phone": "(602)-481-7734",
+            "sc1Gender": "Female",
+            "sc1Dob": "06-12-90",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Strategic HR Business Partner with 5 years of experience aligning people strategies with business objectives. Seeking a senior HRBP role to partner with leadership teams in building high-performance cultures, driving talent development, and improving employee engagement.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Expertise in full-cycle recruitment, onboarding programme design, and workforce planning for teams of 50-500 employees.\nStrong background in performance management, succession planning, and leadership development using OKR and 9-box grid frameworks.\nExperienced in employee relations including conflict resolution, disciplinary procedures, and investigations in compliance with federal and state employment law.\nProficient in HRIS platforms including Workday, BambooHR, and SAP SuccessFactors for people analytics and reporting.\nSHRM-CP certified with strong knowledge of FMLA, ADA, FLSA, and EEO compliance requirements.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "HR Business Partner",
+              "sc2CompanyName": "Intel Corporation, Phoenix, AZ",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Feb 2021 - Present",
+              "sc2Accomplishments": "Partnered with 4 engineering business units (800+ employees) to align talent strategy with product roadmap goals, reducing voluntary attrition from 18% to 11% within 18 months.\nDesigned and launched a structured mentoring programme connecting 120 junior engineers with senior leaders, improving engagement scores by 14 percentage points.\nLed a compensation benchmarking project reviewing 200 roles against market data, resulting in targeted salary adjustments that improved offer acceptance rate from 62% to 81%.\nManaged 12 complex employee relations cases, achieving resolution without escalation to legal in 10 of 12 cases.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "HR Generalist",
+              "sc2CompanyName": "Honeywell, Phoenix, AZ",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2019 - Jan 2021",
+              "sc2Accomplishments": "Managed end-to-end recruitment for 80+ roles annually across engineering, finance, and operations, reducing average time-to-hire from 52 days to 34 days.\nCoordinated new hire onboarding for 150+ employees per year, achieving a 90-day retention rate of 97%.\nAdministered performance review cycles for 400 employees using Workday, training 60 managers on calibration and feedback best practices.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "M.B.A. in Human Resource Management",
+              "sc3SchoolName": "Arizona State University, Tempe, AZ",
+              "sc3Subtitle": "Graduated with a 3.74 GPA.",
+              "sc3StudyPeriod": "May-19",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nPeopleFirst Corp,\n300 Central Avenue,\nPhoenix, AZ 85004",
+            "sc8Content": "Dear Hiring Manager,\n\nI am writing to apply for the Senior HR Business Partner role. With 5 years of strategic HRBP experience at Intel and Honeywell, I have consistently delivered measurable improvements in retention, engagement, and talent development. I am passionate about building people strategies that directly enable business outcomes.\n\nI look forward to discussing this opportunity.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Graphic Designer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 27,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Graphic Designer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Mia Johnson",
+            "sc1Address": "63, Artisan Street,\nNashville, TN 37201",
+            "sc1Email": "mia.johnson@gmail.com",
+            "sc1Phone": "(615)-824-4410",
+            "sc1Gender": "Female",
+            "sc1Dob": "09-03-01",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Creative and detail-oriented Graphic Designer seeking an entry-level role to craft compelling visual identities, marketing collateral, and digital content. Passionate about combining aesthetics with purpose to deliver designs that resonate with audiences and drive brand impact.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in Adobe Creative Suite including Illustrator, Photoshop, InDesign, and After Effects for print, digital, and motion graphics.\nStrong understanding of typography, colour theory, grid systems, and visual hierarchy applied across branding and marketing projects.\nExperience designing for social media platforms (Instagram, LinkedIn, TikTok) following platform-specific dimensions and best practices.\nFamiliarity with Figma and Canva for rapid digital asset creation and collaborative design workflows.\nPortfolio includes brand identity projects, packaging design, editorial layouts, and social media campaigns.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.F.A. in Graphic Design",
+              "sc3SchoolName": "Belmont University, Nashville, TN",
+              "sc3Subtitle": "Graduated with a 3.91 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "BrewCo - Craft Beer Brand Identity",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Developed a complete brand identity for a fictional craft brewery including logo suite, colour palette, typography system, label design, and brand guidelines document.\nCreated 30+ brand touchpoints spanning tap handles, merchandise, packaging, and a brand standards guide used in a national competition entry.\nWon Silver Award at the 2023 AIGA Student Design Competition in the Brand Identity category.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "GreenSteps - Sustainability Campaign",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Designed a multi-channel awareness campaign for a local non-profit promoting sustainable living, covering social media graphics, event posters, email headers, and a 16-page digital magazine.\nProduced a 30-second motion graphic explainer video using After Effects that achieved 45,000 organic views on Instagram within 2 weeks of launch.\nCollaborated with copywriters and marketing coordinators in a 4-person team using Figma for real-time feedback and asset handoff.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nCreative Studio Co,\n150 Music Row,\nNashville, TN 37203",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Graphic Designer position at your studio. With an award-winning design portfolio built across branding, print, digital, and motion — and a genuine passion for visual storytelling — I am excited to bring my creativity and craft to your team and help build brands that people love.\n\nThank you for your time.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "QA / Test Engineer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 28,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "QA / Test Engineer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Tyler Brooks",
+            "sc1Address": "74, Cedarwood Lane,\nRaleigh, NC 27601",
+            "sc1Email": "tyler.brooks@gmail.com",
+            "sc1Phone": "(919)-452-6631",
+            "sc1Gender": "Male",
+            "sc1Dob": "14-08-01",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Detail-oriented QA/Test Engineering graduate seeking an entry-level role to ensure software quality through rigorous manual and automated testing. Committed to catching defects early and delivering reliable, high-quality software to end users.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in test automation using Selenium WebDriver, Cypress, and Appium for web and mobile regression testing.\nStrong understanding of testing methodologies including black-box, white-box, regression, smoke, sanity, and exploratory testing.\nExperience writing test plans, test cases, and bug reports using TestRail and Jira with clear reproduction steps and severity classification.\nFamiliar with API testing using Postman and RestAssured, and performance testing using JMeter.\nBasic knowledge of CI/CD integration using GitHub Actions and Jenkins to run automated test suites on every build.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Sc. in Computer Science",
+              "sc3SchoolName": "North Carolina State University, Raleigh, NC",
+              "sc3Subtitle": "Graduated with a 3.72 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "E-Commerce Automation Test Framework",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Built a Page Object Model (POM) based Selenium + TestNG automation framework for an e-commerce demo application covering 120+ end-to-end test cases across checkout, search, and account management flows.\nIntegrated the framework with GitHub Actions CI to trigger full regression on every pull request, reducing manual regression time from 6 hours to 18 minutes.\nGenerated HTML Allure reports with screenshots on failure, enabling developers to diagnose bugs without reproducing them manually.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "REST API Test Suite",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Designed a comprehensive Postman collection with 200+ test cases validating response codes, payload schemas, and business logic for a public REST API.\nAutomated the collection with Newman CLI and integrated into Jenkins, publishing HTML reports after each nightly build.\nIdentified and documented 14 API defects during testing, including 3 security-related issues involving missing authentication enforcement.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nQualityFirst Software,\n300 Tech Campus Drive,\nRaleigh, NC 27606",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the QA/Test Engineer position at your company. With hands-on experience building test automation frameworks and a passion for quality, I am eager to help your team ship reliable software with confidence. I believe a great QA engineer prevents bugs from reaching users — and that is the standard I hold myself to.\n\nThank you for your time.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Sales Manager",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 29,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Sales Manager",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Brandon Hayes",
+            "sc1Address": "19, Riverside Boulevard,\nDallas, TX 75201",
+            "sc1Email": "brandon.hayes@gmail.com",
+            "sc1Phone": "(214)-573-9920",
+            "sc1Gender": "Male",
+            "sc1Dob": "17-06-90",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "High-performing Sales Manager with 4 years of experience building and leading B2B sales teams to exceed revenue targets. Seeking a regional sales leadership role to scale revenue growth, develop top sales talent, and expand market share in competitive territories.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proven track record of consistently exceeding quota at 115-140% across 3 consecutive years in SaaS and technology sales.\nStrong pipeline management and forecasting skills using Salesforce CRM, with experience managing multi-stage deals from $50K to $1.2M in contract value.\nExperienced in hiring, onboarding, coaching, and performance-managing sales representatives in fast-growth environments.\nSkilled in consultative selling methodologies including MEDDIC, SPIN Selling, and Challenger Sale for complex B2B buying cycles.\nProficient in sales enablement tools including Gong, Outreach, and LinkedIn Sales Navigator.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Sales Manager",
+              "sc2CompanyName": "Oracle Corporation, Dallas, TX",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Mar 2022 - Present",
+              "sc2Accomplishments": "Led a team of 8 account executives selling Oracle Cloud ERP to mid-market accounts, achieving 138% of the $12M annual team quota in FY2024.\nBuilt and implemented a structured sales coaching programme that reduced average ramp time for new AEs from 6 months to 3.5 months.\nOpened 3 new industry verticals (manufacturing, logistics, professional services) generating $3.8M in new pipeline within the first 12 months.\nNegotiated and closed the team's largest single deal — a $1.15M multi-year ERP contract — through a 9-month consultative sales cycle.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Senior Account Executive",
+              "sc2CompanyName": "Salesforce, Dallas, TX",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2020 - Feb 2022",
+              "sc2Accomplishments": "Consistently ranked in the top 10% of the 200-person commercial sales team, achieving 124% and 141% of quota in successive years.\nGenerated $4.2M in new ARR across 38 net-new accounts through outbound prospecting and referral channel development.\nMentored 3 junior account executives as part of the company's buddy programme, 2 of whom earned President's Club honours.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.B.A. in Marketing & Sales Management",
+              "sc3SchoolName": "University of Texas at Dallas, TX",
+              "sc3Subtitle": "Graduated with a 3.60 GPA.",
+              "sc3StudyPeriod": "May-20",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nGrowthEdge Technologies,\n500 Commerce Street,\nDallas, TX 75202",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Regional Sales Manager position. With 4 years of sales leadership at Oracle and a career built on consistently beating quota, I am confident I can build and inspire a high-performance sales team that drives significant revenue growth for your organisation. I lead with coaching, data, and accountability.\n\nI look forward to the conversation.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Registered Nurse",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 30,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Registered Nurse",
+      "sampleProfileType": 3,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Rachel Kim",
+            "sc1Address": "52, Magnolia Court,\nHouston, TX 77001",
+            "sc1Email": "rachel.kim@gmail.com",
+            "sc1Phone": "(713)-824-5562",
+            "sc1Gender": "Female",
+            "sc1Dob": "23-01-86",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 15,
+          "shaTitle": "PROFESSIONAL SUMMARY",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Compassionate and highly skilled Registered Nurse with 10 years of clinical experience in critical care and emergency nursing. Proven ability to deliver safe, evidence-based patient care under pressure, mentor junior nursing staff, and collaborate with multidisciplinary teams to achieve optimal patient outcomes. Seeking a Charge Nurse or Nurse Supervisor role.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Expertise in critical care nursing including ventilator management, haemodynamic monitoring, and vasoactive medication titration in ICU settings.\nStrong emergency nursing skills encompassing triage, trauma care, cardiac arrest response, and rapid assessment of acutely ill patients.\nExperienced in charge nursing responsibilities including shift scheduling, staff delegation, incident reporting, and quality improvement initiatives.\nProficient in EHR systems including Epic and Cerner for accurate, timely documentation of patient assessments and care plans.\nCertifications: RN License (Texas), CCRN (Critical Care), BLS, ACLS, TNCC (Trauma Nursing Core Course).",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Senior Staff Nurse - Medical ICU",
+              "sc2CompanyName": "Houston Methodist Hospital, Houston, TX",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Apr 2018 - Present",
+              "sc2Accomplishments": "Delivers complex critical care to a 1:2 nurse-to-patient assignment in a 30-bed MICU managing ventilator-dependent, septic, and post-surgical patients.\nServes as charge nurse 2 shifts per week coordinating a team of 14 nurses, managing bed allocation, and liaising with attending physicians and intensivists.\nLed a unit-based quality project reducing central line-associated bloodstream infection (CLABSI) rates by 62% over 18 months through bundle compliance audits.\nPrecepted 12 new graduate nurses, with 11 successfully transitioning to independent practice within the standard 12-week orientation period.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Emergency Room Nurse",
+              "sc2CompanyName": "Memorial Hermann Hospital, Houston, TX",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2014 - Mar 2018",
+              "sc2Accomplishments": "Triaged and managed up to 20 patients per shift in a Level I Trauma Centre ER with 90,000 annual visits, prioritising care for stroke, STEMI, and multi-trauma patients.\nParticipated in the hospital's sepsis alert protocol team, contributing to a 22% improvement in door-to-antibiotic time for sepsis patients.\nAwarded Nurse of the Quarter (Q3 2016) for outstanding patient satisfaction scores and peer-nominated clinical excellence.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "Bachelor of Science in Nursing (BSN)",
+              "sc3SchoolName": "University of Texas Health Science Center, Houston, TX",
+              "sc3Subtitle": "Graduated with a 3.80 GPA.",
+              "sc3StudyPeriod": "May-14",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Nursing Director,\nTexas Medical Center,\n7000 Fannin Street,\nHouston, TX 77030",
+            "sc8Content": "Dear Hiring Manager,\n\nI am writing to express my interest in the Charge Nurse position in your critical care unit. With 10 years of ICU and emergency nursing experience, CCRN certification, and a proven record of quality improvement and staff mentoring, I am confident in my ability to lead your nursing team and maintain the highest standards of patient care.\n\nI would welcome the opportunity to discuss this role further.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Supply Chain Analyst",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 31,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Supply Chain Analyst",
+      "sampleProfileType": 2,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Kevin Walsh",
+            "sc1Address": "31, Harborside Drive,\nColumbus, OH 43201",
+            "sc1Email": "kevin.walsh@gmail.com",
+            "sc1Phone": "(614)-392-7741",
+            "sc1Gender": "Male",
+            "sc1Dob": "02-11-96",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Analytical Supply Chain Analyst with 2 years of experience optimising inventory, improving demand forecasting accuracy, and reducing procurement costs. Seeking a senior analyst or supply chain manager role to drive operational efficiency across global supply networks.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Strong analytical skills using Excel (advanced), SQL, and Power BI for supply chain data modelling, demand forecasting, and KPI dashboards.\nFamiliar with ERP platforms including SAP S/4HANA and Oracle SCM for purchase order management, inventory tracking, and supplier performance monitoring.\nKnowledge of supply chain concepts including EOQ, safety stock calculation, ABC analysis, and S&OP (Sales & Operations Planning) processes.\nExperience in supplier relationship management, RFQ/RFP processes, and contract negotiation to achieve cost savings.\nAPICS CSCP (Certified Supply Chain Professional) candidate — exam scheduled Q2 2025.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 2,
+          "sectionHeadSampleDataId": 4,
+          "shaTitle": "WORK EXPERIENCE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild2ArrayList": [
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 0,
+              "sc2WorkRole": "Supply Chain Analyst",
+              "sc2CompanyName": "Nationwide Insurance, Columbus, OH",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Aug 2022 - Present",
+              "sc2Accomplishments": "Improved demand forecast accuracy from 71% to 89% by implementing a statistical forecasting model using moving averages and seasonal decomposition in Excel and Python.\nNegotiated contracts with 8 vendors, achieving average cost savings of 14% on $4.2M in annual procurement spend through competitive bidding and volume consolidation.\nReduced excess inventory holding costs by $280K annually by identifying 120 slow-moving SKUs and implementing clearance and reallocation strategies.\nBuilt a Power BI supply chain dashboard tracking on-time delivery, inventory turns, and fill rate, consumed daily by 4 procurement managers.",
+              "sc2AccomplishmentsBulletType": "●"
+            },
+            {
+              "sectionChild2Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc2IndexPosition": 1,
+              "sc2WorkRole": "Procurement Intern",
+              "sc2CompanyName": "L Brands, Columbus, OH",
+              "sc2Subtitle": "",
+              "sc2WorkPeriod": "Jun 2021 - Jul 2022",
+              "sc2Accomplishments": "Supported the procurement team in issuing and evaluating RFQs for 15 categories of indirect spend totalling $1.8M.\nMaintained vendor master data in SAP, ensuring accurate lead times and pricing for 200+ active suppliers.\nConducted spend analysis across 6 business units identifying $320K in tail-spend consolidation opportunities.",
+              "sc2AccomplishmentsBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.S. in Supply Chain Management",
+              "sc3SchoolName": "Ohio State University, Columbus, OH",
+              "sc3Subtitle": "Graduated with a 3.68 GPA.",
+              "sc3StudyPeriod": "May-21",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nLogisticsPro Corp,\n100 Distribution Way,\nColumbus, OH 43215",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Senior Supply Chain Analyst position. With 2 years of hands-on experience improving forecast accuracy, reducing procurement costs, and building supply chain visibility tools, I am confident I can deliver real operational impact for your team. I am driven by data, and I find supply chain optimisation genuinely exciting.\n\nThank you for your consideration.\n\nSincerely,"
+          }
+        }
+      ]
+    },
+    {
+      "profileId": -11,
+      "upName": "Blockchain Developer",
+      "upIndexPosition": -2,
+      "upIsSampleProfile": true,
+      "sampleProfileId": 32,
+      "resumeFormatBaseId": 1,
+      "upFontStyle": "TIMES NEW ROMAN.TTF",
+      "upFontSize": 11,
+      "upBackgroundColor": "White",
+      "upResumeFileName": "Blockchain Developer",
+      "sampleProfileType": 1,
+      "sectionHeadAddedArrayList": [
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 1,
+          "sectionHeadSampleDataId": 1,
+          "shaTitle": "CONTACT INFORMATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild1": {
+            "sectionChild1Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc1Name": "Alex Rivera",
+            "sc1Address": "45, Blockchain Avenue,\nMiami, FL 33132",
+            "sc1Email": "alex.rivera@gmail.com",
+            "sc1Phone": "(305)-712-4480",
+            "sc1Gender": "Male",
+            "sc1Dob": "28-05-01",
+            "sc1DobDateFormat": "dd-MMM-yyyy",
+            "sc1Nationality": "American",
+            "sc1UserImagePath": "",
+            "sc1IsUserImageEnable": false
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 2,
+          "shaTitle": "OBJECTIVE",
+          "shaIsEnable": true,
+          "shaIndexPosition": 1,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Passionate Blockchain Developer with hands-on experience in Solidity smart contract development, DeFi protocols, and Web3 front-end integration. Seeking an entry-level role to build secure, decentralised applications that push the boundaries of what is possible on-chain.",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 3,
+          "shaTitle": "KEY QUALIFICATIONS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 2,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Proficient in Solidity for writing, testing, and deploying ERC-20, ERC-721 (NFT), and ERC-1155 smart contracts on Ethereum and EVM-compatible chains.\nStrong understanding of DeFi concepts including AMMs, liquidity pools, yield farming, and flash loan mechanics.\nExperience with development frameworks including Hardhat and Foundry, and testing using Chai/Mocha and Forge.\nFamiliar with Web3 front-end integration using ethers.js, wagmi, and RainbowKit for building dApp interfaces in React.\nKnowledge of Layer 2 scaling solutions including Polygon, Arbitrum, and Optimism and cross-chain bridge mechanics.",
+            "sc5ContentBulletType": "●"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 3,
+          "sectionHeadSampleDataId": 5,
+          "shaTitle": "EDUCATION",
+          "shaIsEnable": true,
+          "shaIndexPosition": 3,
+          "sectionChild3ArrayList": [
+            {
+              "sectionChild3Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc3IndexPosition": 0,
+              "sc3StudyDegree": "B.Sc. in Computer Science",
+              "sc3SchoolName": "Florida International University, Miami, FL",
+              "sc3Subtitle": "Graduated with a 3.79 GPA.",
+              "sc3StudyPeriod": "May-23",
+              "sc3Concentrates": "",
+              "sc3ConcentratesBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 7,
+          "sectionHeadSampleDataId": 7,
+          "shaTitle": "PROJECTS",
+          "shaIsEnable": true,
+          "shaIndexPosition": 4,
+          "sectionChild7ArrayList": [
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 0,
+              "sc7ContentTitle": "DecenSwap - Decentralised Exchange (DEX)",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Built a Uniswap V2-inspired AMM DEX from scratch using Solidity, featuring constant-product pricing, liquidity provision, and ERC-20 token swapping.\nWrote a comprehensive Hardhat test suite with 95% contract coverage using Chai, catching 6 edge-case vulnerabilities before deployment.\nDeployed and verified contracts on Polygon Mumbai testnet; built a React + ethers.js front-end enabling wallet connection via MetaMask and WalletConnect.\nProcessed over $180K in test-net swap volume during a 2-week community beta with 300+ participants.",
+              "sc7ContentDetailBulletType": "●"
+            },
+            {
+              "sectionChild7Id": -11,
+              "sectionHeadAddedId": -11,
+              "sc7IndexPosition": 1,
+              "sc7ContentTitle": "NFT Marketplace with Royalty Enforcement",
+              "sc7ContentSubtitle": "",
+              "sc7ContentDetail": "Developed an ERC-721 NFT marketplace smart contract with on-chain royalty enforcement using ERC-2981, ensuring creators receive 5-10% on every secondary sale.\nImplemented a Dutch auction minting mechanism and whitelist functionality using Merkle proofs to reduce gas costs for allowlist verification by 60%.\nAudited contract logic using Slither and manual review, resolving 3 medium-severity issues including a re-entrancy vulnerability in the withdrawal function.",
+              "sc7ContentDetailBulletType": "●"
+            }
+          ]
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 1,
+          "sectionHeadBaseId": 5,
+          "sectionHeadSampleDataId": 6,
+          "shaTitle": "REFERENCES",
+          "shaIsEnable": true,
+          "shaIndexPosition": 5,
+          "sectionChild5": {
+            "sectionChild5Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc5Content": "Available upon request",
+            "sc5ContentBulletType": "None"
+          }
+        },
+        {
+          "sectionHeadAddedId": -11,
+          "profileId": -11,
+          "sectionHeadGroupBaseId": 2,
+          "sectionHeadBaseId": 8,
+          "sectionHeadSampleDataId": 19,
+          "shaTitle": "COVER LETTER",
+          "shaIsEnable": true,
+          "shaIndexPosition": 0,
+          "sectionChild8": {
+            "sectionChild8Id": -11,
+            "sectionHeadAddedId": -11,
+            "sc8Date": "10-Jan-25",
+            "sc8DateDateFormat": "dd-MMM-yyyy",
+            "sc8Address": "Hiring Manager,\nChainForge Labs,\n1 Web3 Plaza,\nMiami, FL 33133",
+            "sc8Content": "Dear Hiring Manager,\n\nI am applying for the Blockchain Developer position at ChainForge Labs. I have built production-ready smart contracts on Ethereum and Polygon, developed a functional DEX, and identified and resolved real security vulnerabilities in my own code. I am deeply passionate about decentralised technology and eager to contribute to your protocol development.\n\nI would love to discuss this opportunity.\n\nSincerely,"
+          }
+        }
+      ]
     }
   ]
 }

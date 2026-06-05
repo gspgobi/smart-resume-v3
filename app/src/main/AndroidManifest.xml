@@ -3,16 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <!-- Allows legacy writes on API 28 and below -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Allows legacy media mapping on API 29 through 32 -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:replace="android:maxSdkVersion" />
+
+    <!-- Granular photo asset permissions for Android 13 (API 33) -->
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES"
+        android:minSdkVersion="33" />
+
+    <!-- MANDATORY: Required for Android 14+ User-Selected Photo Access Policy Compliance -->
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <application
         android:name=".SmartResumeApp"
@@ -25,7 +36,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartResumeBuilder"
         android:hardwareAccelerated="true"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        android:preserveLegacyExternalStorage="true"
+        android:requestLegacyExternalStorage="true"
+        tools:ignore="ScopedStorage"
+        tools:targetApi="34"> <!-- Updated target flag notation to align with Android 14+ validations -->
 
         <!-- AdMob App ID -->
         <meta-data
@@ -41,7 +56,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.SmartResumeBuilder.Splash">
             <intent-filter>
@@ -49,6 +63,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Wrapper around CropImageActivity: sets status bar color and action bar theme -->
+        <activity
+            android:name=".ui.section.child.CropImageActivityWrapper"
+            android:theme="@style/Theme.SmartResumeBuilder.CropImage"
+            android:exported="false" />
 
         <!-- FileProvider for sharing PDFs -->
         <provider

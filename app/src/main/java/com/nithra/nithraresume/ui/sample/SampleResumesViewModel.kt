@@ -1,5 +1,6 @@
 package com.nithra.nithraresume.ui.sample
 
+
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,13 +38,13 @@ import javax.inject.Inject
 // ── UI state ──────────────────────────────────────────────────────────────────
 
 data class SampleGroup(val title: String, val items: List<SampleItem>)
-data class SampleItem(val name: String, val sampleProfileId: Int)
+data class SampleItem(val name: String, val sampleProfileId: Int, val hasPreview: Boolean)
 
 sealed interface SampleResumesUiState {
     data object Loading : SampleResumesUiState
     data class Ready(val groups: List<SampleGroup>) : SampleResumesUiState
     data object Adding : SampleResumesUiState
-    data object Added : SampleResumesUiState
+    data class Added(val profileName: String) : SampleResumesUiState
     data class PreviewReady(val file: File, val groups: List<SampleGroup>) : SampleResumesUiState
     data class Error(val message: String, val groups: List<SampleGroup>) : SampleResumesUiState
 }
@@ -145,13 +146,17 @@ class SampleResumesViewModel @Inject constructor(
             .bufferedReader().use { it.readText() }
         val data = Gson().fromJson(json, SampleResumesJson::class.java)
         cachedProfiles = data.userProfileArrayList.orEmpty()
+        val existingPdfs = context.assets.list(AssetDir.SAMPLE_RESUMES)?.toSet() ?: emptySet()
         cachedGroups = CATEGORY_TITLES.mapIndexed { idx, title ->
             val type = idx + 1
             SampleGroup(
                 title = title,
                 items = cachedProfiles
                     .filter { it.sampleProfileType == type }
-                    .map { SampleItem(it.upName.orEmpty(), it.sampleProfileId) }
+                    .map {
+                        val assetName = "$SAMPLE_RESUME_PREVIEW_ASSET_PREFIX${it.sampleProfileId}$DOT_PDF"
+                        SampleItem(it.upName.orEmpty(), it.sampleProfileId, assetName in existingPdfs)
+                    }
             )
         }
         _uiState.value = SampleResumesUiState.Ready(cachedGroups)
@@ -277,7 +282,7 @@ class SampleResumesViewModel @Inject constructor(
                 }
             }
             analyticsManager.logProfileCreated(isFromSample = true)
-            _uiState.value = SampleResumesUiState.Added
+            _uiState.value = SampleResumesUiState.Added(profile.upName.orEmpty())
         }
     }
 
@@ -301,6 +306,10 @@ class SampleResumesViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun onAddHandled() {
+        _uiState.value = SampleResumesUiState.Ready(cachedGroups)
     }
 
     fun onPreviewHandled() {

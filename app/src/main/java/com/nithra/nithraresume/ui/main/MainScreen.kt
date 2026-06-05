@@ -5,9 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.play.core.review.ReviewManagerFactory
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +29,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Home
@@ -38,6 +42,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TipsAndUpdates
@@ -99,7 +104,6 @@ import com.nithra.nithraresume.ui.common.FeedbackDialog
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.utils.AssetDir
 import com.nithra.nithraresume.utils.AssetFile
-import com.nithra.nithraresume.utils.MediumRectangleAdBottomBar
 import kotlinx.coroutines.launch
 import java.io.File
 import androidx.core.net.toUri
@@ -121,7 +125,11 @@ fun MainScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val activity = LocalActivity.current
     val snackbarHostState = remember { SnackbarHostState() }
+    val rateApp: () -> Unit = {
+        activity?.let { launchInAppReview(it as ComponentActivity) { openPlayStore(context) } } ?: openPlayStore(context)
+    }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var exitAfterFeedback by remember { mutableStateOf(false) }
@@ -161,7 +169,7 @@ fun MainScreen(
         viewModel.rateUsEvent.collect { event ->
             when (event) {
                 RateUsEvent.TriggerExit          -> onExitApp()
-                RateUsEvent.OpenPlayStore        -> openPlayStore(context)
+                RateUsEvent.OpenPlayStore        -> rateApp()
                 RateUsEvent.ShowFeedbackThenExit -> { showFeedbackDialog = true; exitAfterFeedback = true }
             }
         }
@@ -254,7 +262,7 @@ fun MainScreen(
                         DrawerItem.Settings       -> { viewModel.onNavAppSettingsClicked(); navController.navigate(Screen.AppSettings.route) }
                         DrawerItem.Feedback       -> { viewModel.onNavFeedbackClicked(); showFeedbackDialog = true }
                         DrawerItem.PrivacyPolicy  -> { viewModel.onNavPrivacyPolicyClicked(); openPrivacyPolicy(context) }
-                        DrawerItem.RateUs         -> { viewModel.onNavRateUsClicked(); openPlayStore(context) }
+                        DrawerItem.RateUs         -> { viewModel.onNavRateUsClicked(); rateApp() }
                         DrawerItem.InviteFriends  -> { viewModel.onNavInviteFriendsClicked(); shareApp(context) }
                     }
                 },
@@ -283,7 +291,7 @@ fun MainScreen(
                             ) {
                                 Icon(
                                     imageVector = if (unreadCount > 0) Icons.Default.Notifications
-                                                  else Icons.Default.NotificationsNone,
+                                    else Icons.Default.NotificationsNone,
                                     contentDescription = "Notifications"
                                 )
                             }
@@ -295,6 +303,14 @@ fun MainScreen(
                             expanded = showOverflowMenu,
                             onDismissRequest = { showOverflowMenu = false }
                         ) {
+                            DropdownMenuItem(
+                                text = { Text("Settings") },
+                                leadingIcon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    navController.navigate(Screen.AppSettings.route)
+                                }
+                            )
                             DropdownMenuItem(
                                 text = { Text("Feedback") },
                                 leadingIcon = { Icon(Icons.Default.Feedback, contentDescription = null) },
@@ -308,7 +324,7 @@ fun MainScreen(
                                 leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
-                                    openPlayStore(context)
+                                    rateApp()
                                 }
                             )
                             DropdownMenuItem(
@@ -329,14 +345,14 @@ fun MainScreen(
                     )
                 )
             },
-            bottomBar = { MediumRectangleAdBottomBar() },
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) { innerPadding ->
             MainContent(
                 modifier = Modifier.padding(innerPadding),
                 migrationState = migrationState,
                 onMyProfilesClick = { navController.navigate(Screen.UserProfiles.route) },
-                onViewResumesClick = { navController.navigate(Screen.GeneratedResumes.route) }
+                onViewResumesClick = { navController.navigate(Screen.GeneratedResumes.route) },
+                onSampleResumesClick = { navController.navigate(Screen.SampleResumes.route) }
             )
         }
     }
@@ -349,7 +365,8 @@ private fun MainContent(
     modifier: Modifier = Modifier,
     migrationState: MigrationUiState = MigrationUiState.Idle,
     onMyProfilesClick: () -> Unit,
-    onViewResumesClick: () -> Unit
+    onViewResumesClick: () -> Unit,
+    onSampleResumesClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -390,6 +407,13 @@ private fun MainContent(
             title = "View Saved Resumes",
             subtitle = "View and share your generated resumes",
             onClick = onViewResumesClick
+        )
+
+        HomeCard(
+            icon = Icons.Default.AutoStories,
+            title = "Browse Sample Resumes",
+            subtitle = "Explore ready-made resumes for every career",
+            onClick = onSampleResumesClick
         )
 
     }
@@ -438,7 +462,7 @@ private fun HomeCard(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(Modifier.height(2.dp))
                 Text(
@@ -493,7 +517,7 @@ private fun MainDrawerContent(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "Version $appVersionName",
+                        text = "version $appVersionName",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                         modifier = Modifier.clickable {
@@ -616,6 +640,17 @@ private fun openPrivacyPolicy(context: Context) {
     runCatching { context.startActivity(intent) }
 }
 
+private fun launchInAppReview(activity: ComponentActivity, fallback: () -> Unit) {
+    val manager = ReviewManagerFactory.create(activity)
+    manager.requestReviewFlow().addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            manager.launchReviewFlow(activity, task.result)
+        } else {
+            fallback()
+        }
+    }
+}
+
 private fun openPlayStore(context: Context) {
     runCatching {
         context.startActivity(
@@ -635,7 +670,7 @@ private fun shareApp(context: Context) {
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT,
             "Create a professional resume easily with Smart Resume!\n" +
-            "https://play.google.com/store/apps/details?id=${context.packageName}")
+                    "https://play.google.com/store/apps/details?id=${context.packageName}")
     }
     context.startActivity(Intent.createChooser(intent, "Invite Friends"))
 }
@@ -648,7 +683,8 @@ private fun MainContentPreview() {
     SmartResumeTheme {
         MainContent(
             onMyProfilesClick = {},
-            onViewResumesClick = {}
+            onViewResumesClick = {},
+            onSampleResumesClick = {}
         )
     }
 }
@@ -696,7 +732,8 @@ private fun MainContentMigrationRunningPreview() {
         MainContent(
             migrationState = MigrationUiState.Running(done = 3, total = 7),
             onMyProfilesClick = {},
-            onViewResumesClick = {}
+            onViewResumesClick = {},
+            onSampleResumesClick = {}
         )
     }
 }
