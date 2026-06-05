@@ -21,10 +21,18 @@ class AppSettingsViewModel @Inject constructor(
     val notificationsEnabled: StateFlow<Boolean> = prefsManager.v1NotificationsEnabled
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
 
+    val themeMode = prefsManager.v3ThemeMode
+
     fun setNotificationsEnabled(enabled: Boolean) {
         viewModelScope.launch {
             prefsManager.setV1NotificationsEnabled(enabled)
             analyticsManager.logAsNotifSwitch(enabled)
+        }
+    }
+
+    fun setThemeMode(mode: String) {
+        viewModelScope.launch {
+            prefsManager.setV3ThemeMode(mode)
         }
     }
 }

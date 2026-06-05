@@ -304,11 +304,11 @@ fun MainScreen(
                             onDismissRequest = { showOverflowMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Theme") },
-                                leadingIcon = { Icon(Icons.Default.Palette, contentDescription = null) },
+                                text = { Text("Settings") },
+                                leadingIcon = { Icon(Icons.Default.Settings, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
-                                    navController.navigate(Screen.ThemeSwitching.route)
+                                    navController.navigate(Screen.AppSettings.route)
                                 }
                             )
                             DropdownMenuItem(
