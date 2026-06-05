@@ -33,6 +33,8 @@ import androidx.lifecycle.ViewModel
 import com.nithra.nithraresume.utils.PrefsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,6 +55,7 @@ fun ThemeSwitchingScreen(
     viewModel: ThemeSwitchingViewModel = hiltViewModel()
 ) {
     val themeMode by viewModel.themeMode.collectAsStateWithLifecycle("system")
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -81,7 +84,7 @@ fun ThemeSwitchingScreen(
                 title = "Light",
                 subtitle = "Use light theme",
                 isSelected = themeMode == "light",
-                onClick = { viewModel.setThemeMode("light") }
+                onClick = { coroutineScope.launch { viewModel.setThemeMode("light") } }
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -90,7 +93,7 @@ fun ThemeSwitchingScreen(
                 title = "Dark",
                 subtitle = "Use dark theme",
                 isSelected = themeMode == "dark",
-                onClick = { viewModel.setThemeMode("dark") }
+                onClick = { coroutineScope.launch { viewModel.setThemeMode("dark") } }
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
 
@@ -99,7 +102,7 @@ fun ThemeSwitchingScreen(
                 title = "System",
                 subtitle = "Follow system setting",
                 isSelected = themeMode == "system",
-                onClick = { viewModel.setThemeMode("system") }
+                onClick = { coroutineScope.launch { viewModel.setThemeMode("system") } }
             )
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
         }
