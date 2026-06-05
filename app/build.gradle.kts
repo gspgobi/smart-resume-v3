@@ -21,8 +21,8 @@ android {
         applicationId = "com.nithra.nithraresume"
         minSdk = 24
         targetSdk = 37
-        versionCode = 72
-        versionName = "4.2.0"
+        versionCode = 73
+        versionName = "4.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,6 +47,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            ndk.debugSymbolLevel = "FULL"
             signingConfig = signingConfigs.getByName("release")
         }
     }
@@ -84,6 +85,16 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/NOTICE.md"
             excludes += "META-INF/LICENSE.md"
+        }
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            output.outputFileName.set(
+                "smart-resume-${variant.flavorName}-${variant.buildType}-${output.versionCode.getOrElse(0)}-${output.versionName.getOrElse("")}.apk"
+            )
         }
     }
 }
@@ -134,18 +145,25 @@ dependencies {
 
     // Image loading
     implementation(libs.coil.compose)
+    implementation(libs.android.image.cropper)
 
     // PDF generation
     implementation(libs.itextpdf)
 
     // Firebase BOM + libraries
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     // AdMob
     implementation(libs.play.services.ads)
+
+    // In-App Review
+    implementation(libs.play.review)
+
+    // In-App Update
+    implementation(libs.play.app.update)
 
     // Gson
     implementation(libs.gson)

@@ -50,7 +50,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.utils.GROUP_ID_SECTIONS
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import com.nithra.nithraresume.ui.preview.AppPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,7 +113,6 @@ fun ReorderSectionsScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() }
     ) { innerPadding ->
         Column(
             modifier = Modifier

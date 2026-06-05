@@ -1,5 +1,6 @@
 package com.nithra.nithraresume.ui.notification
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nithra.nithraresume.data.model.FcmData

@@ -1,11 +1,17 @@
 package com.nithra.nithraresume.ui.main
 
+
 import android.Manifest
+import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -22,6 +28,7 @@ import com.nithra.nithraresume.data.model.SectionChild8
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.data.repository.FcmRepository
+import com.nithra.nithraresume.data.repository.ResumeFormatRepository
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
 import com.nithra.nithraresume.data.repository.UserProfileRepository
@@ -48,8 +55,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
-
-// ── JSON data classes for dummyResumes.json ───────────────────────────────────
 
 private data class DummyResumesJson(val userProfileArrayList: List<DummyProfileJson>?)
 private data class DummyProfileJson(
@@ -126,6 +131,7 @@ sealed class RateUsEvent {
 sealed class MigrationUiState {
     data object Idle : MigrationUiState()
     data object ShowRationale : MigrationUiState()
+    data object ShowSafFolderPicker : MigrationUiState()
     data class Running(val done: Int, val total: Int) : MigrationUiState()
     data object PermissionDenied : MigrationUiState()
     data object Finished : MigrationUiState()
@@ -139,6 +145,7 @@ class MainViewModel @Inject constructor(
     fcmRepository: FcmRepository,
     private val apiRepository: ApiRepository,
     private val userProfileRepository: UserProfileRepository,
+    private val resumeFormatRepository: ResumeFormatRepository,
     private val sectionHeadRepository: SectionHeadRepository,
     private val sectionChildRepository: SectionChildRepository,
     private val prefsManager: PrefsManager,
@@ -227,31 +234,85 @@ class MainViewModel @Inject constructor(
 
     private var pendingPhotoCount = 0
     private var pendingSigCount   = 0
+    private var pendingPdfCount = 0
+    private val discoveredMediaStorePdfs = mutableListOf<Pair<Uri, String>>()
+
+    private fun countOldV1PdfsAndPopulateList(): Int {
+        discoveredMediaStorePdfs.clear()
+        val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
+        val filesSrc = File(v1Base, "Files")
+
+        // Try direct File approach first
+        if (filesSrc.exists()) {
+            val count = filesSrc.walk().count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
+            if (count > 0) return count
+        }
+
+        // Fallback: Query MediaStore database
+        @Suppress("DEPRECATION")
+        val collection = MediaStore.Files.getContentUri("external")
+        @Suppress("DEPRECATION")
+        val projection = arrayOf(MediaStore.Files.FileColumns._ID, MediaStore.Files.FileColumns.DISPLAY_NAME)
+        @Suppress("DEPRECATION")
+        val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} = ? AND ${MediaStore.Files.FileColumns.DATA} LIKE ?"
+        val selectionArgs = arrayOf("application/pdf", "%/Nithra/SmartResume/Files/%")
+
+        runCatching {
+            context.contentResolver.query(collection, projection, selection, selectionArgs, null)?.use { cursor ->
+                @Suppress("DEPRECATION")
+                val idCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+                @Suppress("DEPRECATION")
+                val nameCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(idCol)
+                    val name = cursor.getString(nameCol)
+                    val uri = ContentUris.withAppendedId(collection, id)
+                    discoveredMediaStorePdfs.add(uri to name)
+                }
+            }
+        }
+        return discoveredMediaStorePdfs.size
+    }
 
     init {
         viewModelScope.launch {
+            // Create example and new profiles on first v1 check
+            if (!prefsManager.v1FirstCheck.first()) {
+                createExampleProfile()
+                createNewProfile()
+                prefsManager.setV1FirstCheck(true)
+            }
+
             val migrated = prefsManager.v3AllV2FilesMigratedToV3FilesStructure.first()
             if (migrated) return@launch
 
-            val (photoCount, sigCount) = withContext(Dispatchers.IO) {
+            val (photoCount, sigCount, pdfCount) = withContext(Dispatchers.IO) {
                 coroutineScope {
                     val pc = async { sectionChildRepository.countOldV2UserImagePaths() }
                     val sc = async { sectionChildRepository.countOldV2SignaturePaths() }
-                    pc.await() to sc.await()
+                    val pdfFileCount = async { countOldV1PdfsAndPopulateList() }
+                    Triple(pc.await(), sc.await(), pdfFileCount.await())
                 }
             }
-            if (photoCount == 0 && sigCount == 0) {
+            if (photoCount == 0 && sigCount == 0 && pdfCount == 0) {
                 prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
                 return@launch
             }
             pendingPhotoCount = photoCount
-            pendingSigCount   = sigCount
+            pendingSigCount = sigCount
+            pendingPdfCount = pdfCount
 
-            val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
-            val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
-            if (granted) runMigration()
-            else _migrationState.value = MigrationUiState.ShowRationale
+            // If we have photos/signatures or PDFs were found via MediaStore, request permission
+            if (pendingPhotoCount > 0 || pendingSigCount > 0 || discoveredMediaStorePdfs.isNotEmpty()) {
+                val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
+                val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
+                if (granted) runMigration(null)
+                else _migrationState.value = MigrationUiState.ShowRationale
+            } else if (pendingPdfCount > 0) {
+                // PDFs exist but couldn't be found via File or MediaStore — show SAF picker
+                _migrationState.value = MigrationUiState.ShowSafFolderPicker
+            }
         }
     }
 
@@ -261,24 +322,33 @@ class MainViewModel @Inject constructor(
 
     fun onPermissionResult(granted: Boolean) {
         if (granted) {
-            viewModelScope.launch { runMigration() }
+            viewModelScope.launch { runMigration(null) }
         } else {
             viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     coroutineScope {
                         if (pendingPhotoCount > 0) launch { sectionChildRepository.clearOldV2UserImagePaths() }
-                        if (pendingSigCount   > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
+                        if (pendingSigCount > 0) launch { sectionChildRepository.clearOldV2SignatureImagePaths() }
                     }
                 }
-                prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
-                analyticsManager.logFileMigratePermissionDenied()
-                _migrationState.value = MigrationUiState.PermissionDenied
+                // If hidden PDFs still exist and weren't found, show SAF picker
+                if (pendingPdfCount > 0 && discoveredMediaStorePdfs.isEmpty()) {
+                    _migrationState.value = MigrationUiState.ShowSafFolderPicker
+                } else {
+                    prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
+                    analyticsManager.logFileMigratePermissionDenied()
+                    _migrationState.value = MigrationUiState.PermissionDenied
+                }
             }
         }
     }
 
-    private suspend fun runMigration() {
-        val total = pendingPhotoCount + pendingSigCount
+    fun onSafFolderSelected(treeUri: Uri) {
+        viewModelScope.launch { runMigration(treeUri) }
+    }
+
+    private suspend fun runMigration(safTreeUri: Uri?) {
+        val total = pendingPhotoCount + pendingSigCount + pendingPdfCount
         var done  = 0
         analyticsManager.logFileMigrateStarted()
         _migrationState.value = MigrationUiState.Running(done, total)
@@ -301,7 +371,6 @@ class MainViewModel @Inject constructor(
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
-                File(v1Base, "Photo").deleteRecursively()
             }
 
             if (pendingSigCount > 0) {
@@ -318,20 +387,233 @@ class MainViewModel @Inject constructor(
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
-                File(v1Base, "Signature").deleteRecursively()
             }
 
-            val filesSrc = File(v1Base, "Files")
-            if (filesSrc.exists()) {
-                val dst = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
-                filesSrc.listFiles()?.forEach { it.copyTo(File(dst, it.name), overwrite = true) }
-                filesSrc.deleteRecursively()
+            val dstPdfFolder = File(v3Base, SrDir.GENERATED_RESUME).also { it.mkdirs() }
+
+            // STRATEGY A: MediaStore List Migration (Silent Background)
+            if (discoveredMediaStorePdfs.isNotEmpty()) {
+                discoveredMediaStorePdfs.forEach { (uri, name) ->
+                    runCatching {
+                        context.contentResolver.openInputStream(uri)?.use { input ->
+                            File(dstPdfFolder, name).outputStream().use { output ->
+                                input.copyTo(output)
+                            }
+                        }
+                    }
+                    done++
+                    _migrationState.value = MigrationUiState.Running(done, total)
+                }
             }
-            v1Base.deleteRecursively()
+            // STRATEGY B: SAF Tree Picker Migration (User Intent Fallback)
+            else if (safTreeUri != null) {
+                val documentFolder = DocumentFile.fromTreeUri(context, safTreeUri)
+                documentFolder?.listFiles()?.forEach { docFile ->
+                    if (docFile.isFile && docFile.name?.endsWith(".pdf", ignoreCase = true) == true) {
+                        runCatching {
+                            context.contentResolver.openInputStream(docFile.uri)?.use { input ->
+                                File(dstPdfFolder, docFile.name!!).outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
+                            }
+                            docFile.delete()
+                        }
+                    }
+                }
+                done = total
+                _migrationState.value = MigrationUiState.Running(done, total)
+            }
+            // STRATEGY C: Legacy Local Direct File Loop
+            else {
+                val filesSrc = File(v1Base, "Files")
+                if (filesSrc.exists()) {
+                    filesSrc.walk()
+                        .filter { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
+                        .forEach { file ->
+                            runCatching {
+                                file.copyTo(File(dstPdfFolder, file.name), overwrite = true)
+                                file.delete()
+                            }
+                            done++
+                            _migrationState.value = MigrationUiState.Running(done, total)
+                        }
+                }
+            }
         }
         prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
         analyticsManager.logFileMigrateFinished()
         _migrationState.value = MigrationUiState.Finished
+    }
+
+    private suspend fun createExampleProfile() {
+        withContext(Dispatchers.IO) {
+            val json = context.assets
+                .open("${AssetDir.JSON}/${AssetFile.EXAMPLE_RESUMES_JSON}")
+                .bufferedReader().use { it.readText() }
+            val data = Gson().fromJson(json, ExampleResumesJson::class.java)
+
+            val maxPos = userProfileRepository.getAllOnce().maxOfOrNull { it.indexPosition } ?: -1
+            var posOffset = 0
+
+            for (profile in data.userProfileArrayList.orEmpty()) {
+                val newProfileId = userProfileRepository.insert(
+                    UserProfile(
+                        name = profile.upName.orEmpty(),
+                        indexPosition = maxPos + 1 + posOffset,
+                        isSampleProfile = profile.upIsSampleProfile,
+                        sampleProfileId = profile.sampleProfileId,
+                        resumeFormatBaseId = profile.resumeFormatBaseId,
+                        fontStyle = profile.upFontStyle.orEmpty(),
+                        fontSize = profile.upFontSize,
+                        backgroundColor = profile.upBackgroundColor.orEmpty(),
+                        resumeFileName = profile.upResumeFileName
+                    )
+                ).toInt()
+                posOffset++
+
+                for (sha in profile.sectionHeadAddedArrayList.orEmpty()) {
+                    val newShaId = sectionHeadRepository.insertAdded(
+                        SectionHeadAdded(
+                            profileId = newProfileId,
+                            groupBaseId = sha.sectionHeadGroupBaseId,
+                            headBaseId = sha.sectionHeadBaseId,
+                            sampleDataId = sha.sectionHeadSampleDataId,
+                            title = sha.shaTitle.orEmpty(),
+                            isEnable = sha.shaIsEnable,
+                            indexPosition = sha.shaIndexPosition
+                        )
+                    ).toInt()
+
+                    when (sha.sectionHeadBaseId) {
+                        1 -> sha.sectionChild1?.let { sc ->
+                            sectionChildRepository.saveChild1(SectionChild1(
+                                sectionHeadAddedId = newShaId,
+                                name = sc.sc1Name.orEmpty(), address = sc.sc1Address.orEmpty(),
+                                email = sc.sc1Email.orEmpty(), phone = sc.sc1Phone.orEmpty(),
+                                gender = sc.sc1Gender.orEmpty(), dob = sc.sc1Dob.orEmpty(),
+                                dobDateFormat = sc.sc1DobDateFormat.orEmpty(),
+                                nationality = sc.sc1Nationality.orEmpty(),
+                                userImagePath = sc.sc1UserImagePath.orEmpty(),
+                                isUserImageEnable = sc.sc1IsUserImageEnable
+                            ))
+                        }
+                        2 -> sha.sectionChild2ArrayList?.forEach { sc ->
+                            sectionChildRepository.insertChild2(SectionChild2(
+                                sectionHeadAddedId = newShaId,
+                                indexPosition = sc.sc2IndexPosition,
+                                workRole = sc.sc2WorkRole.orEmpty(),
+                                companyName = sc.sc2CompanyName.orEmpty(),
+                                subtitle = sc.sc2Subtitle.orEmpty(),
+                                workPeriod = sc.sc2WorkPeriod.orEmpty(),
+                                accomplishments = sc.sc2Accomplishments.orEmpty(),
+                                accomplishmentsBulletType = sc.sc2AccomplishmentsBulletType.orEmpty()
+                            ))
+                        }
+                        3 -> sha.sectionChild3ArrayList?.forEach { sc ->
+                            sectionChildRepository.insertChild3(SectionChild3(
+                                sectionHeadAddedId = newShaId,
+                                indexPosition = sc.sc3IndexPosition,
+                                studyDegree = sc.sc3StudyDegree.orEmpty(),
+                                schoolName = sc.sc3SchoolName.orEmpty(),
+                                subtitle = sc.sc3Subtitle.orEmpty(),
+                                studyPeriod = sc.sc3StudyPeriod.orEmpty(),
+                                concentrates = sc.sc3Concentrates.orEmpty(),
+                                concentratesBulletType = sc.sc3ConcentratesBulletType.orEmpty()
+                            ))
+                        }
+                        4 -> sha.sectionChild4?.let { sc ->
+                            sectionChildRepository.saveChild4(SectionChild4(
+                                sectionHeadAddedId = newShaId,
+                                declarationContent = sc.sc4DeclarationContent.orEmpty(),
+                                declarationContentBulletType = sc.sc4DeclarationContentBulletType.orEmpty(),
+                                date = sc.sc4Date.orEmpty(),
+                                dateDateFormat = sc.sc4DateDateFormat.orEmpty(),
+                                place = sc.sc4Place.orEmpty(),
+                                signatureImagePath = sc.sc4SignatureImagePath.orEmpty(),
+                                isSignatureImageEnable = sc.sc4IsSignatureImageEnable
+                            ))
+                        }
+                        5 -> sha.sectionChild5?.let { sc ->
+                            sectionChildRepository.saveChild5(SectionChild5(
+                                sectionHeadAddedId = newShaId,
+                                content = sc.sc5Content.orEmpty(),
+                                contentBulletType = sc.sc5ContentBulletType.orEmpty()
+                            ))
+                        }
+                        6 -> sha.sectionChild6ArrayList?.forEach { sc ->
+                            sectionChildRepository.insertChild6(SectionChild6(
+                                sectionHeadAddedId = newShaId,
+                                indexPosition = sc.sc6IndexPosition,
+                                contentTitle = sc.sc6ContentTitle.orEmpty(),
+                                contentDetail = sc.sc6ContentDetail.orEmpty()
+                            ))
+                        }
+                        7 -> sha.sectionChild7ArrayList?.forEach { sc ->
+                            sectionChildRepository.insertChild7(SectionChild7(
+                                sectionHeadAddedId = newShaId,
+                                indexPosition = sc.sc7IndexPosition,
+                                contentTitle = sc.sc7ContentTitle.orEmpty(),
+                                contentSubtitle = sc.sc7ContentSubtitle.orEmpty(),
+                                contentDetail = sc.sc7ContentDetail.orEmpty(),
+                                contentDetailBulletType = sc.sc7ContentDetailBulletType.orEmpty()
+                            ))
+                        }
+                        8 -> sha.sectionChild8?.let { sc ->
+                            sectionChildRepository.saveChild8(SectionChild8(
+                                sectionHeadAddedId = newShaId,
+                                date = sc.sc8Date.orEmpty(),
+                                dateDateFormat = sc.sc8DateDateFormat.orEmpty(),
+                                address = sc.sc8Address.orEmpty(),
+                                content = sc.sc8Content.orEmpty()
+                            ))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun createNewProfile() {
+        withContext(Dispatchers.IO) {
+            val defaultFormat = resumeFormatRepository.getDefault()
+                ?: resumeFormatRepository.getAll().first().firstOrNull()
+                ?: return@withContext
+
+            val existingProfiles = userProfileRepository.getAllOnce()
+            val nextPosition = if (existingProfiles.isEmpty()) 0
+            else existingProfiles.maxOf { it.indexPosition } + 1
+
+            val profileId = userProfileRepository.insert(
+                UserProfile(
+                    id = 0,
+                    name = "My Profile",
+                    indexPosition = nextPosition,
+                    isSampleProfile = false,
+                    sampleProfileId = -1,
+                    resumeFormatBaseId = defaultFormat.id,
+                    fontStyle = defaultFormat.fontStyle,
+                    fontSize = defaultFormat.fontSize,
+                    backgroundColor = defaultFormat.backgroundColor,
+                    resumeFileName = "My Profile"
+                )
+            )
+
+            val defaults = sectionHeadRepository.getDefaultSampleData()
+            defaults.forEach { sample ->
+                sectionHeadRepository.insertAdded(
+                    SectionHeadAdded(
+                        id = 0,
+                        profileId = profileId.toInt(),
+                        groupBaseId = sample.sectionHeadGroupBaseId,
+                        headBaseId = sample.sectionHeadBaseId,
+                        sampleDataId = sample.id,
+                        title = sample.title,
+                        isEnable = sample.isEnable,
+                        indexPosition = sample.indexPosition
+                    )
+                )
+            }
+        }
     }
 
     fun onScreenOpened() {

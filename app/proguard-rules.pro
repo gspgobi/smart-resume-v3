@@ -4,3 +4,20 @@
     public static *** d(...);
     public static *** i(...);
 }
+
+# iTextPDF 5.x uses reflection to instantiate image codec classes (BMP, GIF, JPEG, etc.)
+# inside Image.getInstance(). R8 renaming those classes causes NoSuchMethodException at runtime.
+-keep class com.itextpdf.** { *; }
+-dontwarn com.itextpdf.**
+
+# Gson data classes for parsing JSON (MainViewModel, SampleResumesViewModel)
+-keep class com.nithra.nithraresume.ui.main.Example* { *; }
+-keepclassmembers class com.nithra.nithraresume.ui.main.Example* {
+    <fields>;
+    <init>(...);
+}
+-keep class com.nithra.nithraresume.ui.sample.Sample* { *; }
+-keepclassmembers class com.nithra.nithraresume.ui.sample.Sample* {
+    <fields>;
+    <init>(...);
+}

@@ -1,9 +1,8 @@
 package com.nithra.nithraresume.ui.section.child
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -70,14 +69,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.nithra.nithraresume.ui.common.DateFormatPickerDialog
 import com.nithra.nithraresume.ui.common.SectionDivider
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.ALL_GENDERS
 import com.nithra.nithraresume.utils.DateTimeUtils
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
 import java.io.File
 import com.nithra.nithraresume.ui.preview.AppPreview
 
@@ -164,11 +162,9 @@ fun SectionChild1Screen(
         }
     }
 
-    // Image picker launcher
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        uri?.let { viewModel.saveImage(it) }
+    // Image crop launcher — shows camera/gallery source picker, then crop
+    val cropImage = rememberLauncherForActivityResult(SmartResumeCropContract()) { result ->
+        if (result.isSuccessful) result.uriContent?.let { viewModel.saveImage(it) }
     }
 
     // Date picker dialog state
@@ -230,7 +226,6 @@ fun SectionChild1Screen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         if (uiState is Child1UiState.Loading) {
@@ -368,8 +363,20 @@ fun SectionChild1Screen(
             UserImageSection(
                 imagePath = child1?.userImagePath ?: "",
                 onBrowseClick = {
-                    imagePicker.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    @Suppress("DEPRECATION")
+                    cropImage.launch(
+                        CropImageContractOptions(
+                            uri = null,
+                            cropImageOptions = CropImageOptions(
+                                aspectRatioX = 1,
+                                aspectRatioY = 1,
+                                fixAspectRatio = true,
+                                outputRequestWidth = 512,
+                                outputRequestHeight = 512,
+                                imageSourceIncludeCamera = false,
+                                imageSourceIncludeGallery = true
+                            )
+                        )
                     )
                 },
                 onDeleteClick = { viewModel.deleteImage() }
@@ -439,10 +446,13 @@ private fun UserImageSection(
     val imageFile = remember(imagePath) { if (imagePath.isNotEmpty()) File(imagePath) else null }
     val hasImage = imageFile?.exists() == true
 
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Box(
-            modifier = Modifier
-                .size(120.dp)
+            modifier = Modifier.size(120.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant),
@@ -464,13 +474,20 @@ private fun UserImageSection(
                 )
             }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Button(onClick = onBrowseClick) {
-                Text(if (hasImage) "Change Photo" else "Browse Photo")
-            }
-            if (hasImage) {
+        if (hasImage) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = onBrowseClick,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Change Photo")
+                }
                 OutlinedButton(
                     onClick = onDeleteClick,
+                    modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.outlinedButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )
@@ -480,6 +497,13 @@ private fun UserImageSection(
                     Spacer(Modifier.width(4.dp))
                     Text("Delete")
                 }
+            }
+        } else {
+            Button(
+                onClick = onBrowseClick,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Browse Photo")
             }
         }
     }
@@ -663,6 +687,16 @@ private fun UserImageSectionNoImagePreview() {
     SmartResumeTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             UserImageSection(imagePath = "", onBrowseClick = {}, onDeleteClick = {})
+        }
+    }
+}
+
+@AppPreview
+@Composable
+private fun UserImageSectionWithImagePreview() {
+    SmartResumeTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            UserImageSection(imagePath = "/tmp/profile.jpg", onBrowseClick = {}, onDeleteClick = {})
         }
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -53,7 +54,7 @@ import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.nithra.nithraresume.utils.LargeBannerAdBottomBar
+import com.nithra.nithraresume.ui.navigation.Screen
 import java.io.File
 import com.nithra.nithraresume.ui.preview.AppPreview
 
@@ -75,9 +76,6 @@ fun SampleResumesScreen(
     // Handle side-effect states
     LaunchedEffect(uiState) {
         when (val state = uiState) {
-            is SampleResumesUiState.Added -> {
-                navController.popBackStack()
-            }
             is SampleResumesUiState.PreviewReady -> {
                 openPdfFile(context, state.file)
                 viewModel.onPreviewHandled()
@@ -91,12 +89,12 @@ fun SampleResumesScreen(
     }
 
     val groups = when (val s = uiState) {
-        is SampleResumesUiState.Ready      -> s.groups
-        is SampleResumesUiState.Adding     -> emptyList()
-        is SampleResumesUiState.Added      -> emptyList()
+        is SampleResumesUiState.Ready        -> s.groups
+        is SampleResumesUiState.Adding       -> emptyList()
+        is SampleResumesUiState.Added        -> emptyList()
         is SampleResumesUiState.PreviewReady -> s.groups
-        is SampleResumesUiState.Error      -> s.groups
-        else                               -> emptyList()
+        is SampleResumesUiState.Error        -> s.groups
+        else                                 -> emptyList()
     }
 
     Scaffold(
@@ -115,7 +113,6 @@ fun SampleResumesScreen(
                 )
             )
         },
-        bottomBar = { LargeBannerAdBottomBar() },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         when (uiState) {
@@ -152,6 +149,7 @@ fun SampleResumesScreen(
                             items(group.items, key = { "item_${it.sampleProfileId}" }) { item ->
                                 SampleResumeItem(
                                     name = item.name,
+                                    hasPreview = item.hasPreview,
                                     onAdd = { confirmAddId = item.sampleProfileId },
                                     onPreview = { viewModel.openPreview(item.sampleProfileId) }
                                 )
@@ -178,6 +176,25 @@ fun SampleResumesScreen(
             },
             dismissButton = {
                 TextButton(onClick = { confirmAddId = null }) { Text("Cancel") }
+            }
+        )
+    }
+
+    // Success dialog
+    (uiState as? SampleResumesUiState.Added)?.let { added ->
+        AlertDialog(
+            onDismissRequest = { viewModel.onAddHandled() },
+            title = { Text("Profile Added") },
+            text = { Text("\"${added.profileName}\" added successfully to resume profiles.") },
+            confirmButton = {
+                Button(onClick = {
+                    viewModel.onAddHandled()
+                    navController.popBackStack()
+                    navController.navigate(Screen.UserProfiles.route)
+                }) { Text("Go to Profile") }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.onAddHandled() }) { Text("Dismiss") }
             }
         )
     }
@@ -223,6 +240,7 @@ private fun GroupHeader(
 @Composable
 private fun SampleResumeItem(
     name: String,
+    hasPreview: Boolean,
     onAdd: () -> Unit,
     onPreview: () -> Unit
 ) {
@@ -237,17 +255,19 @@ private fun SampleResumeItem(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.weight(1f)
         )
-        IconButton(
-            onClick = onPreview,
-            modifier = Modifier.size(40.dp)
-        ) {
-            Icon(
-                Icons.Default.Visibility,
-                contentDescription = "Preview",
-                tint = MaterialTheme.colorScheme.primary
-            )
+        if (hasPreview) {
+            IconButton(
+                onClick = onPreview,
+                modifier = Modifier.size(40.dp)
+            ) {
+                Icon(
+                    Icons.Default.Visibility,
+                    contentDescription = "Preview",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+            Spacer(modifier = Modifier.width(4.dp))
         }
-        Spacer(modifier = Modifier.width(4.dp))
         IconButton(
             onClick = onAdd,
             modifier = Modifier.size(40.dp)
@@ -292,8 +312,16 @@ private fun GroupHeaderCollapsedPreview() {
 
 @AppPreview
 @Composable
-private fun SampleResumeItemPreview() {
+private fun SampleResumeItemWithPreviewPreview() {
     SmartResumeTheme {
-        SampleResumeItem(name = "Software Engineer Resume", onAdd = {}, onPreview = {})
+        SampleResumeItem(name = "Software Engineer Resume", hasPreview = true, onAdd = {}, onPreview = {})
+    }
+}
+
+@AppPreview
+@Composable
+private fun SampleResumeItemNoPreviewPreview() {
+    SmartResumeTheme {
+        SampleResumeItem(name = "AI / ML Engineer", hasPreview = false, onAdd = {}, onPreview = {})
     }
 }

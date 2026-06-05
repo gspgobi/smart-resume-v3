@@ -1,7 +1,7 @@
 package com.nithra.nithraresume.ui.section.child
 
+
 import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -107,29 +107,6 @@ class SectionChild4ViewModel @Inject constructor(
                 _uiState.value = Child4UiState.Saved
             } catch (e: Exception) {
                 _uiState.value = Child4UiState.Error(e.message ?: "Save failed")
-            }
-        }
-    }
-
-    fun saveSignatureFromUri(uri: Uri) {
-        viewModelScope.launch {
-            try {
-                val existing = ensureChild4Exists()
-                existing.signatureImagePath.takeIf { it.isNotEmpty() }
-                    ?.let { runCatching { File(it).delete() } }
-                val imageFile = signatureFile()
-                context.contentResolver.openInputStream(uri)?.use { input ->
-                    imageFile.outputStream().use { output -> input.copyTo(output) }
-                }
-                sectionChildRepository.updateChild4(
-                    existing.copy(
-                        signatureImagePath = imageFile.absolutePath,
-                        isSignatureImageEnable = true
-                    )
-                )
-                analyticsManager.logSc4NewSignature()
-            } catch (e: Exception) {
-                _uiState.value = Child4UiState.Error("Failed to save signature")
             }
         }
     }

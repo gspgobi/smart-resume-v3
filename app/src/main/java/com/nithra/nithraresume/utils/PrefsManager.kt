@@ -56,7 +56,8 @@ class PrefsManager @Inject constructor(
 
     private object Key {
         // Notifications
-        val V1_NOTIFICATIONS_ENABLED = booleanPreferencesKey("v1_notification_on_off_check_box")
+        val V1_NOTIFICATIONS_ENABLED = booleanPreferencesKey("noti_chk")
+        val V1_FIRST_CHECK = booleanPreferencesKey("Firstcheck")
 
         // FCM
         val V2_FCM_TOKEN_SENT_TO_SERVER = booleanPreferencesKey("v2_fcm_instance_token_sent_to_server")
@@ -73,6 +74,9 @@ class PrefsManager @Inject constructor(
         val V2_IS_PERFECT_NEW_SRV2_USER = booleanPreferencesKey("v2_is_perfect_new_srv2_user")
         val V3_IS_PERFECT_NEW_SRV3_USER = booleanPreferencesKey("v3_is_perfect_new_srv3_user")
         val V3_ALL_V2_FILES_MIGRATED_TO_V3_FILES_STRUCTURE = booleanPreferencesKey("v3_all_v2_files_migrated_to_v3_files_structure")
+
+        // Theme
+        val V3_THEME_MODE = stringPreferencesKey("v3_theme_mode")
     }
 
     // ── Safe data flow (recovers from corrupted preferences file) ────────────
@@ -89,6 +93,13 @@ class PrefsManager @Inject constructor(
 
     suspend fun setV1NotificationsEnabled(enabled: Boolean) {
         context.dataStore.edit { it[Key.V1_NOTIFICATIONS_ENABLED] = enabled }
+    }
+
+    val v1FirstCheck: Flow<Boolean> = safeData
+        .map { it[Key.V1_FIRST_CHECK] ?: false }
+
+    suspend fun setV1FirstCheck(isFirstCheck: Boolean = true) {
+        context.dataStore.edit { it[Key.V1_FIRST_CHECK] = isFirstCheck }
     }
 
     // ── FCM ───────────────────────────────────────────────────────────────────
@@ -167,6 +178,13 @@ class PrefsManager @Inject constructor(
 
     suspend fun setV3AllV2FilesMigratedToV3FilesStructure() {
         context.dataStore.edit { it[Key.V3_ALL_V2_FILES_MIGRATED_TO_V3_FILES_STRUCTURE] = true }
+    }
+
+    val v3ThemeMode: Flow<String> = safeData
+        .map { it[Key.V3_THEME_MODE] ?: "light" }
+
+    suspend fun setV3ThemeMode(mode: String) {
+        context.dataStore.edit { it[Key.V3_THEME_MODE] = mode }
     }
 
     suspend fun dumpPrefs() {
