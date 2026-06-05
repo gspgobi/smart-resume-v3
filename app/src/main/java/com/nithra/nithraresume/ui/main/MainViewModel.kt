@@ -234,18 +234,23 @@ class MainViewModel @Inject constructor(
 
     private var pendingPhotoCount = 0
     private var pendingSigCount   = 0
-    private var pendingPdfCount = 0
+    private var pendingPdfCount   = 0
+    private var pdfsFoundViaFile  = false
     private val discoveredMediaStorePdfs = mutableListOf<Pair<Uri, String>>()
 
     private fun countOldV1PdfsAndPopulateList(): Int {
         discoveredMediaStorePdfs.clear()
+        pdfsFoundViaFile = false
         val v1Base = File(Environment.getExternalStorageDirectory(), "Nithra/SmartResume")
         val filesSrc = File(v1Base, "Files")
 
         // Try direct File approach first
         if (filesSrc.exists()) {
             val count = filesSrc.walk().count { it.isFile && it.name.endsWith(".pdf", ignoreCase = true) }
-            if (count > 0) return count
+            if (count > 0) {
+                pdfsFoundViaFile = true
+                return count
+            }
         }
 
         // Fallback: Query MediaStore database
@@ -299,18 +304,23 @@ class MainViewModel @Inject constructor(
                 return@launch
             }
             pendingPhotoCount = photoCount
-            pendingSigCount = sigCount
-            pendingPdfCount = pdfCount
+            pendingSigCount   = sigCount
+            pendingPdfCount   = pdfCount
 
-            // If we have photos/signatures or PDFs were found via MediaStore, request permission
-            if (pendingPhotoCount > 0 || pendingSigCount > 0 || discoveredMediaStorePdfs.isNotEmpty()) {
-                val permName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-                    Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
-                val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
-                if (granted) runMigration(null)
-                else _migrationState.value = MigrationUiState.ShowRationale
+            // If we have photos/signatures OR PDFs were found via File/MediaStore, request permission for silent migration
+            if (pendingPhotoCount > 0 || pendingSigCount > 0 || pdfsFoundViaFile || discoveredMediaStorePdfs.isNotEmpty()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    // On Android 13+, we rely on preserveLegacyExternalStorage to read our own files silently.
+                    // No storage permission is declared in Manifest for API 33+.
+                    runMigration(null)
+                } else {
+                    val permName = Manifest.permission.READ_EXTERNAL_STORAGE
+                    val granted = ContextCompat.checkSelfPermission(context, permName) == PackageManager.PERMISSION_GRANTED
+                    if (granted) runMigration(null)
+                    else _migrationState.value = MigrationUiState.ShowRationale
+                }
             } else if (pendingPdfCount > 0) {
-                // PDFs exist but couldn't be found via File or MediaStore — show SAF picker
+                // PDFs exist but couldn't even be listed via File or MediaStore — show SAF picker
                 _migrationState.value = MigrationUiState.ShowSafFolderPicker
             }
         }
@@ -332,7 +342,7 @@ class MainViewModel @Inject constructor(
                     }
                 }
                 // If hidden PDFs still exist and weren't found, show SAF picker
-                if (pendingPdfCount > 0 && discoveredMediaStorePdfs.isEmpty()) {
+                if (pendingPdfCount > 0 && discoveredMediaStorePdfs.isEmpty() && !pdfsFoundViaFile) {
                     _migrationState.value = MigrationUiState.ShowSafFolderPicker
                 } else {
                     prefsManager.setV3AllV2FilesMigratedToV3FilesStructure()
