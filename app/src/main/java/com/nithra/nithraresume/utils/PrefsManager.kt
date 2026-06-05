@@ -181,7 +181,7 @@ class PrefsManager @Inject constructor(
     }
 
     val v3ThemeMode: Flow<String> = safeData
-        .map { it[Key.V3_THEME_MODE] ?: "system" }
+        .map { it[Key.V3_THEME_MODE] ?: "light" }
 
     suspend fun setV3ThemeMode(mode: String) {
         context.dataStore.edit { it[Key.V3_THEME_MODE] = mode }

@@ -46,7 +46,7 @@ fun AppSettingsScreen(
     viewModel: AppSettingsViewModel = hiltViewModel()
 ) {
     val notificationsEnabled by viewModel.notificationsEnabled.collectAsStateWithLifecycle()
-    val themeMode by viewModel.themeMode.collectAsStateWithLifecycle("system")
+    val themeMode by viewModel.themeMode.collectAsStateWithLifecycle("light")
     var showThemeDialog by remember { mutableStateOf(false) }
 
     if (showThemeDialog) {

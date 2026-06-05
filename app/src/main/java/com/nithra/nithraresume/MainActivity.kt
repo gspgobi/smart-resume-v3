@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
         val fcmDataId = intent.getIntExtra(SmartResumeMessagingService.EXTRA_FCM_DATA_ID, -1)
 
         setContent {
-            val themeMode by prefsManager.v3ThemeMode.collectAsStateWithLifecycle("system")
+            val themeMode by prefsManager.v3ThemeMode.collectAsStateWithLifecycle("light")
             SmartResumeTheme(themeMode = themeMode) {
                 val sharedAdViewModel: SharedAdViewModel = hiltViewModel()
                 Column(modifier = Modifier.fillMaxSize()) {
