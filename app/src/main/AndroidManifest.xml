@@ -16,15 +16,6 @@
         android:maxSdkVersion="32"
         tools:replace="android:maxSdkVersion" />
 
-    <!-- Granular photo asset permissions for Android 13 (API 33) -->
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33" />
-
-    <!-- MANDATORY: Required for Android 14+ User-Selected Photo Access Policy Compliance -->
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
-
     <application
         android:name=".SmartResumeApp"
         android:allowBackup="true"
