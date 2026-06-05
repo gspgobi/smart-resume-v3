@@ -35,6 +35,7 @@ import com.nithra.nithraresume.ui.section.child.SectionChild8Screen
 import com.nithra.nithraresume.ui.section.head.ReorderSectionsScreen
 import com.nithra.nithraresume.ui.section.head.SectionHeadScreen
 import com.nithra.nithraresume.ui.settings.AppSettingsScreen
+import com.nithra.nithraresume.ui.settings.ThemeSwitchingScreen
 import com.nithra.nithraresume.ui.viewshare.ViewShareScreen
 
 @Composable
@@ -86,6 +87,10 @@ fun SmartResumeNavGraph(
 
         composable(Screen.AppSettings.route) {
             AppSettingsScreen(navController = navController)
+        }
+
+        composable(Screen.ThemeSwitching.route) {
+            ThemeSwitchingScreen(navController = navController)
         }
 
         composable(Screen.GeneratedResumes.route) {

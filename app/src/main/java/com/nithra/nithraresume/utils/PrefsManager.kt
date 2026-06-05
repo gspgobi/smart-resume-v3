@@ -74,6 +74,9 @@ class PrefsManager @Inject constructor(
         val V2_IS_PERFECT_NEW_SRV2_USER = booleanPreferencesKey("v2_is_perfect_new_srv2_user")
         val V3_IS_PERFECT_NEW_SRV3_USER = booleanPreferencesKey("v3_is_perfect_new_srv3_user")
         val V3_ALL_V2_FILES_MIGRATED_TO_V3_FILES_STRUCTURE = booleanPreferencesKey("v3_all_v2_files_migrated_to_v3_files_structure")
+
+        // Theme
+        val V3_THEME_MODE = stringPreferencesKey("v3_theme_mode")
     }
 
     // ── Safe data flow (recovers from corrupted preferences file) ────────────
@@ -175,6 +178,13 @@ class PrefsManager @Inject constructor(
 
     suspend fun setV3AllV2FilesMigratedToV3FilesStructure() {
         context.dataStore.edit { it[Key.V3_ALL_V2_FILES_MIGRATED_TO_V3_FILES_STRUCTURE] = true }
+    }
+
+    val v3ThemeMode: Flow<String> = safeData
+        .map { it[Key.V3_THEME_MODE] ?: "system" }
+
+    suspend fun setV3ThemeMode(mode: String) {
+        context.dataStore.edit { it[Key.V3_THEME_MODE] = mode }
     }
 
     suspend fun dumpPrefs() {
