@@ -135,11 +135,6 @@ fun MainScreen(
     var exitAfterFeedback by remember { mutableStateOf(false) }
     var showOverflowMenu by remember { mutableStateOf(false) }
 
-    val permName = remember {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            Manifest.permission.READ_MEDIA_IMAGES else Manifest.permission.READ_EXTERNAL_STORAGE
-    }
-
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted -> viewModel.onPermissionResult(granted) }
@@ -190,7 +185,7 @@ fun MainScreen(
             title = { Text("App Updated") },
             text  = { Text(migrationDialogText) },
             confirmButton = {
-                Button(onClick = { permissionLauncher.launch(permName) }) { Text("Allow") }
+                Button(onClick = { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }) { Text("Allow") }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip file migration") }

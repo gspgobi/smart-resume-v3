@@ -1,6 +1,8 @@
 package com.nithra.nithraresume.ui.section.child
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import androidx.compose.foundation.background
@@ -162,9 +164,22 @@ fun SectionChild1Screen(
         }
     }
 
-    // Image crop launcher — shows camera/gallery source picker, then crop
     val cropImage = rememberLauncherForActivityResult(SmartResumeCropContract()) { result ->
         if (result.isSuccessful) result.uriContent?.let { viewModel.saveImage(it) }
+    }
+    val pickPhoto = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) cropImage.launch(
+            CropImageContractOptions(
+                uri = uri,
+                cropImageOptions = CropImageOptions(
+                    aspectRatioX = 1,
+                    aspectRatioY = 1,
+                    fixAspectRatio = true,
+                    outputRequestWidth = 512,
+                    outputRequestHeight = 512
+                )
+            )
+        )
     }
 
     // Date picker dialog state
@@ -363,21 +378,7 @@ fun SectionChild1Screen(
             UserImageSection(
                 imagePath = child1?.userImagePath ?: "",
                 onBrowseClick = {
-                    @Suppress("DEPRECATION")
-                    cropImage.launch(
-                        CropImageContractOptions(
-                            uri = null,
-                            cropImageOptions = CropImageOptions(
-                                aspectRatioX = 1,
-                                aspectRatioY = 1,
-                                fixAspectRatio = true,
-                                outputRequestWidth = 512,
-                                outputRequestHeight = 512,
-                                imageSourceIncludeCamera = false,
-                                imageSourceIncludeGallery = true
-                            )
-                        )
-                    )
+                    pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 },
                 onDeleteClick = { viewModel.deleteImage() }
             )

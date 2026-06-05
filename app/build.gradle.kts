@@ -21,8 +21,8 @@ android {
         applicationId = "com.nithra.nithraresume"
         minSdk = 24
         targetSdk = 37
-        versionCode = 73
-        versionName = "4.2.1"
+        versionCode = 74
+        versionName = "4.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
