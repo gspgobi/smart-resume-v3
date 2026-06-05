@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -55,6 +56,7 @@ import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.InterstitialAdHelper
+import com.nithra.nithraresume.utils.PrefsManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -62,6 +64,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject lateinit var analyticsManager: AnalyticsManager
+    @Inject lateinit var prefsManager: PrefsManager
 
     private val splashViewModel: SplashViewModel by viewModels()
 
@@ -110,7 +113,8 @@ class MainActivity : ComponentActivity() {
         val fcmDataId = intent.getIntExtra(SmartResumeMessagingService.EXTRA_FCM_DATA_ID, -1)
 
         setContent {
-            SmartResumeTheme {
+            val themeMode by prefsManager.v3ThemeMode.collectAsStateWithLifecycle("system")
+            SmartResumeTheme(themeMode = themeMode) {
                 val sharedAdViewModel: SharedAdViewModel = hiltViewModel()
                 Column(modifier = Modifier.fillMaxSize()) {
                     Box(

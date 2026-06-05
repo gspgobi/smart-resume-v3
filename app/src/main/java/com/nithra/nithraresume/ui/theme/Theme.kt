@@ -85,6 +85,24 @@ private val DarkColorScheme = darkColorScheme(
  */
 @Composable
 fun SmartResumeTheme(
+    themeMode: String = "system",
+    dynamicColor: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    val darkTheme = when (themeMode) {
+        "dark" -> true
+        "light" -> false
+        else -> isSystemInDarkTheme()
+    }
+    SmartResumeTheme(
+        darkTheme = darkTheme,
+        dynamicColor = dynamicColor,
+        content = content
+    )
+}
+
+@Composable
+fun SmartResumeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
