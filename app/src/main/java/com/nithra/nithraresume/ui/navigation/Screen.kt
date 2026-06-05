@@ -18,7 +18,6 @@ sealed class Screen(val route: String) {
     data object SampleResumes     : Screen("sample_resumes")
     data object Notifications     : Screen("notifications")
     data object AppSettings       : Screen("app_settings")
-    data object ThemeSwitching    : Screen("theme_switching")
     data object GeneratedResumes  : Screen("generated_resumes")
 
     // ── Screens that receive profileId ────────────────────────────────────────
