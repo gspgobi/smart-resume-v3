@@ -125,9 +125,11 @@ fun SectionChild1Screen(
     // Populate fields once both sha and child1 are loaded to avoid a race
     // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
     LaunchedEffect(sha, child1) {
-        if (!fieldsInitialised && sha != null && child1 != null) {
-            title = sha!!.title; origTitle = title
-            child1!!.let { c ->
+        val currentSha = sha
+        val currentChild1 = child1
+        if (!fieldsInitialised && currentSha != null && currentChild1 != null) {
+            title = currentSha.title; origTitle = title
+            currentChild1.let { c ->
                 name = c.name; origName = name
                 address = c.address; origAddress = address
                 email = c.email; origEmail = email

@@ -162,7 +162,8 @@ class SectionChild1ViewModel @Inject constructor(
                 nationality = "", userImagePath = "", isUserImageEnable = false
             )
         )
-        val loaded = sectionChildRepository.getChild1Once(sectionHeadAddedId)!!
+        val loaded = sectionChildRepository.getChild1Once(sectionHeadAddedId)
+            ?: error("Child1 not found after insert for headId=$sectionHeadAddedId")
         _child1.value = loaded
         return loaded
     }
