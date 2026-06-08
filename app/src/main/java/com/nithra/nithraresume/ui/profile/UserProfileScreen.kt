@@ -105,20 +105,21 @@ fun UserProfileScreen(
     LaunchedEffect(uiState) {
         when (uiState) {
             is UserProfileUiState.ProfileCreated -> {
-                snackbarHostState.showSnackbar("Profile created")
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar("Profile created")
             }
             is UserProfileUiState.ProfileRenamed -> {
-                snackbarHostState.showSnackbar("Profile renamed")
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar("Profile renamed")
             }
             is UserProfileUiState.ProfileDeleted -> {
-                snackbarHostState.showSnackbar("Profile deleted")
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar("Profile deleted")
             }
             is UserProfileUiState.Error -> {
-                snackbarHostState.showSnackbar((uiState as UserProfileUiState.Error).message)
+                val msg = (uiState as UserProfileUiState.Error).message
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar(msg)
             }
             else -> {}
         }
