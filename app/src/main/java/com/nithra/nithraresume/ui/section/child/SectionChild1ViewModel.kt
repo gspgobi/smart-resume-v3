@@ -10,6 +10,7 @@ import com.nithra.nithraresume.data.model.SectionChild1
 import com.nithra.nithraresume.data.model.SectionHeadAdded
 import com.nithra.nithraresume.data.repository.SectionChildRepository
 import com.nithra.nithraresume.data.repository.SectionHeadRepository
+import com.nithra.nithraresume.utils.ALL_DATE_FORMATS
 import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.SrDir
 import com.nithra.nithraresume.utils.SrImagePrefix
@@ -22,6 +23,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
+
+data class Child1FormState(
+    val title: String = "",
+    val name: String = "",
+    val address: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val gender: String = "",
+    val dob: String = "",
+    val dobFormat: String = ALL_DATE_FORMATS.first(),
+    val nationality: String = ""
+)
 
 sealed interface Child1UiState {
     data object Loading : Child1UiState
@@ -50,14 +63,30 @@ class SectionChild1ViewModel @Inject constructor(
     private val _child1 = MutableStateFlow<SectionChild1?>(null)
     val child1: StateFlow<SectionChild1?> = _child1.asStateFlow()
 
+    private val _originalFormState = MutableStateFlow<Child1FormState?>(null)
+    val originalFormState: StateFlow<Child1FormState?> = _originalFormState.asStateFlow()
+
     init {
         load()
     }
 
     private fun load() {
         viewModelScope.launch {
-            _sha.value = sectionHeadRepository.getAddedById(sectionHeadAddedId)
-            _child1.value = sectionChildRepository.getChild1Once(sectionHeadAddedId)
+            val loadedSha = sectionHeadRepository.getAddedById(sectionHeadAddedId)
+            val loadedChild1 = sectionChildRepository.getChild1Once(sectionHeadAddedId)
+            _sha.value = loadedSha
+            _child1.value = loadedChild1
+            _originalFormState.value = Child1FormState(
+                title = loadedSha?.title.orEmpty(),
+                name = loadedChild1?.name.orEmpty(),
+                address = loadedChild1?.address.orEmpty(),
+                email = loadedChild1?.email.orEmpty(),
+                phone = loadedChild1?.phone.orEmpty(),
+                gender = loadedChild1?.gender.orEmpty(),
+                dob = loadedChild1?.dob.orEmpty(),
+                dobFormat = loadedChild1?.dobDateFormat.orEmpty().ifEmpty { ALL_DATE_FORMATS.first() },
+                nationality = loadedChild1?.nationality.orEmpty()
+            )
             _uiState.value = Child1UiState.Ready
         }
     }

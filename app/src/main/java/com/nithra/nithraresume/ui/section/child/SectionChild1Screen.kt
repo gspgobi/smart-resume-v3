@@ -51,6 +51,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -88,8 +89,8 @@ fun SectionChild1Screen(
     viewModel: SectionChild1ViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sha by viewModel.sha.collectAsStateWithLifecycle()
     val child1 by viewModel.child1.collectAsStateWithLifecycle()
+    val originalFormState by viewModel.originalFormState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
 
@@ -104,17 +105,6 @@ fun SectionChild1Screen(
     var dobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
     var nationality by rememberSaveable { mutableStateOf("") }
 
-    // Original snapshots for dirty detection
-    var origTitle by rememberSaveable { mutableStateOf("") }
-    var origName by rememberSaveable { mutableStateOf("") }
-    var origAddress by rememberSaveable { mutableStateOf("") }
-    var origEmail by rememberSaveable { mutableStateOf("") }
-    var origPhone by rememberSaveable { mutableStateOf("") }
-    var origGender by rememberSaveable { mutableStateOf("") }
-    var origDob by rememberSaveable { mutableStateOf("") }
-    var origDobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
-    var origNationality by rememberSaveable { mutableStateOf("") }
-
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
     var titleError by rememberSaveable { mutableStateOf(false) }
     var nameError by rememberSaveable { mutableStateOf(false) }
@@ -122,33 +112,31 @@ fun SectionChild1Screen(
     var emailError by rememberSaveable { mutableStateOf(false) }
     var phoneError by rememberSaveable { mutableStateOf(false) }
 
-    // Populate fields once both sha and child1 are loaded to avoid a race
-    // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
-    LaunchedEffect(sha, child1) {
-        val currentSha = sha
-        val currentChild1 = child1
-        if (!fieldsInitialised && currentSha != null && currentChild1 != null) {
-            title = currentSha.title; origTitle = title
-            currentChild1.let { c ->
-                name = c.name; origName = name
-                address = c.address; origAddress = address
-                email = c.email; origEmail = email
-                phone = c.phone; origPhone = phone
-                gender = c.gender; origGender = gender
-                dob = c.dob; origDob = dob
-                if (c.dobDateFormat.isNotEmpty()) dobFormat = c.dobDateFormat
-                origDobFormat = dobFormat
-                nationality = c.nationality; origNationality = nationality
-            }
-            fieldsInitialised = true
-        }
+    // Populate fields once originalFormState is loaded from the DB.
+    // fieldsInitialised (rememberSaveable) guards against re-overwriting on process death restore.
+    LaunchedEffect(originalFormState) {
+        if (fieldsInitialised) return@LaunchedEffect
+        val orig = originalFormState ?: return@LaunchedEffect
+        title = orig.title
+        name = orig.name
+        address = orig.address
+        email = orig.email
+        phone = orig.phone
+        gender = orig.gender
+        dob = orig.dob
+        if (orig.dobFormat.isNotEmpty()) dobFormat = orig.dobFormat
+        nationality = orig.nationality
+        fieldsInitialised = true
     }
 
-    val isDirty = fieldsInitialised && (
-        title != origTitle || name != origName || address != origAddress ||
-        email != origEmail || phone != origPhone || gender != origGender ||
-        dob != origDob || dobFormat != origDobFormat || nationality != origNationality
-    )
+    val isDirty by remember {
+        derivedStateOf {
+            val orig = originalFormState ?: return@derivedStateOf false
+            title != orig.title || name != orig.name || address != orig.address ||
+            email != orig.email || phone != orig.phone || gender != orig.gender ||
+            dob != orig.dob || dobFormat != orig.dobFormat || nationality != orig.nationality
+        }
+    }
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
