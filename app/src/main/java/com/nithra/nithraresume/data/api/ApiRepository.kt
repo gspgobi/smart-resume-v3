@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.WindowManager
 import com.nithra.nithraresume.BuildConfig
 import com.nithra.nithraresume.utils.PrefsManager
@@ -12,6 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 private const val APP_TYPE = "SM"
+private const val TAG = "ApiRepository"
 
 @Singleton
 class ApiRepository @Inject constructor(
@@ -42,7 +44,7 @@ class ApiRepository @Inject constructor(
             if (response.isSuccessful) {
                 prefsManager.setV2FcmTokenSentToServer(true)
             }
-        }
+        }.onFailure { e -> Log.e(TAG, "FCM token registration failed", e) }
     }
 
     suspend fun postFeedback(feedback: String, email: String) {
@@ -54,7 +56,7 @@ class ApiRepository @Inject constructor(
                 appVersionCode = BuildConfig.VERSION_CODE.toString(),
                 deviceModelName = Build.MODEL
             )
-        }
+        }.onFailure { e -> Log.e(TAG, "Post feedback failed", e) }
     }
 
     suspend fun postReferrer(source: String, medium: String, comp: String, email: String) {
@@ -66,7 +68,7 @@ class ApiRepository @Inject constructor(
                 comp    = comp,
                 emailId = email
             )
-        }
+        }.onFailure { e -> Log.e(TAG, "Post referrer failed", e) }
     }
 
     @Suppress("DEPRECATION")
