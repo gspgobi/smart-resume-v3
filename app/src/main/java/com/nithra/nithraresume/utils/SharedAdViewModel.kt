@@ -1,15 +1,16 @@
 package com.nithra.nithraresume.utils
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,9 +31,10 @@ class SharedAdViewModel @Inject constructor() : ViewModel() {
                     _adHeightDp.value = adSize?.height ?: 0
                 }
                 override fun onAdFailedToLoad(error: LoadAdError) {
-                    Handler(Looper.getMainLooper()).postDelayed({
+                    viewModelScope.launch {
+                        delay(AD_RETRY_DELAY_MS)
                         loadAd(AdMobManager.buildAdRequest())
-                    }, 5_000L)
+                    }
                 }
             }
             loadAd(AdMobManager.buildAdRequest())
