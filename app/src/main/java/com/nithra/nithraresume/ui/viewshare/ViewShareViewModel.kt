@@ -10,6 +10,7 @@ import com.nithra.nithraresume.data.repository.UserProfileRepository
 import com.nithra.nithraresume.data.api.ApiRepository
 import com.nithra.nithraresume.utils.AdMobManager
 import com.nithra.nithraresume.utils.AnalyticsManager
+import com.nithra.nithraresume.utils.AD_LOAD_TIMEOUT_MS
 import com.nithra.nithraresume.utils.DOT_PDF
 import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_AD
 import com.nithra.nithraresume.utils.GENERATE_COUNT_SHOW_RATE_US
@@ -83,7 +84,7 @@ class ViewShareViewModel @Inject constructor(
                 val count = prefsManager.v2ResumeGeneratedCount.first()
                 if (count % GENERATE_COUNT_SHOW_AD == 0) {
                     _isAdLoading.value = true
-                    val loaded = withTimeoutOrNull(5_000L) {
+                    val loaded = withTimeoutOrNull(AD_LOAD_TIMEOUT_MS) {
                         generateAdHelper.loadSuspend(context, AdMobManager.interstitial02Id())
                     } ?: false
                     _isAdLoading.value = false
