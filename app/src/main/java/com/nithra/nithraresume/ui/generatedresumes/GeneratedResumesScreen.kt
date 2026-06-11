@@ -50,9 +50,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.nithra.nithraresume.R
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -83,15 +85,15 @@ fun GeneratedResumesScreen(
     fileToDelete?.let { file ->
         AlertDialog(
             onDismissRequest = { fileToDelete = null },
-            title = { Text("Delete Resume") },
-            text  = { Text("Delete \"${file.nameWithoutExtension}\"? This cannot be undone.") },
+            title = { Text(stringResource(R.string.dialog_title_delete_resume)) },
+            text  = { Text(stringResource(R.string.msg_delete_resume_confirm, file.nameWithoutExtension)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.delete(file); fileToDelete = null }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { fileToDelete = null }) { Text("Cancel") }
+                TextButton(onClick = { fileToDelete = null }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -100,12 +102,12 @@ fun GeneratedResumesScreen(
         val focusRequester = remember { FocusRequester() }
         AlertDialog(
             onDismissRequest = { fileToRename = null },
-            title = { Text("Rename Resume") },
+            title = { Text(stringResource(R.string.dialog_title_rename_resume)) },
             text  = {
                 OutlinedTextField(
                     value = renameText,
                     onValueChange = { renameText = it },
-                    label = { Text("File name") },
+                    label = { Text(stringResource(R.string.label_file_name)) },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -117,10 +119,10 @@ fun GeneratedResumesScreen(
                 TextButton(
                     enabled = renameText.isNotBlank(),
                     onClick = { viewModel.rename(file, renameText); fileToRename = null }
-                ) { Text("Rename") }
+                ) { Text(stringResource(R.string.btn_rename)) }
             },
             dismissButton = {
-                TextButton(onClick = { fileToRename = null }) { Text("Cancel") }
+                TextButton(onClick = { fileToRename = null }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -128,10 +130,10 @@ fun GeneratedResumesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("View Saved Resumes") },
+                title = { Text(stringResource(R.string.title_view_saved_resumes)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -219,14 +221,14 @@ private fun GeneratedResumeCard(
             IconButton(onClick = onShare) {
                 Icon(
                     imageVector = Icons.Default.Share,
-                    contentDescription = "Share",
+                    contentDescription = stringResource(R.string.cd_share),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
             IconButton(onClick = { menuExpanded = true }) {
                 Icon(
                     imageVector = Icons.Default.MoreVert,
-                    contentDescription = "More options",
+                    contentDescription = stringResource(R.string.cd_more_options),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 DropdownMenu(
@@ -234,12 +236,12 @@ private fun GeneratedResumeCard(
                     onDismissRequest = { menuExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Rename") },
+                        text = { Text(stringResource(R.string.btn_rename)) },
                         leadingIcon = { Icon(Icons.Default.DriveFileRenameOutline, contentDescription = null) },
                         onClick = { menuExpanded = false; onRename() }
                     )
                     DropdownMenuItem(
-                        text = { Text("Delete", color = MaterialTheme.colorScheme.error) },
+                        text = { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) },
                         leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
                         onClick = { menuExpanded = false; onDelete() }
                     )
@@ -269,20 +271,20 @@ private fun EmptyGeneratedResumes(
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "No resumes generated yet",
+            text = stringResource(R.string.msg_no_resumes_yet),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Go to My Profiles and generate a resume to see it here",
+            text = stringResource(R.string.msg_no_resumes_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(24.dp))
         Button(onClick = onGoToProfiles) {
-            Text("Go to My Profiles")
+            Text(stringResource(R.string.btn_go_to_my_profiles))
         }
     }
 }
