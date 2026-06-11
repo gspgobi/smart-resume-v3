@@ -16,6 +16,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.ui.res.stringResource
+import com.nithra.nithraresume.R
 import androidx.compose.runtime.Composable
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
@@ -49,7 +51,7 @@ fun FeedbackDialog(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                text = "Feedback",
+                text = stringResource(R.string.title_feedback),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold
             )
@@ -57,14 +59,14 @@ fun FeedbackDialog(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email (optional)") },
+                label = { Text(stringResource(R.string.label_email_optional)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = feedback,
                 onValueChange = { feedback = it },
-                label = { Text("Your feedback") },
+                label = { Text(stringResource(R.string.label_your_feedback)) },
                 minLines = 6,
                 maxLines = 16,
                 modifier = Modifier.fillMaxWidth()
@@ -74,7 +76,7 @@ fun FeedbackDialog(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                OutlinedButton(onClick = onDismiss) { Text("Cancel") }
+                OutlinedButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
                 Spacer(Modifier.width(12.dp))
                 Button(
                     onClick = {
@@ -83,7 +85,7 @@ fun FeedbackDialog(
                             onDismiss()
                         }
                     }
-                ) { Text("Send") }
+                ) { Text(stringResource(R.string.btn_send)) }
             }
         }
     }
