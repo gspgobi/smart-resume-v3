@@ -93,6 +93,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nithra.nithraresume.R
 import androidx.core.content.FileProvider
@@ -173,7 +174,7 @@ fun MainScreen(
     LaunchedEffect(migrationState) {
         if (migrationState is MigrationUiState.PermissionDenied) {
             snackbarHostState.showSnackbar(
-                "Permission denied. Photos from the previous version could not be restored."
+                context.getString(R.string.msg_permission_denied_migration)
             )
             viewModel.acknowledgeMigrationDenied()
         }
@@ -182,13 +183,13 @@ fun MainScreen(
     if (migrationState is MigrationUiState.ShowRationale) {
         AlertDialog(
             onDismissRequest = { viewModel.onPermissionResult(false) },
-            title = { Text("App Updated") },
+            title = { Text(stringResource(R.string.dialog_title_app_updated)) },
             text  = { Text(migrationDialogText) },
             confirmButton = {
-                Button(onClick = { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }) { Text("Allow") }
+                Button(onClick = { permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE) }) { Text(stringResource(R.string.btn_allow)) }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text("Skip file migration") }
+                TextButton(onClick = { viewModel.onPermissionResult(false) }) { Text(stringResource(R.string.btn_skip_file_migration)) }
             }
         )
     }
@@ -204,7 +205,7 @@ fun MainScreen(
             },
             onSend = { email, feedback ->
                 viewModel.sendFeedback(email, feedback)
-                scope.launch { snackbarHostState.showSnackbar("Thank you for your feedback!") }
+                scope.launch { snackbarHostState.showSnackbar(context.getString(R.string.msg_feedback_thanks)) }
             }
         )
     }
@@ -212,13 +213,13 @@ fun MainScreen(
     if (showDoYouLoveAppDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.onDoYouLoveAppDismissed() },
-            title = { Text("Enjoying Smart Resume Builder?") },
-            text  = { Text("We'd love to hear how it's working for you — your feedback helps us keep improving!") },
+            title = { Text(stringResource(R.string.dialog_title_enjoy_app)) },
+            text  = { Text(stringResource(R.string.msg_enjoy_app_body)) },
             confirmButton = {
-                Button(onClick = { viewModel.onLoveItClicked() }) { Text("Love it! ❤️") }
+                Button(onClick = { viewModel.onLoveItClicked() }) { Text(stringResource(R.string.btn_love_it)) }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text("Could be better") }
+                TextButton(onClick = { viewModel.onCouldBeBetterClicked() }) { Text(stringResource(R.string.btn_could_be_better)) }
             }
         )
     }
@@ -226,15 +227,15 @@ fun MainScreen(
     if (showRateUs5StarsDialog) {
         AlertDialog(
             onDismissRequest = { viewModel.onMaybeLater() },
-            title = { Text("Glad you love it! 🎉") },
-            text  = { Text("A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!") },
+            title = { Text(stringResource(R.string.dialog_title_glad_you_love_it)) },
+            text  = { Text(stringResource(R.string.msg_rate_us_body)) },
             confirmButton = {
-                Button(onClick = { viewModel.onSureTakeMeThere() }) { Text("Rate Now") }
+                Button(onClick = { viewModel.onSureTakeMeThere() }) { Text(stringResource(R.string.btn_rate_now)) }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { viewModel.onMaybeLater() }) { Text("Later") }
-                    TextButton(onClick = { viewModel.onNoThanks() }) { Text("No thanks") }
+                    TextButton(onClick = { viewModel.onMaybeLater() }) { Text(stringResource(R.string.btn_later)) }
+                    TextButton(onClick = { viewModel.onNoThanks() }) { Text(stringResource(R.string.btn_no_thanks)) }
                 }
             }
         )
@@ -272,7 +273,7 @@ fun MainScreen(
                     title = { Text("Smart Resume Builder") },
                     navigationIcon = {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                            Icon(Icons.Default.Menu, contentDescription = "Open menu")
+                            Icon(Icons.Default.Menu, contentDescription = stringResource(R.string.cd_open_menu))
                         }
                     },
                     actions = {
@@ -287,19 +288,19 @@ fun MainScreen(
                                 Icon(
                                     imageVector = if (unreadCount > 0) Icons.Default.Notifications
                                     else Icons.Default.NotificationsNone,
-                                    contentDescription = "Notifications"
+                                    contentDescription = stringResource(R.string.cd_notifications)
                                 )
                             }
                         }
                         IconButton(onClick = { showOverflowMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options))
                         }
                         DropdownMenu(
                             expanded = showOverflowMenu,
                             onDismissRequest = { showOverflowMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Settings") },
+                                text = { Text(stringResource(R.string.menu_settings)) },
                                 leadingIcon = { Icon(Icons.Default.Settings, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -307,7 +308,7 @@ fun MainScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Feedback") },
+                                text = { Text(stringResource(R.string.action_feedback)) },
                                 leadingIcon = { Icon(Icons.Default.Feedback, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -315,7 +316,7 @@ fun MainScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Rate Us") },
+                                text = { Text(stringResource(R.string.action_rate_us)) },
                                 leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -323,7 +324,7 @@ fun MainScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Invite Friends") },
+                                text = { Text(stringResource(R.string.action_invite_friends)) },
                                 leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) },
                                 onClick = {
                                     showOverflowMenu = false
@@ -376,7 +377,7 @@ private fun MainContent(
         if (migrationState is MigrationUiState.Running) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Restoring files… (${migrationState.done} / ${migrationState.total})",
+                    text = stringResource(R.string.msg_restoring_files, migrationState.done, migrationState.total),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -392,22 +393,22 @@ private fun MainContent(
 
         HomeCard(
             icon = Icons.Default.Person,
-            title = "My Resume Profiles",
-            subtitle = "Create and manage your resume profiles",
+            title = stringResource(R.string.title_my_resume_profiles),
+            subtitle = stringResource(R.string.msg_my_resume_profiles_subtitle),
             onClick = onMyProfilesClick
         )
 
         HomeCard(
             icon = Icons.Default.Description,
-            title = "View Saved Resumes",
-            subtitle = "View and share your generated resumes",
+            title = stringResource(R.string.title_view_saved_resumes),
+            subtitle = stringResource(R.string.msg_view_saved_resumes_subtitle),
             onClick = onViewResumesClick
         )
 
         HomeCard(
             icon = Icons.Default.AutoStories,
-            title = "Browse Sample Resumes",
-            subtitle = "Explore ready-made resumes for every career",
+            title = stringResource(R.string.title_browse_sample_resumes),
+            subtitle = stringResource(R.string.msg_browse_sample_resumes_subtitle),
             onClick = onSampleResumesClick
         )
 
@@ -512,7 +513,7 @@ private fun MainDrawerContent(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "version $appVersionName",
+                        text = stringResource(R.string.msg_version_name, appVersionName),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
                         modifier = Modifier.clickable {
@@ -545,7 +546,7 @@ private fun MainDrawerContent(
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.PhotoLibrary, contentDescription = null) },
-            label = { Text("Sample Resumes") },
+            label = { Text(stringResource(R.string.menu_sample_resumes)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.SampleResumes) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
@@ -558,14 +559,14 @@ private fun MainDrawerContent(
                     Icon(Icons.Default.Notifications, contentDescription = null)
                 }
             },
-            label = { Text("Notifications") },
+            label = { Text(stringResource(R.string.menu_notifications)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.Notifications) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.TipsAndUpdates, contentDescription = null) },
-            label = { Text("Resume Making Tips") },
+            label = { Text(stringResource(R.string.action_resume_making_tips)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.ResumeTips) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
@@ -575,35 +576,35 @@ private fun MainDrawerContent(
 
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-            label = { Text("Settings") },
+            label = { Text(stringResource(R.string.menu_settings)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.Settings) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.Feedback, contentDescription = null) },
-            label = { Text("Feedback") },
+            label = { Text(stringResource(R.string.action_feedback)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.Feedback) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.Policy, contentDescription = null) },
-            label = { Text("Privacy Policy") },
+            label = { Text(stringResource(R.string.action_privacy_policy)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.PrivacyPolicy) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.Star, contentDescription = null) },
-            label = { Text("Rate Us") },
+            label = { Text(stringResource(R.string.action_rate_us)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.RateUs) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
         )
         NavigationDrawerItem(
             icon = { Icon(Icons.Default.Share, contentDescription = null) },
-            label = { Text("Invite Friends") },
+            label = { Text(stringResource(R.string.action_invite_friends)) },
             selected = false,
             onClick = { onItemClick(DrawerItem.InviteFriends) },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
