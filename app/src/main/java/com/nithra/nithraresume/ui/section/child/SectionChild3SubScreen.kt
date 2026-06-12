@@ -41,8 +41,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionChild3
@@ -126,21 +128,21 @@ fun SectionChild3SubScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (item != null) "Edit Entry" else "New Entry") },
+                title = { Text(if (item != null) stringResource(R.string.title_edit_entry) else stringResource(R.string.title_new_entry)) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 actions = {
                     IconButton(onClick = { attemptSave() }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save",
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     DropdownMenu(
@@ -148,7 +150,7 @@ fun SectionChild3SubScreen(
                         onDismissRequest = { showOverflowMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Clear all") },
+                            text = { Text(stringResource(R.string.action_clear_all)) },
                             onClick = {
                                 showOverflowMenu = false
                                 studyDegree = ""; schoolName = ""; subtitle = ""
@@ -189,12 +191,12 @@ fun SectionChild3SubScreen(
                     studyDegree = it
                     if (it.isNotBlank()) studyDegreeError = false
                 },
-                label = { Text("Study Degree / Qualification") },
+                label = { Text(stringResource(R.string.label_study_degree)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = studyDegreeError,
                 supportingText = if (studyDegreeError) {
-                    { Text("Study Degree is required") }
+                    { Text(stringResource(R.string.error_study_degree_required)) }
                 } else null
             )
             OutlinedTextField(
@@ -203,32 +205,32 @@ fun SectionChild3SubScreen(
                     schoolName = it
                     if (it.isNotBlank()) schoolNameError = false
                 },
-                label = { Text("School / University Name") },
+                label = { Text(stringResource(R.string.label_school_name)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = schoolNameError,
                 supportingText = if (schoolNameError) {
-                    { Text("School / University Name is required") }
+                    { Text(stringResource(R.string.error_school_name_required)) }
                 } else null
             )
             OutlinedTextField(
                 value = subtitle,
                 onValueChange = { subtitle = it },
-                label = { Text("Subtitle") },
+                label = { Text(stringResource(R.string.label_subtitle)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             OutlinedTextField(
                 value = studyPeriod,
                 onValueChange = { studyPeriod = it },
-                label = { Text("Study Period") },
+                label = { Text(stringResource(R.string.label_study_period)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
             OutlinedTextField(
                 value = concentrates,
                 onValueChange = { concentrates = it },
-                label = { Text("Concentrates / Subjects") },
+                label = { Text(stringResource(R.string.label_concentrates)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 8, maxLines = 20
             )
@@ -244,21 +246,21 @@ fun SectionChild3SubScreen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            title = { Text("Unsaved Changes") },
-            text = { Text("You have unsaved changes. Save before leaving?") },
+            title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
+            text = { Text(stringResource(R.string.msg_unsaved_changes)) },
             confirmButton = {
                 Button(onClick = {
                     showUnsavedDialog = false
                     attemptSave()
-                }) { Text("Save") }
+                }) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text(stringResource(R.string.cancel)) }
                     TextButton(onClick = {
                         showUnsavedDialog = false
                         navController.popBackStack()
-                    }) { Text("Discard") }
+                    }) { Text(stringResource(R.string.btn_discard)) }
                 }
             }
         )
