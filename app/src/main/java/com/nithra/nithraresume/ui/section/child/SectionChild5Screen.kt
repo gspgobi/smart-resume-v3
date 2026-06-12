@@ -43,8 +43,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.common.BulletTypeDropdown
@@ -121,14 +123,14 @@ fun SectionChild5Screen(
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 actions = {
                     IconButton(onClick = { showSuggestions = true }) {
                         Icon(
                             Icons.Default.Lightbulb,
-                            contentDescription = "Suggestions",
+                            contentDescription = stringResource(R.string.cd_suggestions),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -138,11 +140,11 @@ fun SectionChild5Screen(
                             viewModel.save(title, content, bulletType)
                         }
                     }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save",
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     DropdownMenu(
@@ -150,7 +152,7 @@ fun SectionChild5Screen(
                         onDismissRequest = { showOverflowMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Clear all") },
+                            text = { Text(stringResource(R.string.action_clear_all)) },
                             onClick = {
                                 showOverflowMenu = false
                                 focusManager.clearFocus()
@@ -188,16 +190,16 @@ fun SectionChild5Screen(
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it; titleError = false },
-                label = { Text("Section Title") },
+                label = { Text(stringResource(R.string.label_section_title)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = titleError,
-                supportingText = if (titleError) { { Text("Section title is required") } } else null
+                supportingText = if (titleError) { { Text(stringResource(R.string.error_section_title_required)) } } else null
             )
             OutlinedTextField(
                 value = content,
                 onValueChange = { content = it },
-                label = { Text("Content") },
+                label = { Text(stringResource(R.string.label_content)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 8, maxLines = 20
             )
@@ -213,8 +215,8 @@ fun SectionChild5Screen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            title = { Text("Unsaved Changes") },
-            text = { Text("You have unsaved changes. Save before leaving?") },
+            title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
+            text = { Text(stringResource(R.string.msg_unsaved_changes)) },
             confirmButton = {
                 Button(onClick = {
                     if (title.isBlank()) {
@@ -225,15 +227,15 @@ fun SectionChild5Screen(
                         focusManager.clearFocus()
                         viewModel.save(title, content, bulletType)
                     }
-                }) { Text("Save") }
+                }) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text(stringResource(R.string.cancel)) }
                     TextButton(onClick = {
                         showUnsavedDialog = false
                         navController.popBackStack()
-                    }) { Text("Discard") }
+                    }) { Text(stringResource(R.string.btn_discard)) }
                 }
             }
         )

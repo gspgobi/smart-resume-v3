@@ -61,7 +61,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.nithra.nithraresume.R
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -183,7 +185,7 @@ fun SectionChild1Screen(
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 actions = {
@@ -200,11 +202,11 @@ fun SectionChild1Screen(
                                 gender, dob, dobFormat, nationality)
                         }
                     }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save",
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     DropdownMenu(
@@ -212,7 +214,7 @@ fun SectionChild1Screen(
                         onDismissRequest = { showOverflowMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Clear all") },
+                            text = { Text(stringResource(R.string.action_clear_all)) },
                             onClick = {
                                 showOverflowMenu = false
                                 focusManager.clearFocus()
@@ -328,27 +330,27 @@ private fun Child1FormContent(
         OutlinedTextField(
             value = title,
             onValueChange = onTitleChange,
-            label = { Text("Section Title") },
+            label = { Text(stringResource(R.string.label_section_title)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             isError = titleError,
-            supportingText = if (titleError) { { Text("Section title is required") } } else null,
+            supportingText = if (titleError) { { Text(stringResource(R.string.error_section_title_required)) } } else null,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Next
             )
         )
 
-        SectionDivider("Contact Details")
+        SectionDivider(stringResource(R.string.label_contact_details))
 
         OutlinedTextField(
             value = name,
             onValueChange = onNameChange,
-            label = { Text("Full Name") },
+            label = { Text(stringResource(R.string.label_full_name)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             isError = nameError,
-            supportingText = if (nameError) { { Text("Name is required") } } else null,
+            supportingText = if (nameError) { { Text(stringResource(R.string.error_name_required)) } } else null,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Next
@@ -357,11 +359,11 @@ private fun Child1FormContent(
         OutlinedTextField(
             value = address,
             onValueChange = onAddressChange,
-            label = { Text("Address") },
+            label = { Text(stringResource(R.string.label_address)) },
             modifier = Modifier.fillMaxWidth(),
             minLines = 4, maxLines = 8,
             isError = addressError,
-            supportingText = if (addressError) { { Text("Address is required") } } else null,
+            supportingText = if (addressError) { { Text(stringResource(R.string.error_address_required)) } } else null,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Next
@@ -370,11 +372,11 @@ private fun Child1FormContent(
         OutlinedTextField(
             value = email,
             onValueChange = onEmailChange,
-            label = { Text("Email") },
+            label = { Text(stringResource(R.string.label_email)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             isError = emailError,
-            supportingText = if (emailError) { { Text("Email is required") } } else null,
+            supportingText = if (emailError) { { Text(stringResource(R.string.error_email_required)) } } else null,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -383,18 +385,18 @@ private fun Child1FormContent(
         OutlinedTextField(
             value = phone,
             onValueChange = onPhoneChange,
-            label = { Text("Phone") },
+            label = { Text(stringResource(R.string.label_phone)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             isError = phoneError,
-            supportingText = if (phoneError) { { Text("Phone is required") } } else null,
+            supportingText = if (phoneError) { { Text(stringResource(R.string.error_phone_required)) } } else null,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next
             )
         )
 
-        SectionDivider("Gender (optional)")
+        SectionDivider(stringResource(R.string.label_gender_optional))
         Row(verticalAlignment = Alignment.CenterVertically) {
             ALL_GENDERS.forEach { g ->
                 RadioButton(
@@ -404,11 +406,11 @@ private fun Child1FormContent(
                 Text(g, modifier = Modifier.padding(end = 16.dp))
             }
             if (gender.isNotEmpty()) {
-                TextButton(onClick = { onGenderChange("") }) { Text("Clear") }
+                TextButton(onClick = { onGenderChange("") }) { Text(stringResource(R.string.btn_clear)) }
             }
         }
 
-        SectionDivider("Date of Birth (optional)")
+        SectionDivider(stringResource(R.string.label_dob_optional))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -416,13 +418,13 @@ private fun Child1FormContent(
             OutlinedTextField(
                 value = dob,
                 onValueChange = onDobChange,
-                label = { Text("Date of Birth") },
+                label = { Text(stringResource(R.string.label_date_of_birth)) },
                 modifier = Modifier.weight(1f),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
             )
             IconButton(onClick = onDateDialogOpen) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
+                Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.cd_pick_date),
                     tint = MaterialTheme.colorScheme.primary)
             }
         }
@@ -430,7 +432,7 @@ private fun Child1FormContent(
         OutlinedTextField(
             value = nationality,
             onValueChange = onNationalityChange,
-            label = { Text("Nationality (optional)") },
+            label = { Text(stringResource(R.string.label_nationality_optional)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -439,7 +441,7 @@ private fun Child1FormContent(
             )
         )
 
-        SectionDivider("Profile Photo (optional)")
+        SectionDivider(stringResource(R.string.label_profile_photo_optional))
         UserImageSection(
             imagePath = imagePath,
             onBrowseClick = onPickPhotoClick,
@@ -458,15 +460,15 @@ private fun UnsavedChangesDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Unsaved Changes") },
-        text = { Text("You have unsaved changes. Save before leaving?") },
+        title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
+        text = { Text(stringResource(R.string.msg_unsaved_changes)) },
         confirmButton = {
-            Button(onClick = onSave) { Text("Save") }
+            Button(onClick = onSave) { Text(stringResource(R.string.save)) }
         },
         dismissButton = {
             Row {
-                TextButton(onClick = onDismiss) { Text("Cancel") }
-                TextButton(onClick = onDiscard) { Text("Discard") }
+                TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+                TextButton(onClick = onDiscard) { Text(stringResource(R.string.btn_discard)) }
             }
         }
     )
@@ -496,13 +498,13 @@ private fun UserImageSection(
             if (hasImage) {
                 AsyncImage(
                     model = imageFile,
-                    contentDescription = "Profile photo",
+                    contentDescription = stringResource(R.string.cd_profile_photo),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
                 Text(
-                    text = "No user image found",
+                    text = stringResource(R.string.msg_no_user_image),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -518,7 +520,7 @@ private fun UserImageSection(
                     onClick = onBrowseClick,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Change Photo")
+                    Text(stringResource(R.string.btn_change_photo))
                 }
                 OutlinedButton(
                     onClick = onDeleteClick,
@@ -530,7 +532,7 @@ private fun UserImageSection(
                     Icon(Icons.Default.Delete, contentDescription = null,
                         modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             }
         } else {
@@ -538,7 +540,7 @@ private fun UserImageSection(
                 onClick = onBrowseClick,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Browse Photo")
+                Text(stringResource(R.string.btn_browse_photo))
             }
         }
     }
