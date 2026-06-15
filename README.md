@@ -7,6 +7,7 @@
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
 [![Min SDK](https://img.shields.io/badge/minSdk-24-brightgreen)](https://apilevels.com)
 [![Play Store](https://img.shields.io/badge/Play%20Store-live-green?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.nithra.nithraresume)
+[![License](https://img.shields.io/badge/license-Source%20Available-blue)](LICENSE)
 
 ---
 
