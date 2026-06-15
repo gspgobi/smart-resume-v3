@@ -13,6 +13,8 @@
 
 ## About
 
+**[View on Google Play →](https://play.google.com/store/apps/details?id=com.nithra.nithraresume)**
+
 Smart Resume Builder (V3) is a complete, ground-up rewrite of an existing Play Store app — migrating from a legacy XML/View-based architecture to **100% Kotlin + Jetpack Compose** while preserving full data continuity for users upgrading from V2.
 
 Users can create multiple resume profiles, populate them with structured sections (contact info, work history, education, declarations, and more), pick from 6 PDF layout formats, and export or share the generated PDF directly from the app.
