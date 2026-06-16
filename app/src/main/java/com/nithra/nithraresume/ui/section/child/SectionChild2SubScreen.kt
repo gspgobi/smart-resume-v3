@@ -95,8 +95,9 @@ fun SectionChild2SubScreen(
         when (uiState) {
             is Child2SubUiState.Saved -> navController.popBackStack()
             is Child2SubUiState.Error -> {
-                snackbarHostState.showSnackbar((uiState as Child2SubUiState.Error).message)
+                val msg = (uiState as Child2SubUiState.Error).message
                 viewModel.resetState()
+                snackbarHostState.showSnackbar(msg)
             }
             else -> {}
         }
