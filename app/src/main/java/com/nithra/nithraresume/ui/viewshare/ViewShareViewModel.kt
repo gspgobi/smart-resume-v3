@@ -19,8 +19,12 @@ import com.nithra.nithraresume.utils.PrefsManager
 import com.nithra.nithraresume.utils.SrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -51,10 +55,13 @@ class ViewShareViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ViewShareUiState>(ViewShareUiState.Loading)
     val uiState: StateFlow<ViewShareUiState> = _uiState.asStateFlow()
 
-    private val _showGenerateAd = MutableStateFlow(false)
-    val showGenerateAd: StateFlow<Boolean> = _showGenerateAd.asStateFlow()
-
-    fun resetShowGenerateAd() { _showGenerateAd.value = false }
+    // SharedFlow so the ad trigger is consumed exactly once; a StateFlow<Boolean> would
+    // re-deliver true to a screen recreated before the flag was reset.
+    private val _showGenerateAdEvent = MutableSharedFlow<Unit>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val showGenerateAdEvent: SharedFlow<Unit> = _showGenerateAdEvent.asSharedFlow()
 
     private val _isAdLoading = MutableStateFlow(false)
     val isAdLoading: StateFlow<Boolean> = _isAdLoading.asStateFlow()
@@ -88,7 +95,7 @@ class ViewShareViewModel @Inject constructor(
                         generateAdHelper.loadSuspend(context, AdMobManager.interstitial02Id())
                     } ?: false
                     _isAdLoading.value = false
-                    if (loaded) _showGenerateAd.value = true
+                    if (loaded) _showGenerateAdEvent.tryEmit(Unit)
                 }
                 if (count >= GENERATE_COUNT_SHOW_RATE_US && count % 2 == 1) {
                     val rated = prefsManager.v1RateUsDone.first()

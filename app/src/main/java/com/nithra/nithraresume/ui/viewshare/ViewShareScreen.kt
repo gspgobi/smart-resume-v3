@@ -84,7 +84,7 @@ fun ViewShareScreen(
     viewModel: ViewShareViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val showGenerateAd by viewModel.showGenerateAd.collectAsStateWithLifecycle()
+    val showGenerateAdEvent = viewModel.showGenerateAdEvent
     val isAdLoading by viewModel.isAdLoading.collectAsStateWithLifecycle()
     val showRateUsDialog by viewModel.showRateUsDialog.collectAsStateWithLifecycle()
     val justGenerated = viewModel.justGenerated
@@ -92,14 +92,13 @@ fun ViewShareScreen(
     val context = LocalContext.current
     var showFeedbackDialog by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(showGenerateAd) {
-        if (showGenerateAd) {
+    LaunchedEffect(Unit) {
+        showGenerateAdEvent.collect {
             val activity = context as? Activity
             if (activity != null) {
                 viewModel.generateAdHelper.showSuspend(activity)
                 viewModel.generateAdHelper.load(context, AdMobManager.interstitial02Id())
             }
-            viewModel.resetShowGenerateAd()
         }
     }
 
