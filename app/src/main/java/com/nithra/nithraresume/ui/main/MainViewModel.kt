@@ -419,15 +419,16 @@ class MainViewModel @Inject constructor(
             else if (safTreeUri != null) {
                 val documentFolder = DocumentFile.fromTreeUri(context, safTreeUri)
                 documentFolder?.listFiles()?.forEach { docFile ->
-                    if (docFile.isFile && docFile.name?.endsWith(".pdf", ignoreCase = true) == true) {
-                        runCatching {
-                            context.contentResolver.openInputStream(docFile.uri)?.use { input ->
-                                File(dstPdfFolder, docFile.name!!).outputStream().use { output ->
-                                    input.copyTo(output)
-                                }
+                    val name = docFile.name?.takeIf {
+                        docFile.isFile && it.endsWith(".pdf", ignoreCase = true)
+                    } ?: return@forEach
+                    runCatching {
+                        context.contentResolver.openInputStream(docFile.uri)?.use { input ->
+                            File(dstPdfFolder, name).outputStream().use { output ->
+                                input.copyTo(output)
                             }
-                            docFile.delete()
                         }
+                        docFile.delete()
                     }
                 }
                 done = total
