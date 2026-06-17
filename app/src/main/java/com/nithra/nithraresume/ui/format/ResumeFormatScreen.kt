@@ -98,22 +98,21 @@ fun ResumeFormatScreen(
     var showUnsavedDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(profile) {
-        if (!initialised && profile != null) {
-            selectedFormatId = profile!!.resumeFormatBaseId
-            selectedFontStyle = profile!!.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN }
-            selectedFontSize = profile!!.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX }
-                ?: FONT_SIZE_DEFAULT
-            selectedBgColor = profile!!.backgroundColor.ifEmpty { BG_COLOR_WHITE }
-            initialised = true
-        }
+        if (initialised) return@LaunchedEffect
+        val p = profile ?: return@LaunchedEffect
+        selectedFormatId = p.resumeFormatBaseId
+        selectedFontStyle = p.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN }
+        selectedFontSize = p.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT
+        selectedBgColor = p.backgroundColor.ifEmpty { BG_COLOR_WHITE }
+        initialised = true
     }
 
-    val isDirty = initialised && profile != null && (
-        selectedFormatId != profile!!.resumeFormatBaseId ||
-        selectedFontStyle != profile!!.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN } ||
-        selectedFontSize  != (profile!!.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT) ||
-        selectedBgColor   != profile!!.backgroundColor.ifEmpty { BG_COLOR_WHITE }
-    )
+    val isDirty = initialised && profile?.let { p ->
+        selectedFormatId != p.resumeFormatBaseId ||
+        selectedFontStyle != p.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN } ||
+        selectedFontSize  != (p.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT) ||
+        selectedBgColor   != p.backgroundColor.ifEmpty { BG_COLOR_WHITE }
+    } ?: false
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 

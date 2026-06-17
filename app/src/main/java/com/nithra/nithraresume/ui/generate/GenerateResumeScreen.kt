@@ -82,17 +82,14 @@ fun GenerateResumeScreen(
     var pendingFileName by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(profile, currentFormat) {
-        if (profile != null && currentFormat != null) {
-            if (BuildConfig.DEBUG) {
-                val base = profile!!.name
-                val fmt = currentFormat!!.title
-                val font = profile!!.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), "")
-                val size = profile!!.fontSize
-                fileName = "${base}_${fmt}_${font}_${size}pt"
-            } else if (!fileNameInitialised) {
-                fileName = profile!!.resumeFileName?.ifEmpty { profile!!.name } ?: profile!!.name
-                fileNameInitialised = true
-            }
+        val p = profile ?: return@LaunchedEffect
+        val fmt = currentFormat ?: return@LaunchedEffect
+        if (BuildConfig.DEBUG) {
+            val font = p.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), "")
+            fileName = "${p.name}_${fmt.title}_${font}_${p.fontSize}pt"
+        } else if (!fileNameInitialised) {
+            fileName = p.resumeFileName?.ifEmpty { p.name } ?: p.name
+            fileNameInitialised = true
         }
     }
 
@@ -113,8 +110,8 @@ fun GenerateResumeScreen(
     val isLoading    = uiState is GenerateResumeUiState.Loading
     val isGenerating = uiState is GenerateResumeUiState.Generating
 
-    val hasUserImageSet   = sc1 != null && sc1!!.userImagePath.isNotEmpty()
-    val hasSignatureSet   = sc4 != null && sc4!!.signatureImagePath.isNotEmpty()
+    val hasUserImageSet   = sc1?.userImagePath?.isNotEmpty() == true
+    val hasSignatureSet   = sc4?.signatureImagePath?.isNotEmpty() == true
     val showGenerateWith  = sc1 != null || sc4 != null
 
     Scaffold(
