@@ -133,7 +133,8 @@ class SectionChild4ViewModel @Inject constructor(
                 signatureImagePath = "", isSignatureImageEnable = false
             )
         )
-        return sectionChildRepository.getChild4Once(sectionHeadAddedId)!!
+        return sectionChildRepository.getChild4Once(sectionHeadAddedId)
+            ?: error("Child4 not found after insert for headId=$sectionHeadAddedId")
     }
 
     private fun signatureFile(): File {
