@@ -273,8 +273,7 @@ fun SectionHeadScreen(
     }
 
     // ── Delete confirmation dialog ────────────────────────────────────────────
-    if (deleteTarget != null) {
-        val sha = deleteTarget!!
+    deleteTarget?.let { sha ->
         val groupList = if (sha.groupBaseId == 1) sections else addons
         val thisSection = stringResource(R.string.msg_this_section)
         AlertDialog(

@@ -84,11 +84,11 @@ fun SectionChild2Screen(
     var deleteTarget by remember { mutableStateOf<SectionChild2?>(null) }
 
     LaunchedEffect(sha) {
-        if (!titleInitialised && sha != null) {
-            title = sha!!.title
-            origTitle = title
-            titleInitialised = true
-        }
+        if (titleInitialised) return@LaunchedEffect
+        val currentSha = sha ?: return@LaunchedEffect
+        title = currentSha.title
+        origTitle = title
+        titleInitialised = true
     }
 
     val isDirty = titleInitialised && title != origTitle
@@ -242,8 +242,7 @@ fun SectionChild2Screen(
         )
     }
 
-    if (deleteTarget != null) {
-        val target = deleteTarget!!
+    deleteTarget?.let { target ->
         val thisEntry = stringResource(R.string.msg_this_entry)
         AlertDialog(
             onDismissRequest = { deleteTarget = null },

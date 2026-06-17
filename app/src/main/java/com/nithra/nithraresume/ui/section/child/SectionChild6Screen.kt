@@ -80,11 +80,11 @@ fun SectionChild6Screen(
     var deleteTarget by remember { mutableStateOf<SectionChild6?>(null) }
 
     LaunchedEffect(sha) {
-        if (!titleInitialised && sha != null) {
-            title = sha!!.title
-            origTitle = title
-            titleInitialised = true
-        }
+        if (titleInitialised) return@LaunchedEffect
+        val currentSha = sha ?: return@LaunchedEffect
+        title = currentSha.title
+        origTitle = title
+        titleInitialised = true
     }
     LaunchedEffect(snackbar) {
         snackbar?.let { snackbarHostState.showSnackbar(it); viewModel.clearSnackbar() }
@@ -225,8 +225,7 @@ fun SectionChild6Screen(
         )
     }
 
-    if (deleteTarget != null) {
-        val target = deleteTarget!!
+    deleteTarget?.let { target ->
         val thisEntry = stringResource(R.string.msg_this_entry)
         AlertDialog(
             onDismissRequest = { deleteTarget = null },
