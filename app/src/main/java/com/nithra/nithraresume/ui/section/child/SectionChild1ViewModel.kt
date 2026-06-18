@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import android.util.Log
 import java.io.File
 import javax.inject.Inject
 
@@ -137,6 +138,7 @@ class SectionChild1ViewModel @Inject constructor(
                 analyticsManager.logSc1Save()
                 _uiState.value = Child1UiState.Saved
             } catch (e: Exception) {
+                Log.e(TAG, "save", e)
                 _uiState.value = Child1UiState.Error(e.message ?: "Save failed")
             }
         }
@@ -164,7 +166,8 @@ class SectionChild1ViewModel @Inject constructor(
                 _child1.value = updated
                 analyticsManager.logSc1BrowseImage()
             } catch (e: Exception) {
-                _uiState.value = Child1UiState.Error("Failed to save image")
+                Log.e(TAG, "saveImage", e)
+                _uiState.value = Child1UiState.Error(e.message ?: "Failed to save image")
             }
         }
     }
@@ -201,4 +204,6 @@ class SectionChild1ViewModel @Inject constructor(
         val dir = File(context.getExternalFilesDir(null), SrDir.USER_IMAGE)
         return File(dir, "${SrImagePrefix.USER_IMAGE}$sc1Id${SrImageSuffix.JPG}")
     }
+
+    private companion object { const val TAG = "SectionChild1VM" }
 }

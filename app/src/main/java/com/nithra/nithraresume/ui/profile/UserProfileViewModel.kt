@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import android.util.Log
 import javax.inject.Inject
 
 sealed interface UserProfileUiState {
@@ -120,6 +121,7 @@ class UserProfileViewModel @Inject constructor(
                 analyticsManager.logProfileCreated(isFromSample = false)
                 _uiState.value = UserProfileUiState.ProfileCreated
             } catch (e: Exception) {
+                Log.e(TAG, "createProfile", e)
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to create profile")
             }
         }
@@ -135,6 +137,7 @@ class UserProfileViewModel @Inject constructor(
                 analyticsManager.logUpRenameProfile()
                 _uiState.value = UserProfileUiState.ProfileRenamed
             } catch (e: Exception) {
+                Log.e(TAG, "renameProfile", e)
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to rename profile")
             }
         }
@@ -162,10 +165,13 @@ class UserProfileViewModel @Inject constructor(
                 analyticsManager.logUpDeleteProfile()
                 _uiState.value = UserProfileUiState.ProfileDeleted
             } catch (e: Exception) {
+                Log.e(TAG, "deleteProfile", e)
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to delete profile")
             }
         }
     }
 
     fun onSampleResumesClicked() { analyticsManager.logUpSampleResumes() }
+
+    private companion object { const val TAG = "UserProfileVM" }
 }
