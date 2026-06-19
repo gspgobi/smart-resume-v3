@@ -176,6 +176,7 @@ class SectionChild1ViewModel @Inject constructor(
         viewModelScope.launch {
             val existing = _child1.value ?: return@launch
             runCatching { File(existing.userImagePath).delete() }
+                .onFailure { Log.w(TAG, "deleteImage: could not remove old file", it) }
             val updated = existing.copy(userImagePath = "", isUserImageEnable = false)
             sectionChildRepository.updateChild1(updated)
             _child1.value = updated

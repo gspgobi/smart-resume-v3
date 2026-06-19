@@ -117,6 +117,7 @@ class SectionChild4ViewModel @Inject constructor(
         viewModelScope.launch {
             val existing = child4.value ?: return@launch
             runCatching { File(existing.signatureImagePath).delete() }
+                .onFailure { Log.w(TAG, "deleteSignatureImage: could not remove old file", it) }
             sectionChildRepository.updateChild4(
                 existing.copy(signatureImagePath = "", isSignatureImageEnable = false)
             )

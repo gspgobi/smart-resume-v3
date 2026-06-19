@@ -275,7 +275,7 @@ class MainViewModel @Inject constructor(
                     discoveredMediaStorePdfs.add(uri to name)
                 }
             }
-        }
+        }.onFailure { Log.w(TAG, "scanV2MediaStorePdfs", it) }
         return discoveredMediaStorePdfs.size
     }
 
@@ -410,7 +410,7 @@ class MainViewModel @Inject constructor(
                                 input.copyTo(output)
                             }
                         }
-                    }
+                    }.onFailure { Log.w(TAG, "migratePdf (MediaStore): $name", it) }
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
@@ -429,7 +429,7 @@ class MainViewModel @Inject constructor(
                             }
                         }
                         docFile.delete()
-                    }
+                    }.onFailure { Log.w(TAG, "migratePdf (SAF): $name", it) }
                 }
                 done = total
                 _migrationState.value = MigrationUiState.Running(done, total)
@@ -444,7 +444,7 @@ class MainViewModel @Inject constructor(
                             runCatching {
                                 file.copyTo(File(dstPdfFolder, file.name), overwrite = true)
                                 file.delete()
-                            }
+                            }.onFailure { Log.w(TAG, "migratePdf (legacy): ${file.name}", it) }
                             done++
                             _migrationState.value = MigrationUiState.Running(done, total)
                         }
@@ -786,4 +786,6 @@ class MainViewModel @Inject constructor(
             _dummyProfileCreated.emit(Unit)
         }
     }
+
+    private companion object { const val TAG = "MainViewModel" }
 }

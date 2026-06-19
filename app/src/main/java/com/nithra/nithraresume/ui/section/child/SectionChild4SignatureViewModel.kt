@@ -56,7 +56,10 @@ class SectionChild4SignatureViewModel @Inject constructor(
             try {
                 val existing = ensureChild4Exists()
                 existing.signatureImagePath.takeIf { it.isNotEmpty() }
-                    ?.let { runCatching { File(it).delete() } }
+                    ?.let { path ->
+                        runCatching { File(path).delete() }
+                            .onFailure { Log.w(TAG, "saveDrawnSignature: could not remove old file", it) }
+                    }
                 val imageFile = signatureFile()
                 imageFile.outputStream().use { out ->
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 95, out)
