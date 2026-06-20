@@ -198,87 +198,20 @@ fun UserProfileScreen(
             }
 
             item(key = "create_new") {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(minHeight = 64.dp)
-                        .clickable {
-                            if (profiles.size >= MAX_PROFILES) {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar(context.getString(R.string.msg_max_profiles_reached, MAX_PROFILES))
-                                }
-                            } else {
-                                showCreateDialog = true
-                            }
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AddBox,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(28.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.btn_create_new_profile),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
-                    )
-                }
+                CreateNewProfileRow(onClick = {
+                    if (profiles.size >= MAX_PROFILES) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(context.getString(R.string.msg_max_profiles_reached, MAX_PROFILES))
+                        }
+                    } else {
+                        showCreateDialog = true
+                    }
+                })
                 HorizontalDivider()
             }
 
             item(key = "browse_samples") {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .clickable { navController.navigate(Screen.SampleResumes.route) },
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(56.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primaryContainer,
-                                    shape = RoundedCornerShape(12.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.AutoStories,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(28.dp)
-                            )
-                        }
-                        Spacer(Modifier.width(16.dp))
-                        Column {
-                            Text(
-                                text = stringResource(R.string.title_browse_sample_resumes),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(Modifier.height(2.dp))
-                            Text(
-                                text = stringResource(R.string.msg_browse_sample_resumes_subtitle),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
+                BrowseSamplesCard(onClick = { navController.navigate(Screen.SampleResumes.route) })
             }
         }
     }
@@ -299,47 +232,49 @@ fun UserProfileScreen(
     }
 
     // ── Rename dialog ─────────────────────────────────────────────────────────
-    if (showRenameDialog && targetProfile != null) {
-        val profile = targetProfile!!
-        ProfileNameDialog(
-            title = stringResource(R.string.dialog_title_rename_profile),
-            confirmLabel = stringResource(R.string.btn_rename),
-            initialName = profile.name,
-            onConfirm = { name ->
-                showRenameDialog = false
-                viewModel.renameProfile(profile, name)
-                targetProfile = null
-            },
-            onDismiss = {
-                showRenameDialog = false
-                targetProfile = null
-            },
-            isDuplicate = { name ->
-                name != profile.name && viewModel.isNameDuplicate(name, profiles)
-            }
-        )
+    if (showRenameDialog) {
+        targetProfile?.let { profile ->
+            ProfileNameDialog(
+                title = stringResource(R.string.dialog_title_rename_profile),
+                confirmLabel = stringResource(R.string.btn_rename),
+                initialName = profile.name,
+                onConfirm = { name ->
+                    showRenameDialog = false
+                    viewModel.renameProfile(profile, name)
+                    targetProfile = null
+                },
+                onDismiss = {
+                    showRenameDialog = false
+                    targetProfile = null
+                },
+                isDuplicate = { name ->
+                    name != profile.name && viewModel.isNameDuplicate(name, profiles)
+                }
+            )
+        }
     }
 
     // ── Delete confirmation dialog ────────────────────────────────────────────
-    if (showDeleteDialog && targetProfile != null) {
-        val profile = targetProfile!!
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false; targetProfile = null },
-            title = { Text(stringResource(R.string.dialog_title_delete_profile)) },
-            text = { Text(stringResource(R.string.msg_delete_profile_confirm, profile.name)) },
-            confirmButton = {
-                Button(onClick = {
-                    showDeleteDialog = false
-                    viewModel.deleteProfile(profile, profiles)
-                    targetProfile = null
-                }) { Text(stringResource(R.string.delete)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false; targetProfile = null }) {
-                    Text(stringResource(R.string.cancel))
+    if (showDeleteDialog) {
+        targetProfile?.let { profile ->
+            AlertDialog(
+                onDismissRequest = { showDeleteDialog = false; targetProfile = null },
+                title = { Text(stringResource(R.string.dialog_title_delete_profile)) },
+                text = { Text(stringResource(R.string.msg_delete_profile_confirm, profile.name)) },
+                confirmButton = {
+                    Button(onClick = {
+                        showDeleteDialog = false
+                        viewModel.deleteProfile(profile, profiles)
+                        targetProfile = null
+                    }) { Text(stringResource(R.string.delete)) }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteDialog = false; targetProfile = null }) {
+                        Text(stringResource(R.string.cancel))
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
 }
@@ -444,6 +379,87 @@ private fun EmptyProfilesPlaceholder() {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline
         )
+    }
+}
+
+// ── Create new profile row ────────────────────────────────────────────────────
+
+@Composable
+private fun CreateNewProfileRow(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 64.dp)
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Default.AddBox,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(28.dp)
+        )
+        Text(
+            text = stringResource(R.string.btn_create_new_profile),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
+        )
+    }
+}
+
+// ── Browse sample resumes card ────────────────────────────────────────────────
+
+@Composable
+private fun BrowseSamplesCard(onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = RoundedCornerShape(12.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AutoStories,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+            Spacer(Modifier.width(16.dp))
+            Column {
+                Text(
+                    text = stringResource(R.string.title_browse_sample_resumes),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = stringResource(R.string.msg_browse_sample_resumes_subtitle),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     }
 }
 

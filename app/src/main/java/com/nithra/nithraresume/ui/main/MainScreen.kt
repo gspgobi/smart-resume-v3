@@ -269,76 +269,17 @@ fun MainScreen(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = { Text("Smart Resume Builder") },
-                    navigationIcon = {
-                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                            Icon(Icons.Default.Menu, contentDescription = stringResource(R.string.cd_open_menu))
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { navController.navigate(Screen.Notifications.route) }) {
-                            BadgedBox(
-                                badge = {
-                                    if (unreadCount > 0) {
-                                        Badge { Text(if (unreadCount > 99) "99+" else unreadCount.toString()) }
-                                    }
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = if (unreadCount > 0) Icons.Default.Notifications
-                                    else Icons.Default.NotificationsNone,
-                                    contentDescription = stringResource(R.string.cd_notifications)
-                                )
-                            }
-                        }
-                        IconButton(onClick = { showOverflowMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options))
-                        }
-                        DropdownMenu(
-                            expanded = showOverflowMenu,
-                            onDismissRequest = { showOverflowMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.menu_settings)) },
-                                leadingIcon = { Icon(Icons.Default.Settings, contentDescription = null) },
-                                onClick = {
-                                    showOverflowMenu = false
-                                    navController.navigate(Screen.AppSettings.route)
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.action_feedback)) },
-                                leadingIcon = { Icon(Icons.Default.Feedback, contentDescription = null) },
-                                onClick = {
-                                    showOverflowMenu = false
-                                    showFeedbackDialog = true
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.action_rate_us)) },
-                                leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
-                                onClick = {
-                                    showOverflowMenu = false
-                                    rateApp()
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.action_invite_friends)) },
-                                leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) },
-                                onClick = {
-                                    showOverflowMenu = false
-                                    shareApp(context)
-                                }
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                    )
+                MainTopAppBar(
+                    unreadCount = unreadCount,
+                    showOverflowMenu = showOverflowMenu,
+                    onMenuClick = { scope.launch { drawerState.open() } },
+                    onNotificationsClick = { navController.navigate(Screen.Notifications.route) },
+                    onMoreOptionsClick = { showOverflowMenu = true },
+                    onOverflowMenuDismiss = { showOverflowMenu = false },
+                    onSettingsClick = { showOverflowMenu = false; navController.navigate(Screen.AppSettings.route) },
+                    onFeedbackClick = { showOverflowMenu = false; showFeedbackDialog = true },
+                    onRateUsClick = { showOverflowMenu = false; rateApp() },
+                    onInviteFriendsClick = { showOverflowMenu = false; shareApp(context) }
                 )
             },
             snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -669,6 +610,82 @@ private fun shareApp(context: Context) {
                     "https://play.google.com/store/apps/details?id=${context.packageName}")
     }
     context.startActivity(Intent.createChooser(intent, "Invite Friends"))
+}
+
+// ── Top app bar ───────────────────────────────────────────────────────────────
+
+@Composable
+private fun MainTopAppBar(
+    unreadCount: Int,
+    showOverflowMenu: Boolean,
+    onMenuClick: () -> Unit,
+    onNotificationsClick: () -> Unit,
+    onMoreOptionsClick: () -> Unit,
+    onOverflowMenuDismiss: () -> Unit,
+    onSettingsClick: () -> Unit,
+    onFeedbackClick: () -> Unit,
+    onRateUsClick: () -> Unit,
+    onInviteFriendsClick: () -> Unit
+) {
+    TopAppBar(
+        title = { Text("Smart Resume Builder") },
+        navigationIcon = {
+            IconButton(onClick = onMenuClick) {
+                Icon(Icons.Default.Menu, contentDescription = stringResource(R.string.cd_open_menu))
+            }
+        },
+        actions = {
+            IconButton(onClick = onNotificationsClick) {
+                BadgedBox(
+                    badge = {
+                        if (unreadCount > 0) {
+                            Badge { Text(if (unreadCount > 99) "99+" else unreadCount.toString()) }
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (unreadCount > 0) Icons.Default.Notifications
+                        else Icons.Default.NotificationsNone,
+                        contentDescription = stringResource(R.string.cd_notifications)
+                    )
+                }
+            }
+            IconButton(onClick = onMoreOptionsClick) {
+                Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options))
+            }
+            DropdownMenu(
+                expanded = showOverflowMenu,
+                onDismissRequest = onOverflowMenuDismiss
+            ) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.menu_settings)) },
+                    leadingIcon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                    onClick = onSettingsClick
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.action_feedback)) },
+                    leadingIcon = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                    onClick = onFeedbackClick
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.action_rate_us)) },
+                    leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) },
+                    onClick = onRateUsClick
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.action_invite_friends)) },
+                    leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) },
+                    onClick = onInviteFriendsClick
+                )
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    )
 }
 
 // ── Previews ──────────────────────────────────────────────────────────────────
