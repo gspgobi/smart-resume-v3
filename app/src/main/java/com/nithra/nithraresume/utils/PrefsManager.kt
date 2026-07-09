@@ -23,6 +23,9 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+// DataStore backed by a one-time migration from the legacy SharedPreferences file used
+// in V1 and V2 of the app. The migration runs once on first open after upgrade; after
+// that, DataStore is the sole preferences store.
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = "smart_resume_prefs",
     produceMigrations = { context ->
@@ -53,21 +56,30 @@ class PrefsManager @Inject constructor(
 ) {
 
     // ── Key definitions ───────────────────────────────────────────────────────
+    //
+    // Key names are prefixed with the app generation that introduced them:
+    //   V1 — existed in the original SharedPreferences store; migrated to DataStore on first upgrade.
+    //        The string literal is the original SharedPreferences key and MUST NOT change.
+    //   V2 — added directly to DataStore during the V2 rewrite; never in SharedPreferences.
+    //   V3 — added in this V3 (Room) rewrite; DataStore-only from birth.
+    //
+    // IMPORTANT: Never rename key literals. They are persisted on device and renaming silently
+    // loses every existing user's stored value.
 
     private object Key {
-        // Notifications
+        // Notifications (V1 — migrated from SharedPreferences)
         val V1_NOTIFICATIONS_ENABLED = booleanPreferencesKey("noti_chk")
         val V1_FIRST_CHECK = booleanPreferencesKey("Firstcheck")
 
-        // FCM
+        // FCM (V2 — DataStore only)
         val V2_FCM_TOKEN_SENT_TO_SERVER = booleanPreferencesKey("v2_fcm_instance_token_sent_to_server")
         val V2_FCM_TOKEN_ID = stringPreferencesKey("v2_fcm_instance_token_id")
 
         // Resume generation counters
-        val V2_RESUME_GENERATED_COUNT = intPreferencesKey("v2_resume_generated_count")
-        val V1_RATE_US_DONE           = booleanPreferencesKey("v1_rate_us")
+        val V2_RESUME_GENERATED_COUNT = intPreferencesKey("v2_resume_generated_count") // V2
+        val V1_RATE_US_DONE           = booleanPreferencesKey("v1_rate_us")             // V1 — migrated
 
-        // App versioning / first-launch
+        // App versioning / first-launch flags
         val V2_CURRENT_APP_VERSION_CODE = intPreferencesKey("v2_current_app_version_code")
         val V2_APP_INSTALLED_DURING_SRV2_DB_VERSION = intPreferencesKey("v2_app_installed_during_srv2_db_version")
         val V3_APP_INSTALLED_DURING_SRV3_DB_VERSION = intPreferencesKey("v3_app_installed_during_srv3_db_version")
@@ -75,7 +87,7 @@ class PrefsManager @Inject constructor(
         val V3_IS_PERFECT_NEW_SRV3_USER = booleanPreferencesKey("v3_is_perfect_new_srv3_user")
         val V3_ALL_V2_FILES_MIGRATED_TO_V3_FILES_STRUCTURE = booleanPreferencesKey("v3_all_v2_files_migrated_to_v3_files_structure")
 
-        // Theme
+        // Theme (V3 — DataStore only)
         val V3_THEME_MODE = stringPreferencesKey("v3_theme_mode")
     }
 

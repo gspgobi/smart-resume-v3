@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import android.util.Log
 import java.io.File
 import javax.inject.Inject
 
@@ -55,7 +56,10 @@ class SectionChild4SignatureViewModel @Inject constructor(
             try {
                 val existing = ensureChild4Exists()
                 existing.signatureImagePath.takeIf { it.isNotEmpty() }
-                    ?.let { runCatching { File(it).delete() } }
+                    ?.let { path ->
+                        runCatching { File(path).delete() }
+                            .onFailure { Log.w(TAG, "saveDrawnSignature: could not remove old file", it) }
+                    }
                 val imageFile = signatureFile()
                 imageFile.outputStream().use { out ->
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 95, out)
@@ -69,7 +73,8 @@ class SectionChild4SignatureViewModel @Inject constructor(
                 analyticsManager.logSc4SigSave()
                 _uiState.value = Child4SignatureUiState.Saved
             } catch (e: Exception) {
-                _uiState.value = Child4SignatureUiState.Error("Failed to save signature")
+                Log.e(TAG, "saveDrawnSignature", e)
+                _uiState.value = Child4SignatureUiState.Error(e.message ?: "Failed to save signature")
             }
         }
     }
@@ -85,7 +90,8 @@ class SectionChild4SignatureViewModel @Inject constructor(
                 signatureImagePath = "", isSignatureImageEnable = false
             )
         )
-        val loaded = sectionChildRepository.getChild4Once(sectionHeadAddedId)!!
+        val loaded = sectionChildRepository.getChild4Once(sectionHeadAddedId)
+            ?: error("Child4 not found after insert for headId=$sectionHeadAddedId")
         _child4.value = loaded
         return loaded
     }
@@ -95,4 +101,6 @@ class SectionChild4SignatureViewModel @Inject constructor(
         dir.mkdirs()
         return File(dir, "${SrImagePrefix.SIGNATURE}${System.currentTimeMillis()}${SrImageSuffix.JPG}")
     }
+
+    private companion object { const val TAG = "SectionChild4SigVM" }
 }

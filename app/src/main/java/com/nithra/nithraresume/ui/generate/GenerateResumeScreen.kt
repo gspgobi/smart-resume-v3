@@ -47,8 +47,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.nithra.nithraresume.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -80,17 +82,14 @@ fun GenerateResumeScreen(
     var pendingFileName by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(profile, currentFormat) {
-        if (profile != null && currentFormat != null) {
-            if (BuildConfig.DEBUG) {
-                val base = profile!!.name
-                val fmt = currentFormat!!.title
-                val font = profile!!.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), "")
-                val size = profile!!.fontSize
-                fileName = "${base}_${fmt}_${font}_${size}pt"
-            } else if (!fileNameInitialised) {
-                fileName = profile!!.resumeFileName?.ifEmpty { profile!!.name } ?: profile!!.name
-                fileNameInitialised = true
-            }
+        val p = profile ?: return@LaunchedEffect
+        val fmt = currentFormat ?: return@LaunchedEffect
+        if (BuildConfig.DEBUG) {
+            val font = p.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), "")
+            fileName = "${p.name}_${fmt.title}_${font}_${p.fontSize}pt"
+        } else if (!fileNameInitialised) {
+            fileName = p.resumeFileName?.ifEmpty { p.name } ?: p.name
+            fileNameInitialised = true
         }
     }
 
@@ -111,20 +110,20 @@ fun GenerateResumeScreen(
     val isLoading    = uiState is GenerateResumeUiState.Loading
     val isGenerating = uiState is GenerateResumeUiState.Generating
 
-    val hasUserImageSet   = sc1 != null && sc1!!.userImagePath.isNotEmpty()
-    val hasSignatureSet   = sc4 != null && sc4!!.signatureImagePath.isNotEmpty()
+    val hasUserImageSet   = sc1?.userImagePath?.isNotEmpty() == true
+    val hasSignatureSet   = sc4?.signatureImagePath?.isNotEmpty() == true
     val showGenerateWith  = sc1 != null || sc4 != null
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Generate Resume") },
+                title = { Text(stringResource(R.string.title_generate_resume)) },
                 navigationIcon = {
                     IconButton(
                         onClick = { navController.popBackStack() },
                         enabled = !isGenerating
                     ) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -165,7 +164,7 @@ fun GenerateResumeScreen(
                 ) {
                     // ── File Name ─────────────────────────────────────────────
                     Text(
-                        "File Name",
+                        stringResource(R.string.label_file_name),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -173,8 +172,8 @@ fun GenerateResumeScreen(
                     OutlinedTextField(
                         value = fileName,
                         onValueChange = { fileName = it },
-                        label = { Text("File Name") },
-                        supportingText = { Text("Do not include .pdf extension") },
+                        label = { Text(stringResource(R.string.label_file_name)) },
+                        supportingText = { Text(stringResource(R.string.hint_no_pdf_extension)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -186,7 +185,7 @@ fun GenerateResumeScreen(
                         verticalAlignment = Alignment.Bottom
                     ) {
                         Text(
-                            "Resume Settings",
+                            stringResource(R.string.title_resume_settings),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -200,7 +199,7 @@ fun GenerateResumeScreen(
                             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                             modifier = Modifier.height(28.dp)
                         ) {
-                            Text("Edit")
+                            Text(stringResource(R.string.edit))
                         }
                     }
                     profile?.let { p ->
@@ -217,17 +216,17 @@ fun GenerateResumeScreen(
                         ) {
                             Column {
                                 SettingsInfoRow(
-                                    label = "Resume Format",
+                                    label = stringResource(R.string.label_resume_format),
                                     value = currentFormat?.title ?: "",
                                     showChevron = true
                                 )
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                                SettingsInfoRow("Font Style", p.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), ""))
+                                SettingsInfoRow(stringResource(R.string.label_font_style), p.fontStyle.replace(Regex("\\.TTF$", RegexOption.IGNORE_CASE), ""))
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-                                SettingsInfoRow("Font Size", "${p.fontSize} pt")
+                                SettingsInfoRow(stringResource(R.string.label_font_size), "${p.fontSize} pt")
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
                                 SettingsInfoRow(
-                                    "Background",
+                                    stringResource(R.string.label_background),
                                     p.backgroundColor.ifEmpty { "White" }
                                 )
                             }
@@ -237,7 +236,7 @@ fun GenerateResumeScreen(
                     // ── Generate Resume With ──────────────────────────────────
                     if (showGenerateWith) {
                         Text(
-                            "Generate Resume With",
+                            stringResource(R.string.title_generate_resume_with),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -251,9 +250,9 @@ fun GenerateResumeScreen(
                             Column {
                                 if (sc1 != null) {
                                     GenerateWithRow(
-                                        label = "User Photo",
-                                        hint = if (hasUserImageSet) "Photo added"
-                                               else "No photo added — add one in Contact Information section",
+                                        label = stringResource(R.string.label_user_photo),
+                                        hint = if (hasUserImageSet) stringResource(R.string.msg_photo_added)
+                                               else stringResource(R.string.msg_no_photo_added),
                                         checked = includeUserImage,
                                         enabled = hasUserImageSet,
                                         onCheckedChange = { viewModel.setIncludeUserImage(it) }
@@ -264,9 +263,9 @@ fun GenerateResumeScreen(
                                 }
                                 if (sc4 != null) {
                                     GenerateWithRow(
-                                        label = "Signature",
-                                        hint = if (hasSignatureSet) "Signature added"
-                                               else "No signature added — add one in Declaration section",
+                                        label = stringResource(R.string.label_signature),
+                                        hint = if (hasSignatureSet) stringResource(R.string.msg_signature_added)
+                                               else stringResource(R.string.msg_no_signature_added),
                                         checked = includeSignature,
                                         enabled = hasSignatureSet,
                                         onCheckedChange = { viewModel.setIncludeSignature(it) }
@@ -294,7 +293,7 @@ fun GenerateResumeScreen(
                             .height(52.dp),
                         enabled = fileName.isNotBlank()
                     ) {
-                        Text("Generate Resume", style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.btn_generate_resume), style = MaterialTheme.typography.titleMedium)
                     }
                 }
             }
@@ -304,18 +303,18 @@ fun GenerateResumeScreen(
     if (showOverwriteDialog) {
         AlertDialog(
             onDismissRequest = { showOverwriteDialog = false },
-            title = { Text("File Already Exists") },
+            title = { Text(stringResource(R.string.dialog_title_file_already_exists)) },
             text = {
-                Text("A resume named \"$pendingFileName.pdf\" already exists. Do you want to overwrite it?")
+                Text(stringResource(R.string.msg_file_already_exists, pendingFileName))
             },
             confirmButton = {
                 Button(onClick = {
                     showOverwriteDialog = false
                     viewModel.generate(pendingFileName)
-                }) { Text("Overwrite") }
+                }) { Text(stringResource(R.string.btn_overwrite)) }
             },
             dismissButton = {
-                OutlinedButton(onClick = { showOverwriteDialog = false }) { Text("Cancel") }
+                OutlinedButton(onClick = { showOverwriteDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -329,7 +328,7 @@ private fun GeneratingContent(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             CircularProgressIndicator(modifier = Modifier.size(56.dp))
-            Text("Generating your resume…", style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.msg_generating_resume), style = MaterialTheme.typography.bodyLarge)
         }
     }
 }

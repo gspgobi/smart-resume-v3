@@ -52,8 +52,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -140,7 +142,7 @@ fun SectionChild4Screen(
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 actions = {
@@ -151,11 +153,11 @@ fun SectionChild4Screen(
                                 date, dateDateFormat, place)
                         }
                     }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save",
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     DropdownMenu(
@@ -163,7 +165,7 @@ fun SectionChild4Screen(
                         onDismissRequest = { showOverflowMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Clear all") },
+                            text = { Text(stringResource(R.string.action_clear_all)) },
                             onClick = {
                                 showOverflowMenu = false
                                 focusManager.clearFocus()
@@ -202,16 +204,16 @@ fun SectionChild4Screen(
             OutlinedTextField(
                 value = title,
                 onValueChange = { title = it; titleError = false },
-                label = { Text("Section Title") },
+                label = { Text(stringResource(R.string.label_section_title)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = titleError,
-                supportingText = if (titleError) { { Text("Section title is required") } } else null
+                supportingText = if (titleError) { { Text(stringResource(R.string.error_section_title_required)) } } else null
             )
             OutlinedTextField(
                 value = declarationContent,
                 onValueChange = { declarationContent = it },
-                label = { Text("Declaration Content") },
+                label = { Text(stringResource(R.string.label_declaration_content)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 8, maxLines = 20
             )
@@ -228,26 +230,26 @@ fun SectionChild4Screen(
                 OutlinedTextField(
                     value = date,
                     onValueChange = { date = it },
-                    label = { Text("Date") },
+                    label = { Text(stringResource(R.string.label_date)) },
                     modifier = Modifier.weight(1f),
                     singleLine = true
                 )
                 IconButton(onClick = { showDateFormatDialog = true }) {
-                    Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
+                    Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.cd_pick_date),
                         tint = MaterialTheme.colorScheme.primary)
                 }
             }
             OutlinedTextField(
                 value = place,
                 onValueChange = { place = it },
-                label = { Text("Place") },
+                label = { Text(stringResource(R.string.label_place)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
 
-            SectionDivider("Signature Image (optional)")
+            SectionDivider(stringResource(R.string.label_signature_optional))
 
             Box(
                 modifier = Modifier
@@ -261,13 +263,13 @@ fun SectionChild4Screen(
                 if (sigPath != null) {
                     AsyncImage(
                         model = sigPath,
-                        contentDescription = "Signature preview",
+                        contentDescription = stringResource(R.string.cd_signature_preview),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier.fillMaxSize().padding(8.dp)
                     )
                 } else {
                     Text(
-                        text = "No signature added",
+                        text = stringResource(R.string.msg_no_signature),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -286,14 +288,14 @@ fun SectionChild4Screen(
                             )
                         },
                         modifier = Modifier.weight(1f)
-                    ) { Text("New Signature") }
+                    ) { Text(stringResource(R.string.btn_new_signature)) }
                     OutlinedButton(
                         onClick = { showDeleteSigDialog = true },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = MaterialTheme.colorScheme.error
                         )
-                    ) { Text("Delete Signature") }
+                    ) { Text(stringResource(R.string.btn_delete_signature)) }
                 }
             } else {
                 Button(
@@ -303,7 +305,7 @@ fun SectionChild4Screen(
                         )
                     },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("New Signature") }
+                ) { Text(stringResource(R.string.btn_new_signature)) }
             }
         }
     }
@@ -324,7 +326,7 @@ fun SectionChild4Screen(
     if (showDeleteSigDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteSigDialog = false },
-            title = { Text("Delete Signature") },
+            title = { Text(stringResource(R.string.dialog_title_delete_signature)) },
             text = { Text("Are you sure you want to delete the signature?") },
             confirmButton = {
                 Button(
@@ -335,10 +337,10 @@ fun SectionChild4Screen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
                     )
-                ) { Text("Delete") }
+                ) { Text(stringResource(R.string.delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteSigDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteSigDialog = false }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -346,8 +348,8 @@ fun SectionChild4Screen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            title = { Text("Unsaved Changes") },
-            text = { Text("You have unsaved changes. Save before leaving?") },
+            title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
+            text = { Text(stringResource(R.string.msg_unsaved_changes)) },
             confirmButton = {
                 Button(onClick = {
                     if (title.isBlank()) {
@@ -358,15 +360,15 @@ fun SectionChild4Screen(
                         focusManager.clearFocus()
                         viewModel.save(title, declarationContent, bulletType, date, dateDateFormat, place)
                     }
-                }) { Text("Save") }
+                }) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text(stringResource(R.string.cancel)) }
                     TextButton(onClick = {
                         showUnsavedDialog = false
                         navController.popBackStack()
-                    }) { Text("Discard") }
+                    }) { Text(stringResource(R.string.btn_discard)) }
                 }
             }
         )

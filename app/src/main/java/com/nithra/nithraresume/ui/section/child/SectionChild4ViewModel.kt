@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import android.util.Log
 import java.io.File
 import javax.inject.Inject
 
@@ -106,6 +107,7 @@ class SectionChild4ViewModel @Inject constructor(
                 analyticsManager.logSc4Save()
                 _uiState.value = Child4UiState.Saved
             } catch (e: Exception) {
+                Log.e(TAG, "save", e)
                 _uiState.value = Child4UiState.Error(e.message ?: "Save failed")
             }
         }
@@ -115,6 +117,7 @@ class SectionChild4ViewModel @Inject constructor(
         viewModelScope.launch {
             val existing = child4.value ?: return@launch
             runCatching { File(existing.signatureImagePath).delete() }
+                .onFailure { Log.w(TAG, "deleteSignatureImage: could not remove old file", it) }
             sectionChildRepository.updateChild4(
                 existing.copy(signatureImagePath = "", isSignatureImageEnable = false)
             )
@@ -133,7 +136,8 @@ class SectionChild4ViewModel @Inject constructor(
                 signatureImagePath = "", isSignatureImageEnable = false
             )
         )
-        return sectionChildRepository.getChild4Once(sectionHeadAddedId)!!
+        return sectionChildRepository.getChild4Once(sectionHeadAddedId)
+            ?: error("Child4 not found after insert for headId=$sectionHeadAddedId")
     }
 
     private fun signatureFile(): File {
@@ -141,4 +145,6 @@ class SectionChild4ViewModel @Inject constructor(
         dir.mkdirs()
         return File(dir, "${SrImagePrefix.SIGNATURE}${System.currentTimeMillis()}${SrImageSuffix.JPG}")
     }
+
+    private companion object { const val TAG = "SectionChild4VM" }
 }
