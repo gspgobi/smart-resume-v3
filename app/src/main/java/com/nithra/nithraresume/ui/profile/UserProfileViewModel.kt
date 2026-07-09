@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import android.util.Log
 import javax.inject.Inject
 
 sealed interface UserProfileUiState {
@@ -120,6 +121,7 @@ class UserProfileViewModel @Inject constructor(
                 analyticsManager.logProfileCreated(isFromSample = false)
                 _uiState.value = UserProfileUiState.ProfileCreated
             } catch (e: Exception) {
+                Log.e(TAG, "createProfile", e)
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to create profile")
             }
         }
@@ -135,6 +137,7 @@ class UserProfileViewModel @Inject constructor(
                 analyticsManager.logUpRenameProfile()
                 _uiState.value = UserProfileUiState.ProfileRenamed
             } catch (e: Exception) {
+                Log.e(TAG, "renameProfile", e)
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to rename profile")
             }
         }
@@ -146,9 +149,9 @@ class UserProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = UserProfileUiState.Loading
             try {
-                // Cascade-delete all section children then heads
+                // Cascade-delete all section children then heads (single transaction per head)
                 val headList = sectionHeadRepository.getAddedByProfileIdOnce(profile.id)
-                headList.forEach { sha -> deleteAllChildrenForHead(sha.id) }
+                headList.forEach { sha -> sectionChildRepository.deleteAllChildrenForHead(sha.id) }
                 sectionHeadRepository.deleteAddedByProfileId(profile.id)
 
                 // Shift index positions down for profiles that followed the deleted one
@@ -162,6 +165,7 @@ class UserProfileViewModel @Inject constructor(
                 analyticsManager.logUpDeleteProfile()
                 _uiState.value = UserProfileUiState.ProfileDeleted
             } catch (e: Exception) {
+                Log.e(TAG, "deleteProfile", e)
                 _uiState.value = UserProfileUiState.Error(e.message ?: "Failed to delete profile")
             }
         }
@@ -169,15 +173,5 @@ class UserProfileViewModel @Inject constructor(
 
     fun onSampleResumesClicked() { analyticsManager.logUpSampleResumes() }
 
-    private suspend fun deleteAllChildrenForHead(sectionHeadAddedId: Int) {
-        // Call all 8 delete-by-head methods; no-op for tables that don't hold this ID
-        sectionChildRepository.deleteChild1(sectionHeadAddedId)
-        sectionChildRepository.deleteChild2ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild3ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild4(sectionHeadAddedId)
-        sectionChildRepository.deleteChild5(sectionHeadAddedId)
-        sectionChildRepository.deleteChild6ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild7ByHeadId(sectionHeadAddedId)
-        sectionChildRepository.deleteChild8(sectionHeadAddedId)
-    }
+    private companion object { const val TAG = "UserProfileVM" }
 }

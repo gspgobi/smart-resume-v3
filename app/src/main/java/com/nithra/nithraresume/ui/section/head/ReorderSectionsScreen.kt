@@ -41,11 +41,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
@@ -59,7 +61,7 @@ fun ReorderSectionsScreen(
     viewModel: ReorderViewModel = hiltViewModel()
 ) {
     val sourceItems by viewModel.items.collectAsStateWithLifecycle()
-    val title = if (viewModel.groupId == GROUP_ID_SECTIONS) "Reorder Sections" else "Reorder Add-ons"
+    val title = if (viewModel.groupId == GROUP_ID_SECTIONS) stringResource(R.string.title_reorder_sections) else stringResource(R.string.title_reorder_addons)
 
     // Contact Information is always pinned at top — never draggable
     val pinnedItem = if (viewModel.groupId == GROUP_ID_SECTIONS)
@@ -103,7 +105,7 @@ fun ReorderSectionsScreen(
                 title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -211,12 +213,12 @@ private fun ReorderRow(
     ) {
         Icon(
             imageVector = if (isPinned) Icons.Default.PushPin else Icons.Default.DragHandle,
-            contentDescription = if (isPinned) "Fixed at top" else "Drag to reorder",
+            contentDescription = if (isPinned) stringResource(R.string.cd_fixed_at_top) else stringResource(R.string.cd_drag_to_reorder),
             modifier = if (isPinned) Modifier.size(20.dp) else dragHandleModifier.size(24.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = if (isPinned) 0.45f else 1f)
         )
         Text(
-            text = item.title.ifBlank { "No title" },
+            text = item.title.ifBlank { stringResource(R.string.msg_no_title_blank) },
             style = MaterialTheme.typography.bodyLarge,
             fontStyle = if (item.title.isBlank()) FontStyle.Italic else FontStyle.Normal,
             color = if (item.isEnable) MaterialTheme.colorScheme.onSurface

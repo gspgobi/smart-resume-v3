@@ -50,6 +50,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.nithra.nithraresume.R
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -96,22 +98,21 @@ fun ResumeFormatScreen(
     var showUnsavedDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(profile) {
-        if (!initialised && profile != null) {
-            selectedFormatId = profile!!.resumeFormatBaseId
-            selectedFontStyle = profile!!.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN }
-            selectedFontSize = profile!!.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX }
-                ?: FONT_SIZE_DEFAULT
-            selectedBgColor = profile!!.backgroundColor.ifEmpty { BG_COLOR_WHITE }
-            initialised = true
-        }
+        if (initialised) return@LaunchedEffect
+        val p = profile ?: return@LaunchedEffect
+        selectedFormatId = p.resumeFormatBaseId
+        selectedFontStyle = p.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN }
+        selectedFontSize = p.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT
+        selectedBgColor = p.backgroundColor.ifEmpty { BG_COLOR_WHITE }
+        initialised = true
     }
 
-    val isDirty = initialised && profile != null && (
-        selectedFormatId != profile!!.resumeFormatBaseId ||
-        selectedFontStyle != profile!!.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN } ||
-        selectedFontSize  != (profile!!.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT) ||
-        selectedBgColor   != profile!!.backgroundColor.ifEmpty { BG_COLOR_WHITE }
-    )
+    val isDirty = initialised && profile?.let { p ->
+        selectedFormatId != p.resumeFormatBaseId ||
+        selectedFontStyle != p.fontStyle.ifEmpty { FONT_TIMES_NEW_ROMAN } ||
+        selectedFontSize  != (p.fontSize.takeIf { it in FONT_SIZE_MIN..FONT_SIZE_MAX } ?: FONT_SIZE_DEFAULT) ||
+        selectedBgColor   != p.backgroundColor.ifEmpty { BG_COLOR_WHITE }
+    } ?: false
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
 
@@ -129,12 +130,12 @@ fun ResumeFormatScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Resume Format") },
+                title = { Text(stringResource(R.string.title_resume_format)) },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 actions = {
@@ -142,7 +143,7 @@ fun ResumeFormatScreen(
                         viewModel.save(selectedFormatId, selectedFontStyle,
                             selectedFontSize, selectedBgColor)
                     }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save",
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
@@ -158,24 +159,24 @@ fun ResumeFormatScreen(
         if (showUnsavedDialog) {
             AlertDialog(
                 onDismissRequest = { showUnsavedDialog = false },
-                title = { Text("Unsaved Changes") },
-                text  = { Text("You have unsaved changes. Save before leaving?") },
+                title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
+                text  = { Text(stringResource(R.string.msg_unsaved_changes)) },
                 confirmButton = {
                     Button(onClick = {
                         showUnsavedDialog = false
                         viewModel.save(selectedFormatId, selectedFontStyle,
                             selectedFontSize, selectedBgColor)
-                    }) { Text("Save") }
+                    }) { Text(stringResource(R.string.save)) }
                 },
                 dismissButton = {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         TextButton(onClick = { showUnsavedDialog = false }) {
-                            Text("Cancel")
+                            Text(stringResource(R.string.cancel))
                         }
                         TextButton(onClick = {
                             showUnsavedDialog = false
                             navController.popBackStack()
-                        }) { Text("Discard") }
+                        }) { Text(stringResource(R.string.btn_discard)) }
                     }
                 }
             )
@@ -189,7 +190,7 @@ fun ResumeFormatScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             // ── Template section ──────────────────────────────────────────────
-            SectionHeader("Template")
+            SectionHeader(stringResource(R.string.title_template))
             FormatList(
                 formats = formats,
                 selectedId = selectedFormatId,
@@ -200,7 +201,7 @@ fun ResumeFormatScreen(
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             // ── Font section ──────────────────────────────────────────────────
-            SectionHeader("Font")
+            SectionHeader(stringResource(R.string.title_font))
             FontStyleDropdown(
                 selected = selectedFontStyle,
                 onSelected = { selectedFontStyle = it },
@@ -211,7 +212,7 @@ fun ResumeFormatScreen(
             HorizontalDivider()
 
             // ── Font Size section ─────────────────────────────────────────────
-            SectionHeader("Font Size")
+            SectionHeader(stringResource(R.string.title_font_size))
             FontSizeSlider(
                 value = selectedFontSize,
                 onValueChange = { selectedFontSize = it },
@@ -222,7 +223,7 @@ fun ResumeFormatScreen(
             HorizontalDivider()
 
             // ── Background Color section ──────────────────────────────────────
-            SectionHeader("Background Color")
+            SectionHeader(stringResource(R.string.title_background_color))
             BgColorDropdown(
                 selected = selectedBgColor,
                 onSelected = { selectedBgColor = it },
@@ -308,7 +309,7 @@ private fun FormatListItem(
         ) {
             Icon(
                 imageVector = Icons.Default.FindInPage,
-                contentDescription = "Preview",
+                contentDescription = stringResource(R.string.cd_preview),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )

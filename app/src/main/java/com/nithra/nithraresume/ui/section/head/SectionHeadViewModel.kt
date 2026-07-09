@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import android.util.Log
 import javax.inject.Inject
 
 sealed interface SectionHeadUiEvent {
@@ -152,6 +153,7 @@ class SectionHeadViewModel @Inject constructor(
                 if (sample.sectionHeadGroupBaseId == GROUP_ID_SECTIONS) analyticsManager.logShaAddNewSection()
                 else analyticsManager.logShaAddNewAddon()
             } catch (e: Exception) {
+                Log.e(TAG, "addSection", e)
                 _uiEvent.value = SectionHeadUiEvent.Error(e.message ?: "Failed to add section")
             }
         }
@@ -185,6 +187,7 @@ class SectionHeadViewModel @Inject constructor(
                 if (sha.groupBaseId == GROUP_ID_SECTIONS) analyticsManager.logShaDeleteSection(sha.headBaseId)
                 else analyticsManager.logShaDeleteAddon(sha.headBaseId)
             } catch (e: Exception) {
+                Log.e(TAG, "deleteSection", e)
                 _uiEvent.value = SectionHeadUiEvent.Error(e.message ?: "Failed to delete section")
             }
         }
@@ -204,4 +207,6 @@ class SectionHeadViewModel @Inject constructor(
         launch { sectionChildRepository.deleteChild7ByHeadId(sectionHeadAddedId) }
         launch { sectionChildRepository.deleteChild8(sectionHeadAddedId) }
     }
+
+    private companion object { const val TAG = "SectionHeadVM" }
 }

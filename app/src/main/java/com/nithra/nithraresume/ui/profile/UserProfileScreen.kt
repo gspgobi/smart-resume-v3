@@ -63,6 +63,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -70,6 +72,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.nithra.nithraresume.R
 import com.nithra.nithraresume.data.model.UserProfile
 import com.nithra.nithraresume.ui.navigation.Screen
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
@@ -83,6 +86,7 @@ fun UserProfileScreen(
     navController: NavController,
     viewModel: UserProfileViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val profiles by viewModel.profiles.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -97,7 +101,7 @@ fun UserProfileScreen(
 
     LaunchedEffect(Unit) {
         if (viewModel.dummyCreated) {
-            snackbarHostState.showSnackbar("Dummy profile created!")
+            snackbarHostState.showSnackbar(context.getString(R.string.msg_dummy_profile_created))
         }
     }
 
@@ -105,20 +109,21 @@ fun UserProfileScreen(
     LaunchedEffect(uiState) {
         when (uiState) {
             is UserProfileUiState.ProfileCreated -> {
-                snackbarHostState.showSnackbar("Profile created")
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar(context.getString(R.string.msg_profile_created))
             }
             is UserProfileUiState.ProfileRenamed -> {
-                snackbarHostState.showSnackbar("Profile renamed")
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar(context.getString(R.string.msg_profile_renamed))
             }
             is UserProfileUiState.ProfileDeleted -> {
-                snackbarHostState.showSnackbar("Profile deleted")
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar(context.getString(R.string.msg_profile_deleted))
             }
             is UserProfileUiState.Error -> {
-                snackbarHostState.showSnackbar((uiState as UserProfileUiState.Error).message)
+                val msg = (uiState as UserProfileUiState.Error).message
                 viewModel.resetUiState()
+                snackbarHostState.showSnackbar(msg)
             }
             else -> {}
         }
@@ -127,10 +132,10 @@ fun UserProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Resume Profiles") },
+                title = { Text(stringResource(R.string.title_resume_profiles)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -145,7 +150,7 @@ fun UserProfileScreen(
                 onClick = {
                     if (profiles.size >= MAX_PROFILES) {
                         scope.launch {
-                            snackbarHostState.showSnackbar("Maximum $MAX_PROFILES profiles reached")
+                            snackbarHostState.showSnackbar(context.getString(R.string.msg_max_profiles_reached, MAX_PROFILES))
                         }
                     } else {
                         showCreateDialog = true
@@ -153,7 +158,7 @@ fun UserProfileScreen(
                 },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add profile",
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.cd_add_profile),
                     tint = MaterialTheme.colorScheme.onPrimary)
             }
         },
@@ -193,87 +198,20 @@ fun UserProfileScreen(
             }
 
             item(key = "create_new") {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(minHeight = 64.dp)
-                        .clickable {
-                            if (profiles.size >= MAX_PROFILES) {
-                                scope.launch {
-                                    snackbarHostState.showSnackbar("Maximum $MAX_PROFILES profiles reached")
-                                }
-                            } else {
-                                showCreateDialog = true
-                            }
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AddBox,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(28.dp)
-                    )
-                    Text(
-                        text = "Create New Profile",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
-                    )
-                }
+                CreateNewProfileRow(onClick = {
+                    if (profiles.size >= MAX_PROFILES) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(context.getString(R.string.msg_max_profiles_reached, MAX_PROFILES))
+                        }
+                    } else {
+                        showCreateDialog = true
+                    }
+                })
                 HorizontalDivider()
             }
 
             item(key = "browse_samples") {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .clickable { navController.navigate(Screen.SampleResumes.route) },
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(56.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.primaryContainer,
-                                    shape = RoundedCornerShape(12.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.AutoStories,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(28.dp)
-                            )
-                        }
-                        Spacer(Modifier.width(16.dp))
-                        Column {
-                            Text(
-                                text = "Browse Sample Resumes",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Spacer(Modifier.height(2.dp))
-                            Text(
-                                text = "Explore ready-made resumes for every career",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
+                BrowseSamplesCard(onClick = { navController.navigate(Screen.SampleResumes.route) })
             }
         }
     }
@@ -281,8 +219,8 @@ fun UserProfileScreen(
     // ── Create dialog ─────────────────────────────────────────────────────────
     if (showCreateDialog) {
         ProfileNameDialog(
-            title = "Create Profile",
-            confirmLabel = "Create",
+            title = stringResource(R.string.dialog_title_create_profile),
+            confirmLabel = stringResource(R.string.btn_create),
             initialName = viewModel.suggestNewProfileName(profiles),
             onConfirm = { name ->
                 showCreateDialog = false
@@ -294,47 +232,49 @@ fun UserProfileScreen(
     }
 
     // ── Rename dialog ─────────────────────────────────────────────────────────
-    if (showRenameDialog && targetProfile != null) {
-        val profile = targetProfile!!
-        ProfileNameDialog(
-            title = "Rename Profile",
-            confirmLabel = "Rename",
-            initialName = profile.name,
-            onConfirm = { name ->
-                showRenameDialog = false
-                viewModel.renameProfile(profile, name)
-                targetProfile = null
-            },
-            onDismiss = {
-                showRenameDialog = false
-                targetProfile = null
-            },
-            isDuplicate = { name ->
-                name != profile.name && viewModel.isNameDuplicate(name, profiles)
-            }
-        )
+    if (showRenameDialog) {
+        targetProfile?.let { profile ->
+            ProfileNameDialog(
+                title = stringResource(R.string.dialog_title_rename_profile),
+                confirmLabel = stringResource(R.string.btn_rename),
+                initialName = profile.name,
+                onConfirm = { name ->
+                    showRenameDialog = false
+                    viewModel.renameProfile(profile, name)
+                    targetProfile = null
+                },
+                onDismiss = {
+                    showRenameDialog = false
+                    targetProfile = null
+                },
+                isDuplicate = { name ->
+                    name != profile.name && viewModel.isNameDuplicate(name, profiles)
+                }
+            )
+        }
     }
 
     // ── Delete confirmation dialog ────────────────────────────────────────────
-    if (showDeleteDialog && targetProfile != null) {
-        val profile = targetProfile!!
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false; targetProfile = null },
-            title = { Text("Delete Profile") },
-            text = { Text("Delete \"${profile.name}\"? All sections and data for this profile will be permanently removed.") },
-            confirmButton = {
-                Button(onClick = {
-                    showDeleteDialog = false
-                    viewModel.deleteProfile(profile, profiles)
-                    targetProfile = null
-                }) { Text("Delete") }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false; targetProfile = null }) {
-                    Text("Cancel")
+    if (showDeleteDialog) {
+        targetProfile?.let { profile ->
+            AlertDialog(
+                onDismissRequest = { showDeleteDialog = false; targetProfile = null },
+                title = { Text(stringResource(R.string.dialog_title_delete_profile)) },
+                text = { Text(stringResource(R.string.msg_delete_profile_confirm, profile.name)) },
+                confirmButton = {
+                    Button(onClick = {
+                        showDeleteDialog = false
+                        viewModel.deleteProfile(profile, profiles)
+                        targetProfile = null
+                    }) { Text(stringResource(R.string.delete)) }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteDialog = false; targetProfile = null }) {
+                        Text(stringResource(R.string.cancel))
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
 }
@@ -389,19 +329,19 @@ private fun ProfileItem(
 
         Box {
             IconButton(onClick = { menuExpanded = true }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_options))
             }
             DropdownMenu(
                 expanded = menuExpanded,
                 onDismissRequest = { menuExpanded = false }
             ) {
                 DropdownMenuItem(
-                    text = { Text("Rename") },
+                    text = { Text(stringResource(R.string.btn_rename)) },
                     leadingIcon = { Icon(Icons.Default.DriveFileRenameOutline, contentDescription = null) },
                     onClick = { menuExpanded = false; onRenameClick() }
                 )
                 DropdownMenuItem(
-                    text = { Text("Delete") },
+                    text = { Text(stringResource(R.string.delete)) },
                     leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
                     onClick = { menuExpanded = false; onDeleteClick() }
                 )
@@ -429,16 +369,97 @@ private fun EmptyProfilesPlaceholder() {
         )
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "No profiles yet",
+            text = stringResource(R.string.msg_no_profiles_yet),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = "Tap + to create your first resume profile",
+            text = stringResource(R.string.msg_no_profiles_hint),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.outline
         )
+    }
+}
+
+// ── Create new profile row ────────────────────────────────────────────────────
+
+@Composable
+private fun CreateNewProfileRow(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 64.dp)
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Default.AddBox,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(28.dp)
+        )
+        Text(
+            text = stringResource(R.string.btn_create_new_profile),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp)
+        )
+    }
+}
+
+// ── Browse sample resumes card ────────────────────────────────────────────────
+
+@Composable
+private fun BrowseSamplesCard(onClick: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = RoundedCornerShape(12.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.AutoStories,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+            Spacer(Modifier.width(16.dp))
+            Column {
+                Text(
+                    text = stringResource(R.string.title_browse_sample_resumes),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = stringResource(R.string.msg_browse_sample_resumes_subtitle),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
     }
 }
 
@@ -456,6 +477,8 @@ private fun ProfileNameDialog(
     var name by rememberSaveable { mutableStateOf(initialName) }
     var error by rememberSaveable { mutableStateOf("") }
     val focusRequester = remember { FocusRequester() }
+    val errorEmpty = stringResource(R.string.error_profile_name_empty)
+    val errorDuplicate = stringResource(R.string.error_profile_name_duplicate)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -465,7 +488,7 @@ private fun ProfileNameDialog(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it; error = "" },
-                    label = { Text("Profile name") },
+                    label = { Text(stringResource(R.string.label_profile_name)) },
                     singleLine = true,
                     isError = error.isNotEmpty(),
                     supportingText = if (error.isNotEmpty()) {{ Text(error) }} else null,
@@ -483,14 +506,14 @@ private fun ProfileNameDialog(
             Button(onClick = {
                 val trimmed = name.trim()
                 when {
-                    trimmed.isEmpty() -> error = "Profile name can't be empty"
-                    isDuplicate(trimmed) -> error = "Profile name already exists"
+                    trimmed.isEmpty() -> error = errorEmpty
+                    isDuplicate(trimmed) -> error = errorDuplicate
                     else -> onConfirm(trimmed)
                 }
             }) { Text(confirmLabel) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
         }
     )
 
@@ -733,8 +756,8 @@ private fun ProfileItemPreview() {
 private fun CreateProfileDialogPreview() {
     SmartResumeTheme {
         ProfileNameDialog(
-            title = "Create Profile",
-            confirmLabel = "Create",
+            title = stringResource(R.string.dialog_title_rename_profile),
+            confirmLabel = stringResource(R.string.btn_rename),
             initialName = "My Resume",
             onConfirm = {},
             onDismiss = {},

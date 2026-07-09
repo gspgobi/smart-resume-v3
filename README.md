@@ -1,31 +1,113 @@
-# Smart Resume V3
+# Smart Resume Builder
 
-A complete rewrite of Smart Resume V2 in **Kotlin + Jetpack Compose**, preserving full data continuity for existing users upgrading from V2.
+> A production Android app that lets users build, customise, and export professional PDF resumes — live on the Play Store with real users.
+
+[![Platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)](https://developer.android.com)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Min SDK](https://img.shields.io/badge/minSdk-24-brightgreen)](https://apilevels.com)
+[![Play Store](https://img.shields.io/badge/Play%20Store-live-green?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.nithra.nithraresume)
+[![License](https://img.shields.io/badge/license-Source%20Available-blue)](LICENSE)
+
+---
+
+## About
+
+**[View on Google Play →](https://play.google.com/store/apps/details?id=com.nithra.nithraresume)**
+
+Smart Resume Builder (V3) is a complete, ground-up rewrite of an existing Play Store app — migrating from a legacy XML/View-based architecture to **100% Kotlin + Jetpack Compose** while preserving full data continuity for users upgrading from V2.
+
+Users can create multiple resume profiles, populate them with structured sections (contact info, work history, education, declarations, and more), pick from 6 PDF layout formats, and export or share the generated PDF directly from the app.
+
+**What makes this project interesting from an engineering perspective:**
+- The V2 → V3 migration was seamless for users: same database file, no data loss, no re-entry required
+- PDF generation is done entirely on-device using a custom layout engine built on iTextPDF
+- The section type system supports 8 distinct data shapes through a single, unified UI pattern
+- All state management is done through unidirectional data flow with Kotlin Coroutines + Flow
+
+---
+
+## Screenshots
+
+> _Add screenshots here_
+
+---
+
+## Features
+
+- **Multiple profiles** — create and manage up to 20 independent resume profiles
+- **8 section types** — contact info, work experience, education, declaration + signature, paragraph text, split text, multi-item text, cover letter
+- **6 PDF formats** — Functional, Harvard, Classic, Modern, Simple, Grayscale
+- **Per-profile customisation** — font (8 options), font size, background colour, date format (12 options), bullet style
+- **On-device PDF export** — generated entirely without a server; view, share, or rename from within the app
+- **Sample resumes** — browse and import pre-filled resume profiles
+- **Drag-and-drop reordering** — reorder sections and list entries within sections
+- **Signature capture** — draw a signature directly on-screen and embed it in the PDF
+- **Dark / Light / System theme**
+- **Push notifications** via Firebase Cloud Messaging
 
 ---
 
 ## Architecture
 
 ```
-MVVM + Clean Architecture + Hilt + Room + Coroutines/Flow + Jetpack Compose + Navigation Compose
+MVVM + Clean Architecture
 ```
+
+```
+UI Layer          Compose Screens + ViewModels (StateFlow / derivedStateOf)
+                          ↑
+Domain Layer      Repositories (single source of truth)
+                          ↑
+Data Layer        Room DAOs  ·  Retrofit  ·  DataStore
+```
+
+All screens receive only a `NavController` and obtain their ViewModel via `hiltViewModel()`. Arguments travel through Navigation Compose routes, never between composables directly.
+
+---
 
 ## Tech Stack
 
 | Layer | Technology |
-|-------|-----------|
+|---|---|
 | UI | Jetpack Compose + Material 3 |
 | Navigation | Navigation Compose |
-| DI | Hilt |
+| Dependency Injection | Hilt |
 | Database | Room (SQLite) |
-| Async | Coroutines + Flow |
-| Preferences | DataStore |
+| Async | Kotlin Coroutines + Flow |
+| Preferences | DataStore (with SharedPreferences migration) |
 | Networking | Retrofit + OkHttp |
 | Image loading | Coil |
-| PDF generation | iTextPDF 5.4.0 |
+| Image cropping | Android Image Cropper |
+| PDF generation | iTextPDF 5.4.0 (on-device) |
 | Push notifications | Firebase Cloud Messaging |
 | Analytics / Crash | Firebase Analytics + Crashlytics |
-| Ads | AdMob |
+| Ads | AdMob (banner + interstitial) |
+| In-app review | Play In-App Review |
+| In-app update | Play In-App Update |
+
+---
+
+## Engineering Highlights
+
+### Zero-downtime V2 → V3 database migration
+The app opens the same SQLite database file as V2 (`smart_resume_v2.db`). A single Room migration (v1 → v2) rewrites all 15 tables using the rename-create-copy-drop pattern to fix `NOT NULL` and `BOOLEAN → INTEGER` type mismatches — so existing users upgrade without any data loss or re-entry.
+
+### On-device PDF generation
+`ResumePdfBuilder.kt` drives a custom layout engine on top of iTextPDF. It receives a `ResumePdfData` aggregate (all section data + format settings) and produces a pixel-precise PDF entirely on-device, with no server round-trip. Each of the 6 resume formats has distinct layout logic (column widths, header styles, divider rules, colour schemes).
+
+### Flexible section type system
+Eight section types share a common `SectionHeadAdded` parent but diverge into two DAO families:
+- **Single-row** (types 1, 4, 5, 8) — one record per section head, edited in place
+- **List-based** (types 2, 3, 6, 7) — multiple records with `index_position` ordering and sub-edit screens
+
+A single `SectionChildRepository` wraps both DAO families and exposes an atomic `deleteAllChildrenForHead()` via `db.withTransaction {}`.
+
+### Dirty-state tracking without a separate "original" copy
+Form dirty state in each ViewModel is tracked by comparing current field values against an `originalFormState: StateFlow<…>` snapshot captured at load time. The screen derives `isDirty` as a `remember { derivedStateOf { … } }`, so recomposition is skipped when unrelated state changes.
+
+### File migration on first post-upgrade launch
+On first launch after upgrading from V2, the app migrates photo, signature, and PDF files from shared external storage (`Nithra/SmartResume/…`) to app-scoped storage — updating all database paths atomically and showing a progress dialog. This required handling Android 13+ (API 33) photo permission changes with a conditional permission request path.
 
 ---
 
@@ -34,181 +116,109 @@ MVVM + Clean Architecture + Hilt + Room + Coroutines/Flow + Jetpack Compose + Na
 ```
 com.nithra.nithraresume/
 ├── data/
-│   ├── api/                  Retrofit ApiService + ApiRepository
+│   ├── api/              Retrofit ApiService + ApiRepository
 │   ├── db/
-│   │   ├── dao/              9 @Dao interfaces
-│   │   ├── entity/           15 @Entity data classes
+│   │   ├── dao/          9 DAO interfaces
+│   │   ├── entity/       15 Room entities
 │   │   └── SmartResumeDatabase.kt
-│   ├── model/                Domain models + entity↔model mappers
-│   └── repository/           5 repositories
-├── di/                       Hilt modules (DB, Network, Repository)
-├── pdf/                      ResumePdfBuilder.kt (iTextPDF, 6 formats)
-├── service/                  SmartResumeMessagingService (FCM)
+│   ├── model/            Domain models + entity↔model mappers
+│   └── repository/       5 repositories
+├── di/                   Hilt modules (Database, Network, Repository)
+├── pdf/                  ResumePdfBuilder (iTextPDF, 6 format engines)
+├── service/              FCM messaging service
 ├── ui/
-│   ├── common/               Shared composables (BulletTypeDropdown,
-│   │                         DateFormatPickerDialog, ObjAccompBottomSheet,
-│   │                         FeedbackDialog)
-│   ├── format/               Resume format / font / colour picker
-│   ├── generate/             PDF generation screen
-│   ├── main/                 Main screen + navigation drawer
-│   ├── navigation/           NavGraph + Screen sealed class
-│   ├── notification/         Notification list + detail
-│   ├── profile/              User profile list / add / delete
-│   ├── sample/               Sample resumes browser
+│   ├── common/           Shared composables
+│   ├── format/           Resume format / font / colour picker
+│   ├── generate/         PDF generation screen
+│   ├── main/             Main screen + navigation drawer
+│   ├── navigation/       NavGraph + Screen sealed class
+│   ├── notification/     Notification list + detail
+│   ├── profile/          Profile list / create / rename / delete
+│   ├── sample/           Sample resume browser
 │   ├── section/
-│   │   ├── child/            SectionChild1–8 screens + sub-edit screens
-│   │   └── head/             Section head list (add / remove / reorder)
-│   ├── settings/             App settings
-│   ├── splash/               Splash screen + ViewModel
-│   ├── theme/                Color, Typography, Theme
-│   └── viewshare/            View & share generated PDF
-└── utils/                    Constants, DateTimeUtils, PrefsManager,
-                              AdMobManager, AnalyticsManager
+│   │   ├── child/        SectionChild1–8 screens + sub-edit screens
+│   │   └── head/         Section list (add / remove / reorder)
+│   ├── settings/         App settings (theme, notifications)
+│   ├── splash/           Splash + V2 file migration
+│   ├── theme/            Color, Typography, Theme
+│   └── viewshare/        View & share generated PDF
+└── utils/                Constants, DateTimeUtils, PrefsManager,
+                          AdMobManager, SharedAdViewModel
 ```
-
----
-
-## Database
-
-- **DB name:** `smart_resume_v2.db` (identical to V2 — existing user data survives upgrade)
-- **DB version:** 2
-- **Migration 1→2:** Rewrites all 15 tables to fix PK `NOT NULL` and `BOOLEAN`→`INTEGER` type constraints
-- **Tables:** 15 (resume formats, section heads, 8 section child types, user profiles, FCM data)
-- **DAOs:** 9 (split into `SectionChildSingleDao` for types 1,4,5,8 and `SectionChildListDao` for types 2,3,6,7)
-- **Seed data:** 6 resume formats, 2 section groups, 19 section templates
-
----
-
-## Section Type System
-
-Each resume section (`SectionHeadAdded`) has a `section_head_base_id` (1–8) that determines its data table and edit screen:
-
-| ID | Type | Child Table | Screen |
-|---|---|---|---|
-| 1 | Contact Information | `section_child_1` | SectionChild1Screen |
-| 2 | Work Experience | `section_child_2` | SectionChild2Screen + Sub |
-| 3 | Education | `section_child_3` | SectionChild3Screen + Sub |
-| 4 | Declaration + Signature | `section_child_4` | SectionChild4Screen + SignatureScreen |
-| 5 | Paragraph / Bulleted Text | `section_child_5` | SectionChild5Screen |
-| 6 | Split Text | `section_child_6` | SectionChild6Screen + Sub |
-| 7 | Multiple Item Text | `section_child_7` | SectionChild7Screen + Sub |
-| 8 | Cover Letter (Add-on) | `section_child_8` | SectionChild8Screen |
-
-Types 1, 4, 5, 8 are **single-row** (one record per section); types 2, 3, 6, 7 are **list-based** (multiple records with reordering and sub-edit screens).
-
----
-
-## Resume Formats
-
-| Format | Style |
-|--------|-------|
-| Functional | Skills / accomplishments focused |
-| Harvard | Academic / traditional |
-| Classic | Standard professional |
-| Modern | Contemporary |
-| Simple | Minimal / clean |
-| Grayscale | Black & white |
-
-**Per-profile customisation:** font (8 options), font size, background colour (White / Peach), date format (12 formats), bullet style.
-
----
-
-## Key Constraints
-
-| Constraint | Value |
-|---|---|
-| Package name | `com.nithra.nithraresume` |
-| minSdk | 24 |
-| targetSdk / compileSdk | 37 |
-| Language | Kotlin only |
-| Build system | Gradle with Kotlin DSL |
-| Product flavors | TestAdMob (default), ProdAdMob, NoAdMob |
-| Max profiles | 20 |
-| Max sections per profile | 20 |
-| Max items per list section | 10 |
-
----
-
-## V2 → V3 Data Continuity
-
-**Database:** Room opens the existing SQLite database transparently on upgrade — no migration scripts needed.
-
-**Files:** On first launch after upgrade, the app automatically migrates:
-- Profile photos from `Nithra/SmartResume/Photo/` → app-scoped storage
-- Signature images from `Nithra/SmartResume/Signature/` → app-scoped storage  
-- Generated resume PDFs from `Nithra/SmartResume/Files/` → app-scoped storage
-
-All file paths in the database are updated automatically. Users see a "Restoring Your Files" dialog while migration completes (usually under 5 seconds).
-
-**Why app-scoped storage?**
-- No storage permissions required (better privacy)
-- Automatic backup via Android's backup system
-- Files deleted when app is uninstalled
 
 ---
 
 ## Build & Run
 
+### Prerequisites
+
+- Android Studio Hedgehog or later
+- JDK 11
+- API 24+ device or emulator
+
 ### Setup
-1. **Firebase:** Add `google-services.json` to `app/` directory
-2. **Signing:** Create `keystore.properties` at project root with:
+
+1. **Firebase (debug):**
+   Copy the example config and fill in your Firebase project values:
+   ```bash
+   cp app/src/debug/google-services.json.example app/src/debug/google-services.json
+   ```
+   Create a Firebase project, register the app with package `com.nithra.nithraresume`, and download the real `google-services.json`.
+
+2. **Signing (release only):**
+   Create `keystore.properties` at the project root:
    ```properties
-   storeFile=path/to/keystore.jks
-   storePassword=your-password
-   keyAlias=your-alias
+   storeFile=path/to/your.jks
+   storePassword=your-store-password
+   keyAlias=your-key-alias
    keyPassword=your-key-password
    ```
-3. Open in Android Studio Hedgehog or later
-4. Sync Gradle
+
+3. Open the project in Android Studio and sync Gradle.
 
 ### Build Commands
 
 ```bash
-# Debug build (TestAdMob, default)
+# Debug (TestAdMob flavor — uses test ad unit IDs)
 ./gradlew assembleTestAdMobDebug
 
 # Release builds
-./gradlew assembleTestAdMobRelease   # Test IDs
-./gradlew assembleProdAdMobRelease   # Production (no test IDs)
+./gradlew assembleProdAdMobRelease   # Production ads
 ./gradlew assembleNoAdMobRelease     # No ads
 
 # All variants
 ./gradlew assemble
 
-# Bundle (AAB) for Play Store
-./gradlew bundleTestAdMobRelease
+# Install debug on connected device
+./gradlew installTestAdMobDebug
 
 # Tests
-./gradlew test                                          # Unit tests
-./gradlew connectedAndroidTest                          # Instrumented tests
-./gradlew testTestAdMobDebugUnitTest --tests "com..*"   # Single test class
+./gradlew test                        # Unit tests
+./gradlew connectedAndroidTest        # Instrumented tests
 
 # Clean
 ./gradlew clean
 ```
 
-### APK Naming
-
-Output: `smart-resume-{flavor}-{buildType}-{versionCode}-{versionName}.apk`
-
-Example: `smart-resume-TestAdMob-debug-72-4.2.0.apk`
+**APK output:** `smart-resume-{flavor}-{buildType}-{versionCode}-{versionName}.apk`
 
 ### Product Flavors
 
 | Flavor | AdMob | Test IDs | Use Case |
 |---|---|---|---|
-| **TestAdMob** | ✓ | ✓ | Development & testing |
-| **ProdAdMob** | ✓ | ✗ | Production (Play Store) |
-| **NoAdMob** | ✗ | ✓ | Ad-free variant |
+| `TestAdMob` (default) | ✓ | ✓ | Development |
+| `ProdAdMob` | ✓ | ✗ | Play Store release |
+| `NoAdMob` | ✗ | — | Ad-free build |
 
-Control at runtime via `BuildConfig.isAdMobEnable` and `BuildConfig.isTestAdMobId`.
+---
 
-### Run on Device
+## Key Constraints
 
-```bash
-# Install debug APK
-./gradlew installTestAdMobDebug
-
-# Build and run
-./gradlew runTestAdMobDebug
-```
+| Item | Value |
+|---|---|
+| `minSdk` | 24 (Android 7.0) |
+| `targetSdk` / `compileSdk` | 37 |
+| Language | Kotlin only |
+| Max profiles | 20 |
+| Max sections per profile | 20 |
+| Max list items per section | 10 |

@@ -48,8 +48,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.nithra.nithraresume.R
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -100,10 +102,10 @@ fun SampleResumesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Sample Resumes") },
+                title = { Text(stringResource(R.string.menu_sample_resumes)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -166,16 +168,16 @@ fun SampleResumesScreen(
     confirmAddId?.let { sampleId ->
         AlertDialog(
             onDismissRequest = { confirmAddId = null },
-            title = { Text("Add sample profile?") },
-            text = { Text("This will create a new profile pre-filled with sample data. Continue?") },
+            title = { Text(stringResource(R.string.dialog_title_add_sample_profile)) },
+            text = { Text(stringResource(R.string.msg_add_sample_profile)) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.addSampleProfile(sampleId)
                     confirmAddId = null
-                }) { Text("Add") }
+                }) { Text(stringResource(R.string.add)) }
             },
             dismissButton = {
-                TextButton(onClick = { confirmAddId = null }) { Text("Cancel") }
+                TextButton(onClick = { confirmAddId = null }) { Text(stringResource(R.string.cancel)) }
             }
         )
     }
@@ -184,17 +186,17 @@ fun SampleResumesScreen(
     (uiState as? SampleResumesUiState.Added)?.let { added ->
         AlertDialog(
             onDismissRequest = { viewModel.onAddHandled() },
-            title = { Text("Profile Added") },
-            text = { Text("\"${added.profileName}\" added successfully to resume profiles.") },
+            title = { Text(stringResource(R.string.dialog_title_profile_added)) },
+            text = { Text(stringResource(R.string.msg_profile_added, added.profileName)) },
             confirmButton = {
                 Button(onClick = {
                     viewModel.onAddHandled()
                     navController.popBackStack()
                     navController.navigate(Screen.UserProfiles.route)
-                }) { Text("Go to Profile") }
+                }) { Text(stringResource(R.string.btn_go_to_profile)) }
             },
             dismissButton = {
-                TextButton(onClick = { viewModel.onAddHandled() }) { Text("Dismiss") }
+                TextButton(onClick = { viewModel.onAddHandled() }) { Text(stringResource(R.string.btn_dismiss)) }
             }
         )
     }
@@ -231,7 +233,7 @@ private fun GroupHeader(
         }
         Icon(
             imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-            contentDescription = if (isExpanded) "Collapse" else "Expand",
+            contentDescription = if (isExpanded) stringResource(R.string.cd_collapse) else stringResource(R.string.cd_expand),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -262,7 +264,7 @@ private fun SampleResumeItem(
             ) {
                 Icon(
                     Icons.Default.Visibility,
-                    contentDescription = "Preview",
+                    contentDescription = stringResource(R.string.cd_preview),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -274,7 +276,7 @@ private fun SampleResumeItem(
         ) {
             Icon(
                 Icons.Default.AddBox,
-                contentDescription = "Add",
+                contentDescription = stringResource(R.string.cd_add_sample),
                 tint = MaterialTheme.colorScheme.primary
             )
         }

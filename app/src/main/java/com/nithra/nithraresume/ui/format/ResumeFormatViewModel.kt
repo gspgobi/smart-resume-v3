@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import android.util.Log
 import javax.inject.Inject
 
 sealed interface ResumeFormatUiState {
@@ -68,10 +69,13 @@ class ResumeFormatViewModel @Inject constructor(
                 analyticsManager.logRfFormatSelect(formatId)
                 _uiState.value = ResumeFormatUiState.Saved
             } catch (e: Exception) {
+                Log.e(TAG, "save", e)
                 _uiState.value = ResumeFormatUiState.Error(e.message ?: "Save failed")
             }
         }
     }
 
     fun onPreviewClicked(formatId: Int) { analyticsManager.logRfFormatPreview(formatId) }
+
+    private companion object { const val TAG = "ResumeFormatVM" }
 }

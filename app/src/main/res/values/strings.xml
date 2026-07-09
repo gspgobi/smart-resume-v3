@@ -18,7 +18,7 @@
     <!--Notification Channel Strings-->
     <string name="notification_channel_informational">Informational</string>
 
-    <!-- Common -->
+    <!-- Common actions -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
@@ -29,4 +29,241 @@
     <string name="loading">Loading…</string>
     <string name="error_generic">Something went wrong. Please try again.</string>
     <string name="error_network">No internet connection.</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_save">Save</string>
+    <string name="cd_preview">Preview</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_more_options">More options</string>
+    <string name="cd_options">Options</string>
+    <string name="cd_open_menu">Open menu</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_delete_all">Delete all</string>
+    <string name="cd_add_profile">Add profile</string>
+    <string name="cd_add_sample">Add</string>
+    <string name="cd_collapse">Collapse</string>
+    <string name="cd_expand">Expand</string>
+    <string name="cd_drag_to_reorder">Drag to reorder</string>
+    <string name="cd_fixed_at_top">Fixed at top</string>
+    <string name="cd_pick_date">Pick date</string>
+    <string name="cd_profile_photo">Profile photo</string>
+    <string name="cd_signature_preview">Signature preview</string>
+    <string name="cd_suggestions">Suggestions</string>
+    <string name="cd_refresh">Refresh</string>
+
+    <!-- Screen titles -->
+    <string name="title_resume_format">Resume Format</string>
+    <string name="title_generate_resume">Generate Resume</string>
+    <string name="title_view_saved_resumes">View Saved Resumes</string>
+    <string name="title_resume_profiles">Resume Profiles</string>
+    <string name="title_reorder_entries">Reorder Entries</string>
+    <string name="title_reorder_sections">Reorder Sections</string>
+    <string name="title_reorder_addons">Reorder Add-ons</string>
+    <string name="title_draw_signature">Draw Signature</string>
+    <string name="title_notification">Notification</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_view_and_share">View &amp; Share</string>
+    <string name="title_my_resume_profiles">My Resume Profiles</string>
+    <string name="title_browse_sample_resumes">Browse Sample Resumes</string>
+    <string name="title_template">Template</string>
+    <string name="title_font">Font</string>
+    <string name="title_font_size">Font Size</string>
+    <string name="title_background_color">Background Color</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="title_edit_entry">Edit Entry</string>
+    <string name="title_new_entry">New Entry</string>
+    <string name="title_resume_settings">Resume Settings</string>
+    <string name="title_generate_resume_with">Generate Resume With</string>
+
+    <!-- Dialog titles -->
+    <string name="dialog_title_unsaved_changes">Unsaved Changes</string>
+    <string name="dialog_title_file_already_exists">File Already Exists</string>
+    <string name="dialog_title_delete_resume">Delete Resume</string>
+    <string name="dialog_title_rename_resume">Rename Resume</string>
+    <string name="dialog_title_delete_notification">Delete notification?</string>
+    <string name="dialog_title_delete_all_notifications">Delete all notifications?</string>
+    <string name="dialog_title_delete_profile">Delete Profile</string>
+    <string name="dialog_title_create_profile">Create Profile</string>
+    <string name="dialog_title_rename_profile">Rename Profile</string>
+    <string name="dialog_title_add_sample_profile">Add sample profile?</string>
+    <string name="dialog_title_profile_added">Profile Added</string>
+    <string name="dialog_title_delete_signature">Delete Signature</string>
+    <string name="dialog_title_delete_entry">Delete Entry</string>
+    <string name="msg_delete_entry_confirm">Delete \"%1$s\"?</string>
+    <string name="msg_this_entry">this entry</string>
+    <string name="dialog_title_delete_section">Delete Section</string>
+    <string name="dialog_title_app_updated">App Updated</string>
+    <string name="dialog_title_enjoy_app">Enjoying Smart Resume Builder?</string>
+    <string name="dialog_title_glad_you_love_it">Glad you love it! 🎉</string>
+    <string name="dialog_title_select_theme">Select Theme</string>
+    <string name="dialog_title_rate_app">Enjoying Smart Resume?</string>
+
+    <!-- Labels (field labels, section dividers) -->
+    <string name="label_date_format">Date Format</string>
+    <string name="label_email_optional">Email (optional)</string>
+    <string name="label_your_feedback">Your feedback</string>
+    <string name="label_file_name">File Name</string>
+    <string name="label_resume_format">Resume Format</string>
+    <string name="label_font_style">Font Style</string>
+    <string name="label_font_size">Font Size</string>
+    <string name="label_background">Background</string>
+    <string name="label_user_photo">User Photo</string>
+    <string name="label_signature">Signature</string>
+    <string name="label_section_title">Section Title</string>
+    <string name="label_contact_details">Contact Details</string>
+    <string name="label_full_name">Full Name</string>
+    <string name="label_address">Address</string>
+    <string name="label_email">Email</string>
+    <string name="label_phone">Phone</string>
+    <string name="label_gender_optional">Gender (optional)</string>
+    <string name="label_dob_optional">Date of Birth (optional)</string>
+    <string name="label_date_of_birth">Date of Birth</string>
+    <string name="label_nationality_optional">Nationality (optional)</string>
+    <string name="label_profile_photo_optional">Profile Photo (optional)</string>
+    <string name="label_declaration_content">Declaration Content</string>
+    <string name="label_date">Date</string>
+    <string name="label_place">Place</string>
+    <string name="label_signature_optional">Signature Image (optional)</string>
+    <string name="label_content">Content</string>
+    <string name="label_title">Title</string>
+    <string name="label_detail">Detail</string>
+    <string name="label_subtitle">Subtitle</string>
+    <string name="label_work_role">Work Role / Position</string>
+    <string name="label_company_name">Company Name</string>
+    <string name="label_work_period">Work Period</string>
+    <string name="label_accomplishments">Accomplishments / Description</string>
+    <string name="label_study_degree">Study Degree / Qualification</string>
+    <string name="label_school_name">School / University Name</string>
+    <string name="label_study_period">Study Period</string>
+    <string name="label_concentrates">Concentrates / Subjects</string>
+    <string name="label_address_recipient">Address / Recipient</string>
+    <string name="label_profile_name">Profile name</string>
+    <string name="label_entries">Entries</string>
+    <string name="label_sections">Sections</string>
+    <string name="label_addons">Add-ons</string>
+    <string name="label_complete">Complete</string>
+    <string name="label_select_format">Select format</string>
+    <string name="label_notifications">Notifications</string>
+    <string name="label_theme">Theme</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+
+    <!-- Hints / supporting text -->
+    <string name="hint_no_pdf_extension">Do not include .pdf extension</string>
+
+    <!-- Error messages -->
+    <string name="error_section_title_required">Section title is required</string>
+    <string name="error_name_required">Name is required</string>
+    <string name="error_address_required">Address is required</string>
+    <string name="error_email_required">Email is required</string>
+    <string name="error_phone_required">Phone is required</string>
+    <string name="error_profile_name_empty">Profile name can\'t be empty</string>
+    <string name="error_profile_name_duplicate">Profile name already exists</string>
+    <string name="error_work_role_required">Work Role is required</string>
+    <string name="error_company_name_required">Company Name is required</string>
+    <string name="error_study_degree_required">Study Degree is required</string>
+    <string name="error_school_name_required">School / University Name is required</string>
+    <string name="error_title_required">Title is required</string>
+    <string name="error_detail_required">Detail is required</string>
+    <string name="error_subtitle_required">Subtitle is required</string>
+
+    <!-- Buttons -->
+    <string name="btn_select">Select</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_discard">Discard</string>
+    <string name="btn_overwrite">Overwrite</string>
+    <string name="btn_generate_resume">Generate Resume</string>
+    <string name="btn_rename">Rename</string>
+    <string name="btn_go_to_my_profiles">Go to My Profiles</string>
+    <string name="btn_go_to_profile">Go to Profile</string>
+    <string name="btn_dismiss">Dismiss</string>
+    <string name="btn_create_new_profile">Create New Profile</string>
+    <string name="btn_create">Create</string>
+    <string name="btn_delete_all">Delete all</string>
+    <string name="btn_allow">Allow</string>
+    <string name="btn_skip_file_migration">Skip file migration</string>
+    <string name="btn_love_it">Love it! ❤️</string>
+    <string name="btn_could_be_better">Could be better</string>
+    <string name="btn_rate_now">Rate Now</string>
+    <string name="btn_later">Later</string>
+    <string name="btn_no_thanks">No thanks</string>
+    <string name="btn_clear">Clear</string>
+    <string name="btn_change_photo">Change Photo</string>
+    <string name="btn_browse_photo">Browse Photo</string>
+    <string name="btn_new_signature">New Signature</string>
+    <string name="btn_delete_signature">Delete Signature</string>
+    <string name="btn_add_new_entry">Add New Entry</string>
+    <string name="btn_add_new_section">Add New Section</string>
+    <string name="btn_add_new_addon">Add New Add-on</string>
+    <string name="btn_view_and_share">View &amp; Share</string>
+    <string name="btn_write_feedback">Write Feedback</string>
+    <string name="btn_open_pdf">Open PDF</string>
+    <string name="btn_share">Share</string>
+    <string name="btn_regenerate">Regenerate</string>
+    <string name="btn_close">Close</string>
+    <string name="btn_enable">Enable</string>
+    <string name="btn_disable">Disable</string>
+
+    <!-- Action menu items -->
+    <string name="action_feedback">Feedback</string>
+    <string name="action_rate_us">Rate Us</string>
+    <string name="action_invite_friends">Invite Friends</string>
+    <string name="action_resume_making_tips">Resume Making Tips</string>
+    <string name="action_privacy_policy">Privacy Policy</string>
+    <string name="action_clear_all">Clear all</string>
+
+    <!-- Messages / body text -->
+    <string name="msg_unsaved_changes">You have unsaved changes. Save before leaving?</string>
+    <string name="msg_file_already_exists">A resume named \"%1$s.pdf\" already exists. Do you want to overwrite it?</string>
+    <string name="msg_generating_resume">Generating your resume…</string>
+    <string name="msg_no_resumes_yet">No resumes generated yet</string>
+    <string name="msg_no_resumes_hint">Go to My Profiles and generate a resume to see it here</string>
+    <string name="msg_delete_resume_confirm">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="msg_no_notifications">No notifications</string>
+    <string name="msg_delete_notification_body">This notification will be permanently deleted.</string>
+    <string name="msg_delete_all_notifications_body">All notifications will be permanently deleted.</string>
+    <string name="msg_notification_not_found">Notification not found</string>
+    <string name="msg_dummy_profile_created">Dummy profile created!</string>
+    <string name="msg_profile_created">Profile created</string>
+    <string name="msg_profile_renamed">Profile renamed</string>
+    <string name="msg_profile_deleted">Profile deleted</string>
+    <string name="msg_max_profiles_reached">Maximum %1$d profiles reached</string>
+    <string name="msg_delete_profile_confirm">Delete \"%1$s\"? All sections and data for this profile will be permanently removed.</string>
+    <string name="msg_no_profiles_yet">No profiles yet</string>
+    <string name="msg_no_profiles_hint">Tap + to create your first resume profile</string>
+    <string name="msg_add_sample_profile">This will create a new profile pre-filled with sample data. Continue?</string>
+    <string name="msg_profile_added">\"%1$s\" added successfully to resume profiles.</string>
+    <string name="msg_permission_denied_migration">Permission denied. Photos from the previous version could not be restored.</string>
+    <string name="msg_feedback_thanks">Thank you for your feedback!</string>
+    <string name="msg_enjoy_app_body">We\'d love to hear how it\'s working for you — your feedback helps us keep improving!</string>
+    <string name="msg_rate_us_body">A 5-star ⭐⭐⭐⭐⭐ rating on the Play Store helps more job seekers find us and keeps the app free. It only takes a second!</string>
+    <string name="msg_version_name">version %1$s</string>
+    <string name="msg_restoring_files">Restoring files… (%1$d / %2$d)</string>
+    <string name="msg_my_resume_profiles_subtitle">Create and manage your resume profiles</string>
+    <string name="msg_view_saved_resumes_subtitle">View and share your generated resumes</string>
+    <string name="msg_browse_sample_resumes_subtitle">Explore ready-made resumes for every career</string>
+    <string name="msg_photo_added">Photo added</string>
+    <string name="msg_no_photo_added">No photo added — add one in Contact Information section</string>
+    <string name="msg_signature_added">Signature added</string>
+    <string name="msg_no_signature_added">No signature added — add one in Declaration section</string>
+    <string name="msg_no_user_image">No user image found</string>
+    <string name="msg_no_signature">No signature added</string>
+    <string name="msg_sign_inside_box">Sign inside the box</string>
+    <string name="msg_no_title">(no title)</string>
+    <string name="msg_no_title_blank">No title</string>
+    <string name="msg_all_sections_added">All sections already added</string>
+    <string name="msg_delete_section_confirm">Delete \"%1$s\"? All data in this section will be permanently removed.</string>
+    <string name="msg_this_section">this section</string>
+    <string name="msg_max_entries_reached">Maximum %1$d entries reached</string>
+    <string name="msg_no_resume_generated_yet">No resume generated yet</string>
+    <string name="msg_go_back_to_generate">Go back to generate your resume</string>
+    <string name="msg_resume_generated_successfully">Resume Generated Successfully!</string>
+    <string name="msg_resume_ready">Your resume is ready to view and share</string>
+    <string name="msg_loading">Loading…</string>
+    <string name="msg_rate_app_body">If you find this app helpful, please take a moment to rate it on the Play Store.</string>
+    <string name="msg_notifications_subtitle">Receive push notifications from Smart Resume</string>
+    <string name="msg_select_format">Select format</string>
+    <string name="msg_edit_profile_fallback">Edit Profile</string>
 </resources>

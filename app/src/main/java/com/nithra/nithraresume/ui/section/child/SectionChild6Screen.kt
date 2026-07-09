@@ -48,10 +48,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionChild6
@@ -78,11 +80,11 @@ fun SectionChild6Screen(
     var deleteTarget by remember { mutableStateOf<SectionChild6?>(null) }
 
     LaunchedEffect(sha) {
-        if (!titleInitialised && sha != null) {
-            title = sha!!.title
-            origTitle = title
-            titleInitialised = true
-        }
+        if (titleInitialised) return@LaunchedEffect
+        val currentSha = sha ?: return@LaunchedEffect
+        title = currentSha.title
+        origTitle = title
+        titleInitialised = true
     }
     LaunchedEffect(snackbar) {
         snackbar?.let { snackbarHostState.showSnackbar(it); viewModel.clearSnackbar() }
@@ -101,14 +103,14 @@ fun SectionChild6Screen(
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                     }
                 },
                 actions = {
                     IconButton(onClick = {
                         if (title.isBlank()) titleError = true else viewModel.saveTitle(title)
                     }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save title",
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
@@ -130,18 +132,18 @@ fun SectionChild6Screen(
             item {
                 OutlinedTextField(
                     value = title, onValueChange = { title = it; titleError = false },
-                    label = { Text("Section Title") },
+                    label = { Text(stringResource(R.string.label_section_title)) },
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     singleLine = true,
                     isError = titleError,
-                    supportingText = if (titleError) { { Text("Section title is required") } } else null
+                    supportingText = if (titleError) { { Text(stringResource(R.string.error_section_title_required)) } } else null
                 )
                 HorizontalDivider()
             }
 
             item {
                 Child6GroupHeader(
-                    title = "Entries",
+                    title = stringResource(R.string.label_entries),
                     onEditClick = if (items.size > 1) {
                         { navController.navigate(Screen.ReorderChild.createRoute(viewModel.sectionHeadAddedId, 6)) }
                     } else null
@@ -182,8 +184,8 @@ fun SectionChild6Screen(
                                else MaterialTheme.colorScheme.outline,
                         modifier = Modifier.size(20.dp))
                     Text(
-                        text = if (viewModel.canAddItem(items.size)) "Add New Entry"
-                               else "Maximum $MAX_CHILD_ITEMS entries reached",
+                        text = if (viewModel.canAddItem(items.size)) stringResource(R.string.btn_add_new_entry)
+                               else stringResource(R.string.msg_max_entries_reached, MAX_CHILD_ITEMS),
                         style = MaterialTheme.typography.bodyMedium,
                         color = if (viewModel.canAddItem(items.size)) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.outline,
@@ -197,8 +199,8 @@ fun SectionChild6Screen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            title = { Text("Unsaved Changes") },
-            text = { Text("You have unsaved changes. Save before leaving?") },
+            title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
+            text = { Text(stringResource(R.string.msg_unsaved_changes)) },
             confirmButton = {
                 Button(onClick = {
                     if (title.isBlank()) {
@@ -209,32 +211,32 @@ fun SectionChild6Screen(
                         viewModel.saveTitle(title)
                         navController.popBackStack()
                     }
-                }) { Text("Save") }
+                }) { Text(stringResource(R.string.save)) }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text(stringResource(R.string.cancel)) }
                     TextButton(onClick = {
                         showUnsavedDialog = false
                         navController.popBackStack()
-                    }) { Text("Discard") }
+                    }) { Text(stringResource(R.string.btn_discard)) }
                 }
             }
         )
     }
 
-    if (deleteTarget != null) {
-        val target = deleteTarget!!
+    deleteTarget?.let { target ->
+        val thisEntry = stringResource(R.string.msg_this_entry)
         AlertDialog(
             onDismissRequest = { deleteTarget = null },
-            title = { Text("Delete Entry") },
-            text = { Text("Delete \"${target.contentTitle.ifEmpty { "this entry" }}\"?") },
+            title = { Text(stringResource(R.string.dialog_title_delete_entry)) },
+            text = { Text(stringResource(R.string.msg_delete_entry_confirm, target.contentTitle.ifEmpty { thisEntry })) },
             confirmButton = {
                 Button(onClick = { viewModel.deleteItem(target, items); deleteTarget = null }) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
-            dismissButton = { TextButton(onClick = { deleteTarget = null }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { deleteTarget = null }) { Text(stringResource(R.string.cancel)) } }
         )
     }
 }
@@ -256,7 +258,7 @@ private fun Child6ListItem(
                 Text(item.contentTitle, style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium)
             } else {
-                Text("(no title)", style = MaterialTheme.typography.bodyLarge,
+                Text(stringResource(R.string.msg_no_title), style = MaterialTheme.typography.bodyLarge,
                     fontStyle = FontStyle.Italic,
                     color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -268,11 +270,11 @@ private fun Child6ListItem(
         }
         Box {
             IconButton(onClick = { menuExpanded = true }) {
-                Icon(Icons.Default.MoreVert, contentDescription = "Options")
+                Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_options))
             }
             DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
                 DropdownMenuItem(
-                    text = { Text("Delete") },
+                    text = { Text(stringResource(R.string.delete)) },
                     leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
                     onClick = { menuExpanded = false; onDelete() }
                 )
@@ -308,7 +310,7 @@ private fun Child6GroupHeader(
                     contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text("Edit", style = MaterialTheme.typography.labelLarge)
+                Text(stringResource(R.string.edit), style = MaterialTheme.typography.labelLarge)
             }
         }
     }
