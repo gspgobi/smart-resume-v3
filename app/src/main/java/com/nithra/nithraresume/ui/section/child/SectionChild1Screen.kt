@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.activity.compose.BackHandler
@@ -50,7 +51,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,9 +61,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import com.nithra.nithraresume.R
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -89,8 +88,8 @@ fun SectionChild1Screen(
     viewModel: SectionChild1ViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val sha by viewModel.sha.collectAsStateWithLifecycle()
     val child1 by viewModel.child1.collectAsStateWithLifecycle()
-    val originalFormState by viewModel.originalFormState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val focusManager = LocalFocusManager.current
 
@@ -105,6 +104,17 @@ fun SectionChild1Screen(
     var dobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
     var nationality by rememberSaveable { mutableStateOf("") }
 
+    // Original snapshots for dirty detection
+    var origTitle by rememberSaveable { mutableStateOf("") }
+    var origName by rememberSaveable { mutableStateOf("") }
+    var origAddress by rememberSaveable { mutableStateOf("") }
+    var origEmail by rememberSaveable { mutableStateOf("") }
+    var origPhone by rememberSaveable { mutableStateOf("") }
+    var origGender by rememberSaveable { mutableStateOf("") }
+    var origDob by rememberSaveable { mutableStateOf("") }
+    var origDobFormat by rememberSaveable { mutableStateOf(ALL_DATE_FORMATS.first()) }
+    var origNationality by rememberSaveable { mutableStateOf("") }
+
     var fieldsInitialised by rememberSaveable { mutableStateOf(false) }
     var titleError by rememberSaveable { mutableStateOf(false) }
     var nameError by rememberSaveable { mutableStateOf(false) }
@@ -112,31 +122,31 @@ fun SectionChild1Screen(
     var emailError by rememberSaveable { mutableStateOf(false) }
     var phoneError by rememberSaveable { mutableStateOf(false) }
 
-    // Populate fields once originalFormState is loaded from the DB.
-    // fieldsInitialised (rememberSaveable) guards against re-overwriting on process death restore.
-    LaunchedEffect(originalFormState) {
-        if (fieldsInitialised) return@LaunchedEffect
-        val orig = originalFormState ?: return@LaunchedEffect
-        title = orig.title
-        name = orig.name
-        address = orig.address
-        email = orig.email
-        phone = orig.phone
-        gender = orig.gender
-        dob = orig.dob
-        if (orig.dobFormat.isNotEmpty()) dobFormat = orig.dobFormat
-        nationality = orig.nationality
-        fieldsInitialised = true
-    }
-
-    val isDirty by remember {
-        derivedStateOf {
-            val orig = originalFormState ?: return@derivedStateOf false
-            title != orig.title || name != orig.name || address != orig.address ||
-            email != orig.email || phone != orig.phone || gender != orig.gender ||
-            dob != orig.dob || dobFormat != orig.dobFormat || nationality != orig.nationality
+    // Populate fields once both sha and child1 are loaded to avoid a race
+    // where sha arrives first (fieldsInitialised = true) before child1 data is ready.
+    LaunchedEffect(sha, child1) {
+        if (!fieldsInitialised && sha != null && child1 != null) {
+            title = sha!!.title; origTitle = title
+            child1!!.let { c ->
+                name = c.name; origName = name
+                address = c.address; origAddress = address
+                email = c.email; origEmail = email
+                phone = c.phone; origPhone = phone
+                gender = c.gender; origGender = gender
+                dob = c.dob; origDob = dob
+                if (c.dobDateFormat.isNotEmpty()) dobFormat = c.dobDateFormat
+                origDobFormat = dobFormat
+                nationality = c.nationality; origNationality = nationality
+            }
+            fieldsInitialised = true
         }
     }
+
+    val isDirty = fieldsInitialised && (
+        title != origTitle || name != origName || address != origAddress ||
+        email != origEmail || phone != origPhone || gender != origGender ||
+        dob != origDob || dobFormat != origDobFormat || nationality != origNationality
+    )
     var showUnsavedDialog by rememberSaveable { mutableStateOf(false) }
 
     BackHandler(enabled = isDirty) { showUnsavedDialog = true }
@@ -147,9 +157,8 @@ fun SectionChild1Screen(
                 navController.popBackStack()
             }
             is Child1UiState.Error -> {
-                val msg = (uiState as Child1UiState.Error).message
+                snackbarHostState.showSnackbar((uiState as Child1UiState.Error).message)
                 viewModel.resetState()
-                snackbarHostState.showSnackbar(msg)
             }
             else -> {}
         }
@@ -185,7 +194,7 @@ fun SectionChild1Screen(
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
@@ -202,11 +211,11 @@ fun SectionChild1Screen(
                                 gender, dob, dobFormat, nationality)
                         }
                     }) {
-                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
+                        Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options),
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     DropdownMenu(
@@ -214,7 +223,7 @@ fun SectionChild1Screen(
                         onDismissRequest = { showOverflowMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.action_clear_all)) },
+                            text = { Text("Clear all") },
                             onClick = {
                                 showOverflowMenu = false
                                 focusManager.clearFocus()
@@ -241,49 +250,172 @@ fun SectionChild1Screen(
             ) {
                 CircularProgressIndicator()
             }
-        } else {
-            Child1FormContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(innerPadding),
-                title = title, onTitleChange = { title = it; titleError = false }, titleError = titleError,
-                name = name, onNameChange = { name = it; nameError = false }, nameError = nameError,
-                address = address, onAddressChange = { address = it; addressError = false }, addressError = addressError,
-                email = email, onEmailChange = { email = it; emailError = false }, emailError = emailError,
-                phone = phone, onPhoneChange = { phone = it; phoneError = false }, phoneError = phoneError,
-                gender = gender, onGenderChange = { gender = it },
-                dob = dob, onDobChange = { dob = it },
-                nationality = nationality, onNationalityChange = { nationality = it },
+        } else Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Section title
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it; titleError = false },
+                label = { Text("Section Title") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = titleError,
+                supportingText = if (titleError) { { Text("Section title is required") } } else null,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    imeAction = ImeAction.Next
+                )
+            )
+
+            SectionDivider("Contact Details")
+
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it; nameError = false },
+                label = { Text("Full Name") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = nameError,
+                supportingText = if (nameError) { { Text("Name is required") } } else null,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    imeAction = ImeAction.Next
+                )
+            )
+            OutlinedTextField(
+                value = address,
+                onValueChange = { address = it; addressError = false },
+                label = { Text("Address") },
+                modifier = Modifier.fillMaxWidth(),
+                minLines = 4, maxLines = 8,
+                isError = addressError,
+                supportingText = if (addressError) { { Text("Address is required") } } else null,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Next
+                )
+            )
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it; emailError = false },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = emailError,
+                supportingText = if (emailError) { { Text("Email is required") } } else null,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                )
+            )
+            OutlinedTextField(
+                value = phone,
+                onValueChange = { phone = it; phoneError = false },
+                label = { Text("Phone") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = phoneError,
+                supportingText = if (phoneError) { { Text("Phone is required") } } else null,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
+            )
+
+            SectionDivider("Gender (optional)")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                ALL_GENDERS.forEach { g ->
+                    RadioButton(
+                        selected = gender == g,
+                        onClick = { gender = if (gender == g) "" else g }
+                    )
+                    Text(g, modifier = Modifier.padding(end = 16.dp))
+                }
+                if (gender.isNotEmpty()) {
+                    TextButton(onClick = { gender = "" }) { Text("Clear") }
+                }
+            }
+
+            SectionDivider("Date of Birth (optional)")
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedTextField(
+                    value = dob,
+                    onValueChange = { dob = it },
+                    label = { Text("Date of Birth") },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+                IconButton(onClick = { showDateDialog = true }) {
+                    Icon(Icons.Default.CalendarMonth, contentDescription = "Pick date",
+                        tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+
+            OutlinedTextField(
+                value = nationality,
+                onValueChange = { nationality = it },
+                label = { Text("Nationality (optional)") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Words,
+                    imeAction = ImeAction.Done
+                )
+            )
+
+            SectionDivider("Profile Photo (optional)")
+            UserImageSection(
                 imagePath = child1?.userImagePath ?: "",
-                onPickPhotoClick = {
+                onBrowseClick = {
                     pickPhoto.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 },
-                onDeletePhotoClick = { viewModel.deleteImage() },
-                onDateDialogOpen = { showDateDialog = true }
+                onDeleteClick = { viewModel.deleteImage() }
             )
+
+            Spacer(Modifier.height(16.dp))
         }
     }
 
+    // Unsaved changes dialog
     if (showUnsavedDialog) {
-        UnsavedChangesDialog(
-            onDismiss = { showUnsavedDialog = false },
-            onSave = {
-                val tErr = title.isBlank(); val nErr = name.isBlank()
-                val aErr = address.isBlank(); val eErr = email.isBlank()
-                val pErr = phone.isBlank()
-                showUnsavedDialog = false
-                if (tErr || nErr || aErr || eErr || pErr) {
-                    titleError = tErr; nameError = nErr; addressError = aErr
-                    emailError = eErr; phoneError = pErr
-                } else {
-                    focusManager.clearFocus()
-                    viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
-                }
+        AlertDialog(
+            onDismissRequest = { showUnsavedDialog = false },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
+            confirmButton = {
+                Button(onClick = {
+                    val tErr = title.isBlank(); val nErr = name.isBlank()
+                    val aErr = address.isBlank(); val eErr = email.isBlank()
+                    val pErr = phone.isBlank()
+                    showUnsavedDialog = false
+                    if (tErr || nErr || aErr || eErr || pErr) {
+                        titleError = tErr; nameError = nErr; addressError = aErr
+                        emailError = eErr; phoneError = pErr
+                    } else {
+                        focusManager.clearFocus()
+                        viewModel.save(title, name, address, email, phone, gender, dob, dobFormat, nationality)
+                    }
+                }) { Text("Save") }
             },
-            onDiscard = {
-                showUnsavedDialog = false
-                navController.popBackStack()
+            dismissButton = {
+                Row {
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
+                    TextButton(onClick = {
+                        showUnsavedDialog = false
+                        navController.popBackStack()
+                    }) { Text("Discard") }
+                }
             }
         )
     }
@@ -305,174 +437,6 @@ fun SectionChild1Screen(
 
 // ── Composable helpers ────────────────────────────────────────────────────────
 
-@Composable
-private fun Child1FormContent(
-    modifier: Modifier = Modifier,
-    title: String, onTitleChange: (String) -> Unit, titleError: Boolean,
-    name: String, onNameChange: (String) -> Unit, nameError: Boolean,
-    address: String, onAddressChange: (String) -> Unit, addressError: Boolean,
-    email: String, onEmailChange: (String) -> Unit, emailError: Boolean,
-    phone: String, onPhoneChange: (String) -> Unit, phoneError: Boolean,
-    gender: String, onGenderChange: (String) -> Unit,
-    dob: String, onDobChange: (String) -> Unit,
-    nationality: String, onNationalityChange: (String) -> Unit,
-    imagePath: String,
-    onPickPhotoClick: () -> Unit,
-    onDeletePhotoClick: () -> Unit,
-    onDateDialogOpen: () -> Unit
-) {
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        OutlinedTextField(
-            value = title,
-            onValueChange = onTitleChange,
-            label = { Text(stringResource(R.string.label_section_title)) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            isError = titleError,
-            supportingText = if (titleError) { { Text(stringResource(R.string.error_section_title_required)) } } else null,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Words,
-                imeAction = ImeAction.Next
-            )
-        )
-
-        SectionDivider(stringResource(R.string.label_contact_details))
-
-        OutlinedTextField(
-            value = name,
-            onValueChange = onNameChange,
-            label = { Text(stringResource(R.string.label_full_name)) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            isError = nameError,
-            supportingText = if (nameError) { { Text(stringResource(R.string.error_name_required)) } } else null,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Words,
-                imeAction = ImeAction.Next
-            )
-        )
-        OutlinedTextField(
-            value = address,
-            onValueChange = onAddressChange,
-            label = { Text(stringResource(R.string.label_address)) },
-            modifier = Modifier.fillMaxWidth(),
-            minLines = 4, maxLines = 8,
-            isError = addressError,
-            supportingText = if (addressError) { { Text(stringResource(R.string.error_address_required)) } } else null,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
-                imeAction = ImeAction.Next
-            )
-        )
-        OutlinedTextField(
-            value = email,
-            onValueChange = onEmailChange,
-            label = { Text(stringResource(R.string.label_email)) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            isError = emailError,
-            supportingText = if (emailError) { { Text(stringResource(R.string.error_email_required)) } } else null,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Next
-            )
-        )
-        OutlinedTextField(
-            value = phone,
-            onValueChange = onPhoneChange,
-            label = { Text(stringResource(R.string.label_phone)) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            isError = phoneError,
-            supportingText = if (phoneError) { { Text(stringResource(R.string.error_phone_required)) } } else null,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Next
-            )
-        )
-
-        SectionDivider(stringResource(R.string.label_gender_optional))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            ALL_GENDERS.forEach { g ->
-                RadioButton(
-                    selected = gender == g,
-                    onClick = { onGenderChange(if (gender == g) "" else g) }
-                )
-                Text(g, modifier = Modifier.padding(end = 16.dp))
-            }
-            if (gender.isNotEmpty()) {
-                TextButton(onClick = { onGenderChange("") }) { Text(stringResource(R.string.btn_clear)) }
-            }
-        }
-
-        SectionDivider(stringResource(R.string.label_dob_optional))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            OutlinedTextField(
-                value = dob,
-                onValueChange = onDobChange,
-                label = { Text(stringResource(R.string.label_date_of_birth)) },
-                modifier = Modifier.weight(1f),
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-            )
-            IconButton(onClick = onDateDialogOpen) {
-                Icon(Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.cd_pick_date),
-                    tint = MaterialTheme.colorScheme.primary)
-            }
-        }
-
-        OutlinedTextField(
-            value = nationality,
-            onValueChange = onNationalityChange,
-            label = { Text(stringResource(R.string.label_nationality_optional)) },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Words,
-                imeAction = ImeAction.Done
-            )
-        )
-
-        SectionDivider(stringResource(R.string.label_profile_photo_optional))
-        UserImageSection(
-            imagePath = imagePath,
-            onBrowseClick = onPickPhotoClick,
-            onDeleteClick = onDeletePhotoClick
-        )
-
-        Spacer(Modifier.height(16.dp))
-    }
-}
-
-@Composable
-private fun UnsavedChangesDialog(
-    onDismiss: () -> Unit,
-    onSave: () -> Unit,
-    onDiscard: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
-        text = { Text(stringResource(R.string.msg_unsaved_changes)) },
-        confirmButton = {
-            Button(onClick = onSave) { Text(stringResource(R.string.save)) }
-        },
-        dismissButton = {
-            Row {
-                TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-                TextButton(onClick = onDiscard) { Text(stringResource(R.string.btn_discard)) }
-            }
-        }
-    )
-}
 
 @Composable
 private fun UserImageSection(
@@ -498,13 +462,13 @@ private fun UserImageSection(
             if (hasImage) {
                 AsyncImage(
                     model = imageFile,
-                    contentDescription = stringResource(R.string.cd_profile_photo),
+                    contentDescription = "Profile photo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
             } else {
                 Text(
-                    text = stringResource(R.string.msg_no_user_image),
+                    text = "No user image found",
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -520,7 +484,7 @@ private fun UserImageSection(
                     onClick = onBrowseClick,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text(stringResource(R.string.btn_change_photo))
+                    Text("Change Photo")
                 }
                 OutlinedButton(
                     onClick = onDeleteClick,
@@ -532,7 +496,7 @@ private fun UserImageSection(
                     Icon(Icons.Default.Delete, contentDescription = null,
                         modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.delete))
+                    Text("Delete")
                 }
             }
         } else {
@@ -540,7 +504,7 @@ private fun UserImageSection(
                 onClick = onBrowseClick,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.btn_browse_photo))
+                Text("Browse Photo")
             }
         }
     }

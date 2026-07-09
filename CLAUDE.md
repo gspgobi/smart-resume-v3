@@ -105,7 +105,6 @@ All components are `@Singleton` scoped at `SingletonComponent`.
 
 ## Setup Requirements
 
-- Copy `app/src/debug/google-services.json.example` → `app/src/debug/google-services.json` and fill in your Firebase debug project values before building debug variants
-- Place your release `google-services.json` at `app/src/release/google-services.json` (not committed to VCS)
+- Place `google-services.json` in `app/` before building (Firebase; not committed to VCS)
 - Release signing is read from `keystore.properties` at the project root (not committed)
 - Requires Android Studio Hedgehog or later; API 24+ device or emulator

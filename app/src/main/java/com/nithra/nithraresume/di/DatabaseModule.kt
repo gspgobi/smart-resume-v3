@@ -11,7 +11,6 @@ import com.nithra.nithraresume.utils.AnalyticsManager
 import com.nithra.nithraresume.utils.PrefsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import com.nithra.nithraresume.data.db.dao.FcmDataDao
 import com.nithra.nithraresume.data.db.dao.ResumeFormatBaseDao
@@ -33,8 +32,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-    private val moduleScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-
     @Provides
     @Singleton
     fun provideDatabase(
@@ -51,7 +48,7 @@ object DatabaseModule {
             .addCallback(SmartResumeDatabase.seedCallback)
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
-                    moduleScope.launch {
+                    CoroutineScope(Dispatchers.IO).launch {
                         prefsManager.setV3IsPerfectNewSrv3User(true)
                         prefsManager.setV3AppInstalledDuringSrv3DbVersion(SmartResumeDatabase.DATABASE_VERSION)
                     }

@@ -1,7 +1,5 @@
 package com.nithra.nithraresume.data.repository
 
-import androidx.room.withTransaction
-import com.nithra.nithraresume.data.db.SmartResumeDatabase
 import com.nithra.nithraresume.data.db.dao.SectionChildListDao
 import com.nithra.nithraresume.data.db.dao.SectionChildSingleDao
 import com.nithra.nithraresume.data.model.SectionChild1
@@ -21,23 +19,9 @@ import javax.inject.Singleton
 
 @Singleton
 class SectionChildRepository @Inject constructor(
-    private val db: SmartResumeDatabase,
     private val singleDao: SectionChildSingleDao,
     private val listDao: SectionChildListDao
 ) {
-
-    // Atomically deletes every child row across all 8 tables for a given section head.
-    // Uses a single transaction so a mid-delete failure leaves no orphaned records.
-    suspend fun deleteAllChildrenForHead(headId: Int) = db.withTransaction {
-        singleDao.deleteChild1ByHeadId(headId)
-        listDao.deleteChild2ByHeadId(headId)
-        listDao.deleteChild3ByHeadId(headId)
-        singleDao.deleteChild4ByHeadId(headId)
-        singleDao.deleteChild5ByHeadId(headId)
-        listDao.deleteChild6ByHeadId(headId)
-        listDao.deleteChild7ByHeadId(headId)
-        singleDao.deleteChild8ByHeadId(headId)
-    }
 
     // ── Child 1 — Contact Information ─────────────────────────────────────────
 

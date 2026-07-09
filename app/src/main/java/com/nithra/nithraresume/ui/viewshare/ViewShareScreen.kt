@@ -61,12 +61,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
-import com.nithra.nithraresume.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -84,7 +82,7 @@ fun ViewShareScreen(
     viewModel: ViewShareViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val showGenerateAdEvent = viewModel.showGenerateAdEvent
+    val showGenerateAd by viewModel.showGenerateAd.collectAsStateWithLifecycle()
     val isAdLoading by viewModel.isAdLoading.collectAsStateWithLifecycle()
     val showRateUsDialog by viewModel.showRateUsDialog.collectAsStateWithLifecycle()
     val justGenerated = viewModel.justGenerated
@@ -92,13 +90,14 @@ fun ViewShareScreen(
     val context = LocalContext.current
     var showFeedbackDialog by rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        showGenerateAdEvent.collect {
+    LaunchedEffect(showGenerateAd) {
+        if (showGenerateAd) {
             val activity = context as? Activity
             if (activity != null) {
                 viewModel.generateAdHelper.showSuspend(activity)
                 viewModel.generateAdHelper.load(context, AdMobManager.interstitial02Id())
             }
+            viewModel.resetShowGenerateAd()
         }
     }
 
@@ -150,15 +149,15 @@ fun ViewShareScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.title_view_and_share)) },
+                title = { Text("View & Share") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
                     IconButton(onClick = { viewModel.reload() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.cd_refresh),
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                 },
@@ -185,7 +184,7 @@ fun ViewShareScreen(
                 ) {
                     CircularProgressIndicator()
                     Text(
-                        stringResource(R.string.msg_loading),
+                        "Loading…",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -240,14 +239,14 @@ fun ViewShareScreen(
                                         .scale(iconScale * pulseScale)
                                 )
                                 Text(
-                                    stringResource(R.string.msg_resume_generated_successfully),
+                                    "Resume Generated Successfully!",
                                     style = MaterialTheme.typography.titleLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     textAlign = TextAlign.Center
                                 )
                                 Text(
-                                    stringResource(R.string.msg_resume_ready),
+                                    "Your resume is ready to view and share",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                                     textAlign = TextAlign.Center
@@ -291,12 +290,12 @@ fun ViewShareScreen(
                                 )
                             } else {
                                 Text(
-                                    stringResource(R.string.msg_no_resume_generated_yet),
+                                    "No resume generated yet",
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    stringResource(R.string.msg_go_back_to_generate),
+                                    "Go back to generate your resume",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -310,7 +309,7 @@ fun ViewShareScreen(
                             onClick = { openPdf(context, pdfFile) },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(stringResource(R.string.btn_open_pdf))
+                            Text("Open PDF")
                         }
 
                         Row(
@@ -323,7 +322,7 @@ fun ViewShareScreen(
                             ) {
                                 Icon(Icons.Default.Share, contentDescription = null,
                                     modifier = Modifier.padding(end = 6.dp))
-                                Text(stringResource(R.string.btn_share))
+                                Text("Share")
                             }
                         }
                     }
@@ -337,11 +336,11 @@ fun ViewShareScreen(
                     }
                     if (pdfFile != null) {
                         OutlinedButton(onClick = onGenerate, modifier = Modifier.fillMaxWidth()) {
-                            Text(stringResource(R.string.btn_regenerate))
+                            Text("Regenerate")
                         }
                     } else {
                         Button(onClick = onGenerate, modifier = Modifier.fillMaxWidth()) {
-                            Text(stringResource(R.string.btn_generate_resume))
+                            Text("Generate Resume")
                         }
                     }
                 }
@@ -358,15 +357,15 @@ private fun RateUsDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.dialog_title_rate_app)) },
+        title = { Text("Enjoying Smart Resume?") },
         text = {
-            Text(stringResource(R.string.msg_rate_app_body))
+            Text("If you find this app helpful, please take a moment to rate it on the Play Store.")
         },
         confirmButton = {
-            Button(onClick = onRateNow) { Text(stringResource(R.string.btn_rate_now)) }
+            Button(onClick = onRateNow) { Text("Rate Now") }
         },
         dismissButton = {
-            TextButton(onClick = onWriteFeedback) { Text(stringResource(R.string.btn_write_feedback)) }
+            TextButton(onClick = onWriteFeedback) { Text("Write Feedback") }
         }
     )
 }

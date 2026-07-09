@@ -11,13 +11,6 @@ const val MAX_CHILD_ITEMS       = 10
 const val GENERATE_COUNT_SHOW_RATE_US = 3
 const val GENERATE_COUNT_SHOW_AD      = 4
 
-// ── Ad timing ─────────────────────────────────────────────────────────────────
-
-// Maximum time to wait for an interstitial ad to load before giving up.
-const val AD_LOAD_TIMEOUT_MS = 5_000L
-// How long to wait before retrying a failed banner ad load.
-const val AD_RETRY_DELAY_MS  = 5_000L
-
 // ── Section head group IDs (match seed data) ──────────────────────────────────
 
 const val GROUP_ID_SECTIONS = 1

@@ -39,13 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.preview.AppPreview
@@ -82,10 +80,10 @@ fun ReorderChildScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.title_reorder_entries)) },
+                title = { Text("Reorder Entries") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -184,12 +182,12 @@ private fun ReorderChildRow(
     ) {
         Icon(
             imageVector = Icons.Default.DragHandle,
-            contentDescription = stringResource(R.string.cd_drag_to_reorder),
+            contentDescription = "Drag to reorder",
             modifier = dragHandleModifier.size(24.dp),
             tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
-            text = item.displayText.ifEmpty { stringResource(R.string.msg_no_title) },
+            text = item.displayText.ifEmpty { "(no title)" },
             style = MaterialTheme.typography.bodyLarge,
             fontStyle = if (item.displayText.isEmpty()) FontStyle.Italic else FontStyle.Normal,
             color = MaterialTheme.colorScheme.onSurface,

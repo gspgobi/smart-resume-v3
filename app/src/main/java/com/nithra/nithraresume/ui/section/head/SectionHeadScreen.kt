@@ -58,12 +58,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.data.model.SectionHeadAdded
@@ -112,10 +110,10 @@ fun SectionHeadScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(profile?.name ?: stringResource(R.string.msg_edit_profile_fallback)) },
+                title = { Text(profile?.name ?: "Edit Profile") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -150,7 +148,7 @@ fun SectionHeadScreen(
             // ── Sections group header ─────────────────────────────────────────
             item {
                 GroupHeader(
-                    title = stringResource(R.string.label_sections),
+                    title = "Sections",
                     onEditClick = if (sections.size > 1) {
                         { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_SECTIONS)) }
                     } else null
@@ -172,7 +170,7 @@ fun SectionHeadScreen(
             // ── Add New Section ───────────────────────────────────────────────
             if (availableSections.isNotEmpty()) {
                 item {
-                    AddItemRow(label = stringResource(R.string.btn_add_new_section)) {
+                    AddItemRow(label = "Add New Section") {
                         showAddSectionSheet = true
                     }
                     HorizontalDivider()
@@ -182,7 +180,7 @@ fun SectionHeadScreen(
             // ── Add-ons group header ──────────────────────────────────────────
             item {
                 GroupHeader(
-                    title = stringResource(R.string.label_addons),
+                    title = "Add-ons",
                     onEditClick = if (addons.size > 1) {
                         { navController.navigate(Screen.ReorderSections.createRoute(viewModel.profileId, GROUP_ID_ADDONS)) }
                     } else null
@@ -204,7 +202,7 @@ fun SectionHeadScreen(
             // ── Add New Add-on (only when available) ─────────────────────────
             if (availableAddons.isNotEmpty()) {
                 item {
-                    AddItemRow(label = stringResource(R.string.btn_add_new_addon)) {
+                    AddItemRow(label = "Add New Add-on") {
                         showAddAddonSheet = true
                     }
                     HorizontalDivider()
@@ -214,7 +212,7 @@ fun SectionHeadScreen(
             // ── Complete group header ──────────────────────────────────────────
             item {
                 GroupHeader(
-                    title = stringResource(R.string.label_complete)
+                    title = "Complete"
                 )
             }
 
@@ -241,7 +239,7 @@ fun SectionHeadScreen(
             sheetState = sheetState
         ) {
             AddSectionSheet(
-                title = stringResource(R.string.btn_add_new_section),
+                title = "Add New Section",
                 items = availableSections,
                 onItemClick = { sample ->
                     viewModel.addSection(sample, sections)
@@ -260,7 +258,7 @@ fun SectionHeadScreen(
             sheetState = sheetState
         ) {
             AddSectionSheet(
-                title = stringResource(R.string.btn_add_new_addon),
+                title = "Add New Add-on",
                 items = availableAddons,
                 onItemClick = { sample ->
                     viewModel.addSection(sample, addons)
@@ -273,13 +271,13 @@ fun SectionHeadScreen(
     }
 
     // ── Delete confirmation dialog ────────────────────────────────────────────
-    deleteTarget?.let { sha ->
+    if (deleteTarget != null) {
+        val sha = deleteTarget!!
         val groupList = if (sha.groupBaseId == 1) sections else addons
-        val thisSection = stringResource(R.string.msg_this_section)
         AlertDialog(
             onDismissRequest = { deleteTarget = null },
-            title = { Text(stringResource(R.string.dialog_title_delete_section)) },
-            text = { Text(stringResource(R.string.msg_delete_section_confirm, sha.title.ifEmpty { thisSection })) },
+            title = { Text("Delete Section") },
+            text = { Text("Delete \"${sha.title.ifEmpty { "this section" }}\"? All data in this section will be permanently removed.") },
             confirmButton = {
                 Button(
                     onClick = {
@@ -289,10 +287,10 @@ fun SectionHeadScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
                     )
-                ) { Text(stringResource(R.string.delete)) }
+                ) { Text("Delete") }
             },
             dismissButton = {
-                TextButton(onClick = { deleteTarget = null }) { Text(stringResource(R.string.cancel)) }
+                TextButton(onClick = { deleteTarget = null }) { Text("Cancel") }
             }
         )
     }
@@ -336,13 +334,13 @@ private fun ResumeFormatRow(formatTitle: String, onClick: () -> Unit) {
                 .padding(horizontal = 12.dp)
         ) {
             Text(
-                text = stringResource(R.string.label_resume_format),
+                text = "Resume Format",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(Modifier.size(4.dp))
             Text(
-                text = formatTitle.ifEmpty { stringResource(R.string.label_select_format) },
+                text = formatTitle.ifEmpty { "Select format" },
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -385,7 +383,7 @@ private fun GroupHeader(
                     contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                Text(stringResource(R.string.edit), style = MaterialTheme.typography.labelLarge)
+                Text("Edit", style = MaterialTheme.typography.labelLarge)
             }
         }
     }
@@ -443,7 +441,7 @@ private fun SectionItem(
         Column(modifier = Modifier.weight(1f)) {
             if (sha.title.isBlank()) {
                 Text(
-                    text = stringResource(R.string.msg_no_title_blank),
+                    text = "No title",
                     style = MaterialTheme.typography.bodyLarge,
                     fontStyle = FontStyle.Italic,
                     color = titleColor.copy(alpha = 0.5f)
@@ -478,7 +476,7 @@ private fun SectionItem(
                         .clickable { menuExpanded = true },
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_options),
+                    Icon(Icons.Default.MoreVert, contentDescription = "Options",
                         modifier = Modifier.size(24.dp))
                 }
                 DropdownMenu(
@@ -486,7 +484,7 @@ private fun SectionItem(
                     onDismissRequest = { menuExpanded = false }
                 ) {
                     DropdownMenuItem(
-                        text = { Text(if (sha.isEnable) stringResource(R.string.btn_disable) else stringResource(R.string.btn_enable)) },
+                        text = { Text(if (sha.isEnable) "Disable" else "Enable") },
                         leadingIcon = {
                             Icon(
                                 if (sha.isEnable) Icons.Default.VisibilityOff
@@ -497,7 +495,7 @@ private fun SectionItem(
                         onClick = { menuExpanded = false; onToggleEnable() }
                     )
                     DropdownMenuItem(
-                        text = { Text(stringResource(R.string.delete)) },
+                        text = { Text("Delete") },
                         leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
                         onClick = { menuExpanded = false; onDelete() }
                     )
@@ -527,7 +525,7 @@ private fun ActionButtons(
             Icon(Icons.Default.PlayArrow, contentDescription = null,
                 modifier = Modifier.size(18.dp))
             Spacer(Modifier.size(8.dp))
-            Text(stringResource(R.string.btn_generate_resume))
+            Text("Generate Resume")
         }
         OutlinedButton(
             onClick = onViewShare,
@@ -536,7 +534,7 @@ private fun ActionButtons(
             Icon(Icons.Default.Visibility, contentDescription = null,
                 modifier = Modifier.size(18.dp))
             Spacer(Modifier.size(8.dp))
-            Text(stringResource(R.string.btn_view_and_share))
+            Text("View & Share")
         }
     }
 }
@@ -562,7 +560,7 @@ private fun AddSectionSheet(
         if (items.isEmpty()) {
             item(key = "empty") {
                 Text(
-                    text = stringResource(R.string.msg_all_sections_added),
+                    text = "All sections already added",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(16.dp)
@@ -596,7 +594,7 @@ private fun AddSectionSheet(
                         )
                         Icon(
                             Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add),
+                            contentDescription = "Add",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp)
                         )

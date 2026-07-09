@@ -34,9 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.nithra.nithraresume.R
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,10 +66,10 @@ fun SectionChild4SignatureScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.title_draw_signature)) },
+                title = { Text("Draw Signature") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -100,7 +98,7 @@ fun SectionChild4SignatureScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.msg_sign_inside_box),
+                text = "Sign inside the box",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -123,7 +121,7 @@ fun SectionChild4SignatureScreen(
                 OutlinedButton(
                     onClick = { clearCanvasKey++ },
                     modifier = Modifier.weight(1f)
-                ) { Text(stringResource(R.string.btn_clear)) }
+                ) { Text("Clear") }
                 Button(
                     onClick = {
                         val bmp = captureController.captureBitmap()
@@ -131,7 +129,7 @@ fun SectionChild4SignatureScreen(
                     },
                     modifier = Modifier.weight(1f),
                     enabled = captureController.hasStrokes
-                ) { Text(stringResource(R.string.save)) }
+                ) { Text("Save") }
             }
         }
     }

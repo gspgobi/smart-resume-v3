@@ -39,10 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.nithra.nithraresume.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -64,16 +62,16 @@ fun NotificationListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.menu_notifications)) },
+                title = { Text("Notifications") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
                     if (notifications.isNotEmpty()) {
                         IconButton(onClick = { showDeleteAllDialog = true }) {
-                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.cd_delete_all),
+                            Icon(Icons.Default.Delete, contentDescription = "Delete all",
                                 tint = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
@@ -101,7 +99,7 @@ fun NotificationListScreen(
                         tint = MaterialTheme.colorScheme.outline
                     )
                     Text(
-                        stringResource(R.string.msg_no_notifications),
+                        "No notifications",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 12.dp)
@@ -133,16 +131,16 @@ fun NotificationListScreen(
         val target = notifications[deleteTarget]
         AlertDialog(
             onDismissRequest = { deleteTarget = -1 },
-            title = { Text(stringResource(R.string.dialog_title_delete_notification)) },
-            text = { Text(stringResource(R.string.msg_delete_notification_body)) },
+            title = { Text("Delete notification?") },
+            text = { Text("This notification will be permanently deleted.") },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.delete(target)
                     deleteTarget = -1
-                }) { Text(stringResource(R.string.delete)) }
+                }) { Text("Delete") }
             },
             dismissButton = {
-                TextButton(onClick = { deleteTarget = -1 }) { Text(stringResource(R.string.cancel)) }
+                TextButton(onClick = { deleteTarget = -1 }) { Text("Cancel") }
             }
         )
     }
@@ -151,16 +149,16 @@ fun NotificationListScreen(
     if (showDeleteAllDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteAllDialog = false },
-            title = { Text(stringResource(R.string.dialog_title_delete_all_notifications)) },
-            text = { Text(stringResource(R.string.msg_delete_all_notifications_body)) },
+            title = { Text("Delete all notifications?") },
+            text = { Text("All notifications will be permanently deleted.") },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.deleteAll()
                     showDeleteAllDialog = false
-                }) { Text(stringResource(R.string.btn_delete_all)) }
+                }) { Text("Delete all") }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteAllDialog = false }) { Text(stringResource(R.string.cancel)) }
+                TextButton(onClick = { showDeleteAllDialog = false }) { Text("Cancel") }
             }
         )
     }
@@ -204,7 +202,7 @@ private fun NotificationListItem(
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = item.title.ifEmpty { stringResource(R.string.title_notification) },
+                text = item.title.ifEmpty { "Notification" },
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = if (!item.isRead) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 2

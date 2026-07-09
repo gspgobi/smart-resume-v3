@@ -9,7 +9,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import android.util.Log
 import java.io.File
 import javax.inject.Inject
 
@@ -32,7 +31,6 @@ class GeneratedResumesViewModel @Inject constructor(
 
     fun delete(file: File) {
         runCatching { file.delete() }
-            .onFailure { Log.w(TAG, "delete: ${file.name}", it) }
         scan()
     }
 
@@ -41,11 +39,6 @@ class GeneratedResumesViewModel @Inject constructor(
         if (trimmed.isBlank()) return false
         val dest = File(file.parentFile, "$trimmed.pdf")
         if (dest.exists()) return false
-        return runCatching { file.renameTo(dest) }
-            .onFailure { Log.w(TAG, "rename: ${file.name}", it) }
-            .getOrDefault(false)
-            .also { if (it) scan() }
+        return runCatching { file.renameTo(dest) }.getOrDefault(false).also { if (it) scan() }
     }
-
-    private companion object { const val TAG = "GeneratedResumesVM" }
 }

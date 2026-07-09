@@ -42,10 +42,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
@@ -85,9 +83,8 @@ fun SectionChild6SubScreen(
         when (uiState) {
             is Child6SubUiState.Saved -> navController.popBackStack()
             is Child6SubUiState.Error -> {
-                val msg = (uiState as Child6SubUiState.Error).message
+                snackbarHostState.showSnackbar((uiState as Child6SubUiState.Error).message)
                 viewModel.resetState()
-                snackbarHostState.showSnackbar(msg)
             }
             else -> {}
         }
@@ -111,21 +108,21 @@ fun SectionChild6SubScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (item != null) stringResource(R.string.title_edit_entry) else stringResource(R.string.title_new_entry)) },
+                title = { Text(if (item != null) "Edit Entry" else "New Entry") },
                 navigationIcon = {
                     IconButton(onClick = {
                         if (isDirty) showUnsavedDialog = true else navController.popBackStack()
                     }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 actions = {
                     IconButton(onClick = { attemptSave() }) {
-                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.cd_save),
+                        Icon(Icons.Default.Check, contentDescription = "Save",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     IconButton(onClick = { showOverflowMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.cd_more_options),
+                        Icon(Icons.Default.MoreVert, contentDescription = "More options",
                             tint = MaterialTheme.colorScheme.onPrimary)
                     }
                     DropdownMenu(
@@ -133,7 +130,7 @@ fun SectionChild6SubScreen(
                         onDismissRequest = { showOverflowMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.action_clear_all)) },
+                            text = { Text("Clear all") },
                             onClick = {
                                 showOverflowMenu = false
                                 contentTitle = ""; contentDetail = ""
@@ -170,20 +167,20 @@ fun SectionChild6SubScreen(
             OutlinedTextField(
                 value = contentTitle,
                 onValueChange = { contentTitle = it; contentTitleError = false },
-                label = { Text(stringResource(R.string.label_title)) },
+                label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 isError = contentTitleError,
-                supportingText = if (contentTitleError) { { Text(stringResource(R.string.error_title_required)) } } else null
+                supportingText = if (contentTitleError) { { Text("Title is required") } } else null
             )
             OutlinedTextField(
                 value = contentDetail,
                 onValueChange = { contentDetail = it; contentDetailError = false },
-                label = { Text(stringResource(R.string.label_detail)) },
+                label = { Text("Detail") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 8, maxLines = 20,
                 isError = contentDetailError,
-                supportingText = if (contentDetailError) { { Text(stringResource(R.string.error_detail_required)) } } else null
+                supportingText = if (contentDetailError) { { Text("Detail is required") } } else null
             )
         }
     }
@@ -191,21 +188,21 @@ fun SectionChild6SubScreen(
     if (showUnsavedDialog) {
         AlertDialog(
             onDismissRequest = { showUnsavedDialog = false },
-            title = { Text(stringResource(R.string.dialog_title_unsaved_changes)) },
-            text = { Text(stringResource(R.string.msg_unsaved_changes)) },
+            title = { Text("Unsaved Changes") },
+            text = { Text("You have unsaved changes. Save before leaving?") },
             confirmButton = {
                 Button(onClick = {
                     showUnsavedDialog = false
                     attemptSave()
-                }) { Text(stringResource(R.string.save)) }
+                }) { Text("Save") }
             },
             dismissButton = {
                 Row {
-                    TextButton(onClick = { showUnsavedDialog = false }) { Text(stringResource(R.string.cancel)) }
+                    TextButton(onClick = { showUnsavedDialog = false }) { Text("Cancel") }
                     TextButton(onClick = {
                         showUnsavedDialog = false
                         navController.popBackStack()
-                    }) { Text(stringResource(R.string.btn_discard)) }
+                    }) { Text("Discard") }
                 }
             }
         )

@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import android.util.Log
 import javax.inject.Inject
 
 sealed interface Child3SubUiState {
@@ -84,11 +83,8 @@ class SectionChild3SubViewModel @Inject constructor(
                 analyticsManager.logSc3SubSave()
                 _uiState.value = Child3SubUiState.Saved
             } catch (e: Exception) {
-                Log.e(TAG, "save", e)
                 _uiState.value = Child3SubUiState.Error(e.message ?: "Save failed")
             }
         }
     }
-
-    private companion object { const val TAG = "SectionChild3SubVM" }
 }

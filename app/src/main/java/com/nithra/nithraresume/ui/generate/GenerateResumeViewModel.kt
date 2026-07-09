@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.util.Log
 import java.io.File
 import javax.inject.Inject
 
@@ -138,7 +137,6 @@ class GenerateResumeViewModel @Inject constructor(
                 )
                 _uiState.value = GenerateResumeUiState.Done(pdfFile)
             } catch (e: Exception) {
-                Log.e(TAG, "generate", e)
                 analyticsManager.logResumeGenerationFailed()
                 _uiState.value = GenerateResumeUiState.Error(e.message ?: "Failed to generate resume")
             }
@@ -207,6 +205,4 @@ class GenerateResumeViewModel @Inject constructor(
 
         return ResumePdfBuilder(context).build(data, fileName)
     }
-
-    private companion object { const val TAG = "GenerateResumeVM" }
 }

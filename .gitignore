@@ -51,7 +51,5 @@ captures/
 # Keystore files
 keystore.properties
 smart-resume-key.jks
-# Google services configuration — never commit any variant of this file.
-# Add your own app/src/debug/google-services.json (and release/) locally;
-# see app/src/debug/google-services.json.example for the required structure.
-**/google-services.json
+# Google services Release configuration file
+app/src/release/google-services.json

@@ -275,7 +275,7 @@ class MainViewModel @Inject constructor(
                     discoveredMediaStorePdfs.add(uri to name)
                 }
             }
-        }.onFailure { Log.w(TAG, "scanV2MediaStorePdfs", it) }
+        }
         return discoveredMediaStorePdfs.size
     }
 
@@ -410,7 +410,7 @@ class MainViewModel @Inject constructor(
                                 input.copyTo(output)
                             }
                         }
-                    }.onFailure { Log.w(TAG, "migratePdf (MediaStore): $name", it) }
+                    }
                     done++
                     _migrationState.value = MigrationUiState.Running(done, total)
                 }
@@ -419,17 +419,16 @@ class MainViewModel @Inject constructor(
             else if (safTreeUri != null) {
                 val documentFolder = DocumentFile.fromTreeUri(context, safTreeUri)
                 documentFolder?.listFiles()?.forEach { docFile ->
-                    val name = docFile.name?.takeIf {
-                        docFile.isFile && it.endsWith(".pdf", ignoreCase = true)
-                    } ?: return@forEach
-                    runCatching {
-                        context.contentResolver.openInputStream(docFile.uri)?.use { input ->
-                            File(dstPdfFolder, name).outputStream().use { output ->
-                                input.copyTo(output)
+                    if (docFile.isFile && docFile.name?.endsWith(".pdf", ignoreCase = true) == true) {
+                        runCatching {
+                            context.contentResolver.openInputStream(docFile.uri)?.use { input ->
+                                File(dstPdfFolder, docFile.name!!).outputStream().use { output ->
+                                    input.copyTo(output)
+                                }
                             }
+                            docFile.delete()
                         }
-                        docFile.delete()
-                    }.onFailure { Log.w(TAG, "migratePdf (SAF): $name", it) }
+                    }
                 }
                 done = total
                 _migrationState.value = MigrationUiState.Running(done, total)
@@ -444,7 +443,7 @@ class MainViewModel @Inject constructor(
                             runCatching {
                                 file.copyTo(File(dstPdfFolder, file.name), overwrite = true)
                                 file.delete()
-                            }.onFailure { Log.w(TAG, "migratePdf (legacy): ${file.name}", it) }
+                            }
                             done++
                             _migrationState.value = MigrationUiState.Running(done, total)
                         }
@@ -786,6 +785,4 @@ class MainViewModel @Inject constructor(
             _dummyProfileCreated.emit(Unit)
         }
     }
-
-    private companion object { const val TAG = "MainViewModel" }
 }

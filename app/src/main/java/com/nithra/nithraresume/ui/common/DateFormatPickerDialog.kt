@@ -20,8 +20,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.ui.res.stringResource
-import com.nithra.nithraresume.R
 import androidx.compose.runtime.Composable
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.runtime.getValue
@@ -66,10 +64,10 @@ fun DateFormatPickerDialog(
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            Button(onClick = { onConfirm(selectedFormat, previewDate) }) { Text(stringResource(R.string.btn_select)) }
+            Button(onClick = { onConfirm(selectedFormat, previewDate) }) { Text("Select") }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss) { Text("Cancel") }
         }
     ) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
@@ -97,7 +95,7 @@ fun DateFormatPickerDialog(
                         value = previewDate,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text(stringResource(R.string.label_date_format)) },
+                        label = { Text("Date Format") },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
                         modifier = Modifier
                             .fillMaxWidth()

@@ -33,10 +33,8 @@ import androidx.compose.runtime.setValue
 import com.nithra.nithraresume.ui.theme.SmartResumeTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.nithra.nithraresume.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.nithra.nithraresume.ui.preview.AppPreview
@@ -65,10 +63,10 @@ fun AppSettingsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.title_settings)) },
+                title = { Text("Settings") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -92,8 +90,8 @@ fun AppSettingsScreen(
                         tint = MaterialTheme.colorScheme.primary
                     )
                 },
-                title = stringResource(R.string.label_notifications),
-                subtitle = stringResource(R.string.msg_notifications_subtitle),
+                title = "Notifications",
+                subtitle = "Receive push notifications from Smart Resume",
                 checked = notificationsEnabled,
                 onCheckedChange = { viewModel.setNotificationsEnabled(it) }
             )
@@ -106,7 +104,7 @@ fun AppSettingsScreen(
                         tint = MaterialTheme.colorScheme.primary
                     )
                 },
-                title = stringResource(R.string.label_theme),
+                title = "Theme",
                 value = themeMode.replaceFirstChar { it.uppercase() },
                 onClick = { showThemeDialog = true }
             )
@@ -187,17 +185,17 @@ private fun ThemeSelectionDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.dialog_title_select_theme)) },
+        title = { Text("Select Theme") },
         text = {
             Column {
-                ThemeOption(stringResource(R.string.theme_light), "light", selectedTheme) { onThemeSelected("light") }
-                ThemeOption(stringResource(R.string.theme_dark), "dark", selectedTheme) { onThemeSelected("dark") }
-                ThemeOption(stringResource(R.string.theme_system), "system", selectedTheme) { onThemeSelected("system") }
+                ThemeOption("Light", "light", selectedTheme) { onThemeSelected("light") }
+                ThemeOption("Dark", "dark", selectedTheme) { onThemeSelected("dark") }
+                ThemeOption("System", "system", selectedTheme) { onThemeSelected("system") }
             }
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.btn_close))
+                Text("Close")
             }
         }
     )

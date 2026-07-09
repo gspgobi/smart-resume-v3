@@ -28,9 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.nithra.nithraresume.R
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -51,11 +49,11 @@ fun NotificationDetailScreen(
             TopAppBar(
                 title = {
                     val title = (uiState as? NotificationDetailUiState.Ready)?.item?.title
-                    Text(title?.ifEmpty { stringResource(R.string.title_notification) } ?: stringResource(R.string.title_notification))
+                    Text(title?.ifEmpty { "Notification" } ?: "Notification")
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -84,7 +82,7 @@ fun NotificationDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        stringResource(R.string.msg_notification_not_found),
+                        "Notification not found",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -166,7 +164,7 @@ private fun NotificationDetailNotFoundPreview() {
                     title = { Text("Notification") },
                     navigationIcon = {
                         IconButton(onClick = {}) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
